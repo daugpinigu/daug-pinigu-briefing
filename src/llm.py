@@ -16,6 +16,62 @@ except ImportError:
 HAIKU_MODEL = "claude-haiku-4-5"
 SONNET_MODEL = "claude-sonnet-4-6"
 
+# Default model: Sonnet for quality Lithuanian + deeper analysis.
+# Override via env LLM_MODEL=haiku for cost savings.
+DEFAULT_MODEL = SONNET_MODEL if os.environ.get('LLM_MODEL', 'sonnet').lower() == 'sonnet' else HAIKU_MODEL
+
+# Post-processing dictionary: bad LLM output -> proper Lithuanian
+# Applied after LLM call to clean up common mistakes
+CLEANUPS = [
+    (re.compile(r'\breportine\b', re.I), 'pranešė'),
+    (re.compile(r'\bsiginalizuod\w*\b', re.I), 'signalizuoja'),
+    (re.compile(r'\bobalsai\b', re.I), 'akcentuoja'),
+    (re.compile(r'\bzvilgnin\w*\b', re.I), 'žvilgsniu'),
+    (re.compile(r'\bkatalstas\b', re.I), 'katalizatorius'),
+    (re.compile(r'\bzalejau\b', re.I), 'neperžengė'),
+    (re.compile(r'\bkompresyvus\b', re.I), 'siauras'),
+    (re.compile(r'\binvestors\b', re.I), 'investuotojai'),
+    (re.compile(r'\bexpectations\b', re.I), 'lūkesčiai'),
+    (re.compile(r'\bcompression\b', re.I), 'spaudimas'),
+    (re.compile(r'\bheadwind\b', re.I), 'neigiamas veiksnys'),
+    (re.compile(r'\brefinancingui\b', re.I), 'refinansavimui'),
+    (re.compile(r'\bdemand softening\b', re.I), 'paklausos silpnėjimas'),
+    (re.compile(r'\bsignificantly miss\b', re.I), 'didelis miss'),
+    (re.compile(r'\bsignificantly beat\b', re.I), 'didelis beat'),
+    (re.compile(r'\benergia costs\b', re.I), 'energijos kaštai'),
+    (re.compile(r'\bbyti\b', re.I), 'byrėti'),
+    (re.compile(r'\blūkestis\b', re.I), 'lūkesčiai'),
+    (re.compile(r'\bvaluation\b', re.I), 'vertinimas'),
+    (re.compile(r'\bswaption skew\w*\b', re.I), 'palūkanų rizikos asimetrija'),
+    (re.compile(r'\brealised vol\w*\b', re.I), 'realizuotas svyravimas'),
+    (re.compile(r'\bduration exposure\b', re.I), 'trukmės pozicija'),
+    (re.compile(r'\bdebt reduction\b', re.I), 'skolos mažinimas'),
+    (re.compile(r'\bshareholder returns\b', re.I), 'akcininkų grąža'),
+    (re.compile(r'\bcash inflows\b', re.I), 'pinigų įplaukos'),
+    (re.compile(r'\bcash flow\b', re.I), 'pinigų srautas'),
+    (re.compile(r'\bcapex\b', re.I), 'capex'),  # allowed but lowercase
+    (re.compile(r'\bgrowth\b(?! tempas)', re.I), 'augimas'),
+    (re.compile(r'\btop[\- ]line\b', re.I), 'pajamos'),
+    (re.compile(r'\bbottom[\- ]line\b', re.I), 'pelnas'),
+    (re.compile(r'\bmidday\b', re.I), 'vidurdienį'),
+    (re.compile(r'\bpharma\b', re.I), 'farmacija'),
+    (re.compile(r'\bpricing power\b', re.I), 'kainodaros galia'),
+    (re.compile(r'\bcompetitive pressure\b', re.I), 'konkurencinis spaudimas'),
+    (re.compile(r'\bmarjos\b', re.I), 'maržos'),
+    (re.compile(r'\bSpread\w*\b', re.I), 'skirtumas'),
+]
+
+
+def _cleanup_text(text: str) -> str:
+    """Apply post-processing cleanups to LLM output."""
+    if not text:
+        return text
+    for pat, replacement in CLEANUPS:
+        text = pat.sub(replacement, text)
+    text = text.replace('—', '-').replace('–', '-')
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
 STYLE_GUIDE = """Tu rašai investiciniam kontentui Radoslavo balsu. Privalai laikytis VISŲ taisyklių:
 
 GRAMATIKA - SVARBIAUSIA:
@@ -92,7 +148,7 @@ def is_enabled() -> bool:
 
 
 def analyze_news(title: str, body: str, ticker: str = '',
-                 stock_move: str = '', model: str = HAIKU_MODEL) -> str:
+                 stock_move: str = '', model: str = DEFAULT_MODEL) -> str:
     """Generate Lithuanian analysis of a news article.
 
     Returns analytic summary in Radoslav's voice. Returns empty string on failure.
@@ -123,7 +179,7 @@ Tavo analizė (TAISYKLINGA lietuvių kalba, tik leidžiami anglicizmai iš STYLE
         )
         text = resp.content[0].text.strip() if resp.content else ''
         text = re.sub(r'\s+', ' ', text)
-        text = text.replace('—', '-').replace('–', '-')
+        text = _cleanup_text(text)
         return text
     except Exception as e:
         print(f"  warn: LLM analyze_news failed: {e}")
@@ -131,7 +187,7 @@ Tavo analizė (TAISYKLINGA lietuvių kalba, tik leidžiami anglicizmai iš STYLE
 
 
 def analyze_earnings(ticker: str, company: str, report_data: dict,
-                     model: str = HAIKU_MODEL) -> str:
+                     model: str = DEFAULT_MODEL) -> str:
     """Analyze earnings report. report_data should have actual/estimate/guidance fields."""
     client = _get_client()
     if not client:
@@ -159,14 +215,14 @@ Tavo analizė:"""
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
-        return re.sub(r'\s+', ' ', text).replace('—', '-').replace('–', '-')
+        return _cleanup_text(text)
     except Exception as e:
         print(f"  warn: LLM analyze_earnings failed: {e}")
         return ''
 
 
 def extract_earnings_details(ticker: str, news_body: str,
-                              model: str = HAIKU_MODEL) -> dict:
+                              model: str = DEFAULT_MODEL) -> dict:
     """Extract structured earnings data from news article via LLM.
 
     Returns dict with: revenue_actual, revenue_estimate, guidance_next_q,
@@ -210,7 +266,7 @@ STRAIPSNIS:
 
 
 def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
-                           extracted: dict, model: str = HAIKU_MODEL) -> str:
+                           extracted: dict, model: str = DEFAULT_MODEL) -> str:
     """Generate 2-3 sentence Lithuanian analysis for an earnings card."""
     client = _get_client()
     if not client:
@@ -237,14 +293,14 @@ Tavo izvalga:"""
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
-        return re.sub(r'\s+', ' ', text).replace('—', '-').replace('–', '-')
+        return _cleanup_text(text)
     except Exception as e:
         print(f"  warn: LLM analyze_earnings_card failed: {e}")
         return ''
 
 
 def analyze_reddit_thread(title: str, top_comments: list,
-                          model: str = HAIKU_MODEL) -> str:
+                          model: str = DEFAULT_MODEL) -> str:
     """Summarize a Reddit thread - sentiment, key arguments, what bears/bulls say."""
     client = _get_client()
     if not client or not top_comments:
@@ -269,7 +325,7 @@ Tavo apibendrinimas:"""
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
-        return re.sub(r'\s+', ' ', text).replace('—', '-').replace('–', '-')
+        return _cleanup_text(text)
     except Exception as e:
         print(f"  warn: LLM analyze_reddit failed: {e}")
         return ''
