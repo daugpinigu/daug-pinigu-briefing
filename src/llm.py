@@ -59,7 +59,38 @@ CLEANUPS = [
     (re.compile(r'\bcompetitive pressure\b', re.I), 'konkurencinis spaudimas'),
     (re.compile(r'\bmarjos\b', re.I), 'maržos'),
     (re.compile(r'\bSpread\w*\b', re.I), 'skirtumas'),
+    # Typos found in production output
+    (re.compile(r'\bscenrijus\b', re.I), 'scenarijus'),
+    (re.compile(r'\bscenrij\w+\b', re.I), 'scenarijus'),
+    (re.compile(r'\bnepalaank\w+\b', re.I), 'nepalankaus'),
+    (re.compile(r'\bperstumdė\b', re.I), 'atidėjo'),
+    (re.compile(r'\bperstumdo\b', re.I), 'atideda'),
+    (re.compile(r'\bketvirčio punkto\b', re.I), '0.25 procentinio punkto'),
+    (re.compile(r'\bsušvelninim\w+\b', re.I), 'atpalaidavimas'),
+    # Awkward phrasings → cleaner Lithuanian
+    (re.compile(r'\bturėjimo įmonė\b', re.I), 'kaupimo įmonė'),
+    (re.compile(r'\bturėjimo bendrov\w+\b', re.I), 'kaupimo bendrovė'),
+    (re.compile(r'\bšiuo lygiu\b', re.I), 'šiame lygyje'),
+    (re.compile(r'\bguidance tikslumas\b', re.I), 'guidance tikslas'),
+    (re.compile(r'\bplėtros tempo\b', re.I), 'plėtros tempas'),
+    (re.compile(r'\bvienerius metus\b', re.I), 'vienus metus'),
+    (re.compile(r'\binvestoriai\b', re.I), 'investuotojai'),
+    (re.compile(r'\binvestorių\b', re.I), 'investuotojų'),
+    (re.compile(r'\binvestoriams\b', re.I), 'investuotojams'),
+    (re.compile(r'\bdrastiškai\b', re.I), 'smarkiai'),
+    (re.compile(r'\bbrokerių įstaigos\b', re.I), 'brokeriai'),
+    (re.compile(r'\bgrąžinamosios išmokos\b', re.I), 'grąžinamos sumos'),
+    # Common ASCII anglicisms slipping through
+    (re.compile(r'\bsoftening\b', re.I), 'silpnėjimas'),
+    (re.compile(r'\bweakness\b', re.I), 'silpnumas'),
+    (re.compile(r'\btightening\b', re.I), 'griežtinimas'),
+    (re.compile(r'\beasing\b', re.I), 'švelninimas'),
 ]
+
+
+# Compiled regex to detect ASCII-only words that look Lithuanian but lack diacritics
+# Used as a sanity check (not for replacement - just to flag).
+SUSPICIOUS_ASCII = re.compile(r'\b[a-zA-Z]+(?:as|is|us|ai|ei|os|ams|ams|ėje|umas|ybė)\b')
 
 
 def _cleanup_text(text: str) -> str:
@@ -74,10 +105,15 @@ def _cleanup_text(text: str) -> str:
 
 STYLE_GUIDE = """Tu rašai investiciniam kontentui Radoslavo balsu. Privalai laikytis VISŲ taisyklių:
 
-GRAMATIKA - SVARBIAUSIA:
-- Lietuvių kalba PRIVALO būti gramatiškai TAISYKLINGA. Tikrink linksnius, galūnes, žodžių darybą.
-- Jokių išgalvotų žodžių ar lietuviškų klaidų. Jei nesi tikras dėl žodžio - naudok paprastą lietuvišką sinonimą.
-- "Pranešė" (ne "reportine"). "Žvilgsniu" (ne "zvilgnin"). "Katalizatorius" (ne "katalstas"). "Signalizuoja" (ne "siginalizuodama"). "Akcentuoja" (ne "obalsai"). "Neperžengė" (ne "zalejau"). "Siauras" (ne "kompresyvus").
+GRAMATIKA - SVARBIAUSIA, BE IŠIMČIŲ:
+- Lietuvių kalba PRIVALO būti gramatiškai TAISYKLINGA. Tikrink linksnius, galūnes, žodžių darybą, derinimą.
+- VISADA naudok lietuviškas raides: ą, č, ę, ė, į, š, ų, ū, ž. JOKIŲ ASCII pakaitalų lietuviškuose žodžiuose.
+- PRIEŠ rašydamas, mintyse PERSKAITYK žodį garsiai - jeigu skamba neaiškiai ar negirdėjai jo prieš tai, NEVARTOK. Naudok paprastesnį sinonimą.
+- DRAUDŽIAMA improvizuoti naujadarus ar kalkuoti angliškus žodžius (pvz. "perstumdė palūkanas" - ne, sakyk "atidėjo palūkanų sprendimą"). Jeigu nežinai tikslaus lietuviško atitikmens - perfrazuok visą sakinį.
+- DRAUDŽIAMA: "reportine", "zvilgnin", "katalstas", "siginalizuodama", "obalsai", "zalejau", "kompresyvus", "perstumdė", "scenrijus", "nepalaankaus", "investoriai".
+- TAISYKLINGI ATITIKMENYS: "pranešė", "žvilgsniu", "katalizatorius", "signalizuoja", "akcentuoja", "neperžengė", "siauras", "atidėjo", "scenarijus", "nepalankaus", "investuotojai".
+- LINKSNIŲ ATSARGUMAS: "šiuo lygiu" -> "šiame lygyje". "guidance tikslumas" -> "guidance tikslas". "plėtros tempo" (kilm.) -> "plėtros tempas" (vard.) kai sakinio subjektas. "vienerius metus" -> "vienus metus" arba "per metus".
+- SKAIČIAI ir VIENETAI lietuviškai: "0.25 procentinio punkto" (ne "ketvirčio punkto" - tai pažodinis vertimas iš "quarter point").
 
 ANGLICIZMAI - TIK ŠITIE 15 ŽODŽIŲ ANGLIŠKAI:
 - Earnings, guidance, revenue, EBITDA, EPS, beat, miss, Q1/Q2/Q3/Q4, YoY, QoQ, AHs, pre-market, catalyst, exposure, premium
@@ -278,7 +314,7 @@ def extract_earnings_details(ticker: str, news_body: str,
     if not client or not news_body:
         return {}
     import json as _json
-    prompt = f"""Iš šio earnings news straipsnio apie {ticker}, ištrauk struktūrinius duomenis. Grąžink TIK JSON, jokio paaiškinimo:
+    prompt = f"""Iš šio earnings šaltinio (transcript arba news straipsnio) apie {ticker}, ištrauk struktūrinius duomenis. Jeigu tai earnings call transcript, ištrauk kelias verbatim CEO/CFO citatas - rinkis pačias informatyviausias (apie guidance, augimą, strategiją, market sąlygas). Grąžink TIK JSON, jokio paaiškinimo:
 
 {{
   "revenue_actual": "$X.XB arba null",
@@ -287,21 +323,28 @@ def extract_earnings_details(ticker: str, news_body: str,
   "guidance_next_q_rev": "$X-XB arba null",
   "guidance_fy_rev": "$X.XB arba null",
   "guidance_ebitda_fy": "$XM arba null",
-  "key_quote": "trumpa management citata jei yra, kitaip null",
+  "key_quote": "1 pati svarbiausia management citata (verbatim, anglų kalba) arba null",
+  "key_quotes": ["iki 3 trumpų verbatim management citatų (anglų kalba, originalas iš transcript)"],
   "stock_reaction": "-X% AHs arba +X% pre-market arba null"
 }}
 
-STRAIPSNIS:
-{news_body[:2500]}"""
+ŠALTINIS:
+{news_body[:4500]}"""
 
     try:
-        resp = _llm_call_with_retry(client, prompt, model, max_tokens=400)
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=700)
         text = resp.content[0].text.strip() if resp.content else ''
         m = re.search(r'\{.*\}', text, re.DOTALL)
         if not m:
             return {}
         data = _json.loads(m.group(0))
-        return {k: (None if v in (None, 'null', '', 'N/A') else v) for k, v in data.items()}
+        result = {}
+        for k, v in data.items():
+            if v in (None, 'null', '', 'N/A', []):
+                result[k] = None if k != 'key_quotes' else []
+            else:
+                result[k] = v
+        return result
     except Exception as e:
         print(f"  warn: LLM extract_earnings failed: {e}")
         return {}

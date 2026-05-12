@@ -857,15 +857,33 @@ def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
         ]
     ]
 
+    # Reddit blocks generic browser UAs from datacenter IPs. Use a unique,
+    # descriptive UA per their TOS (helps GH Actions hosts).
+    reddit_headers = {
+        'User-Agent': 'daug-pinigu-briefing/1.0 (+https://github.com/daugpinigu/daug-pinigu-briefing)',
+        'Accept': 'application/json',
+    }
+
+    import time as _time
+
     def fetch_sub(spec):
         sub, sort, t = spec
         url = f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}"
-        try:
-            r = requests.get(url, headers=HEADERS, timeout=12)
-            r.raise_for_status()
-            data = r.json().get('data', {}).get('children', [])
-        except Exception:
-            return []
+        data = []
+        for attempt in range(2):
+            try:
+                r = requests.get(url, headers=reddit_headers, timeout=12)
+                if r.status_code == 429 and attempt == 0:
+                    _time.sleep(2)
+                    continue
+                r.raise_for_status()
+                data = r.json().get('data', {}).get('children', [])
+                break
+            except Exception:
+                if attempt == 0:
+                    _time.sleep(1)
+                    continue
+                return []
         out = []
         for item in data:
             p = item.get('data', {})
@@ -972,8 +990,12 @@ def fetch_reddit_comments(permalink_url: str, top_n: int = 8) -> list:
     if not permalink_url:
         return []
     url = permalink_url.rstrip('/') + '.json?limit=' + str(top_n * 2)
+    reddit_headers = {
+        'User-Agent': 'daug-pinigu-briefing/1.0 (+https://github.com/daugpinigu/daug-pinigu-briefing)',
+        'Accept': 'application/json',
+    }
     try:
-        r = requests.get(url, headers=HEADERS, timeout=12)
+        r = requests.get(url, headers=reddit_headers, timeout=12)
         r.raise_for_status()
         data = r.json()
     except Exception:
