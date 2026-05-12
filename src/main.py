@@ -5,9 +5,13 @@ from datetime import datetime
 from pathlib import Path
 import pytz
 
-from fetch import fetch_macro_events, fetch_earnings, fetch_premarket_movers
+from fetch import (
+    fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
+    fetch_crypto, fetch_index_snapshot,
+)
 from render import render_html, html_to_png
 from send import send_photo
+from watchlist import STOCKS, CRYPTO, FUTURES
 
 VILNIUS = pytz.timezone('Europe/Vilnius')
 
@@ -60,9 +64,17 @@ def main():
     earnings = fetch_earnings(date_str, min_market_cap_b=10.0)
     print(f"    -> {len(earnings)} companies")
 
-    print("  Fetching market movers...")
-    movers = fetch_premarket_movers(top_n=5)
-    print(f"    -> {len(movers['gainers'])} gainers, {len(movers['losers'])} losers")
+    print("  Fetching indices/futures/VIX...")
+    indices = fetch_index_snapshot(FUTURES)
+    print(f"    -> {len(indices)} indices")
+
+    print("  Fetching watchlist movers...")
+    watchlist = fetch_watchlist_movers(STOCKS, top_n=5)
+    print(f"    -> {len(watchlist['gainers'])} gainers, {len(watchlist['losers'])} losers")
+
+    print("  Fetching crypto...")
+    crypto = fetch_crypto(CRYPTO)
+    print(f"    -> {len(crypto)} coins")
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(
@@ -72,14 +84,16 @@ def main():
             country_priority.get(e['country'], 99),
             e['time_local'],
         ),
-    )[:10]
+    )[:8]
     earnings_top = earnings[:10]
 
     context = {
         'date_long': format_date_lt(now),
         'macro_events': macro_sorted,
         'earnings': earnings_top,
-        'movers': movers,
+        'watchlist': watchlist,
+        'crypto': crypto,
+        'indices': indices,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }

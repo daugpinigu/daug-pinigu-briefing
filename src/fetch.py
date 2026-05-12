@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import pytz
 import re
+import yfinance as yf
+import pandas as pd
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
@@ -162,6 +164,97 @@ def fetch_premarket_movers(top_n: int = 5) -> dict:
                     })
         except Exception as e:
             print(f"  warn: failed to fetch {kind}: {e}")
+    return out
+
+
+def fetch_quotes(symbols: list) -> list:
+    """Batch fetch latest quotes via yfinance. Returns list of dicts."""
+    if not symbols:
+        return []
+    try:
+        data = yf.download(symbols, period='5d', progress=False,
+                           group_by='ticker', auto_adjust=False, threads=True)
+    except Exception as e:
+        print(f"  warn: yfinance batch fetch failed: {e}")
+        return []
+
+    out = []
+    for sym in symbols:
+        try:
+            if len(symbols) == 1:
+                df = data
+            else:
+                df = data[sym]
+            df = df.dropna(subset=['Close'])
+            if len(df) < 2:
+                continue
+            last_close = float(df['Close'].iloc[-1])
+            prev_close = float(df['Close'].iloc[-2])
+            change_pct = ((last_close - prev_close) / prev_close) * 100
+            out.append({
+                'symbol': sym,
+                'price': last_close,
+                'change_pct': change_pct,
+                'change_abs': last_close - prev_close,
+            })
+        except (KeyError, IndexError, ValueError):
+            continue
+    return out
+
+
+def fetch_watchlist_movers(stocks: list, top_n: int = 5) -> dict:
+    """Fetch quotes for watchlist, return top gainers and losers."""
+    quotes = fetch_quotes(stocks)
+    sorted_q = sorted(quotes, key=lambda x: x['change_pct'], reverse=True)
+    return {
+        'gainers': sorted_q[:top_n],
+        'losers': sorted_q[-top_n:][::-1],
+    }
+
+
+def fetch_crypto(crypto_tuples: list) -> list:
+    """Fetch crypto prices via CoinGecko. crypto_tuples is [(coingecko_id, display_symbol, name), ...]."""
+    if not crypto_tuples:
+        return []
+    ids = ','.join(c[0] for c in crypto_tuples)
+    url = (f"https://api.coingecko.com/api/v3/simple/price?ids={ids}"
+           "&vs_currencies=usd&include_24hr_change=true&include_market_cap=true")
+    try:
+        r = requests.get(url, timeout=15, headers={'accept': 'application/json'})
+        r.raise_for_status()
+        data = r.json()
+    except Exception as e:
+        print(f"  warn: CoinGecko fetch failed: {e}")
+        return []
+
+    out = []
+    for cg_id, symbol, name in crypto_tuples:
+        item = data.get(cg_id)
+        if not item:
+            continue
+        out.append({
+            'symbol': symbol,
+            'name': name,
+            'price': item.get('usd', 0),
+            'change_pct': item.get('usd_24h_change', 0) or 0,
+            'market_cap': item.get('usd_market_cap', 0),
+        })
+    return out
+
+
+def fetch_index_snapshot(futures: list) -> list:
+    """Fetch indices/futures/VIX snapshot. futures is [(symbol, display_name), ...]."""
+    syms = [f[0] for f in futures]
+    quotes = fetch_quotes(syms)
+    name_map = dict(futures)
+    out = []
+    for q in quotes:
+        out.append({
+            'symbol': q['symbol'],
+            'name': name_map.get(q['symbol'], q['symbol']),
+            'price': q['price'],
+            'change_pct': q['change_pct'],
+        })
     return out
 
 

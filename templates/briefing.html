@@ -9,37 +9,66 @@
     background: #0a0e1a;
     color: #e6e8ee;
     width: 1080px;
-    padding: 48px 48px 36px;
+    padding: 40px 44px 32px;
   }
   header {
     border-bottom: 2px solid rgba(244,204,107,0.2);
-    padding-bottom: 24px;
-    margin-bottom: 32px;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
   }
   h1 {
-    font-size: 44px;
+    font-size: 42px;
     font-weight: 800;
     color: #f4cc6b;
     letter-spacing: -0.5px;
     line-height: 1;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .date-line {
-    font-size: 18px;
+    font-size: 17px;
     color: #8a92a3;
     letter-spacing: 0.3px;
   }
-  .section {
-    margin-bottom: 32px;
+
+  .market-snapshot {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
   }
+  .snap-item { text-align: center; padding: 4px 0; }
+  .snap-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .snap-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .snap-change {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .section { margin-bottom: 28px; }
   .section-header {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
-    gap: 12px;
+    margin-bottom: 12px;
+    gap: 10px;
   }
   .section-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: #4ec9d6;
     text-transform: uppercase;
@@ -48,81 +77,80 @@
   .section-count {
     background: rgba(78,201,214,0.15);
     color: #4ec9d6;
-    font-size: 13px;
-    padding: 2px 10px;
+    font-size: 12px;
+    padding: 2px 9px;
     border-radius: 10px;
     font-weight: 600;
   }
-  .events-list { display: flex; flex-direction: column; gap: 10px; }
+  .events-list { display: flex; flex-direction: column; gap: 8px; }
   .event-row {
     background: rgba(255,255,255,0.04);
     border-left: 3px solid #4ec9d6;
     border-radius: 6px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
   }
   .event-row.high-impact {
     background: rgba(244,204,107,0.08);
     border-left-color: #f4cc6b;
   }
   .event-time {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: #f4cc6b;
-    min-width: 64px;
+    min-width: 56px;
     font-variant-numeric: tabular-nums;
   }
   .event-country {
     font-size: 11px;
     font-weight: 700;
     background: rgba(255,255,255,0.08);
-    padding: 4px 10px;
+    padding: 3px 9px;
     border-radius: 4px;
     color: #c8cfdc;
-    min-width: 36px;
+    min-width: 34px;
     text-align: center;
   }
   .event-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #e6e8ee;
     flex: 1;
   }
   .event-data {
-    font-size: 13px;
+    font-size: 12px;
     color: #8a92a3;
     text-align: right;
     font-variant-numeric: tabular-nums;
-    min-width: 130px;
+    min-width: 120px;
   }
-  .event-data .expected { color: #c8cfdc; }
   .event-data .prior { font-size: 11px; }
 
   .earnings-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
   }
   .earnings-row {
     background: rgba(255,255,255,0.04);
     border-radius: 6px;
-    padding: 12px 16px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     border-left: 3px solid #7ed87e;
   }
   .earnings-symbol {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     color: #7ed87e;
-    min-width: 56px;
+    min-width: 52px;
   }
   .earnings-info { flex: 1; min-width: 0; }
   .earnings-company {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #e6e8ee;
     white-space: nowrap;
@@ -130,15 +158,15 @@
     text-overflow: ellipsis;
   }
   .earnings-meta {
-    font-size: 11px;
+    font-size: 10px;
     color: #8a92a3;
     margin-top: 2px;
   }
   .earnings-time {
     background: rgba(126,216,126,0.15);
     color: #7ed87e;
-    font-size: 11px;
-    padding: 3px 8px;
+    font-size: 10px;
+    padding: 3px 7px;
     border-radius: 4px;
     font-weight: 700;
   }
@@ -146,29 +174,68 @@
   .movers-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
   }
   .movers-col-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     margin-bottom: 8px;
     color: #c8cfdc;
   }
   .mover-row {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
+    padding: 9px 12px;
     background: rgba(255,255,255,0.03);
-    border-radius: 4px;
+    border-radius: 5px;
     margin-bottom: 4px;
     font-size: 13px;
   }
-  .mover-up { color: #7ed87e; font-weight: 700; }
-  .mover-down { color: #ff7373; font-weight: 700; }
+  .mover-symbol { font-weight: 700; color: #e6e8ee; min-width: 56px; }
+  .mover-price { color: #8a92a3; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mover-up { color: #7ed87e; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mover-down { color: #ff7373; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .crypto-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    border-top: 3px solid #d4a85e;
+  }
+  .crypto-symbol {
+    font-size: 16px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .crypto-name {
+    font-size: 10px;
+    color: #8a92a3;
+    margin: 2px 0 8px;
+  }
+  .crypto-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 3px;
+  }
+  .crypto-change {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
 
   .key-takeaway {
     margin-top: 16px;
-    padding: 20px 24px;
+    padding: 18px 22px;
     background: linear-gradient(135deg, rgba(244,204,107,0.12) 0%, rgba(232,156,91,0.06) 100%);
     border: 1px solid rgba(244,204,107,0.25);
     border-radius: 10px;
@@ -179,28 +246,22 @@
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
   .takeaway-text {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     color: #f4f5f9;
     line-height: 1.4;
   }
-  .empty-note {
-    color: #6c7588;
-    font-size: 14px;
-    padding: 12px 0;
-    font-style: italic;
-  }
   footer {
-    margin-top: 28px;
-    padding-top: 16px;
+    margin-top: 24px;
+    padding-top: 14px;
     border-top: 1px solid rgba(255,255,255,0.06);
     display: flex;
     justify-content: space-between;
     color: #6c7588;
-    font-size: 12px;
+    font-size: 11px;
   }
 </style>
 </head>
@@ -210,6 +271,18 @@
   <h1>DIENOS BRIEFING</h1>
   <div class="date-line">{{ date_long }} · daug_pinigu daily</div>
 </header>
+
+{% if indices %}
+<div class="market-snapshot">
+  {% for i in indices %}
+  <div class="snap-item">
+    <div class="snap-label">{{ i.name }}</div>
+    <div class="snap-price">{% if i.price >= 1000 %}{{ "{:,.0f}".format(i.price) }}{% else %}{{ "%.2f"|format(i.price) }}{% endif %}</div>
+    <div class="snap-change" style="color: {% if i.change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ "%+.2f"|format(i.change_pct) }}%</div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
 
 {% if macro_events %}
 <section class="section">
@@ -224,7 +297,7 @@
       <div class="event-country">{{ e.country }}</div>
       <div class="event-name">{{ e.name }}</div>
       <div class="event-data">
-        {% if e.expected %}<div class="expected">Exp: {{ e.expected }}</div>{% endif %}
+        {% if e.expected %}<div>Exp: {{ e.expected }}</div>{% endif %}
         {% if e.prior %}<div class="prior">Prior: {{ e.prior }}</div>{% endif %}
       </div>
     </div>
@@ -244,10 +317,8 @@
     <div class="earnings-row">
       <div class="earnings-symbol">{{ e.symbol }}</div>
       <div class="earnings-info">
-        <div class="earnings-company">{{ e.company[:28] }}</div>
-        <div class="earnings-meta">
-          {% if e.eps_est %}EPS est: {{ e.eps_est }} · {% endif %}{{ e.market_cap }}
-        </div>
+        <div class="earnings-company">{{ e.company[:26] }}</div>
+        <div class="earnings-meta">{% if e.eps_est %}EPS est: {{ e.eps_est }} · {% endif %}{{ e.market_cap }}</div>
       </div>
       <div class="earnings-time">{{ e.call_time }}</div>
     </div>
@@ -256,30 +327,48 @@
 </section>
 {% endif %}
 
-{% if movers.gainers or movers.losers %}
+{% if watchlist.gainers or watchlist.losers %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title">Market Movers</div>
+    <div class="section-title">Tavo Watchlist - Top Movers</div>
   </div>
   <div class="movers-grid">
     <div>
-      <div class="movers-col-title">📈 Top Gainers</div>
-      {% for m in movers.gainers %}
+      <div class="movers-col-title">📈 Gainers</div>
+      {% for m in watchlist.gainers %}
       <div class="mover-row">
-        <span>{{ m.symbol }} <span style="color:#8a92a3;font-size:11px">${{ m.price }}</span></span>
-        <span class="mover-up">+{{ m.change }}</span>
+        <span><span class="mover-symbol">{{ m.symbol }}</span> <span class="mover-price">${{ "%.2f"|format(m.price) }}</span></span>
+        <span class="mover-up">{{ "%+.2f"|format(m.change_pct) }}%</span>
       </div>
       {% endfor %}
     </div>
     <div>
-      <div class="movers-col-title">📉 Top Losers</div>
-      {% for m in movers.losers %}
+      <div class="movers-col-title">📉 Losers</div>
+      {% for m in watchlist.losers %}
       <div class="mover-row">
-        <span>{{ m.symbol }} <span style="color:#8a92a3;font-size:11px">${{ m.price }}</span></span>
-        <span class="mover-down">{{ m.change }}</span>
+        <span><span class="mover-symbol">{{ m.symbol }}</span> <span class="mover-price">${{ "%.2f"|format(m.price) }}</span></span>
+        <span class="mover-down">{{ "%+.2f"|format(m.change_pct) }}%</span>
       </div>
       {% endfor %}
     </div>
+  </div>
+</section>
+{% endif %}
+
+{% if crypto %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Crypto · 24h</div>
+  </div>
+  <div class="crypto-grid">
+    {% for c in crypto %}
+    <div class="crypto-card">
+      <div class="crypto-symbol">{{ c.symbol }}</div>
+      <div class="crypto-name">{{ c.name }}</div>
+      <div class="crypto-price">{% if c.price >= 1000 %}${{ "{:,.0f}".format(c.price) }}{% else %}${{ "%.2f"|format(c.price) }}{% endif %}</div>
+      <div class="crypto-change" style="color: {% if c.change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ "%+.2f"|format(c.change_pct) }}%</div>
+    </div>
+    {% endfor %}
   </div>
 </section>
 {% endif %}
@@ -292,7 +381,7 @@
 {% endif %}
 
 <footer>
-  <span>Šaltiniai: Yahoo Finance · Finviz</span>
+  <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
   <span>{{ generated_at }} (Vilnius)</span>
 </footer>
 
