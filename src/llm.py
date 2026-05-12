@@ -381,6 +381,47 @@ Tavo izvalga:"""
         return ''
 
 
+def analyze_macro_event(event: dict, model: str = DEFAULT_MODEL) -> str:
+    """Generate 2-3 sentence Lithuanian commentary for a macro event.
+
+    Focus on what the actual vs estimate means for Fed policy, rates, sectors.
+    Only called for high-impact US events with actual values.
+    """
+    client = _get_client()
+    if not client:
+        return ''
+    name = event.get('name', '')
+    actual = event.get('actual', '')
+    estimate = event.get('estimate', '')
+    previous = event.get('previous', '')
+    country = event.get('country', '')
+    if not actual or not name:
+        return ''
+
+    data_line = f"{name} ({country}): aktualus {actual}"
+    if estimate:
+        data_line += f", lūkestis {estimate}"
+    if previous:
+        data_line += f", praeitas {previous}"
+
+    prompt = f"""{STYLE_GUIDE}
+
+UŽDUOTIS: Trumpa makro komentarui 2-3 sakiniai apie šį ekonominį duomenį. KĄ TAI REIŠKIA investuotojui? Fed politikos signalas, palūkanų kreivė, sektorinis poveikis. Konkretu, ne abstraktu.
+
+DUOMUO:
+{data_line}
+
+Tavo komentaras:"""
+
+    try:
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=250)
+        text = resp.content[0].text.strip() if resp.content else ''
+        return _cleanup_text(text)
+    except Exception as e:
+        print(f"  warn: LLM analyze_macro failed: {e}")
+        return ''
+
+
 def analyze_reddit_thread(title: str, top_comments: list,
                           model: str = DEFAULT_MODEL) -> str:
     """Summarize a Reddit thread - sentiment, key arguments, what bears/bulls say."""

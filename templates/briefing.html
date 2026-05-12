@@ -167,6 +167,24 @@
     border-top: 1px dashed rgba(255,255,255,0.06);
     line-height: 1.4;
   }
+  .event-analysis {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(244,204,107,0.06);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.55;
+  }
+  .event-analysis::before {
+    content: 'Ką tai reiškia · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
 
   .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
   .earnings-card {
@@ -564,6 +582,22 @@
     align-items: center;
     gap: 12px;
   }
+  .insider-row.recent-week {
+    border-left: 3px solid #f4cc6b;
+    background: rgba(244,204,107,0.06);
+  }
+  .insider-fresh {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    margin-left: 6px;
+    border-radius: 3px;
+    background: rgba(244,204,107,0.2);
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    vertical-align: middle;
+  }
   .insider-row.watchlist-hit {
     background: linear-gradient(90deg, rgba(244,204,107,0.12) 0%, rgba(126,216,126,0.04) 100%);
     border-left: 3px solid #f4cc6b;
@@ -884,6 +918,9 @@
       {% if e.description %}
       <div class="event-desc">{{ e.description }}</div>
       {% endif %}
+      {% if e.llm_analysis %}
+      <div class="event-analysis">{{ e.llm_analysis }}</div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
@@ -1045,10 +1082,10 @@
   </div>
   <div class="insider-list">
     {% for x in insider %}
-    <div class="insider-row watchlist-hit">
+    <div class="insider-row watchlist-hit{% if x.recent_week %} recent-week{% endif %}">
       <div class="insider-ticker">{{ x.ticker }}</div>
       <div class="insider-info">
-        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
+        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
         <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} buys · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
       </div>
       <div class="insider-value">{{ x.value_str }}</div>

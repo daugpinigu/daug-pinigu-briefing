@@ -12,12 +12,12 @@ from fetch import (
     fetch_insider_purchases, fetch_reddit_discussions,
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
-    fetch_earnings_transcript,
+    fetch_earnings_transcript, fetch_watchlist_catalysts,
 )
 from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
     extract_earnings_details, analyze_earnings_card,
-    analyze_reddit_thread,
+    analyze_reddit_thread, analyze_macro_event,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -192,7 +192,7 @@ def main():
     print(f"    -> {len(insider)} watchlist insider buys")
 
     print("  Fetching market news (quality filtered)...")
-    market_news = _safe('market news', lambda: fetch_market_news(max_total=5), [])
+    market_news = _safe('market news', lambda: fetch_market_news(max_total=6), [])
     print(f"    -> {len(market_news)} market headlines")
 
     print("  Fetching mover catalysts...")
@@ -203,11 +203,20 @@ def main():
                        [])
     print(f"    -> {len(mover_news)} mover catalysts (from {len(big_movers)} big movers)")
 
-    news = mover_news + [n for n in market_news if not any(
-        n['title'].lower()[:50] == m['title'].lower()[:50] for m in mover_news
+    print("  Fetching watchlist catalysts (M&A, FDA, lawsuits, buybacks across all 50 tickers)...")
+    wl_catalysts = _safe('watchlist catalysts',
+                         lambda: fetch_watchlist_catalysts(STOCKS, max_total=12, hours_window=48),
+                         [])
+    print(f"    -> {len(wl_catalysts)} watchlist catalyst items")
+
+    # Merge: watchlist catalysts > mover catalysts > market news.
+    # Watchlist catalysts surface M&A/FDA on specific tickers regardless of price move.
+    news = wl_catalysts + mover_news + [n for n in market_news if not any(
+        n['title'].lower()[:50] == m['title'].lower()[:50]
+        for m in (wl_catalysts + mover_news)
     )]
     news = _dedup_news_by_ticker(news, STOCKS)
-    news = news[:6]
+    news = news[:12]
 
     print("  Enriching news with article summaries...")
     news = _safe('enrich news', lambda: enrich_news_with_summaries(news), news)
@@ -253,6 +262,20 @@ def main():
                                        ), '')
                 e['extracted_metrics'] = _earnings_extracted_to_metrics(e.get('extracted', {}))
             print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis'))} cards enriched")
+
+        # LLM commentary for high-impact US/EZ macro events with actual values.
+        # Gives the "what does this CPI/Fed/NFP mean for me" perspective.
+        high_impact_with_actual = [e for e in macro
+                                    if e.get('high_impact')
+                                    and e.get('actual')
+                                    and e.get('country') in ('US', 'EZ')]
+        if high_impact_with_actual:
+            print(f"  LLM commenting on {len(high_impact_with_actual)} high-impact macro events...")
+            for e in high_impact_with_actual[:4]:
+                e['llm_analysis'] = _safe(f"macro LLM {e.get('name','')}",
+                                            lambda ev=e: analyze_macro_event(ev), '')
+            commented = sum(1 for e in high_impact_with_actual if e.get('llm_analysis'))
+            print(f"    -> {commented}/{len(high_impact_with_actual[:4])} events with commentary")
 
         if reddit_posts:
             print("  LLM analyzing Reddit threads (top comments → sentiment summary)...")

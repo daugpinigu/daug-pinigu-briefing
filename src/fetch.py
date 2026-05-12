@@ -969,6 +969,160 @@ def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
     return deduped[:max_total]
 
 
+# Brand names for tickers — used to also match natural-language references.
+# Required because tickers like SHOP/SOFI may not be written in ALL CAPS.
+TICKER_BRANDS = {
+    'TSLA': 'Tesla', 'NVDA': 'NVIDIA', 'AAPL': 'Apple', 'MSFT': 'Microsoft',
+    'GOOGL': 'Google', 'META': 'Meta', 'AMZN': 'Amazon', 'NFLX': 'Netflix',
+    'AMD': 'AMD', 'AVGO': 'Broadcom', 'ASML': 'ASML', 'ADBE': 'Adobe',
+    'UNH': 'UnitedHealth', 'BABA': 'Alibaba', 'BIDU': 'Baidu',
+    'SOFI': 'SoFi', 'HIMS': 'Hims', 'PYPL': 'PayPal', 'SHOP': 'Shopify',
+    'PLTR': 'Palantir', 'HOOD': 'Robinhood', 'RDDT': 'Reddit', 'ZM': 'Zoom',
+    'GME': 'GameStop', 'MSTR': 'Strategy', 'NVO': 'Novo Nordisk', 'DUOL': 'Duolingo',
+    'CRWV': 'CoreWeave', 'NBIS': 'Nebius', 'RKLB': 'Rocket Lab', 'IREN': 'IREN',
+    'ENPH': 'Enphase', 'RIOT': 'Riot Platforms', 'BMNR': 'BitMine',
+    'FIG': 'Figma', 'ZETA': 'Zeta Global', 'CLSK': 'CleanSpark',
+    'PATH': 'UiPath', 'GRAB': 'Grab', 'SNDK': 'SanDisk', 'MU': 'Micron',
+    'ENS': 'EnerSys', 'BE': 'Bloom Energy',
+}
+
+
+CATALYST_KEYWORDS = re.compile(
+    r'\b('
+    r'acquires?|acquisition|acquired|takeover|merg(?:er|es?|ing)|buyout|'
+    r'partner(?:s?|ship)|joint\s+venture|'
+    r'FDA\s+(?:approval|approves?|rejection|rejects?|decision|clearance)|'
+    r'clinical\s+trial|phase\s+(?:2|3|III|II)|'
+    r'lawsuit|settles?|settlement|fine|penalty|'
+    r'guidance\s+(?:raise|raises?|raised|cut|cuts?|lowered|withdraws?|withdrawn)|'
+    r'raises?\s+(?:guidance|outlook|FY)|cuts?\s+(?:guidance|outlook)|'
+    r'buyback|repurchase|dividend\s+(?:increase|hike|cut)|'
+    r'stock\s+split|spin[- ]off|IPO\s+filing|'
+    r'CEO\s+(?:steps?\s+down|resigns?|fired|named|appointed)|'
+    r'CFO\s+(?:steps?\s+down|resigns?|fired|named|appointed)|'
+    r'(?:layoffs?|cuts?\s+jobs?|workforce\s+reduction)|'
+    r'(?:upgrade|downgrade)d?\s+(?:to|from|by)|price\s+target\s+(?:raised|cut|lowered)|'
+    r'shares?\s+(?:surge|plunge|tumble|rally|crash)|'
+    r'(?:bought|purchased|sold|adds?)\s+\d[\d,]*\s+shares?|'
+    r'capital\s+raise|secondary\s+offering|debt\s+offering|'
+    r'(?:beat|miss)es?\s+(?:Q\d|earnings|estimates?|revenue)|'
+    r'restructur(?:ing|es?)|'
+    r'investigation|probe|subpoena'
+    r')\b',
+    re.I,
+)
+
+
+def fetch_watchlist_catalysts(watchlist: list, max_total: int = 10,
+                              hours_window: int = 36) -> list:
+    """Search Google News for catalyst stories on each watchlist ticker.
+
+    Uses Google News RSS (free, no auth) to find M&A, FDA, lawsuits, guidance,
+    insider, partnerships across the entire watchlist - not just big movers.
+    Filters by catalyst keywords in title, scores by recency + publisher quality.
+    """
+    import concurrent.futures
+    from datetime import datetime as dt, timezone, timedelta
+    from email.utils import parsedate_to_datetime as _parsedate
+
+    if not watchlist:
+        return []
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
+    hdrs = {'User-Agent': 'Mozilla/5.0'}
+
+    # Convert hours window to days for the Google News query.
+    days_q = max(1, hours_window // 24 + 1)
+
+    def fetch_one(ticker):
+        url = (f"https://news.google.com/rss/search?q={ticker}+"
+               f"when:{days_q}d&hl=en-US&gl=US&ceid=US:en")
+        try:
+            r = requests.get(url, headers=hdrs, timeout=10)
+            r.raise_for_status()
+            txt = r.text
+        except Exception:
+            return []
+        items = re.findall(r'<item>(.*?)</item>', txt, re.DOTALL)
+        out = []
+        for it in items[:8]:
+            tmatch = re.search(r'<title><!\[CDATA\[(.+?)\]\]></title>|<title>(.+?)</title>', it)
+            pmatch = re.search(r'<pubDate>(.+?)</pubDate>', it)
+            lmatch = re.search(r'<link>(.+?)</link>', it)
+            smatch = re.search(r'<source[^>]*>(.+?)</source>', it)
+            if not tmatch or not pmatch:
+                continue
+            title = (tmatch.group(1) or tmatch.group(2) or '').strip()
+            # Strip " - Source" suffix from title
+            title = re.sub(r'\s+-\s+[^-]+$', '', title).strip()
+            try:
+                pub_dt = _parsedate(pmatch.group(1))
+            except Exception:
+                continue
+            if not pub_dt or pub_dt < cutoff:
+                continue
+            # Strict ticker match — uppercase, $-prefixed, parens, or known brand.
+            # Avoids "Yogurt SHOP" false positives while still catching "SoFi Acquires".
+            ticker_matched = (
+                re.search(rf'\${re.escape(ticker)}\b', title) or
+                re.search(rf'\b{re.escape(ticker)}\b(?![a-z])', title) or
+                re.search(rf'\({re.escape(ticker)}\)', title) or
+                re.search(rf'\b{re.escape(ticker)}:', title)
+            )
+            brand = TICKER_BRANDS.get(ticker)
+            if not ticker_matched and brand:
+                ticker_matched = re.search(rf'\b{re.escape(brand)}\b', title, re.I)
+            if not ticker_matched:
+                continue
+            if not CATALYST_KEYWORDS.search(title):
+                continue
+            publisher = (smatch.group(1) if smatch else '').strip()
+            if publisher.lower() in NEWS_BLOCKED_PUBLISHERS:
+                continue
+            link = lmatch.group(1).strip() if lmatch else ''
+            out.append({
+                'ticker': ticker,
+                'title': title,
+                'link': link,
+                'publisher': publisher,
+                'pub_dt': pub_dt,
+            })
+        return out
+
+    all_hits = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+        for items in ex.map(fetch_one, watchlist):
+            all_hits.extend(items)
+
+    # Score: recency + publisher quality + catalyst strength
+    def score(n):
+        s = 0
+        pub_l = n['publisher'].lower()
+        if pub_l in NEWS_GOOD_PUBLISHERS_BOOST:
+            s += 5
+        # Recency: newer = better
+        age_h = (dt.now(timezone.utc) - n['pub_dt']).total_seconds() / 3600
+        s += max(0, 24 - age_h) / 4  # up to +6 for fresh news
+        title_l = n['title'].lower()
+        # Strong catalyst keywords
+        for strong in ('acquires', 'acquisition', 'fda approv', 'merger',
+                       'buyback', 'lawsuit settles', 'guidance raise'):
+            if strong in title_l:
+                s += 3
+        return s
+
+    all_hits.sort(key=score, reverse=True)
+    # Dedup by title prefix (same story from multiple sources)
+    seen = set()
+    deduped = []
+    for n in all_hits:
+        key = re.sub(r'\W+', '', n['title'].lower())[:50]
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(n)
+    return deduped[:max_total]
+
+
 def fetch_earnings_transcript(ticker: str, max_chars: int = 5000) -> str:
     """Find most recent Motley Fool earnings call transcript for ticker.
 
@@ -1381,9 +1535,20 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             # Reformat aggregated value
             g['value_str'] = _fmt_money(g['value'])
 
+    # Flag aggregations where the latest buy is within past 7 days — these
+    # are "this week" signals worth surfacing prominently.
+    from datetime import datetime as _dt, timedelta as _td
+    week_cutoff = _dt.now() - _td(days=7)
+    for g in grouped.values():
+        try:
+            latest = _dt.strptime(g['trade_date'], '%Y-%m-%d')
+            g['recent_week'] = latest >= week_cutoff
+        except ValueError:
+            g['recent_week'] = False
+
     aggregated = list(grouped.values())
-    # Sort: by total value DESC (biggest signals first)
-    aggregated.sort(key=lambda x: x['value'], reverse=True)
+    # Sort: this-week buys first, then by total value DESC.
+    aggregated.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
     return aggregated[:max_results]
 
 
