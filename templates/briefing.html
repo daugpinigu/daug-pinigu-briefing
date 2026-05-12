@@ -203,6 +203,16 @@
     color: #8a92a3;
     font-variant-numeric: tabular-nums;
   }
+  .ec-transcript-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
   .ec-numbers {
     display: flex;
     align-items: end;
@@ -238,6 +248,38 @@
     border-radius: 6px;
     padding: 10px 14px;
     margin-bottom: 10px;
+  }
+  .ec-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(126,216,126,0.12);
+  }
+  .ec-mc { text-align: center; padding: 4px; }
+  .ec-mc-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .ec-mc-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .ec-mc-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
   }
   .ec-row {
     font-size: 13px;
@@ -649,6 +691,21 @@
     text-decoration: none;
   }
   .news-link:hover { text-decoration: underline; }
+  .news-extra-links {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .news-extra-link {
+    font-size: 11.5px;
+    color: #8fb3d4;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .news-extra-link:hover { color: #f4cc6b; text-decoration: underline; }
 
   .reddit-list { display: flex; flex-direction: column; gap: 8px; }
   .reddit-row {
@@ -682,6 +739,26 @@
     color: #6c7588;
     margin-top: 4px;
     font-variant-numeric: tabular-nums;
+  }
+  .reddit-title a { color: #e6e8ee; text-decoration: none; }
+  .reddit-title a:hover { color: #ff8a4c; }
+  .reddit-analysis {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(255,138,76,0.06);
+    border-left: 2px solid #ff8a4c;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #d8dde8;
+    line-height: 1.5;
+  }
+  .reddit-analysis::before {
+    content: 'Sum up · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #ff8a4c;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
   }
 
   .key-takeaway {
@@ -804,6 +881,7 @@
         <div class="ec-verdict {% if e.beat %}beat{% else %}miss{% endif %}">
           {% if e.beat %}BEAT{% else %}MISS{% endif %}
         </div>
+        {% if e.has_transcript %}<div class="ec-transcript-badge">Transcript</div>{% endif %}
         <div class="ec-date">{{ e.date.strftime('%m-%d %H:%M') }}</div>
       </div>
       <div class="ec-numbers">
@@ -823,24 +901,19 @@
         </div>
         {% endif %}
       </div>
-      {% if e.extracted %}
-      <div class="ec-extracted">
-        {% if e.extracted.revenue_actual %}
-        <div class="ec-row"><span class="ec-row-label">Revenue:</span> <span class="ec-row-val">{{ e.extracted.revenue_actual }}{% if e.extracted.revenue_estimate %} <span class="ec-vs-inline">vs est {{ e.extracted.revenue_estimate }}</span>{% endif %}{% if e.extracted.revenue_yoy_change %} <span class="ec-yoy">({{ e.extracted.revenue_yoy_change }} YoY)</span>{% endif %}</span></div>
-        {% endif %}
-        {% if e.extracted.guidance_next_q_rev %}
-        <div class="ec-row"><span class="ec-row-label">Next Q guide:</span> <span class="ec-row-val">{{ e.extracted.guidance_next_q_rev }}</span></div>
-        {% endif %}
-        {% if e.extracted.guidance_fy_rev %}
-        <div class="ec-row"><span class="ec-row-label">FY guide:</span> <span class="ec-row-val">{{ e.extracted.guidance_fy_rev }}{% if e.extracted.guidance_ebitda_fy %} · EBITDA {{ e.extracted.guidance_ebitda_fy }}{% endif %}</span></div>
-        {% endif %}
-        {% if e.extracted.stock_reaction %}
-        <div class="ec-row"><span class="ec-row-label">Stock reaction:</span> <span class="ec-row-val">{{ e.extracted.stock_reaction }}</span></div>
-        {% endif %}
-        {% if e.extracted.key_quote %}
-        <div class="ec-quote">"{{ e.extracted.key_quote }}"</div>
-        {% endif %}
+      {% if e.extracted_metrics %}
+      <div class="ec-metrics-grid">
+        {% for m in e.extracted_metrics %}
+        <div class="ec-mc">
+          <div class="ec-mc-label">{{ m.label }}</div>
+          <div class="ec-mc-value">{{ m.value }}</div>
+          {% if m.note %}<div class="ec-mc-note">{{ m.note }}</div>{% endif %}
+        </div>
+        {% endfor %}
       </div>
+      {% endif %}
+      {% if e.extracted and e.extracted.key_quote %}
+      <div class="ec-quote">"{{ e.extracted.key_quote }}"</div>
       {% endif %}
       {% if e.analysis %}
       <div class="ec-analysis">{{ e.analysis }}</div>
@@ -946,7 +1019,7 @@
       <div class="insider-ticker">{{ x.ticker }}</div>
       <div class="insider-info">
         <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
-        <div class="insider-meta">{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}</div>
+        <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} buys · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
       </div>
       <div class="insider-value">{{ x.value_str }}</div>
     </div>
@@ -982,6 +1055,13 @@
         <div class="news-analysis">{{ n.llm_analysis }}</div>
         {% endif %}
         <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}{% if n.link %} · <a href="{{ n.link }}" target="_blank" class="news-link">visas straipsnis</a>{% endif %}</div>
+        {% if n.extra_links %}
+        <div class="news-extra-links">
+          {% for el in n.extra_links %}
+          <a href="{{ el.link }}" target="_blank" class="news-extra-link">+ {{ el.publisher }}: {{ el.title[:80] }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
@@ -1000,8 +1080,11 @@
     <div class="reddit-row">
       <div class="reddit-sub">r/{{ p.sub }}</div>
       <div class="reddit-content">
-        <div class="reddit-title">{{ p.title[:140] }}</div>
+        <div class="reddit-title">{% if p.link %}<a href="{{ p.link }}" target="_blank">{{ p.title[:140] }}</a>{% else %}{{ p.title[:140] }}{% endif %}</div>
         <div class="reddit-meta">▲ {{ p.score }} · {{ p.num_comments }} comments{% if p.pub_dt %} · {{ p.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
+        {% if p.llm_analysis %}
+        <div class="reddit-analysis">{{ p.llm_analysis }}</div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}

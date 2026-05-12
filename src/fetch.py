@@ -912,6 +912,92 @@ def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
     return deduped[:max_total]
 
 
+def fetch_earnings_transcript(ticker: str, max_chars: int = 5000) -> str:
+    """Find most recent Motley Fool earnings call transcript for ticker.
+
+    Motley Fool transcripts are publicly accessible (unlike SeekingAlpha which
+    blocks scrapers) and have structured TAKEAWAYS + management quotes.
+    Returns body text or '' if not found.
+    """
+    if not ticker:
+        return ''
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
+                      '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    }
+    # Fool quote pages list per-ticker historical transcripts. Try nasdaq first, then nyse.
+    quote_html = ''
+    for exch in ('nasdaq', 'nyse'):
+        try:
+            r = requests.get(f'https://www.fool.com/quote/{exch}/{ticker.lower()}/',
+                              headers=headers, timeout=12, allow_redirects=True)
+            if r.status_code == 200:
+                quote_html = r.text
+                break
+        except Exception:
+            continue
+    if not quote_html:
+        return ''
+
+    pattern = re.compile(
+        rf'(/earnings/call-transcripts/\d{{4}}/\d{{2}}/\d{{2}}/[^"\\]*-{ticker.lower()}-q\d-\d{{4}}-earnings[^"\\]*)',
+        re.I,
+    )
+    matches = pattern.findall(quote_html)
+    if not matches:
+        return ''
+    # Most recent transcript URL is typically first on the page
+    transcript_path = matches[0].rstrip('/') + '/'
+    url = 'https://www.fool.com' + transcript_path
+    try:
+        r2 = requests.get(url, headers=headers, timeout=15)
+        r2.raise_for_status()
+    except Exception:
+        return ''
+
+    soup = BeautifulSoup(r2.text, 'lxml')
+    body = soup.select_one('div.article-body')
+    if not body:
+        return ''
+    text = body.get_text(' ', strip=True)
+    return text[:max_chars]
+
+
+def fetch_reddit_comments(permalink_url: str, top_n: int = 8) -> list:
+    """Fetch top comments for a Reddit thread. Returns list of comment bodies.
+
+    permalink_url is the full link like https://reddit.com/r/stocks/comments/xxx/...
+    Reddit's JSON API: just append .json to any permalink.
+    """
+    if not permalink_url:
+        return []
+    url = permalink_url.rstrip('/') + '.json?limit=' + str(top_n * 2)
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=12)
+        r.raise_for_status()
+        data = r.json()
+    except Exception:
+        return []
+    if not isinstance(data, list) or len(data) < 2:
+        return []
+    comments_data = data[1].get('data', {}).get('children', [])
+    out = []
+    for c in comments_data:
+        if c.get('kind') != 't1':
+            continue
+        cd = c.get('data', {})
+        body = cd.get('body', '').strip()
+        score = cd.get('score', 0)
+        if not body or body == '[deleted]' or body == '[removed]':
+            continue
+        if score < 5:
+            continue
+        out.append(body[:500])
+        if len(out) >= top_n:
+            break
+    return out
+
+
 def fetch_x_fintwit(accounts: list = None, per_account: int = 3,
                     max_total: int = 8, hours_window: int = 24) -> list:
     """Fetch tweets from public X syndication API (no auth needed).
@@ -1178,12 +1264,12 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
 
 
 def fetch_insider_purchases(watchlist: list, days: int = 365,
-                            min_value: float = 10_000, max_results: int = 8) -> list:
+                            min_value: float = 10_000, max_results: int = 15) -> list:
     """Fetch C-suite insider PURCHASES for each watchlist ticker (parallel).
 
-    Per-ticker OpenInsider queries to capture all transactions, regardless of
-    how the bulk page truncates by date. Returns most recent purchases (any date
-    within window).
+    Aggregates repeat buys by same insider+ticker into one entry to surface
+    distinct signals (instead of letting one CEO's weekly buys fill all slots).
+    Sorts by total value, then recency.
     """
     import concurrent.futures
     watchlist_set = set(watchlist or [])
@@ -1200,8 +1286,51 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             except Exception:
                 continue
 
-    all_hits.sort(key=lambda x: x['trade_date'], reverse=True)
-    return all_hits[:max_results]
+    # Aggregate by (ticker, insider) — same person buying repeatedly = 1 entry
+    grouped = {}
+    for h in all_hits:
+        key = (h['ticker'], h['insider'])
+        if key not in grouped:
+            grouped[key] = {
+                'ticker': h['ticker'],
+                'insider': h['insider'],
+                'title': h['title'],
+                'price': h['price'],
+                'qty': h['qty'],
+                'value': h['value'],
+                'value_str': h['value_str'],
+                'trade_date': h['trade_date'],
+                'filing_date': h['filing_date'],
+                'buys_count': 1,
+            }
+        else:
+            g = grouped[key]
+            g['value'] += h['value']
+            g['buys_count'] += 1
+            # Keep most recent trade_date
+            if h['trade_date'] > g['trade_date']:
+                g['trade_date'] = h['trade_date']
+                g['filing_date'] = h['filing_date']
+                g['price'] = h['price']
+                g['qty'] = h['qty']
+            # Reformat aggregated value
+            g['value_str'] = _fmt_money(g['value'])
+
+    aggregated = list(grouped.values())
+    # Sort: by total value DESC (biggest signals first)
+    aggregated.sort(key=lambda x: x['value'], reverse=True)
+    return aggregated[:max_results]
+
+
+def _fmt_money(v: float) -> str:
+    """Format float to '+$X' / '+$X.XM' / '+$X.XB'."""
+    if v >= 1_000_000_000:
+        return f"+${v/1_000_000_000:.2f}B"
+    if v >= 1_000_000:
+        return f"+${v/1_000_000:.2f}M"
+    if v >= 1_000:
+        return f"+${v/1_000:.0f}K"
+    return f"+${v:.0f}"
 
 
 def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4) -> list:

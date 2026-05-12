@@ -11,11 +11,13 @@ from fetch import (
     fetch_market_news, fetch_mover_catalysts, fetch_quotes,
     fetch_insider_purchases, fetch_reddit_discussions,
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
-    fetch_article_summary,
+    fetch_article_summary, fetch_reddit_comments,
+    fetch_earnings_transcript,
 )
 from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
     extract_earnings_details, analyze_earnings_card,
+    analyze_reddit_thread,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -62,6 +64,71 @@ def _safe(label, fn, fallback):
     except Exception as e:
         print(f"  warn: {label} failed ({type(e).__name__}: {str(e)[:80]})")
         return fallback
+
+
+def _detect_ticker(title: str, watchlist: list) -> str:
+    """Scan title for any watchlist ticker. Returns first match or empty."""
+    import re as _re
+    if not title:
+        return ''
+    # Match TICKER as whole word, optionally with $ prefix (e.g. $HIMS or HIMS)
+    upper = title.upper()
+    for sym in watchlist:
+        if _re.search(rf'(?<![A-Z])\$?{_re.escape(sym)}(?![A-Z])', upper):
+            return sym
+    return ''
+
+
+def _earnings_extracted_to_metrics(extracted: dict) -> list:
+    """Convert earnings extracted dict to metrics-grid cells (label/value/note)."""
+    metrics = []
+    if extracted.get('revenue_actual'):
+        notes = []
+        if extracted.get('revenue_estimate'):
+            notes.append(f"vs est {extracted['revenue_estimate']}")
+        if extracted.get('revenue_yoy_change'):
+            notes.append(f"{extracted['revenue_yoy_change']} YoY")
+        cell = {'label': 'Revenue', 'value': extracted['revenue_actual']}
+        if notes:
+            cell['note'] = ' · '.join(notes)
+        metrics.append(cell)
+    if extracted.get('guidance_next_q_rev'):
+        metrics.append({'label': 'Next Q guide', 'value': extracted['guidance_next_q_rev']})
+    if extracted.get('guidance_fy_rev'):
+        cell = {'label': 'FY guide', 'value': extracted['guidance_fy_rev']}
+        if extracted.get('guidance_ebitda_fy'):
+            cell['note'] = f"EBITDA {extracted['guidance_ebitda_fy']}"
+        metrics.append(cell)
+    elif extracted.get('guidance_ebitda_fy'):
+        metrics.append({'label': 'FY EBITDA', 'value': extracted['guidance_ebitda_fy']})
+    if extracted.get('stock_reaction'):
+        metrics.append({'label': 'Reakcija', 'value': extracted['stock_reaction']})
+    return metrics
+
+
+def _dedup_news_by_ticker(news_items: list, watchlist: list) -> list:
+    """Merge news with same ticker into one entry; extra articles become extra_links.
+
+    First item per ticker is kept (highest score in list order). Others contribute
+    link + publisher into 'extra_links'. Items without a detected ticker pass through.
+    """
+    by_ticker = {}
+    out = []
+    for n in news_items:
+        tk = (n.get('ticker') or '').upper() or _detect_ticker(n.get('title', ''), watchlist)
+        if tk:
+            n['ticker'] = tk
+            if tk in by_ticker:
+                primary = by_ticker[tk]
+                primary.setdefault('extra_links', []).append({
+                    'title': n.get('title', '')[:120],
+                    'link': n.get('link', ''),
+                    'publisher': n.get('publisher', ''),
+                })
+                continue
+            by_ticker[tk] = n
+        out.append(n)
+    return out
 
 
 def main():
@@ -118,9 +185,9 @@ def main():
     reddit_posts = _safe('Reddit', lambda: fetch_reddit_discussions(max_total=6, min_score=100), [])
     print(f"    -> {len(reddit_posts)} posts")
 
-    print("  Fetching insider purchases (watchlist only, latest 8)...")
+    print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
-                    lambda: fetch_insider_purchases(STOCKS, days=365, min_value=10_000, max_results=8),
+                    lambda: fetch_insider_purchases(STOCKS, days=365, min_value=10_000, max_results=15),
                     [])
     print(f"    -> {len(insider)} watchlist insider buys")
 
@@ -139,6 +206,7 @@ def main():
     news = mover_news + [n for n in market_news if not any(
         n['title'].lower()[:50] == m['title'].lower()[:50] for m in mover_news
     )]
+    news = _dedup_news_by_ticker(news, STOCKS)
     news = news[:6]
 
     print("  Enriching news with article summaries...")
@@ -154,17 +222,24 @@ def main():
         print(f"    -> {len(news)} news kept (with LLM analysis)")
 
         if wl_earnings['recent']:
-            print("  LLM enriching recent earnings (guidance + analysis)...")
+            print("  LLM enriching recent earnings (transcript + guidance + analysis)...")
             for e in wl_earnings['recent']:
-                related_news = next(
-                    (n for n in news if e['symbol'].upper() in (n.get('title', '').upper() + ' ' + n.get('ticker', '').upper())),
-                    None,
-                )
-                article_body = ''
-                if related_news and related_news.get('summary'):
-                    article_body = related_news['summary']
-                elif related_news and related_news.get('link'):
-                    article_body = _safe('article body', lambda: fetch_article_summary(related_news['link'], max_chars=2000), '')
+                # Prefer Motley Fool transcript (rich management quotes + TAKEAWAYS).
+                # Fall back to related news article body if transcript not available.
+                transcript = _safe(f"transcript {e['symbol']}",
+                                    lambda sym=e['symbol']: fetch_earnings_transcript(sym, max_chars=5000),
+                                    '')
+                article_body = transcript
+                if not article_body:
+                    related_news = next(
+                        (n for n in news if e['symbol'].upper() in (n.get('title', '').upper() + ' ' + n.get('ticker', '').upper())),
+                        None,
+                    )
+                    if related_news and related_news.get('summary'):
+                        article_body = related_news['summary']
+                    elif related_news and related_news.get('link'):
+                        article_body = _safe('article body', lambda: fetch_article_summary(related_news['link'], max_chars=2000), '')
+                e['has_transcript'] = bool(transcript)
                 if article_body:
                     e['extracted'] = _safe(f"extract {e['symbol']}",
                                             lambda body=article_body: extract_earnings_details(e['symbol'], body),
@@ -176,7 +251,23 @@ def main():
                                            e['symbol'], e['eps_actual'], e['eps_estimate'],
                                            e.get('extracted', {})
                                        ), '')
+                e['extracted_metrics'] = _earnings_extracted_to_metrics(e.get('extracted', {}))
             print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis'))} cards enriched")
+
+        if reddit_posts:
+            print("  LLM analyzing Reddit threads (top comments → sentiment summary)...")
+            for p in reddit_posts:
+                comments = _safe(f"reddit comments {p['sub']}",
+                                  lambda url=p.get('link', ''): fetch_reddit_comments(url, top_n=8),
+                                  [])
+                if comments:
+                    p['llm_analysis'] = _safe(f"reddit LLM {p['sub']}",
+                                               lambda t=p['title'], c=comments: analyze_reddit_thread(t, c),
+                                               '')
+                else:
+                    p['llm_analysis'] = ''
+            enriched = sum(1 for p in reddit_posts if p.get('llm_analysis'))
+            print(f"    -> {enriched}/{len(reddit_posts)} threads enriched")
     else:
         print("  LLM disabled (no ANTHROPIC_API_KEY) - skipping analysis")
 
