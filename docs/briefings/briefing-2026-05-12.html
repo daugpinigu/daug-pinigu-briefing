@@ -588,15 +588,47 @@
     padding-top: 8px;
     border-top: 1px dashed rgba(255,255,255,0.06);
   }
+  .news-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(244,204,107,0.12);
+  }
+  .nm-cell {
+    text-align: center;
+    padding: 4px;
+  }
+  .nm-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .nm-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #f4cc6b;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .nm-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
   .news-analysis {
-    font-size: 13px;
-    color: #d8dde8;
-    line-height: 1.55;
-    margin-top: 10px;
-    padding: 10px 12px;
-    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
-    border-left: 2px solid #f4cc6b;
-    border-radius: 4px;
+    font-size: 13.5px;
+    color: #e0e3eb;
+    line-height: 1.6;
+    margin-top: 12px;
+    padding: 0;
   }
   .news-analysis::before {
     content: 'Sum up · ';
@@ -604,7 +636,8 @@
     font-weight: 700;
     color: #f4cc6b;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
+    margin-right: 4px;
   }
   .news-meta {
     font-size: 11px;
@@ -695,38 +728,38 @@
   
   <div class="snap-item">
     <div class="snap-label">S&amp;P 500</div>
-    <div class="snap-price">7,424</div>
-    <div class="snap-change" style="color: #ff7373">-0.17%</div>
+    <div class="snap-price">7,423</div>
+    <div class="snap-change" style="color: #ff7373">-0.18%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Nasdaq 100</div>
-    <div class="snap-price">29,108</div>
-    <div class="snap-change" style="color: #ff7373">-1.07%</div>
+    <div class="snap-price">29,100</div>
+    <div class="snap-change" style="color: #ff7373">-1.10%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Dow</div>
-    <div class="snap-price">49,907</div>
-    <div class="snap-change" style="color: #7ed87e">+0.23%</div>
+    <div class="snap-price">49,892</div>
+    <div class="snap-change" style="color: #7ed87e">+0.20%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Russell 2k</div>
-    <div class="snap-price">2,849</div>
-    <div class="snap-change" style="color: #ff7373">-1.03%</div>
+    <div class="snap-price">2,850</div>
+    <div class="snap-change" style="color: #ff7373">-1.01%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">VIX</div>
-    <div class="snap-price">18.03</div>
-    <div class="snap-change" style="color: #ff7373">-1.90%</div>
+    <div class="snap-price">17.98</div>
+    <div class="snap-change" style="color: #ff7373">-2.18%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Crude Oil</div>
-    <div class="snap-price">102.23</div>
-    <div class="snap-change" style="color: #7ed87e">+4.24%</div>
+    <div class="snap-price">102.29</div>
+    <div class="snap-change" style="color: #7ed87e">+4.30%</div>
   </div>
   
   <div class="snap-item">
@@ -748,50 +781,50 @@
     
     <div class="ai-card">
       <div class="ai-symbol">CRWV</div>
-      <div class="ai-price">$107.56</div>
-      <div class="ai-change" style="color: #ff7373">-6.23%</div>
+      <div class="ai-price">$107.60</div>
+      <div class="ai-change" style="color: #ff7373">-6.19%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">MU</div>
-      <div class="ai-price">$756.72</div>
-      <div class="ai-change" style="color: #ff7373">-4.85%</div>
+      <div class="ai-price">$761.55</div>
+      <div class="ai-change" style="color: #ff7373">-4.25%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ZM</div>
-      <div class="ai-price">$103.05</div>
-      <div class="ai-change" style="color: #ff7373">-3.80%</div>
-    </div>
-    
-    <div class="ai-card">
-      <div class="ai-symbol">NBIS</div>
-      <div class="ai-price">$179.97</div>
-      <div class="ai-change" style="color: #ff7373">-3.29%</div>
+      <div class="ai-price">$102.83</div>
+      <div class="ai-change" style="color: #ff7373">-4.00%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ASML</div>
-      <div class="ai-price">$1,516</div>
-      <div class="ai-change" style="color: #ff7373">-3.19%</div>
+      <div class="ai-price">$1,517</div>
+      <div class="ai-change" style="color: #ff7373">-3.10%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">NBIS</div>
+      <div class="ai-price">$180.34</div>
+      <div class="ai-change" style="color: #ff7373">-3.10%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AMD</div>
-      <div class="ai-price">$444.31</div>
-      <div class="ai-change" style="color: #ff7373">-3.16%</div>
+      <div class="ai-price">$444.89</div>
+      <div class="ai-change" style="color: #ff7373">-3.03%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AVGO</div>
-      <div class="ai-price">$418.54</div>
-      <div class="ai-change" style="color: #ff7373">-2.31%</div>
+      <div class="ai-price">$418.67</div>
+      <div class="ai-change" style="color: #ff7373">-2.28%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">TSM</div>
-      <div class="ai-price">$397.83</div>
-      <div class="ai-change" style="color: #ff7373">-1.66%</div>
+      <div class="ai-price">$397.77</div>
+      <div class="ai-change" style="color: #ff7373">-1.67%</div>
     </div>
     
   </div>
@@ -992,7 +1025,7 @@
       <div class="up-symbol">NBIS</div>
       <div class="up-date">Wed May 13</div>
       <div class="up-days">in 0d</div>
-      <div class="up-est">EPS est $-0.78</div>
+      <div class="up-est">EPS est $-0.71</div>
     </div>
     
     <div class="upcoming-card">
@@ -1044,27 +1077,27 @@
       <div class="movers-col-title">📈 Gainers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$395.71</span></span>
-        <span class="mover-up">+2.93%</span>
+        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$395.93</span></span>
+        <span class="mover-up">+2.99%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$56.65</span></span>
-        <span class="mover-up">+2.73%</span>
+        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$56.79</span></span>
+        <span class="mover-up">+2.97%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.60</span></span>
-        <span class="mover-up">+2.51%</span>
+        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.67</span></span>
+        <span class="mover-up">+2.59%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">RKLB</span> <span class="mover-price">$118.85</span></span>
-        <span class="mover-up">+1.28%</span>
+        <span><span class="mover-symbol">NVO</span> <span class="mover-price">$46.89</span></span>
+        <span class="mover-up">+1.05%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">DUOL</span> <span class="mover-price">$106.24</span></span>
+        <span><span class="mover-symbol">PYPL</span> <span class="mover-price">$45.54</span></span>
         <span class="mover-up">+1.04%</span>
       </div>
       
@@ -1073,28 +1106,28 @@
       <div class="movers-col-title">📉 Losers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.09</span></span>
-        <span class="mover-down">-13.88%</span>
+        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.10</span></span>
+        <span class="mover-down">-13.86%</span>
       </div>
       
       <div class="mover-row">
         <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.97</span></span>
-        <span class="mover-down">-12.67%</span>
+        <span class="mover-down">-12.44%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.20</span></span>
-        <span class="mover-down">-9.22%</span>
+        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.19</span></span>
+        <span class="mover-down">-9.37%</span>
       </div>
       
       <div class="mover-row">
         <span><span class="mover-symbol">SBET</span> <span class="mover-price">$7.24</span></span>
-        <span class="mover-down">-6.64%</span>
+        <span class="mover-down">-6.77%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1449.93</span></span>
-        <span class="mover-down">-6.31%</span>
+        <span><span class="mover-symbol">CRWV</span> <span class="mover-price">$107.58</span></span>
+        <span class="mover-down">-6.20%</span>
       </div>
       
     </div>
@@ -1112,7 +1145,7 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$80,731</div>
+      <div class="crypto-price">$80,736</div>
       <div class="crypto-change" style="color: #ff7373">-1.51%</div>
     </div>
     
@@ -1120,28 +1153,28 @@
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
       <div class="crypto-price">$2,283</div>
-      <div class="crypto-change" style="color: #ff7373">-2.44%</div>
+      <div class="crypto-change" style="color: #ff7373">-2.43%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$94.67</div>
-      <div class="crypto-change" style="color: #ff7373">-3.23%</div>
+      <div class="crypto-price">$94.69</div>
+      <div class="crypto-change" style="color: #ff7373">-3.50%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
       <div class="crypto-price">$10.31</div>
-      <div class="crypto-change" style="color: #ff7373">-3.37%</div>
+      <div class="crypto-change" style="color: #ff7373">-3.23%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$308.25</div>
-      <div class="crypto-change" style="color: #ff7373">-5.39%</div>
+      <div class="crypto-price">$308.56</div>
+      <div class="crypto-change" style="color: #ff7373">-5.38%</div>
     </div>
     
   </div>
@@ -1158,50 +1191,50 @@
     
     <div class="iv-row">
       <div class="iv-symbol">VLN</div>
-      <div class="iv-meta">$2.68 · 37d</div>
-      <div class="iv-value">173.2%</div>
+      <div class="iv-meta">$2.67 · 37d</div>
+      <div class="iv-value">173.6%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">BMNU</div>
-      <div class="iv-meta">$1.96 · 37d</div>
+      <div class="iv-meta">$1.97 · 37d</div>
       <div class="iv-value">143.4%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">CONL</div>
-      <div class="iv-meta">$9.20 · 37d</div>
+      <div class="iv-meta">$9.19 · 37d</div>
       <div class="iv-value">139.7%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">SNDK</div>
-      <div class="iv-meta">$1449.30 · 31d</div>
-      <div class="iv-value">106.2%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">IREN</div>
-      <div class="iv-meta">$56.63 · 31d</div>
-      <div class="iv-value">105.6%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">BE</div>
-      <div class="iv-meta">$281.07 · 31d</div>
-      <div class="iv-value">105.4%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">NBIS</div>
-      <div class="iv-meta">$179.95 · 31d</div>
-      <div class="iv-value">104.2%</div>
+      <div class="iv-meta">$1456.23 · 31d</div>
+      <div class="iv-value">106.4%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">FIG</div>
-      <div class="iv-meta">$19.34 · 31d</div>
-      <div class="iv-value">103.3%</div>
+      <div class="iv-meta">$19.30 · 31d</div>
+      <div class="iv-value">105.6%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$56.80 · 31d</div>
+      <div class="iv-value">105.5%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">NBIS</div>
+      <div class="iv-meta">$180.35 · 31d</div>
+      <div class="iv-value">104.1%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BE</div>
+      <div class="iv-meta">$281.73 · 31d</div>
+      <div class="iv-value">103.8%</div>
     </div>
     
   </div>
@@ -1293,80 +1326,6 @@
 
 
 
-<section class="section">
-  <div class="section-header">
-    <div class="section-title" style="color:#e6e8ee">Naujienos</div>
-    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">6</span>
-  </div>
-  <div class="news-list">
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker">HIMS</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank">Hims &amp; Hers Stock Plunges Post Q1 Earnings Miss, Gross Margin Down</a></div>
-        
-        <div class="news-summary">Hims &amp; Hers Health, Inc.HIMS reported quarterly adjusted loss per share of 18 cents in first-quarter 2026, against the year-ago period’s adjusted earnings per share (EPS) of 20 cents and the Zacks Consensus Estimate of EPS of 4 cents. Hims &amp; Hers registered revenues of $608.1 million in the first quarter, up 3.8% year over year. However, the figure lagged the Zacks Consensus Estimate by 1.9%. Solid revenues from the Rest of the World segment drove the top line. Shares of this company lost nearly 15.2% in today’s pre-market trading.</div>
-        
-        <div class="news-meta">Zacks · 05-12 15:45 · <a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker">SBET</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank">Sharplink Inc (SBET) Q1 2026 Earnings Call Highlights: Revenue Surge Amidst Significant Net Loss</a></div>
-        
-        <div class="news-summary">This article first appeared onGuruFocus. Revenue:$12.1 million for Q1 2026, up from $0.7 million in Q1 2025. Net Realized Gain:$12 million for Q1 2026. Unrealized Loss:$506.7 million as of March 31, 2026. Net Loss:$685.6 million for Q1 2026, compared to $1 million loss in Q1 2025. SG&amp;A Expenses:$9.9 million for Q1 2026, up from $1.1 million in Q1 2025. Cash on Hand:$16.9 million as of March 31, 2026, down from $28.5 million as of December 31, 2025. ETH Holdings:589,305 ETH with a fair value of $1.2 billion as of March 31, 2026. Combined ETH Holdings:872,984 ETH as of May 4, 2026.</div>
-        
-        <div class="news-meta">GuruFocus.com · 05-12 07:03 · <a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank">Companies start getting tariff refunds after Supreme Court decision</a></div>
-        
-        <div class="news-summary">Months after the Supreme Court ruled sometariffs were unconstitutional, the first round of tariff refunds has begun flowing in. Oshkosh CorporationCFO Matt Field confirmed to CNBC that the company has started receiving tariff refunds as of Tuesday. &#34;Following acceptance of our initial filing, we have begun receiving payments on our tariff refund claims, representing an initial portion of our total claims submitted,&#34; Field said. The company has not yet verified its total refund amount, Field added.</div>
-        
-        <div class="news-meta">CNBC Top · 05-12 18:43 · <a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank">Hims &amp; Hers plummets 13% after first-quarter loss, weak earnings guidance</a></div>
-        
-        <div class="news-summary">Telehealth companyHims &amp; Hers&#39;stock plummeted on Tuesday after posting a first-quarter loss and weak earnings guidance for the year ahead. Hims is expecting revenue in a range between $680 million and $700 million for the second quarter, and is forecasting up to $3 billion in revenue for the full year. It forecast adjusted earnings before interest, taxes, depreciation, and amortization up to $55 million for the second quarter, and up to $350 million for the full year. The company&#39;s stock was down roughly 13% in midday trading.</div>
-        
-        <div class="news-meta">CNBC Top · 05-12 18:21 · <a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.marketwatch.com/story/as-airfares-soar-21-these-are-the-cheapest-cities-to-fly-into-f59620db?mod=mw_rss_topstories" target="_blank">As airfares soar 21%, these are the cheapest cities to fly into</a></div>
-        
-        <div class="news-meta">MarketWatch · 05-12 18:04 · <a href="https://www.marketwatch.com/story/as-airfares-soar-21-these-are-the-cheapest-cities-to-fly-into-f59620db?mod=mw_rss_topstories" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank">Markets raise chances for a Fed rate hike following hot inflation report</a></div>
-        
-        <div class="news-summary">Traders moved further away Tuesday from expecting anyFederal Reserveinterest rate cuts and in fact began anticipating a higher probability that the next move would be a hike. Following ahotter-than-expected inflation report, market pricing took virtually any chance of a cut off the table between now and the end of 2027, according to the CME Group&#39;sFedWatchtracker of 30-day fed funds futures contracts.</div>
-        
-        <div class="news-meta">CNBC Markets · 05-12 17:33 · <a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank" class="news-link">read full</a></div>
-      </div>
-    </div>
-    
-  </div>
-</section>
-
 
 
 
@@ -1379,7 +1338,7 @@
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>22:45 (Vilnius)</span>
+  <span>22:48 (Vilnius)</span>
 </footer>
 
 </body>
