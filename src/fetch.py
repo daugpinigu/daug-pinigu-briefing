@@ -22,51 +22,63 @@ HIGH_IMPACT_KEYWORDS = [
     'Empire', 'Philly', 'Michigan', 'NFP', 'Trade Balance',
 ]
 
-EVENT_DESCRIPTIONS = {
-    'Core CPI': 'CPI be food/energy - tikslesnis "sticky" infliacijos signalas. Beat = hawkish Fed, bearish stocks/bonds',
-    'Core PCE': 'Fed mėgstamiausia core infliacijos metrika - tiesioginis input rate decisions',
-    'Fed Chair': 'Fed Chair nominacijos balsavimas - hawkish/dovish naujasis Chair'+chr(39)+'as keičia rate path expectations',
-    'CPI': 'Vartotojų kainų indeksas - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds',
-    'PPI': 'Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį',
-    'PCE': 'Fed mėgstamiausia infliacijos metrika - lemia rate decisions',
-    'Core CPI': 'CPI be food/energy - tikslesnis infliacijos signalas',
-    'Core PPI': 'PPI be food/energy - švaresnis producer infliacijos rodiklis',
-    'GDP': 'Bendras ekonomikos augimas - virš consensus = stiprus augimas, gerai cyclicals',
-    'Payroll': 'Darbo vietų kūrimas - stipriau nei tikėtasi vėluoja rate cuts, blogai bonds',
-    'NFP': 'Non-farm payrolls - pagrindinis JAV darbo rinkos indikatorius',
-    'Unemployment': 'Nedarbo lygis - Fed dual mandate signal, aukštesnis = dovish bias',
-    'Jobless': 'Savaitinės bedarbystės paraiškos - laisvalaikio leading indicator',
-    'FOMC': 'Fed sprendimas dėl palūkanų - tiesioginis impactas visiems asset\'ams',
-    'Fed': 'Fed event - hawkish/dovish toną stebėk',
-    'ECB': 'ECB sprendimas - EUR ir europinių stocks pagrindinis driver\'is',
-    'Rate': 'Centrinio banko rate decision - market mover',
-    'Retail Sales': 'Vartotojų išlaidos - GDP komponentas, US ekonomikos sveikatos check\'as',
-    'ISM': 'Verslo aktyvumo indeksas - >50 = ekspansija, <50 = kontrakcija',
-    'PMI': 'Verslo aktyvumo indeksas - >50 = ekspansija, leading economic indicator',
-    'Consumer Confidence': 'Vartotojų pasitikėjimas - retail spending predictor',
-    'Consumer Sentiment': 'Vartotojų nuotaikos - leading indicator vartotojų behavior\'ui',
-    'Michigan': 'Univ. of Michigan vartotojų pasitikėjimas + 5y infliacijos lūkesčiai',
-    'Housing': 'Būsto rinkos data - rate-sensitive, leading economic indicator',
-    'Building Permits': 'Statybų leidimai - 6-12 mėn forward economic activity signal',
-    'Industrial Production': 'Pramonės gamyba - cyclical sectorių driver\'is',
-    'NFIB': 'Small business optimism - SMB sentimentas, leading employment signal',
-    'Trade Balance': 'Eksportas - importas, USD ir cikliškoms pramonėms svarbus',
-    'Empire': 'NY Fed regional manufacturing - leading ISM indikatorius',
-    'Philly': 'Philadelphia Fed manufacturing - leading ISM indikatorius',
-    'Producer Price': 'Producer kainos - leading CPI signal',
-    'HICP': 'EZ harmonizuotas CPI - ECB watching metric',
-    'ZEW': 'DE financial analysts sentimentas apie EU ekonomiką',
-    'Ifo': 'DE verslo klimato indeksas - eurozonos ekonomikos barometras',
-}
+EVENT_DESCRIPTIONS = [
+    ('Core Inflation Rate', 'Core CPI (be food/energy) - "sticky" infliacijos signalas. Beat = hawkish Fed, bearish stocks/bonds'),
+    ('Inflation Rate', 'Headline CPI - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds'),
+    ('Core CPI', 'CPI be food/energy - "sticky" infliacijos signalas. Beat = hawkish Fed'),
+    ('Core PCE', 'Fed mėgstamiausia core infliacijos metrika - lemia rate decisions'),
+    ('Core PPI', 'PPI be food/energy - švaresnis producer infliacijos rodiklis'),
+    ('Fed Chair', 'Fed Chair nominacijos balsavimas - hawkish/dovish naujasis Chair\'as keičia rate path expectations'),
+    ('FOMC', 'Fed sprendimas dėl palūkanų - tiesioginis impactas visiems asset\'ams'),
+    ('Interest Rate Decision', 'Centrinio banko rate decision - tiesioginis market mover'),
+    ('Fed Funds Rate', 'Fed funds rate decision - tiesioginis market mover'),
+    ('Fed Interest Rate', 'Fed rate decision - tiesioginis market mover'),
+    ('CPI', 'Vartotojų kainų indeksas - infliacijos pulsas. Beat = hawkish Fed, blogai stocks/bonds'),
+    ('PPI', 'Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį'),
+    ('PCE Price', 'Fed mėgstamiausia infliacijos metrika - lemia rate decisions'),
+    ('GDP Growth', 'Bendras ekonomikos augimas - virš consensus = stiprus augimas, gerai cyclicals'),
+    ('GDP', 'Bendras ekonomikos augimas - virš consensus = stiprus augimas'),
+    ('Non Farm Payrolls', 'NFP - pagrindinis JAV darbo rinkos indikatorius'),
+    ('NFP', 'NFP - JAV darbo rinkos hot/cold check'),
+    ('Payrolls', 'Darbo vietų kūrimas - stipriau nei tikėtasi vėluoja rate cuts'),
+    ('Unemployment Rate', 'Nedarbo lygis - Fed dual mandate, aukštesnis = dovish bias'),
+    ('Initial Jobless Claims', 'Savaitinės bedarbystės paraiškos - real-time darbo rinkos signalas'),
+    ('Continuing Jobless', 'Continuing jobless claims - struktūrinė darbo rinkos sveikata'),
+    ('Jobless', 'Bedarbystės paraiškos - leading darbo rinkos indikatorius'),
+    ('ECB', 'ECB sprendimas - EUR ir europinių stocks pagrindinis driver\'is'),
+    ('Retail Sales', 'Vartotojų išlaidos - GDP komponentas, US ekonomikos sveikatos check'),
+    ('ISM Manufacturing', 'Pramonės aktyvumas - >50 = ekspansija, <50 = kontrakcija'),
+    ('ISM Services', 'Paslaugų sektorius - >50 = ekspansija, leading economic indicator'),
+    ('ISM', 'Verslo aktyvumas - >50 = ekspansija, <50 = kontrakcija'),
+    ('S&P Global PMI', 'PMI - >50 = ekspansija, leading economic indicator'),
+    ('Manufacturing PMI', 'Pramonės PMI - leading ekonomikos indicator'),
+    ('Services PMI', 'Paslaugų PMI - leading ekonomikos indicator'),
+    ('PMI', 'Business activity - >50 = ekspansija'),
+    ('Consumer Confidence', 'Vartotojų pasitikėjimas - retail spending predictor'),
+    ('Consumer Sentiment', 'Vartotojų nuotaikos - leading vartotojų behavior\'ui'),
+    ('Michigan', 'UMich vartotojų pasitikėjimas + 5y infliacijos lūkesčiai'),
+    ('Housing Starts', 'Naujos statybos - rate-sensitive, leading housing data'),
+    ('Building Permits', 'Statybų leidimai - 6-12 mėn forward economic activity signal'),
+    ('Existing Home Sales', 'Egzistuojančių namų pardavimai - housing rinkos pulsas'),
+    ('New Home Sales', 'Naujų namų pardavimai - rate-sensitive cyclical indicator'),
+    ('Industrial Production', 'Pramonės gamyba - cyclical sectorių driver\'is'),
+    ('NFIB', 'Small business optimism - SMB sentimentas, leading employment signal'),
+    ('Trade Balance', 'Eksportas - importas, USD ir cyclical pramonėms svarbus'),
+    ('Empire State', 'NY Fed regional manufacturing - leading ISM indikatorius'),
+    ('Philadelphia Fed', 'Philly Fed manufacturing - leading ISM indikatorius'),
+    ('Producer Price', 'Producer kainos - leading CPI signal'),
+    ('HICP', 'EZ harmonizuotas CPI - ECB watching metric'),
+    ('Fed', 'Fed event - hawkish/dovish tonas, market mover'),
+]
+
 
 def get_event_description(event_name: str) -> str:
-    """Match event name to description by keyword."""
+    """Match event name to description by keyword. First match wins (specific first)."""
     name_lower = event_name.lower()
-    for keyword, desc in EVENT_DESCRIPTIONS.items():
+    for keyword, desc in EVENT_DESCRIPTIONS:
         if keyword.lower() in name_lower:
             return desc
     return ''
-
 
 def _utc_to_vilnius(utc_str: str) -> str:
     """Convert '4:00 AM UTC' to 'HH:MM' Vilnius local time."""
@@ -744,6 +756,98 @@ def _fetch_rss_feed(url: str, source_label: str, timeout: int = 10) -> list:
             'link': link,
         })
     return out
+
+
+FINTWIT_ACCOUNTS = [
+    'DeItaone',         # DeltaOne - breaking news
+    'firstsquawk',      # First Squawk - real-time news
+    'unusual_whales',   # Unusual options flow + fintwit
+    'zerohedge',        # Macro/markets
+    'WSJmarkets',       # WSJ markets
+]
+
+
+def fetch_x_fintwit(accounts: list = None, per_account: int = 3,
+                    max_total: int = 8, hours_window: int = 24) -> list:
+    """Fetch tweets from public X syndication API (no auth needed).
+
+    Returns recent tweets from financial accounts. Filters out retweets and
+    keeps only original tweets with substantive content (>40 chars).
+    """
+    import json as _json
+    from datetime import datetime as dt, timezone, timedelta
+    accounts = accounts or FINTWIT_ACCOUNTS
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
+
+    x_headers = {
+        **HEADERS,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://platform.twitter.com/',
+    }
+
+    def fetch_one(acct):
+        try:
+            url = f"https://syndication.twitter.com/srv/timeline-profile/screen-name/{acct}?showHeader=false"
+            r = requests.get(url, headers=x_headers, timeout=12)
+            if r.status_code != 200:
+                return []
+            m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.+?)</script>', r.text)
+            if not m:
+                return []
+            data = _json.loads(m.group(1))
+            entries = (data.get('props', {})
+                       .get('pageProps', {})
+                       .get('timeline', {})
+                       .get('entries', []))
+            out = []
+            for entry in entries[:per_account * 4]:
+                content = entry.get('content', {})
+                tweet = content.get('tweet') or {}
+                text = tweet.get('full_text') or tweet.get('text', '')
+                created_at = tweet.get('created_at', '')
+                if not text or len(text) < 40:
+                    continue
+                if text.startswith('RT @'):
+                    continue
+                try:
+                    pub_dt = dt.strptime(created_at, '%a %b %d %H:%M:%S %z %Y')
+                except Exception:
+                    pub_dt = None
+                if pub_dt and pub_dt < cutoff:
+                    continue
+                text_clean = re.sub(r'https?://\S+', '', text).strip()
+                text_clean = re.sub(r'\s+', ' ', text_clean)
+                if len(text_clean) < 30:
+                    continue
+                out.append({
+                    'account': acct,
+                    'text': text_clean,
+                    'pub_dt': pub_dt,
+                })
+                if len(out) >= per_account:
+                    break
+            return out
+        except Exception:
+            return []
+
+    import concurrent.futures
+    all_tweets = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as ex:
+        for items in ex.map(fetch_one, accounts):
+            all_tweets.extend(items)
+
+    seen = set()
+    deduped = []
+    for t in all_tweets:
+        key = re.sub(r'\W+', '', t['text'].lower())[:80]
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(t)
+
+    deduped.sort(key=lambda x: x['pub_dt'] or dt.min.replace(tzinfo=timezone.utc), reverse=True)
+    return deduped[:max_total]
 
 
 def fetch_market_news(max_total: int = 6, hours_window: int = 24) -> list:

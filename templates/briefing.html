@@ -420,6 +420,31 @@
     margin-top: 3px;
   }
 
+  .fintwit-list { display: flex; flex-direction: column; gap: 8px; }
+  .fintwit-row {
+    background: rgba(78,201,214,0.05);
+    border-left: 3px solid #4ec9d6;
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+  .fintwit-account {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4ec9d6;
+    margin-bottom: 4px;
+  }
+  .fintwit-text {
+    font-size: 13px;
+    color: #e6e8ee;
+    line-height: 1.45;
+  }
+  .fintwit-time {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
   .key-takeaway {
     margin-top: 16px;
     padding: 18px 22px;
@@ -656,6 +681,24 @@
         <div class="news-title">{{ n.title[:110] }}</div>
         <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
       </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if fintwit %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#4ec9d6">Fintwit · X.com</div>
+    <span class="section-count" style="background:rgba(78,201,214,0.15);color:#4ec9d6">{{ fintwit|length }}</span>
+  </div>
+  <div class="fintwit-list">
+    {% for t in fintwit %}
+    <div class="fintwit-row">
+      <div class="fintwit-account">@{{ t.account }}</div>
+      <div class="fintwit-text">{{ t.text[:240] }}{% if t.text|length > 240 %}...{% endif %}</div>
+      {% if t.pub_dt %}<div class="fintwit-time">{{ t.pub_dt.strftime('%m-%d %H:%M') }}</div>{% endif %}
     </div>
     {% endfor %}
   </div>
