@@ -1,4 +1,6 @@
 """Daily briefing orchestrator. Run once per day."""
+import os
+import sys
 from datetime import datetime
 from pathlib import Path
 import pytz
@@ -42,8 +44,12 @@ def build_takeaway(macro: list, earnings: list) -> str:
 
 def main():
     now = datetime.now(VILNIUS)
-    date_str = now.strftime('%Y-%m-%d')
 
+    if os.environ.get('GITHUB_EVENT_NAME') == 'schedule' and now.hour != 7:
+        print(f"Scheduled run at {now.strftime('%H:%M')} Vilnius - skipping (only run at 07:xx).")
+        sys.exit(0)
+
+    date_str = now.strftime('%Y-%m-%d')
     print(f"[{now.strftime('%H:%M:%S')}] Building briefing for {date_str}...")
 
     print("  Fetching macro events...")
