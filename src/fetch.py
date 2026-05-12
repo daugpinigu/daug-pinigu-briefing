@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pathlib import Path
 import pytz
 import re
 import yfinance as yf
@@ -22,6 +23,9 @@ HIGH_IMPACT_KEYWORDS = [
 ]
 
 EVENT_DESCRIPTIONS = {
+    'Core CPI': 'CPI be food/energy - tikslesnis "sticky" infliacijos signalas. Beat = hawkish Fed, bearish stocks/bonds',
+    'Core PCE': 'Fed mėgstamiausia core infliacijos metrika - tiesioginis input rate decisions',
+    'Fed Chair': 'Fed Chair nominacijos balsavimas - hawkish/dovish naujasis Chair'+chr(39)+'as keičia rate path expectations',
     'CPI': 'Vartotojų kainų indeksas - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds',
     'PPI': 'Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį',
     'PCE': 'Fed mėgstamiausia infliacijos metrika - lemia rate decisions',
@@ -79,54 +83,161 @@ def _utc_to_vilnius(utc_str: str) -> str:
     return vilnius.strftime('%H:%M')
 
 
-def fetch_macro_events(date_str: str) -> list:
-    """Fetch macro economic events for a given date (YYYY-MM-DD)."""
+FF_COUNTRY_MAP = {
+    'USD': 'US', 'EUR': 'EZ', 'GBP': 'GB', 'JPY': 'JP', 'CNY': 'CN',
+    'CAD': 'CA', 'AUD': 'AU', 'CHF': 'CH', 'NZD': 'NZ',
+}
+
+PRIORITY_CCY = {'USD'}
+SECONDARY_CCY_HIGH_ONLY = {'EUR'}
+
+
+def _classify_beat_miss(actual_str, expected_str):
+    if not actual_str or not expected_str:
+        return None
+    try:
+        a = float(re.sub(r'[^\d.\-]', '', actual_str))
+        e = float(re.sub(r'[^\d.\-]', '', expected_str))
+    except (ValueError, TypeError):
+        return None
+    if a > e:
+        return 'beat'
+    if a < e:
+        return 'miss'
+    return 'inline'
+
+
+def _fetch_macro_yahoo_fallback(date_str: str) -> list:
+    """Yahoo fallback for macro events, US-only filter."""
     url = f"https://finance.yahoo.com/calendar/economic?day={date_str}"
-    r = requests.get(url, headers=HEADERS, timeout=20)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, 'lxml')
-    table = soup.find('table')
-    if not table:
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, 'lxml')
+        table = soup.find('table')
+        if not table:
+            return []
+        events = []
+        for row in table.find_all('tr')[1:]:
+            cells = [c.get_text(strip=True) for c in row.find_all('td')]
+            if len(cells) < 7 or cells[1] != 'US':
+                continue
+            name = cells[0].replace('*', '').strip()
+            is_high = any(kw.lower() in name.lower() for kw in HIGH_IMPACT_KEYWORDS)
+            actual = cells[4] if cells[4] != '-' else None
+            forecast = cells[5] if cells[5] != '-' else None
+            prior = cells[6] if cells[6] != '-' else None
+            events.append({
+                'time_local': _utc_to_vilnius(cells[2]),
+                'time_raw': cells[2],
+                'name': name,
+                'country': 'US',
+                'period': '',
+                'actual': actual,
+                'expected': forecast,
+                'prior': prior,
+                'high_impact': is_high,
+                'impact': 'High' if is_high else 'Medium',
+                'description': get_event_description(name),
+                'beat_miss': _classify_beat_miss(actual, forecast),
+            })
+        return events
+    except Exception:
         return []
 
-    events = []
-    for row in table.find_all('tr')[1:]:
-        cells = [c.get_text(strip=True) for c in row.find_all('td')]
-        if len(cells) < 7:
-            continue
-        event_name, country, event_time, period, actual, expected, prior = cells[:7]
-        if country not in PRIORITY_COUNTRIES:
-            continue
-        is_high_impact = any(kw.lower() in event_name.lower() for kw in HIGH_IMPACT_KEYWORDS)
-        event_name_clean = event_name.replace('*', '').strip()
-        actual_val = actual if actual != '-' else None
-        expected_val = expected if expected != '-' else None
-        beat_miss = None
-        if actual_val and expected_val:
+
+def _load_ff_json_cached(max_age_hours: int = 6):
+    """Load ForexFactory weekly JSON, cached on disk to avoid rate limits."""
+    import json
+    import tempfile
+    import time
+    cache_path = Path(tempfile.gettempdir()) / 'ff_calendar_cache.json'
+    if cache_path.exists():
+        age_h = (time.time() - cache_path.stat().st_mtime) / 3600
+        if age_h < max_age_hours:
             try:
-                a = float(re.sub(r'[^\d.\-]', '', actual_val))
-                e = float(re.sub(r'[^\d.\-]', '', expected_val))
-                if a > e:
-                    beat_miss = 'beat'
-                elif a < e:
-                    beat_miss = 'miss'
-                else:
-                    beat_miss = 'inline'
-            except (ValueError, TypeError):
+                return json.loads(cache_path.read_text())
+            except Exception:
                 pass
+    url = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    r.raise_for_status()
+    data = r.json()
+    cache_path.write_text(json.dumps(data))
+    return data
+
+
+def fetch_macro_events(date_str: str) -> list:
+    """Fetch macro economic events from ForexFactory JSON for the given date.
+
+    Returns events for date_str (YYYY-MM-DD). Filters US events (High+Med)
+    and EUR (High only). Has impact level, forecast, actual when available.
+    Cached for 6h to respect rate limits.
+    """
+    from datetime import datetime as dt
+    try:
+        all_events = _load_ff_json_cached()
+    except Exception as e:
+        print(f"  warn: ForexFactory fetch failed: {e}, falling back to Yahoo")
+        return _fetch_macro_yahoo_fallback(date_str)
+
+    events = []
+    for ev in all_events:
+        date_iso = ev.get('date', '')
+        if not date_iso.startswith(date_str):
+            continue
+        ccy = ev.get('country', '')
+        impact = ev.get('impact', 'Low')
+
+        # US: include High + Medium impact
+        # EUR: include only High impact (ECB, EZ aggregate CPI etc.)
+        # Everything else: skip
+        if ccy in PRIORITY_CCY:
+            if impact not in ('High', 'Medium'):
+                continue
+        elif ccy in SECONDARY_CCY_HIGH_ONLY:
+            if impact != 'High':
+                continue
+        else:
+            continue
+
+        # Parse ISO datetime with timezone offset
+        try:
+            event_dt = dt.fromisoformat(date_iso)
+            event_utc = event_dt.astimezone(pytz.utc)
+            event_vilnius = event_utc.astimezone(pytz.timezone('Europe/Vilnius'))
+            time_local = event_vilnius.strftime('%H:%M')
+        except Exception:
+            time_local = '-'
+
+        title = ev.get('title', '')
+        forecast = ev.get('forecast') or None
+        previous = ev.get('previous') or None
+        actual = ev.get('actual') or None
+        if forecast == '':
+            forecast = None
+        if previous == '':
+            previous = None
+        if actual == '':
+            actual = None
+
+        beat_miss = _classify_beat_miss(actual, forecast)
+
         events.append({
-            'time_local': _utc_to_vilnius(event_time),
-            'time_raw': event_time,
-            'name': event_name_clean,
-            'country': country,
-            'period': period,
-            'actual': actual_val,
-            'expected': expected_val,
-            'prior': prior if prior != '-' else None,
-            'high_impact': is_high_impact,
-            'description': get_event_description(event_name_clean),
+            'time_local': time_local,
+            'time_raw': date_iso,
+            'name': title,
+            'country': FF_COUNTRY_MAP.get(ccy, ccy),
+            'period': '',
+            'actual': actual,
+            'expected': forecast,
+            'prior': previous,
+            'high_impact': impact == 'High',
+            'impact': impact,
+            'description': get_event_description(title),
             'beat_miss': beat_miss,
         })
+    events.sort(key=lambda e: e['time_local'])
     return events
 
 
