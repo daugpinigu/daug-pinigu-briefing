@@ -461,8 +461,13 @@ def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
         body = n.get('summary') or ''
         title = n.get('title', '')
         ticker = n.get('ticker', '')
+        # If article body fetch failed (Google News redirects, paywalls), fall
+        # back to title-only analysis — better than dropping the story entirely.
         if not body or len(body) < 50:
-            return {'metrics': [], 'analysis': ''}
+            if title and len(title) >= 25:
+                body = f"(Pilno straipsnio teksto neprieinama.) Antraštė: {title}"
+            else:
+                return {'metrics': [], 'analysis': ''}
         return analyze_news(title, body, ticker=ticker)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
