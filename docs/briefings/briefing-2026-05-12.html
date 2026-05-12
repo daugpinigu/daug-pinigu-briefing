@@ -168,6 +168,159 @@
     line-height: 1.4;
   }
 
+  .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
+  .earnings-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid #7ed87e;
+  }
+  .earnings-card.miss { border-left-color: #ff7373; }
+  .ec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ec-symbol {
+    font-size: 22px;
+    font-weight: 900;
+    color: #e6e8ee;
+    letter-spacing: 0.3px;
+  }
+  .ec-verdict {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+  }
+  .ec-verdict.beat { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ec-verdict.miss { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ec-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-numbers {
+    display: flex;
+    align-items: end;
+    gap: 14px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .ec-metric { flex: 1; }
+  .ec-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .ec-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-value.beat-val { color: #7ed87e; }
+  .ec-value.miss-val { color: #ff7373; }
+  .ec-vs {
+    font-size: 13px;
+    color: #6c7588;
+    padding-bottom: 4px;
+  }
+  .ec-extracted {
+    background: rgba(255,255,255,0.025);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .ec-row {
+    font-size: 13px;
+    margin: 4px 0;
+    color: #c8cfdc;
+  }
+  .ec-row-label {
+    color: #8a92a3;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .ec-row-val {
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-vs-inline {
+    color: #8a92a3;
+    font-size: 12px;
+  }
+  .ec-yoy {
+    color: #4ec9d6;
+    font-size: 12px;
+  }
+  .ec-quote {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(78,201,214,0.08);
+    border-left: 2px solid #4ec9d6;
+    font-size: 12px;
+    color: #c8cfdc;
+    font-style: italic;
+  }
+  .ec-analysis {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+  }
+  .ec-analysis::before {
+    content: 'AI izvalga · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  .upcoming-card {
+    background: rgba(244,204,107,0.05);
+    border-top: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .up-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f4cc6b;
+  }
+  .up-date {
+    font-size: 11px;
+    color: #c8cfdc;
+    margin: 4px 0 2px;
+  }
+  .up-days {
+    font-size: 10px;
+    color: #8a92a3;
+  }
+  .up-est {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
   .earnings-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -542,44 +695,38 @@
   
   <div class="snap-item">
     <div class="snap-label">S&amp;P 500</div>
-    <div class="snap-price">7,407</div>
-    <div class="snap-change" style="color: #ff7373">-0.40%</div>
+    <div class="snap-price">7,410</div>
+    <div class="snap-change" style="color: #ff7373">-0.37%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Nasdaq 100</div>
-    <div class="snap-price">28,982</div>
-    <div class="snap-change" style="color: #ff7373">-1.50%</div>
+    <div class="snap-price">29,000</div>
+    <div class="snap-change" style="color: #ff7373">-1.44%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Dow</div>
-    <div class="snap-price">49,866</div>
+    <div class="snap-price">49,868</div>
     <div class="snap-change" style="color: #7ed87e">+0.15%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Russell 2k</div>
-    <div class="snap-price">2,838</div>
-    <div class="snap-change" style="color: #ff7373">-1.43%</div>
+    <div class="snap-price">2,839</div>
+    <div class="snap-change" style="color: #ff7373">-1.38%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">VIX</div>
-    <div class="snap-price">18.09</div>
-    <div class="snap-change" style="color: #ff7373">-1.58%</div>
+    <div class="snap-price">18.08</div>
+    <div class="snap-change" style="color: #ff7373">-1.63%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Crude Oil</div>
-    <div class="snap-price">102.45</div>
-    <div class="snap-change" style="color: #7ed87e">+4.47%</div>
-  </div>
-  
-  <div class="snap-item">
-    <div class="snap-label">Gold</div>
-    <div class="snap-price">4,705</div>
-    <div class="snap-change" style="color: #ff7373">-0.29%</div>
+    <div class="snap-price">102.47</div>
+    <div class="snap-change" style="color: #7ed87e">+4.49%</div>
   </div>
   
 </div>
@@ -595,50 +742,50 @@
     
     <div class="ai-card">
       <div class="ai-symbol">CRWV</div>
-      <div class="ai-price">$105.72</div>
-      <div class="ai-change" style="color: #ff7373">-7.82%</div>
+      <div class="ai-price">$105.77</div>
+      <div class="ai-change" style="color: #ff7373">-7.79%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">MU</div>
-      <div class="ai-price">$751.16</div>
-      <div class="ai-change" style="color: #ff7373">-5.55%</div>
-    </div>
-    
-    <div class="ai-card">
-      <div class="ai-symbol">AMD</div>
-      <div class="ai-price">$439.48</div>
-      <div class="ai-change" style="color: #ff7373">-4.21%</div>
+      <div class="ai-price">$751.83</div>
+      <div class="ai-change" style="color: #ff7373">-5.47%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">NBIS</div>
-      <div class="ai-price">$178.30</div>
-      <div class="ai-change" style="color: #ff7373">-4.19%</div>
+      <div class="ai-price">$177.99</div>
+      <div class="ai-change" style="color: #ff7373">-4.36%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ZM</div>
-      <div class="ai-price">$102.94</div>
-      <div class="ai-change" style="color: #ff7373">-3.90%</div>
+      <div class="ai-price">$102.88</div>
+      <div class="ai-change" style="color: #ff7373">-3.96%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AMD</div>
+      <div class="ai-price">$440.63</div>
+      <div class="ai-change" style="color: #ff7373">-3.96%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ASML</div>
-      <div class="ai-price">$1,511</div>
-      <div class="ai-change" style="color: #ff7373">-3.51%</div>
+      <div class="ai-price">$1,510</div>
+      <div class="ai-change" style="color: #ff7373">-3.56%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AVGO</div>
-      <div class="ai-price">$416.26</div>
-      <div class="ai-change" style="color: #ff7373">-2.84%</div>
+      <div class="ai-price">$416.45</div>
+      <div class="ai-change" style="color: #ff7373">-2.80%</div>
     </div>
     
     <div class="ai-card">
-      <div class="ai-symbol">TSM</div>
-      <div class="ai-price">$396.45</div>
-      <div class="ai-change" style="color: #ff7373">-2.00%</div>
+      <div class="ai-symbol">PLTR</div>
+      <div class="ai-price">$134.04</div>
+      <div class="ai-change" style="color: #ff7373">-2.09%</div>
     </div>
     
   </div>
@@ -758,6 +905,152 @@
 
 
 
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Watchlist Earnings Reports</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">2</span>
+  </div>
+  <div class="earnings-cards">
+    
+    <div class="earnings-card miss">
+      <div class="ec-header">
+        <div class="ec-symbol">HIMS</div>
+        <div class="ec-verdict miss">
+          MISS
+        </div>
+        <div class="ec-date">05-11 16:00</div>
+      </div>
+      <div class="ec-numbers">
+        <div class="ec-metric">
+          <div class="ec-label">EPS Actual</div>
+          <div class="ec-value miss-val">$-0.40</div>
+        </div>
+        <div class="ec-vs">vs</div>
+        <div class="ec-metric">
+          <div class="ec-label">EPS Estimate</div>
+          <div class="ec-value">$0.03</div>
+        </div>
+        
+        <div class="ec-metric">
+          <div class="ec-label">Surprise</div>
+          <div class="ec-value miss-val">-1267.9%</div>
+        </div>
+        
+      </div>
+      
+      <div class="ec-extracted">
+        
+        <div class="ec-row"><span class="ec-row-label">Revenue:</span> <span class="ec-row-val">$0.608B <span class="ec-vs-inline">vs est $0.620B</span> <span class="ec-yoy">(+3.8% YoY)</span></span></div>
+        
+        
+        
+        
+        <div class="ec-row"><span class="ec-row-label">Stock reaction:</span> <span class="ec-row-val">-15.2% pre-market</span></div>
+        
+        
+      </div>
+      
+      
+      <div class="ec-analysis">HIMS Q1 miss&#39;as - EPS -$0.40 vs +$0.03 estimate, revenue $608M žemiau $620M guidance&#39;o. GLP-1 revenue growth sulėtėjo (atrodo, dėl Ozempic/Wegovy supply normalizacijos), o operating leverage nuo vienetų negrąžina - tai rodo, kad unit economics čia slabiau nei market manė. Bullish čia tik tai, kad stock jau -15% pre-market, bet žiūriu ar guidance&#39;as atidarys kitus failure points - jei sekantis quarter tik +3-4% YoY, conviction ant shorts lieka.</div>
+      
+    </div>
+    
+    <div class="earnings-card miss">
+      <div class="ec-header">
+        <div class="ec-symbol">CLSK</div>
+        <div class="ec-verdict miss">
+          MISS
+        </div>
+        <div class="ec-date">05-11 16:00</div>
+      </div>
+      <div class="ec-numbers">
+        <div class="ec-metric">
+          <div class="ec-label">EPS Actual</div>
+          <div class="ec-value miss-val">$-0.49</div>
+        </div>
+        <div class="ec-vs">vs</div>
+        <div class="ec-metric">
+          <div class="ec-label">EPS Estimate</div>
+          <div class="ec-value">$-0.23</div>
+        </div>
+        
+        <div class="ec-metric">
+          <div class="ec-label">Surprise</div>
+          <div class="ec-value miss-val">-114.9%</div>
+        </div>
+        
+      </div>
+      
+      <div class="ec-extracted">
+        
+        
+        
+        
+        
+      </div>
+      
+      
+      <div class="ec-analysis">CLSK reportine Q EPS -$0.49 vs -$0.23 estimate, miss. Nuostoliai giliau nei tikėtasi, o tai rodo miner&#39;iams sunkų operating environment&#39;a su mažom mining difficulty adjustmentais. Watch gross margin trend - jei jis toliau smunka, gali buti capitulation signal, jei stabilizuosis, atrodo dip buying opportunity crypto rally&#39;e.</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Upcoming Earnings (14d)</div>
+    <span class="section-count" style="background:rgba(244,204,107,0.15);color:#f4cc6b">6</span>
+  </div>
+  <div class="upcoming-grid">
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">NBIS</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $-0.78</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">BABA</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $5.74</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">VLN</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $-0.06</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">FIG</div>
+      <div class="up-date">Thu May 14</div>
+      <div class="up-days">in 2d</div>
+      <div class="up-est">EPS est $0.06</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">BIDU</div>
+      <div class="up-date">Mon May 18</div>
+      <div class="up-days">in 5d</div>
+      <div class="up-est">EPS est $11.43</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">ENS</div>
+      <div class="up-date">Wed May 20</div>
+      <div class="up-days">in 8d</div>
+      <div class="up-est">EPS est $2.99</div>
+    </div>
+    
+  </div>
+</section>
+
 
 
 <section class="section">
@@ -769,28 +1062,28 @@
       <div class="movers-col-title">📈 Gainers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$394.89</span></span>
-        <span class="mover-up">+2.72%</span>
+        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$394.59</span></span>
+        <span class="mover-up">+2.64%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.64</span></span>
-        <span class="mover-up">+2.56%</span>
+        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.65</span></span>
+        <span class="mover-up">+2.58%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">RKLB</span> <span class="mover-price">$119.13</span></span>
-        <span class="mover-up">+1.52%</span>
+        <span><span class="mover-symbol">DUOL</span> <span class="mover-price">$106.47</span></span>
+        <span class="mover-up">+1.25%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$55.94</span></span>
-        <span class="mover-up">+1.43%</span>
+        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$55.78</span></span>
+        <span class="mover-up">+1.13%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">DUOL</span> <span class="mover-price">$106.33</span></span>
-        <span class="mover-up">+1.12%</span>
+        <span><span class="mover-symbol">PYPL</span> <span class="mover-price">$45.53</span></span>
+        <span class="mover-up">+1.03%</span>
       </div>
       
     </div>
@@ -798,28 +1091,28 @@
       <div class="movers-col-title">📉 Losers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.96</span></span>
-        <span class="mover-down">-12.89%</span>
+        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.94</span></span>
+        <span class="mover-down">-13.71%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.46</span></span>
-        <span class="mover-down">-12.63%</span>
+        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.37</span></span>
+        <span class="mover-down">-12.94%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.15</span></span>
-        <span class="mover-down">-9.76%</span>
+        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.05</span></span>
+        <span class="mover-down">-10.75%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1414.26</span></span>
-        <span class="mover-down">-8.61%</span>
+        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1415.50</span></span>
+        <span class="mover-down">-8.53%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CLSK</span> <span class="mover-price">$13.16</span></span>
-        <span class="mover-down">-7.97%</span>
+        <span><span class="mover-symbol">CLSK</span> <span class="mover-price">$13.09</span></span>
+        <span class="mover-down">-8.50%</span>
       </div>
       
     </div>
@@ -837,36 +1130,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$80,779</div>
-      <div class="crypto-change" style="color: #ff7373">-1.37%</div>
+      <div class="crypto-price">$80,802</div>
+      <div class="crypto-change" style="color: #ff7373">-1.28%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
       <div class="crypto-price">$2,284</div>
-      <div class="crypto-change" style="color: #ff7373">-2.30%</div>
+      <div class="crypto-change" style="color: #ff7373">-2.27%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$94.87</div>
-      <div class="crypto-change" style="color: #ff7373">-2.61%</div>
+      <div class="crypto-price">$94.89</div>
+      <div class="crypto-change" style="color: #ff7373">-2.59%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
-      <div class="crypto-price">$10.30</div>
-      <div class="crypto-change" style="color: #ff7373">-3.08%</div>
+      <div class="crypto-price">$10.31</div>
+      <div class="crypto-change" style="color: #ff7373">-3.11%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$308.69</div>
-      <div class="crypto-change" style="color: #ff7373">-5.29%</div>
+      <div class="crypto-price">$308.67</div>
+      <div class="crypto-change" style="color: #ff7373">-5.57%</div>
     </div>
     
   </div>
@@ -889,44 +1182,44 @@
     
     <div class="iv-row">
       <div class="iv-symbol">BMNU</div>
-      <div class="iv-meta">$1.96 · 37d</div>
-      <div class="iv-value">148.4%</div>
+      <div class="iv-meta">$1.94 · 37d</div>
+      <div class="iv-value">148.8%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">CONL</div>
-      <div class="iv-meta">$9.15 · 37d</div>
-      <div class="iv-value">142.5%</div>
+      <div class="iv-meta">$9.06 · 37d</div>
+      <div class="iv-value">143.3%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">SNDK</div>
-      <div class="iv-meta">$1414.73 · 31d</div>
-      <div class="iv-value">108.0%</div>
+      <div class="iv-meta">$1415.50 · 31d</div>
+      <div class="iv-value">106.6%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">NBIS</div>
-      <div class="iv-meta">$178.30 · 31d</div>
-      <div class="iv-value">105.6%</div>
+      <div class="iv-meta">$177.99 · 31d</div>
+      <div class="iv-value">105.4%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">BE</div>
-      <div class="iv-meta">$277.35 · 31d</div>
-      <div class="iv-value">105.5%</div>
+      <div class="iv-meta">$276.58 · 31d</div>
+      <div class="iv-value">104.9%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$55.78 · 31d</div>
+      <div class="iv-value">104.5%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">FIG</div>
       <div class="iv-meta">$19.25 · 31d</div>
       <div class="iv-value">104.5%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">IREN</div>
-      <div class="iv-meta">$55.94 · 31d</div>
-      <div class="iv-value">104.4%</div>
     </div>
     
   </div>
@@ -1030,7 +1323,7 @@
       <div class="news-content">
         <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank">Hims &amp; Hers Stock Plunges Post Q1 Earnings Miss, Gross Margin Down</a></div>
         
-        <div class="news-analysis">HIMS reported Q1 adjusted EPS -$0.18 vs +$0.20 YoY ir +$0.04 estimate - miss. Revenue $608.1M, +3.8% YoY bet -1.9% vs Street estimate. Gross margin decline&#39;as negrazi, nes top-line growth nereikalus - atrodo, kad pricing/mix presija stipri. Stock -15.2% PM, watch ar guidance Q2 bus vėl zemiau estimates.</div>
+        <div class="news-analysis">HIMS reportine Q1 adjusted EPS -$0.18 vs $0.04 estimate - solidus miss. Revenue $608.1M (+3.8% YoY) atsiliko nuo $620M guidance&#39;o, top-line growth lėtai. Stock -15.2% pre-market signalizuoja, kad investors lūkestis buvo aukštesni profitability, o growth story pradeda byti. Watch Q2 guidance - jei nurodys dar zemesne top-line, tai gali patvirtinti demand softening GLP-1 konkurencijoje.</div>
         
         <div class="news-meta">Zacks · 05-12 15:45 · <a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank" class="news-link">read full</a></div>
       </div>
@@ -1041,7 +1334,7 @@
       <div class="news-content">
         <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/cleanspark-clsk-reports-q2-loss-220504317.html" target="_blank">CleanSpark (CLSK) Reports Q2 Loss, Lags Revenue Estimates</a></div>
         
-        <div class="news-analysis">CLSK reportine Q2 loss $0.52 vs $0.25 estimate - 110% miss. Revenue irgi atsilike nuo guidance, o operating expenses auga greiciau nei top-line. YoY loss pablogejo nuo $0.02 iki $0.52 per share, siame kontekste Bitcoin mining environment yra sunkesnis nei laukta. Manau kai 75% miss&#39;o ir nuolatiniai guidance misses, reikia zemai sekti ar bus management&#39;o validacijos sekanciam quarter&#39;iui - nes kol kas conviction yra zema.</div>
+        <div class="news-analysis">CLSK reportine Q2 EPS loss $0.52 vs estimate loss $0.25 - significantly miss. Revenue taipogi zemiau expectations, o YoY losses pablogejo nuo $0.02 iki $0.52. Bitcoin miner&#39;iai patiria margin compression dėl competition ir energia costs, tad manau reikia žiūrėti ar CLSK gali pasiekti positive FCF prieš kitą halvingą - currently to value trap.</div>
         
         <div class="news-meta">Zacks · 05-11 22:05 · <a href="https://finance.yahoo.com/markets/stocks/articles/cleanspark-clsk-reports-q2-loss-220504317.html" target="_blank" class="news-link">read full</a></div>
       </div>
@@ -1052,7 +1345,7 @@
       <div class="news-content">
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank">Companies start getting tariff refunds after Supreme Court decision</a></div>
         
-        <div class="news-analysis">Oshkosh Corporation CFO patvirtino, kad kompanija pradėjo gauti tariff refunds po Supreme Court sprendimo - pirmosios išmokos pradėtos skaičiuoti nuo antradienio. Konkretaus refund dydžio Oshkosh dar neverifikavo, bet Field nurodo, kad tai tik inicialinis portion jų total claims. Manau, tai catalyst mid-cap industrials segmentui - jei refunds bus didesni nei priced in, galim matyti bottom-line boost. Watch Oshkosh guidance update - jei cash inflow bus material, tai gali reikšti margin expansion arba buyback akseleravimą.</div>
+        <div class="news-analysis">Oshkosh Corporation pradėjo gauti tariff refunds po Supreme Court sprendimo - CFO patvirtino, kad pirmieji mokėjimai prasidėjo antradienį. Kompanija dar nepatvirtino bendros refund sumos, bet tai reiškia, kad tūkstančiai US kompanijų gali tikėtis cash inflows per ateinančius kelis mėnesius. Manau, watch capex guidance updates - jei refundai bus didesni nei numatytas, gali būti reallocation į capex ar shareholder returns. Tariff exposure sizing kol kas lieka key tema Heavy Equipment sektoriuje.</div>
         
         <div class="news-meta">CNBC Top · 05-12 18:43 · <a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank" class="news-link">read full</a></div>
       </div>
@@ -1063,7 +1356,7 @@
       <div class="news-content">
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank">Hims &amp; Hers plummets 13% after first-quarter loss, weak earnings guidance</a></div>
         
-        <div class="news-analysis">HIMS Q1 loss + Q2 guidance $680-700M (Street laukė ~$720M) + full year guidance iki $3B revenue spustelėjo akciją -13% AHs. EBITDA guidance iki $55M Q2 ir $350M full year rodo compressed margins vs prior expectations. Manau, GLP-1 competitive pressure juntasi - reikia stebėti, ar revenue ramp Q3-Q4 galės atverti Street&#39;ą, ar tai value trap su valuation reset.</div>
+        <div class="news-analysis">HIMS reportine Q1 nuostolį, Q2 guidance $680-700M revenue zemiau Street&#39;o expectations, full year $3B. EBITDA guidance iki $55M Q2 ir $350M full year - marjos compression akivaizdi GLP-1 competitive pressure&#39;o fone. Stock -13% midday, watch kaip didelės pharma entria į segmentą ir kaip tai paveiks pricing power.</div>
         
         <div class="news-meta">CNBC Top · 05-12 18:21 · <a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank" class="news-link">read full</a></div>
       </div>
@@ -1083,7 +1376,7 @@
       <div class="news-content">
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank">Markets raise chances for a Fed rate hike following hot inflation report</a></div>
         
-        <div class="news-analysis">Infliacijos report&#39;as atmetė cut&#39;us - CME FedWatch dabar priceina 0% tikimybę rate cut&#39;ui iki 2027 metų pabaigos, o hike&#39;o tikimybė išaugo. Tai reiškia, kad fixed income strategijos turi būti perkonfiguruotos - duration risk auga, o spread compression rizika lieka. Manau, equity volatility bus elevated kol Fed&#39;as nebepakeis guidance&#39;o, bonds grąžins 5%+ levels kai market&#39;as išnormuos expectations.</div>
+        <div class="news-analysis">Fed funds futures rodo 0% tikimybę rate cut iki 2027 metų pabaigos po infliacijos dato. CME FedWatch tracker perkeitė pricing - nuo cut scenarijaus prie hike scenarijaus, nes inflation report buvo stronger nei expected. Risk asset&#39;ams tai yra headwind: longer rates stay elevated, tuo harder refinancingui ir equity valuation compression&#39;ui. Watch FOMC guidance sekančiame meeting&#39;e - jei Powell signal&#39;ina sticky inflation, duration exposure gali būti risky.</div>
         
         <div class="news-meta">CNBC Markets · 05-12 17:33 · <a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank" class="news-link">read full</a></div>
       </div>
@@ -1104,7 +1397,7 @@
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>22:13 (Vilnius)</span>
+  <span>22:16 (Vilnius)</span>
 </footer>
 
 </body>
