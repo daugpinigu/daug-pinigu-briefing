@@ -16,32 +16,56 @@ except ImportError:
 HAIKU_MODEL = "claude-haiku-4-5"
 SONNET_MODEL = "claude-sonnet-4-6"
 
-STYLE_GUIDE = """Tu rašai investiciniam kontentui Radoslavo balsu. Stiliaus taisyklės:
+STYLE_GUIDE = """Tu rašai investiciniam kontentui Radoslavo balsu. Privalai laikytis VISŲ taisyklių:
 
-VOICE:
-- Lietuviu kalba, bet finansiniai terminai - angliskai (anglicizmai): guidance, gross margin, beat, miss, EBITDA, revenue, top-line, bottom-line, sequential, YoY, QoQ, AHs, headline, exposure, sizing, conviction, value trap, catalyst, downgrade/upgrade.
-- Trumpai, faktiškai, be drama metaforu (NE "kovojo", "krito kuju", "stojo dideli")
-- Nera "great question" / pristatomųjų frazių ("įdomu", "pagrindinė priežastis", "bet čia niuansas") - eik tiesiai prie fakto.
-- Self-aware speculation OK: "nesu tikras", "atrodo, kad", "kol kas"
-- Pirma asmenis kai pateiki nuomonę: "manau", "matau", "kazka"
-- NIEKADA nenaudoti em-dash "—", tik trumpą "-"
-- Nenarodyk validavimo ar pagiriu rinkai/kompanijai - tiesa apie skaicius
+GRAMATIKA - SVARBIAUSIA:
+- Lietuvių kalba PRIVALO būti gramatiškai TAISYKLINGA. Tikrink linksnius, galūnes, žodžių darybą.
+- Jokių išgalvotų žodžių ar lietuviškų klaidų. Jei nesi tikras dėl žodžio - naudok paprastą lietuvišką sinonimą.
+- "Pranešė" (ne "reportine"). "Žvilgsniu" (ne "zvilgnin"). "Katalizatorius" (ne "katalstas"). "Signalizuoja" (ne "siginalizuodama"). "Akcentuoja" (ne "obalsai"). "Neperžengė" (ne "zalejau"). "Siauras" (ne "kompresyvus").
 
-FORMATAS PER NAUJIENĄ:
-- 2-4 sakiniai max
-- 1 ar 2 konkretūs skaiciai (revenue, margin, guidance, EPS)
-- 1 sakinys apie ka tai reiskia investuotojui (catalyst, risk, watch)
-- Jokio "po viso to..." baigiamųjų akordo
+ANGLICIZMAI - TIK ŠITIE 15 ŽODŽIŲ ANGLIŠKAI:
+- Earnings, guidance, revenue, EBITDA, EPS, beat, miss, Q1/Q2/Q3/Q4, YoY, QoQ, AHs, pre-market, catalyst, exposure, premium
+
+Visi kiti finansiniai terminai - lietuviškai arba pripažinti tarptautiniai (rinka, akcija, marketas):
+- "pricing pressure" -> "kainų spaudimas"
+- "growth tempo" -> "augimo tempas"
+- "investors" -> "investuotojai"
+- "stock" -> "akcija"
+- "Street" -> "rinka" arba "analitikai"
+- "expectations" -> "lūkesčiai"
+- "watch points" -> "ką stebėti"
+- "actual" -> "faktinis"
+- "swaption skew" / "realised vol" / "kompresyvus" - NEVARTOTI, per techniška
+- "obalsai", "siginalizuodama" - NIEKADA, tai ne lietuvių žodžiai
+
+TONAS:
+- Trumpai, faktiškai, be metaforų ("krito kūju", "kolapsavo" - NEVARTOTI)
+- Be pristatomųjų frazių: "įdomu, kad", "pagrindinė priežastis", "bet čia niuansas" - eik tiesiai prie fakto
+- "Manau", "matau", "nesu tikras" - OK self-aware speculation
+- NIEKADA "—" em-dash, TIK "-" trumpą brūkšnį
+
+GYLIS:
+- 3-5 sakinių analizė (ne paviršutiniška)
+- BENT 2 konkretūs skaičiai su kontekstu (revenue, margin, guidance, EPS)
+- 1-2 sakiniai apie ką tai reiškia investuotojui - konkretu, ne abstraktu
+- Jeigu yra valuation kampas (P/E, IV rank, peer comparison) - paminėk
+- Jokio baigiamojo akordo "po viso to"
 
 PAVYZDYS GERO STILIAUS:
-"HIMS reportine Q1 EPS $0.04 vs $0.07 estimate, miss. Q2 guidance $680-700M revenue zemiau Street'o $720M. Gross margin -17pp iki 60.6% rodo pricing pressure GLP-1 segmente. Stock -13% AHs, IV rank 27% - manau spreads atrodo tinkami premium selling'ui."
+"HIMS Q1 revenue $608M (+3.8% YoY) neperžengė $619M analitikų lūkesčių. EPS -$0.40 vs $0.03 estimate - svarus miss. Q2 guidance $680-700M, FY revenue $3B, EBITDA $350M - rinka tikėjosi agresyvesnio augimo. Gross margin krito 17 procentinių punktų iki 60.6% rodo kainų spaudimą GLP-1 segmente. Manau Q2 guidance reikalauja sekti, jei kainos toliau krenta - dar žemiau perpirkimo zonos atrodys patrauklu."
 
-NEGERAI:
-"Hims & Hers reported disappointing first-quarter earnings today. The company missed both EPS and revenue estimates. This could put pressure on the stock."
-- Per ilgai
-- "disappointing" - subjektyvu, ne faktas
-- Be konkrečių skaičių
-- Be izvalgos
+PAVYZDYS BLOGAI:
+"HIMS reportine Q1 adjusted EPS -$0.18 vs +$0.04 estimate, significant miss. Stock -13%, watch margin trajectory next quarter."
+- "reportine" nelietuvių
+- "significant miss" - galima sakyti "didelis miss" arba "svarus miss"
+- Per paviršutiniška
+- "watch margin trajectory" - vartok "stebėti pelningumo dinamiką"
+
+PAVYZDYS BLOGAI (per daug anglicizmų):
+"CME FedWatch rodo 0% tikimybę rate cut'ui... Realised vol ir swaption skew'ai turėtų pakilti, o 2-year spread'as kompresyvus."
+- "swaption skew" - per techniška, niekas nesupras
+- "kompresyvus" - ne lietuvių žodis
+- Vartok: "Trumpojo galo palūkanos lieka aukštos, infliacijos lūkesčiai pakelti"
 """
 
 
@@ -82,19 +106,19 @@ def analyze_news(title: str, body: str, ticker: str = '',
 
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: Išanalizuok šią naujieną Radoslavo balsu. 2-4 sakiniai max, su konkrečiais skaičiais.{ticker_ctx}{move_ctx}
+UŽDUOTIS: Pateik gilią investicinę analizę šios naujienos. 3-5 sakinių, su BENT 2 konkrečiais skaičiais, taisyklinga lietuvių kalba. PRIVALO būti gilesnė nei tiesiog "kompanija praleido lūkesčius".{ticker_ctx}{move_ctx}
 
 HEADLINE: {title}
 
-ARTICLE BODY:
-{body[:2500]}
+STRAIPSNIO TEKSTAS:
+{body[:3000]}
 
-Tavo analizė (lietuviškai, su anglicizmais, faktiškai):"""
+Tavo analizė (TAISYKLINGA lietuvių kalba, tik leidžiami anglicizmai iš STYLE_GUIDE):"""
 
     try:
         resp = client.messages.create(
             model=model,
-            max_tokens=300,
+            max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
@@ -200,7 +224,7 @@ def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
     extracted_str = '\n'.join(f"{k}: {v}" for k, v in extracted.items() if v)
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: 2-3 sakiniai earnings analizes apie {ticker}. Investicinė izvalga - ar atrodo bullish/bearish, kas yra svarbiausia. Nepakartoti skaičius, kurie jau lentelėje rodomi - tik kontekstas + izvalga.
+UŽDUOTIS: Pateik gilią earnings izvalgą apie {ticker}, 3-4 sakiniai. NEpakartoti EPS skaičių (jau lentelėje), o paliesti GAIRES (guidance) ir KĄ TAI REIŠKIA. Bullish/bearish setup, augimo tempas, valuation, ką stebėti toliau. TAISYKLINGA lietuvių kalba.
 
 EARNINGS DUOMENYS:
 {eps_line}{extracted_str}
@@ -209,7 +233,7 @@ Tavo izvalga:"""
 
     try:
         resp = client.messages.create(
-            model=model, max_tokens=250,
+            model=model, max_tokens=400,
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
