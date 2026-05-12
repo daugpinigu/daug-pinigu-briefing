@@ -233,6 +233,101 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .ai-card {
+    background: rgba(192,132,252,0.06);
+    border-top: 3px solid #c084fc;
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .ai-symbol {
+    font-size: 13px;
+    font-weight: 800;
+    color: #c084fc;
+    letter-spacing: 0.3px;
+  }
+  .ai-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e6e8ee;
+    margin: 4px 0 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ai-change {
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .iv-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .iv-row {
+    background: rgba(244,143,177,0.06);
+    border-left: 3px solid #f48fb1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iv-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    min-width: 50px;
+  }
+  .iv-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    flex: 1;
+  }
+  .iv-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .news-list { display: flex; flex-direction: column; gap: 8px; }
+  .news-row {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .news-ticker {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4ec9d6;
+    background: rgba(78,201,214,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .news-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 3px;
+  }
+
   .key-takeaway {
     margin-top: 16px;
     padding: 18px 22px;
@@ -282,6 +377,24 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
+
+{% if ai_quotes %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#c084fc">AI Sektorius</div>
+    <span class="section-count" style="background:rgba(192,132,252,0.15);color:#c084fc">{{ ai_quotes|length }}</span>
+  </div>
+  <div class="ai-grid">
+    {% for a in ai_quotes %}
+    <div class="ai-card">
+      <div class="ai-symbol">{{ a.symbol }}</div>
+      <div class="ai-price">{% if a.price >= 1000 %}${{ "{:,.0f}".format(a.price) }}{% else %}${{ "%.2f"|format(a.price) }}{% endif %}</div>
+      <div class="ai-change" style="color: {% if a.change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ "%+.2f"|format(a.change_pct) }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
 {% endif %}
 
 {% if macro_events %}
@@ -367,6 +480,44 @@
       <div class="crypto-name">{{ c.name }}</div>
       <div class="crypto-price">{% if c.price >= 1000 %}${{ "{:,.0f}".format(c.price) }}{% else %}${{ "%.2f"|format(c.price) }}{% endif %}</div>
       <div class="crypto-change" style="color: {% if c.change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ "%+.2f"|format(c.change_pct) }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if high_iv %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">Top IV - Premium Selling</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">{{ high_iv|length }}</span>
+  </div>
+  <div class="iv-grid">
+    {% for x in high_iv %}
+    <div class="iv-row">
+      <div class="iv-symbol">{{ x.symbol }}</div>
+      <div class="iv-meta">${{ "%.2f"|format(x.spot) }} · {{ x.dte }}d</div>
+      <div class="iv-value">{{ "%.1f"|format(x.iv) }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if news %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#e6e8ee">Naujienos</div>
+    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">{{ news|length }}</span>
+  </div>
+  <div class="news-list">
+    {% for n in news %}
+    <div class="news-row">
+      <div class="news-ticker">{{ n.ticker }}</div>
+      <div class="news-content">
+        <div class="news-title">{{ n.title[:110] }}</div>
+        <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
+      </div>
     </div>
     {% endfor %}
   </div>

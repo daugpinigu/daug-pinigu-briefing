@@ -20,9 +20,20 @@ CRYPTO = [
 
 # Futures of interest (yfinance syntax)
 FUTURES = [
-    ('CL=F', 'Crude Oil'),
-    ('GC=F', 'Gold'),
     ('ES=F', 'S&P 500'),
     ('NQ=F', 'Nasdaq 100'),
+    ('YM=F', 'Dow'),
+    ('RTY=F', 'Russell 2k'),
     ('^VIX', 'VIX'),
+    ('CL=F', 'Crude Oil'),
+    ('GC=F', 'Gold'),
 ]
+
+# AI sector core - dedicated section + news tracking
+AI_TICKERS = [
+    'NVDA', 'AMD', 'AVGO', 'MSFT', 'GOOGL', 'META', 'AMZN',
+    'ASML', 'MU', 'TSM', 'ZM', 'PLTR', 'CRWV', 'NBIS',
+]
+
+# Tickers to fetch news for (limited to keep briefing fast)
+NEWS_TICKERS = ['NVDA', 'AMZN', 'GOOGL', 'MSFT', 'META', 'ZM', 'PLTR', 'MU', 'AVGO']

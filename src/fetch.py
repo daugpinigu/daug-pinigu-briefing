@@ -258,6 +258,151 @@ def fetch_index_snapshot(futures: list) -> list:
     return out
 
 
+def fetch_iv_metrics(symbols: list) -> list:
+    """Compute current ATM IV per ticker via yfinance options chain.
+
+    For each symbol: averages ATM call/put IV from nearest expiration.
+    Returns list sorted by IV desc - highest IV first (best premium-selling candidates).
+    """
+    import concurrent.futures
+
+    def one(sym):
+        try:
+            t = yf.Ticker(sym)
+            hist = t.history(period='1d')
+            if hist.empty:
+                return None
+            spot = float(hist['Close'].iloc[-1])
+            expirations = t.options
+            if not expirations:
+                return None
+            # Find expiration ~30-45 DTE for stable IV
+            from datetime import date
+            today = date.today()
+            target_exp = None
+            for exp in expirations:
+                exp_date = datetime.strptime(exp, '%Y-%m-%d').date()
+                dte = (exp_date - today).days
+                if 25 <= dte <= 50:
+                    target_exp = exp
+                    break
+            if not target_exp:
+                target_exp = expirations[0]
+            chain = t.option_chain(target_exp)
+            calls = chain.calls
+            puts = chain.puts
+            if calls.empty or puts.empty:
+                return None
+            atm_call = calls.iloc[(calls['strike'] - spot).abs().argmin()]
+            atm_put = puts.iloc[(puts['strike'] - spot).abs().argmin()]
+            iv_call = float(atm_call.get('impliedVolatility', 0))
+            iv_put = float(atm_put.get('impliedVolatility', 0))
+            iv = (iv_call + iv_put) / 2 * 100
+            if iv <= 0:
+                return None
+            return {
+                'symbol': sym,
+                'iv': iv,
+                'spot': spot,
+                'dte': (datetime.strptime(target_exp, '%Y-%m-%d').date() - today).days,
+            }
+        except Exception:
+            return None
+
+    out = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+        for r in ex.map(one, symbols):
+            if r:
+                out.append(r)
+    out.sort(key=lambda x: x['iv'], reverse=True)
+    return out
+
+
+def fetch_news(symbols: list, per_ticker: int = 1, max_total: int = 6) -> list:
+    """Fetch latest news per ticker via yfinance. Deduplicates by title."""
+    import concurrent.futures
+    from datetime import datetime as dt
+
+    def one(sym):
+        try:
+            t = yf.Ticker(sym)
+            news = getattr(t, 'news', None) or []
+            picked = []
+            for n in news[:per_ticker * 3]:
+                content = n.get('content') or n
+                title = content.get('title') or n.get('title')
+                if not title:
+                    continue
+                pub_ts = content.get('pubDate') or n.get('providerPublishTime')
+                publisher = (content.get('provider') or {}).get('displayName') or n.get('publisher', '')
+                link = (content.get('canonicalUrl') or {}).get('url') or n.get('link', '')
+                if isinstance(pub_ts, str):
+                    try:
+                        pub_dt = dt.fromisoformat(pub_ts.replace('Z', '+00:00'))
+                    except Exception:
+                        pub_dt = None
+                elif isinstance(pub_ts, (int, float)):
+                    pub_dt = dt.fromtimestamp(pub_ts)
+                else:
+                    pub_dt = None
+                picked.append({
+                    'ticker': sym,
+                    'title': title,
+                    'publisher': publisher,
+                    'link': link,
+                    'pub_dt': pub_dt,
+                })
+                if len(picked) >= per_ticker:
+                    break
+            return picked
+        except Exception:
+            return []
+
+    all_news = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+        for items in ex.map(one, symbols):
+            all_news.extend(items)
+
+    # Deduplicate by title (case-insensitive)
+    seen = set()
+    deduped = []
+    for n in all_news:
+        key = (n['title'] or '').lower()[:80]
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(n)
+
+    deduped.sort(key=lambda x: x['pub_dt'] or dt.min, reverse=True)
+    return deduped[:max_total]
+
+
+def fetch_premarket_change(symbols: list) -> list:
+    """Get pre-market % change for symbols via yfinance prepost data."""
+    if not symbols:
+        return []
+    try:
+        data = yf.download(symbols, period='2d', interval='1d', prepost=True,
+                           progress=False, group_by='ticker', auto_adjust=False, threads=True)
+    except Exception:
+        return []
+
+    out = []
+    for sym in symbols:
+        try:
+            df = data if len(symbols) == 1 else data[sym]
+            df = df.dropna(subset=['Close'])
+            if len(df) < 2:
+                continue
+            last = float(df['Close'].iloc[-1])
+            prev = float(df['Close'].iloc[-2])
+            chg = (last - prev) / prev * 100
+            out.append({'symbol': sym, 'price': last, 'change_pct': chg})
+        except (KeyError, IndexError, ValueError):
+            continue
+    return out
+
+
 if __name__ == '__main__':
     today_str = datetime.now(pytz.timezone('Europe/Vilnius')).strftime('%Y-%m-%d')
     print(f"Testing fetchers for {today_str}\n")

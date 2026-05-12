@@ -7,11 +7,12 @@ import pytz
 
 from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
-    fetch_crypto, fetch_index_snapshot,
+    fetch_crypto, fetch_index_snapshot, fetch_iv_metrics, fetch_news,
+    fetch_quotes,
 )
 from render import render_html, html_to_png
 from send import send_photo
-from watchlist import STOCKS, CRYPTO, FUTURES
+from watchlist import STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS
 
 VILNIUS = pytz.timezone('Europe/Vilnius')
 
@@ -76,6 +77,20 @@ def main():
     crypto = fetch_crypto(CRYPTO)
     print(f"    -> {len(crypto)} coins")
 
+    print("  Fetching AI sector quotes...")
+    ai_quotes_raw = fetch_quotes(AI_TICKERS)
+    ai_quotes = sorted(ai_quotes_raw, key=lambda x: abs(x['change_pct']), reverse=True)[:8]
+    print(f"    -> {len(ai_quotes)} AI tickers")
+
+    print("  Fetching IV metrics (option-selling opportunities)...")
+    iv_data = fetch_iv_metrics(STOCKS)
+    high_iv = iv_data[:8]
+    print(f"    -> {len(iv_data)} tickers ranked, top {len(high_iv)} shown")
+
+    print("  Fetching news...")
+    news = fetch_news(NEWS_TICKERS, per_ticker=1, max_total=6)
+    print(f"    -> {len(news)} headlines")
+
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(
         macro,
@@ -94,6 +109,9 @@ def main():
         'watchlist': watchlist,
         'crypto': crypto,
         'indices': indices,
+        'ai_quotes': ai_quotes,
+        'high_iv': high_iv,
+        'news': news,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }
