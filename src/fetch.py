@@ -17,8 +17,51 @@ PRIORITY_COUNTRIES = {'US', 'EZ', 'DE', 'GB', 'CN', 'JP', 'LT'}
 HIGH_IMPACT_KEYWORDS = [
     'CPI', 'PPI', 'PCE', 'GDP', 'Payroll', 'Unemployment', 'Jobless',
     'Fed', 'FOMC', 'Rate', 'ECB', 'Retail Sales', 'ISM', 'PMI',
-    'Consumer Confidence', 'Housing', 'Industrial Production'
+    'Consumer Confidence', 'Housing', 'Industrial Production', 'NFIB',
+    'Empire', 'Philly', 'Michigan', 'NFP', 'Trade Balance',
 ]
+
+EVENT_DESCRIPTIONS = {
+    'CPI': 'Vartotojų kainų indeksas - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds',
+    'PPI': 'Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį',
+    'PCE': 'Fed mėgstamiausia infliacijos metrika - lemia rate decisions',
+    'Core CPI': 'CPI be food/energy - tikslesnis infliacijos signalas',
+    'Core PPI': 'PPI be food/energy - švaresnis producer infliacijos rodiklis',
+    'GDP': 'Bendras ekonomikos augimas - virš consensus = stiprus augimas, gerai cyclicals',
+    'Payroll': 'Darbo vietų kūrimas - stipriau nei tikėtasi vėluoja rate cuts, blogai bonds',
+    'NFP': 'Non-farm payrolls - pagrindinis JAV darbo rinkos indikatorius',
+    'Unemployment': 'Nedarbo lygis - Fed dual mandate signal, aukštesnis = dovish bias',
+    'Jobless': 'Savaitinės bedarbystės paraiškos - laisvalaikio leading indicator',
+    'FOMC': 'Fed sprendimas dėl palūkanų - tiesioginis impactas visiems asset\'ams',
+    'Fed': 'Fed event - hawkish/dovish toną stebėk',
+    'ECB': 'ECB sprendimas - EUR ir europinių stocks pagrindinis driver\'is',
+    'Rate': 'Centrinio banko rate decision - market mover',
+    'Retail Sales': 'Vartotojų išlaidos - GDP komponentas, US ekonomikos sveikatos check\'as',
+    'ISM': 'Verslo aktyvumo indeksas - >50 = ekspansija, <50 = kontrakcija',
+    'PMI': 'Verslo aktyvumo indeksas - >50 = ekspansija, leading economic indicator',
+    'Consumer Confidence': 'Vartotojų pasitikėjimas - retail spending predictor',
+    'Consumer Sentiment': 'Vartotojų nuotaikos - leading indicator vartotojų behavior\'ui',
+    'Michigan': 'Univ. of Michigan vartotojų pasitikėjimas + 5y infliacijos lūkesčiai',
+    'Housing': 'Būsto rinkos data - rate-sensitive, leading economic indicator',
+    'Building Permits': 'Statybų leidimai - 6-12 mėn forward economic activity signal',
+    'Industrial Production': 'Pramonės gamyba - cyclical sectorių driver\'is',
+    'NFIB': 'Small business optimism - SMB sentimentas, leading employment signal',
+    'Trade Balance': 'Eksportas - importas, USD ir cikliškoms pramonėms svarbus',
+    'Empire': 'NY Fed regional manufacturing - leading ISM indikatorius',
+    'Philly': 'Philadelphia Fed manufacturing - leading ISM indikatorius',
+    'Producer Price': 'Producer kainos - leading CPI signal',
+    'HICP': 'EZ harmonizuotas CPI - ECB watching metric',
+    'ZEW': 'DE financial analysts sentimentas apie EU ekonomiką',
+    'Ifo': 'DE verslo klimato indeksas - eurozonos ekonomikos barometras',
+}
+
+def get_event_description(event_name: str) -> str:
+    """Match event name to description by keyword."""
+    name_lower = event_name.lower()
+    for keyword, desc in EVENT_DESCRIPTIONS.items():
+        if keyword.lower() in name_lower:
+            return desc
+    return ''
 
 
 def _utc_to_vilnius(utc_str: str) -> str:
@@ -56,22 +99,41 @@ def fetch_macro_events(date_str: str) -> list:
             continue
         is_high_impact = any(kw.lower() in event_name.lower() for kw in HIGH_IMPACT_KEYWORDS)
         event_name_clean = event_name.replace('*', '').strip()
+        actual_val = actual if actual != '-' else None
+        expected_val = expected if expected != '-' else None
+        beat_miss = None
+        if actual_val and expected_val:
+            try:
+                a = float(re.sub(r'[^\d.\-]', '', actual_val))
+                e = float(re.sub(r'[^\d.\-]', '', expected_val))
+                if a > e:
+                    beat_miss = 'beat'
+                elif a < e:
+                    beat_miss = 'miss'
+                else:
+                    beat_miss = 'inline'
+            except (ValueError, TypeError):
+                pass
         events.append({
             'time_local': _utc_to_vilnius(event_time),
             'time_raw': event_time,
             'name': event_name_clean,
             'country': country,
             'period': period,
-            'actual': actual if actual != '-' else None,
-            'expected': expected if expected != '-' else None,
+            'actual': actual_val,
+            'expected': expected_val,
             'prior': prior if prior != '-' else None,
             'high_impact': is_high_impact,
+            'description': get_event_description(event_name_clean),
+            'beat_miss': beat_miss,
         })
     return events
 
 
-def fetch_earnings(date_str: str, min_market_cap_b: float = 10.0) -> list:
-    """Fetch earnings calendar for date, filtered by minimum market cap (billions USD)."""
+def fetch_earnings(date_str: str, min_market_cap_b: float = 500.0,
+                   watchlist_symbols: list = None) -> list:
+    """Fetch earnings calendar. Keep if mcap >= min_market_cap_b OR symbol in watchlist."""
+    watchlist_set = set(watchlist_symbols or [])
     url = f"https://finance.yahoo.com/calendar/earnings?day={date_str}"
     r = requests.get(url, headers=HEADERS, timeout=20)
     r.raise_for_status()
@@ -87,7 +149,9 @@ def fetch_earnings(date_str: str, min_market_cap_b: float = 10.0) -> list:
             continue
         symbol, company, event_name, call_time, eps_est, reported_eps, surprise, mcap = cells[:8]
         mcap_b = _parse_market_cap(mcap)
-        if mcap_b is None or mcap_b < min_market_cap_b:
+        in_watchlist = symbol in watchlist_set
+        passes_mcap = mcap_b is not None and mcap_b >= min_market_cap_b
+        if not (in_watchlist or passes_mcap):
             continue
         out.append({
             'symbol': symbol,
@@ -97,9 +161,10 @@ def fetch_earnings(date_str: str, min_market_cap_b: float = 10.0) -> list:
             'reported_eps': reported_eps if reported_eps != '-' else None,
             'surprise': surprise if surprise != '-' else None,
             'market_cap': mcap,
-            'market_cap_b': mcap_b,
+            'market_cap_b': mcap_b or 0,
+            'in_watchlist': in_watchlist,
         })
-    out.sort(key=lambda x: x['market_cap_b'], reverse=True)
+    out.sort(key=lambda x: (not x['in_watchlist'], -x['market_cap_b']))
     return out
 
 

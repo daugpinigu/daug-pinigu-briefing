@@ -12,6 +12,7 @@ from fetch import (
 )
 from render import render_html, html_to_png
 from send import send_photo
+from publish_web import save_briefing_html, regenerate_index
 from watchlist import STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS
 
 VILNIUS = pytz.timezone('Europe/Vilnius')
@@ -61,8 +62,8 @@ def main():
     macro = fetch_macro_events(date_str)
     print(f"    -> {len(macro)} events")
 
-    print("  Fetching earnings...")
-    earnings = fetch_earnings(date_str, min_market_cap_b=10.0)
+    print("  Fetching earnings (>=$500B mcap OR in watchlist)...")
+    earnings = fetch_earnings(date_str, min_market_cap_b=500.0, watchlist_symbols=STOCKS)
     print(f"    -> {len(earnings)} companies")
 
     print("  Fetching indices/futures/VIX...")
@@ -123,8 +124,14 @@ def main():
     print(f"  Rendering PNG -> {output_path.name}")
     html_to_png(html, output_path)
 
+    print("  Saving HTML for web...")
+    html_path = save_briefing_html(html, date_str)
+    regenerate_index()
+    print(f"    -> {html_path.relative_to(html_path.parent.parent.parent)}")
+
+    web_url = f"https://daugpinigu.github.io/daug-pinigu-briefing/briefings/briefing-{date_str}.html"
     print("  Sending to Telegram...")
-    caption = f"📊 Daily briefing · {now.strftime('%Y-%m-%d')}"
+    caption = f"📊 Daily briefing · {now.strftime('%Y-%m-%d')}\n🌐 <a href=\"{web_url}\">Web versija</a>"
     send_photo(output_path, caption=caption)
 
     print(f"[{datetime.now(VILNIUS).strftime('%H:%M:%S')}] Done.")

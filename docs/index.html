@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>daug_pinigu - Dienos Briefing'ai</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a0e1a; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+    background: #0a0e1a;
+    color: #e6e8ee;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 50px 24px 40px;
+    min-height: 100vh;
+  }
+  header {
+    border-bottom: 2px solid rgba(244,204,107,0.2);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .sub { color: #8a92a3; font-size: 15px; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #f4cc6b;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: #e6e8ee;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .row:hover { background: rgba(244,204,107,0.08); transform: translateX(4px); }
+  .row-date { font-size: 16px; font-weight: 600; }
+  .row-iso { font-size: 12px; color: #8a92a3; font-variant-numeric: tabular-nums; }
+  .empty { color: #6c7588; padding: 30px 0; text-align: center; }
+  footer {
+    margin-top: 40px;
+    color: #6c7588;
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>daug_pinigu briefing'ai</h1>
+    <div class="sub">Kasdieniniai investiciniai pranešimai · paskutiniai virsuje</div>
+  </header>
+  <main>
+        <a class="row" href="briefings/briefing-2026-05-12.html">
+          <div class="row-date">2026 m. gegužės 12 d.</div>
+          <div class="row-iso">2026-05-12</div>
+        </a>
+  </main>
+  <footer>Generuojama automatiškai · Šaltiniai: Yahoo Finance, CoinGecko</footer>
+</body>
+</html>

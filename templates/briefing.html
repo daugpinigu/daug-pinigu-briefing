@@ -4,12 +4,25 @@
 <meta charset="UTF-8">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a0e1a; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
     background: #0a0e1a;
     color: #e6e8ee;
-    width: 1080px;
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
     padding: 40px 44px 32px;
+  }
+  @media (max-width: 720px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px !important; }
+    .market-snapshot { grid-template-columns: repeat(3, 1fr) !important; }
+    .ai-grid { grid-template-columns: repeat(4, 1fr) !important; }
+    .iv-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .crypto-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .earnings-grid, .movers-grid { grid-template-columns: 1fr !important; }
+    .event-numbers { gap: 8px !important; }
   }
   header {
     border-bottom: 2px solid rgba(244,204,107,0.2);
@@ -82,19 +95,21 @@
     border-radius: 10px;
     font-weight: 600;
   }
-  .events-list { display: flex; flex-direction: column; gap: 8px; }
+  .events-list { display: flex; flex-direction: column; gap: 10px; }
   .event-row {
     background: rgba(255,255,255,0.04);
     border-left: 3px solid #4ec9d6;
     border-radius: 6px;
     padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
   }
   .event-row.high-impact {
     background: rgba(244,204,107,0.08);
     border-left-color: #f4cc6b;
+  }
+  .event-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
   .event-time {
     font-size: 15px;
@@ -119,14 +134,39 @@
     color: #e6e8ee;
     flex: 1;
   }
-  .event-data {
+  .event-numbers {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-num {
+    text-align: center;
+  }
+  .event-num-label {
+    font-size: 9px;
+    color: #6c7588;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .event-num-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8cfdc;
+  }
+  .event-num-value.beat { color: #7ed87e; }
+  .event-num-value.miss { color: #ff7373; }
+  .event-num-value.inline { color: #f4cc6b; }
+  .event-num-value.muted { color: #6c7588; font-weight: 500; }
+  .event-desc {
     font-size: 12px;
     color: #8a92a3;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-    min-width: 120px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+    line-height: 1.4;
   }
-  .event-data .prior { font-size: 11px; }
 
   .earnings-grid {
     display: grid;
@@ -406,13 +446,28 @@
   <div class="events-list">
     {% for e in macro_events %}
     <div class="event-row {% if e.high_impact %}high-impact{% endif %}">
-      <div class="event-time">{{ e.time_local }}</div>
-      <div class="event-country">{{ e.country }}</div>
-      <div class="event-name">{{ e.name }}</div>
-      <div class="event-data">
-        {% if e.expected %}<div>Exp: {{ e.expected }}</div>{% endif %}
-        {% if e.prior %}<div class="prior">Prior: {{ e.prior }}</div>{% endif %}
+      <div class="event-top">
+        <div class="event-time">{{ e.time_local }}</div>
+        <div class="event-country">{{ e.country }}</div>
+        <div class="event-name">{{ e.name }}{% if e.period %} <span style="color:#6c7588;font-size:11px">({{ e.period }})</span>{% endif %}</div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value {% if e.beat_miss %}{{ e.beat_miss }}{% elif not e.actual %}muted{% endif %}">{{ e.actual or '-' }}</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value {% if not e.expected %}muted{% endif %}">{{ e.expected or '-' }}</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value {% if not e.prior %}muted{% endif %}">{{ e.prior or '-' }}</div>
+          </div>
+        </div>
       </div>
+      {% if e.description %}
+      <div class="event-desc">{{ e.description }}</div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>

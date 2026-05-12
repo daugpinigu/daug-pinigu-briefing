@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a0e1a; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background: #0a0e1a;
+    color: #e6e8ee;
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 44px 32px;
+  }
+  @media (max-width: 720px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px !important; }
+    .market-snapshot { grid-template-columns: repeat(3, 1fr) !important; }
+    .ai-grid { grid-template-columns: repeat(4, 1fr) !important; }
+    .iv-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .crypto-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .earnings-grid, .movers-grid { grid-template-columns: 1fr !important; }
+    .event-numbers { gap: 8px !important; }
+  }
+  header {
+    border-bottom: 2px solid rgba(244,204,107,0.2);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .date-line {
+    font-size: 17px;
+    color: #8a92a3;
+    letter-spacing: 0.3px;
+  }
+
+  .market-snapshot {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+  }
+  .snap-item { text-align: center; padding: 4px 0; }
+  .snap-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .snap-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .snap-change {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .section { margin-bottom: 28px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .section-count {
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .events-list { display: flex; flex-direction: column; gap: 10px; }
+  .event-row {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #4ec9d6;
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+  .event-row.high-impact {
+    background: rgba(244,204,107,0.08);
+    border-left-color: #f4cc6b;
+  }
+  .event-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .event-time {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f4cc6b;
+    min-width: 56px;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-country {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    padding: 3px 9px;
+    border-radius: 4px;
+    color: #c8cfdc;
+    min-width: 34px;
+    text-align: center;
+  }
+  .event-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e6e8ee;
+    flex: 1;
+  }
+  .event-numbers {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-num {
+    text-align: center;
+  }
+  .event-num-label {
+    font-size: 9px;
+    color: #6c7588;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .event-num-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8cfdc;
+  }
+  .event-num-value.beat { color: #7ed87e; }
+  .event-num-value.miss { color: #ff7373; }
+  .event-num-value.inline { color: #f4cc6b; }
+  .event-num-value.muted { color: #6c7588; font-weight: 500; }
+  .event-desc {
+    font-size: 12px;
+    color: #8a92a3;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+    line-height: 1.4;
+  }
+
+  .earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .earnings-row {
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid #7ed87e;
+  }
+  .earnings-symbol {
+    font-size: 15px;
+    font-weight: 800;
+    color: #7ed87e;
+    min-width: 52px;
+  }
+  .earnings-info { flex: 1; min-width: 0; }
+  .earnings-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6e8ee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .earnings-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    margin-top: 2px;
+  }
+  .earnings-time {
+    background: rgba(126,216,126,0.15);
+    color: #7ed87e;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .movers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .movers-col-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #c8cfdc;
+  }
+  .mover-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 5px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .mover-symbol { font-weight: 700; color: #e6e8ee; min-width: 56px; }
+  .mover-price { color: #8a92a3; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mover-up { color: #7ed87e; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mover-down { color: #ff7373; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .crypto-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    border-top: 3px solid #d4a85e;
+  }
+  .crypto-symbol {
+    font-size: 16px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .crypto-name {
+    font-size: 10px;
+    color: #8a92a3;
+    margin: 2px 0 8px;
+  }
+  .crypto-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 3px;
+  }
+  .crypto-change {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .ai-card {
+    background: rgba(192,132,252,0.06);
+    border-top: 3px solid #c084fc;
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .ai-symbol {
+    font-size: 13px;
+    font-weight: 800;
+    color: #c084fc;
+    letter-spacing: 0.3px;
+  }
+  .ai-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e6e8ee;
+    margin: 4px 0 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ai-change {
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .iv-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .iv-row {
+    background: rgba(244,143,177,0.06);
+    border-left: 3px solid #f48fb1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iv-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    min-width: 50px;
+  }
+  .iv-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    flex: 1;
+  }
+  .iv-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .news-list { display: flex; flex-direction: column; gap: 8px; }
+  .news-row {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .news-ticker {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4ec9d6;
+    background: rgba(78,201,214,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .news-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 3px;
+  }
+
+  .key-takeaway {
+    margin-top: 16px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.12) 0%, rgba(232,156,91,0.06) 100%);
+    border: 1px solid rgba(244,204,107,0.25);
+    border-radius: 10px;
+  }
+  .takeaway-label {
+    font-size: 11px;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .takeaway-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f4f5f9;
+    line-height: 1.4;
+  }
+  footer {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    color: #6c7588;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DIENOS BRIEFING</h1>
+  <div class="date-line">2026 m. gegužės 12 d., antradienis · daug_pinigu daily</div>
+</header>
+
+
+<div class="market-snapshot">
+  
+  <div class="snap-item">
+    <div class="snap-label">S&amp;P 500</div>
+    <div class="snap-price">7,372</div>
+    <div class="snap-change" style="color: #ff7373">-0.86%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Nasdaq 100</div>
+    <div class="snap-price">28,916</div>
+    <div class="snap-change" style="color: #ff7373">-1.73%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Dow</div>
+    <div class="snap-price">49,523</div>
+    <div class="snap-change" style="color: #ff7373">-0.54%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Russell 2k</div>
+    <div class="snap-price">2,815</div>
+    <div class="snap-change" style="color: #ff7373">-2.23%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">VIX</div>
+    <div class="snap-price">18.93</div>
+    <div class="snap-change" style="color: #7ed87e">+2.99%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Crude Oil</div>
+    <div class="snap-price">102.03</div>
+    <div class="snap-change" style="color: #7ed87e">+4.04%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Gold</div>
+    <div class="snap-price">4,662</div>
+    <div class="snap-change" style="color: #ff7373">-1.20%</div>
+  </div>
+  
+</div>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#c084fc">AI Sektorius</div>
+    <span class="section-count" style="background:rgba(192,132,252,0.15);color:#c084fc">8</span>
+  </div>
+  <div class="ai-grid">
+    
+    <div class="ai-card">
+      <div class="ai-symbol">CRWV</div>
+      <div class="ai-price">$103.14</div>
+      <div class="ai-change" style="color: #ff7373">-10.07%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MU</div>
+      <div class="ai-price">$738.93</div>
+      <div class="ai-change" style="color: #ff7373">-7.09%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">NBIS</div>
+      <div class="ai-price">$174.46</div>
+      <div class="ai-change" style="color: #ff7373">-6.25%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">ASML</div>
+      <div class="ai-price">$1,487</div>
+      <div class="ai-change" style="color: #ff7373">-5.06%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AMD</div>
+      <div class="ai-price">$437.62</div>
+      <div class="ai-change" style="color: #ff7373">-4.61%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">TSM</div>
+      <div class="ai-price">$387.65</div>
+      <div class="ai-change" style="color: #ff7373">-4.18%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">ZM</div>
+      <div class="ai-price">$103.38</div>
+      <div class="ai-change" style="color: #ff7373">-3.49%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AVGO</div>
+      <div class="ai-price">$413.64</div>
+      <div class="ai-change" style="color: #ff7373">-3.45%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Makro Events</div>
+    <span class="section-count">8</span>
+  </div>
+  <div class="events-list">
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">13:00</div>
+        <div class="event-country">US</div>
+        <div class="event-name">NFIB Business Optimism Idx <span style="color:#6c7588;font-size:11px">(Apr)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">95.9</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">95.8</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Verslo aktyvumo indeksas - &gt;50 = ekspansija, &lt;50 = kontrakcija</div>
+      
+    </div>
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">09:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">CPI Final YY <span style="color:#6c7588;font-size:11px">(Apr)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">2.9</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">2.9</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Vartotojų kainų indeksas - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds</div>
+      
+    </div>
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">09:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">CPI Final MM <span style="color:#6c7588;font-size:11px">(Apr)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">0.6</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">0.6</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Vartotojų kainų indeksas - infliacijos pulsas. Viršija prognozę = hawkish Fed bias, blogai stocks/bonds</div>
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">09:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">HICP Final YY <span style="color:#6c7588;font-size:11px">(Apr)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">2.9</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">2.9</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">EZ harmonizuotas CPI - ECB watching metric</div>
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">09:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">HICP Final MM <span style="color:#6c7588;font-size:11px">(Apr)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">0.5</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">0.5</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">EZ harmonizuotas CPI - ECB watching metric</div>
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">12:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">ZEW Economic Sentiment <span style="color:#6c7588;font-size:11px">(May)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">-10.2</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">-17.2</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">DE financial analysts sentimentas apie EU ekonomiką</div>
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">12:00</div>
+        <div class="event-country">DE</div>
+        <div class="event-name">ZEW Current Conditions <span style="color:#6c7588;font-size:11px">(May)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">-77.8</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">-73.7</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">DE financial analysts sentimentas apie EU ekonomiką</div>
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">08:00</div>
+        <div class="event-country">JP</div>
+        <div class="event-name">Coincident Index <span style="color:#6c7588;font-size:11px">(Mar)</span></div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value ">0.3</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">-1.6</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Tavo Watchlist - Top Movers</div>
+  </div>
+  <div class="movers-grid">
+    <div>
+      <div class="movers-col-title">📈 Gainers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$88.75</span></span>
+        <span class="mover-up">+3.86%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">DUOL</span> <span class="mover-price">$106.97</span></span>
+        <span class="mover-up">+1.73%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$388.44</span></span>
+        <span class="mover-up">+1.04%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">AAPL</span> <span class="mover-price">$294.37</span></span>
+        <span class="mover-up">+0.58%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">META</span> <span class="mover-price">$600.72</span></span>
+        <span class="mover-up">+0.31%</span>
+      </div>
+      
+    </div>
+    <div>
+      <div class="movers-col-title">📉 Losers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$24.96</span></span>
+        <span class="mover-down">-14.34%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.94</span></span>
+        <span class="mover-down">-13.76%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CLSK</span> <span class="mover-price">$12.51</span></span>
+        <span class="mover-down">-12.52%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.05</span></span>
+        <span class="mover-down">-10.75%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CRWV</span> <span class="mover-price">$103.15</span></span>
+        <span class="mover-down">-10.07%</span>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Crypto · 24h</div>
+  </div>
+  <div class="crypto-grid">
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">BTC</div>
+      <div class="crypto-name">Bitcoin</div>
+      <div class="crypto-price">$80,264</div>
+      <div class="crypto-change" style="color: #ff7373">-1.24%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">ETH</div>
+      <div class="crypto-name">Ethereum</div>
+      <div class="crypto-price">$2,261</div>
+      <div class="crypto-change" style="color: #ff7373">-2.97%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">SOL</div>
+      <div class="crypto-name">Solana</div>
+      <div class="crypto-price">$93.89</div>
+      <div class="crypto-change" style="color: #ff7373">-2.31%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">LINK</div>
+      <div class="crypto-name">Chainlink</div>
+      <div class="crypto-price">$10.13</div>
+      <div class="crypto-change" style="color: #ff7373">-3.95%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">TAO</div>
+      <div class="crypto-name">Bittensor</div>
+      <div class="crypto-price">$306.62</div>
+      <div class="crypto-change" style="color: #ff7373">-6.05%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">Top IV - Premium Selling</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">8</span>
+  </div>
+  <div class="iv-grid">
+    
+    <div class="iv-row">
+      <div class="iv-symbol">VLN</div>
+      <div class="iv-meta">$2.60 · 37d</div>
+      <div class="iv-value">169.5%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BMNU</div>
+      <div class="iv-meta">$1.94 · 37d</div>
+      <div class="iv-value">148.8%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">CONL</div>
+      <div class="iv-meta">$9.05 · 37d</div>
+      <div class="iv-value">141.1%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">CLSK</div>
+      <div class="iv-meta">$12.52 · 31d</div>
+      <div class="iv-value">109.5%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$53.72 · 31d</div>
+      <div class="iv-value">108.3%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">NBIS</div>
+      <div class="iv-meta">$174.58 · 31d</div>
+      <div class="iv-value">106.6%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BE</div>
+      <div class="iv-meta">$272.85 · 31d</div>
+      <div class="iv-value">106.4%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">SNDK</div>
+      <div class="iv-meta">$1411.15 · 31d</div>
+      <div class="iv-value">105.4%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#e6e8ee">Naujienos</div>
+    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">6</span>
+  </div>
+  <div class="news-list">
+    
+    <div class="news-row">
+      <div class="news-ticker">AVGO</div>
+      <div class="news-content">
+        <div class="news-title">Citi Raises Broadcom Price Target to $500: AI Demand Sets Up Another Big April Quarter</div>
+        <div class="news-meta">24/7 Wall St. · 05-12 15:18</div>
+      </div>
+    </div>
+    
+    <div class="news-row">
+      <div class="news-ticker">NVDA</div>
+      <div class="news-content">
+        <div class="news-title">How Nvidia could once again become the &#39;flavor of the day&#39;</div>
+        <div class="news-meta">Yahoo Finance Video · 05-12 15:05</div>
+      </div>
+    </div>
+    
+    <div class="news-row">
+      <div class="news-ticker">AMZN</div>
+      <div class="news-content">
+        <div class="news-title">Amazon offering a new 30-minute delivery space</div>
+        <div class="news-meta">Yahoo Finance Video · 05-12 15:05</div>
+      </div>
+    </div>
+    
+    <div class="news-row">
+      <div class="news-ticker">PLTR</div>
+      <div class="news-content">
+        <div class="news-title">Price Prediction: Archer Aviation Eyes 84% Upside</div>
+        <div class="news-meta">24/7 Wall St. · 05-12 13:14</div>
+      </div>
+    </div>
+    
+    <div class="news-row">
+      <div class="news-ticker">ZM</div>
+      <div class="news-content">
+        <div class="news-title">This Zoom Communications Insider Reduced Their Stake By 100%</div>
+        <div class="news-meta">Simply Wall St. · 05-12 11:00</div>
+      </div>
+    </div>
+    
+    <div class="news-row">
+      <div class="news-ticker">GOOGL</div>
+      <div class="news-content">
+        <div class="news-title">Anthropic nears $1T valuation as revenue surges</div>
+        <div class="news-meta">Yahoo Finance Video · 05-11 20:21</div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<div class="key-takeaway">
+  <div class="takeaway-label">Key Takeaway</div>
+  <div class="takeaway-text">NFIB Business Optimism Idx (13:00) - didžiausias šios dienos event&#39;as.</div>
+</div>
+
+
+<footer>
+  <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
+  <span>18:32 (Vilnius)</span>
+</footer>
+
+</body>
+</html>
