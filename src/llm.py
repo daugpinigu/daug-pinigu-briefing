@@ -140,6 +140,40 @@ def _get_client() -> Optional[object]:
     return _client_cache
 
 
+def _llm_call_with_retry(client, prompt: str, model: str, max_tokens: int = 700,
+                         max_retries: int = 3):
+    """Call Claude with retry on 529 overloaded; fallback Sonnet -> Haiku on persistent overload."""
+    import time
+    last_err = None
+    for attempt in range(max_retries):
+        try:
+            resp = client.messages.create(
+                model=model,
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return resp
+        except Exception as e:
+            last_err = e
+            err_str = str(e)
+            if '529' in err_str or 'overloaded' in err_str.lower():
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                    continue
+                if model == SONNET_MODEL:
+                    print(f"  Sonnet overloaded, falling back to Haiku")
+                    try:
+                        return client.messages.create(
+                            model=HAIKU_MODEL, max_tokens=max_tokens,
+                            messages=[{"role": "user", "content": prompt}],
+                        )
+                    except Exception as e2:
+                        last_err = e2
+            else:
+                break
+    raise last_err
+
+
 def is_enabled() -> bool:
     """Check if LLM is available (API key + SDK installed)."""
     if os.environ.get('LLM_ENABLED', 'true').lower() in ('false', '0', 'no'):
@@ -184,11 +218,7 @@ STRAIPSNIO TEKSTAS:
 {body[:3000]}"""
 
     try:
-        resp = client.messages.create(
-            model=model,
-            max_tokens=700,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=700)
         text = resp.content[0].text.strip() if resp.content else ''
         m = re.search(r'\{.*\}', text, re.DOTALL)
         if not m:
@@ -229,11 +259,7 @@ EARNINGS DATA:
 Tavo analizė:"""
 
     try:
-        resp = client.messages.create(
-            model=model,
-            max_tokens=250,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=250)
         text = resp.content[0].text.strip() if resp.content else ''
         return _cleanup_text(text)
     except Exception as e:
@@ -269,11 +295,7 @@ STRAIPSNIS:
 {news_body[:2500]}"""
 
     try:
-        resp = client.messages.create(
-            model=model,
-            max_tokens=400,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=400)
         text = resp.content[0].text.strip() if resp.content else ''
         m = re.search(r'\{.*\}', text, re.DOTALL)
         if not m:
@@ -308,10 +330,7 @@ EARNINGS DUOMENYS:
 Tavo izvalga:"""
 
     try:
-        resp = client.messages.create(
-            model=model, max_tokens=400,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=400)
         text = resp.content[0].text.strip() if resp.content else ''
         return _cleanup_text(text)
     except Exception as e:
@@ -339,11 +358,7 @@ TOP COMMENTS:
 Tavo apibendrinimas:"""
 
     try:
-        resp = client.messages.create(
-            model=model,
-            max_tokens=250,
-            messages=[{"role": "user", "content": prompt}],
-        )
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=250)
         text = resp.content[0].text.strip() if resp.content else ''
         return _cleanup_text(text)
     except Exception as e:
