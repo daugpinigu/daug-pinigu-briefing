@@ -336,6 +336,58 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .insider-list { display: flex; flex-direction: column; gap: 6px; }
+  .insider-row {
+    background: rgba(126,216,126,0.04);
+    border-left: 3px solid #7ed87e;
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .insider-row.watchlist-hit {
+    background: linear-gradient(90deg, rgba(244,204,107,0.12) 0%, rgba(126,216,126,0.04) 100%);
+    border-left: 3px solid #f4cc6b;
+  }
+  .insider-ticker {
+    font-size: 14px;
+    font-weight: 800;
+    color: #7ed87e;
+    background: rgba(126,216,126,0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .watchlist-hit .insider-ticker {
+    color: #f4cc6b;
+    background: rgba(244,204,107,0.15);
+  }
+  .insider-info { flex: 1; min-width: 0; }
+  .insider-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6e8ee;
+  }
+  .insider-title {
+    color: #8a92a3;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .insider-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .insider-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+  }
+
   .news-list { display: flex; flex-direction: column; gap: 8px; }
   .news-row {
     background: rgba(255,255,255,0.03);
@@ -553,6 +605,37 @@
       <div class="iv-symbol">{{ x.symbol }}</div>
       <div class="iv-meta">${{ "%.2f"|format(x.spot) }} · {{ x.dte }}d</div>
       <div class="iv-value">{{ "%.1f"|format(x.iv) }}%</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if insider and (insider.watchlist or insider.top) %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Insider Purchases (C-Suite)</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ (insider.watchlist|length) + (insider.top|length) }}</span>
+  </div>
+  <div class="insider-list">
+    {% for x in insider.watchlist %}
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">{{ x.ticker }}</div>
+      <div class="insider-info">
+        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
+        <div class="insider-meta">{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}</div>
+      </div>
+      <div class="insider-value">{{ x.value_str }}</div>
+    </div>
+    {% endfor %}
+    {% for x in insider.top[:6] %}
+    <div class="insider-row">
+      <div class="insider-ticker">{{ x.ticker }}</div>
+      <div class="insider-info">
+        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
+        <div class="insider-meta">{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}</div>
+      </div>
+      <div class="insider-value">{{ x.value_str }}</div>
     </div>
     {% endfor %}
   </div>

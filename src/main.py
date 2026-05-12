@@ -9,6 +9,7 @@ from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
     fetch_market_news, fetch_mover_catalysts, fetch_quotes,
+    fetch_insider_purchases,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -88,6 +89,10 @@ def main():
     high_iv = iv_data[:8]
     print(f"    -> {len(iv_data)} tickers ranked, top {len(high_iv)} shown")
 
+    print("  Fetching insider purchases (CEO/CFO/COO)...")
+    insider = fetch_insider_purchases(watchlist=STOCKS, min_value=100_000, days=2, max_results=8)
+    print(f"    -> {len(insider['watchlist'])} watchlist hits, {len(insider['top'])} other top buys")
+
     print("  Fetching market news (quality filtered)...")
     market_news = fetch_market_news(max_total=5)
     print(f"    -> {len(market_news)} market headlines")
@@ -124,6 +129,7 @@ def main():
         'ai_quotes': ai_quotes,
         'high_iv': high_iv,
         'news': news,
+        'insider': insider,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }

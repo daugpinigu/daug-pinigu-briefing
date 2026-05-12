@@ -794,6 +794,107 @@ def fetch_market_news(max_total: int = 6, hours_window: int = 24) -> list:
     return [{'ticker': '', **n} for _, n in scored[:max_total]]
 
 
+INSIDER_KEY_ROLES = re.compile(
+    r'(CEO|CFO|COO|CTO|Pres(?:ident)?|Chair|Founder|Chief\s+\w+\s+Officer)',
+    re.I,
+)
+
+
+def _parse_money(s: str) -> float:
+    """Parse '+$1,234,567' or '-$50,000' to float."""
+    if not s:
+        return 0
+    s = s.replace(',', '').replace('$', '').replace('+', '').strip()
+    try:
+        return float(s)
+    except ValueError:
+        return 0
+
+
+def fetch_insider_purchases(watchlist: list = None, min_value: float = 50_000,
+                            days: int = 2, max_results: int = 10) -> dict:
+    """Fetch recent insider C-suite/officer PURCHASES from OpenInsider.
+
+    Filters for CEO/CFO/COO/President/Chair/Founder roles only (no random directors).
+    Returns dict with:
+      - 'watchlist': purchases on user's watchlist tickers (any size)
+      - 'top': other top-value purchases (>= min_value)
+    """
+    from datetime import datetime as dt, timedelta
+    watchlist_set = set(watchlist or [])
+    url = "http://openinsider.com/latest-officer-purchases"
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=20)
+        r.raise_for_status()
+    except Exception as e:
+        print(f"  warn: OpenInsider fetch failed: {e}")
+        return {'watchlist': [], 'top': []}
+
+    soup = BeautifulSoup(r.text, 'lxml')
+    table = soup.find('table', class_='tinytable')
+    if not table:
+        return {'watchlist': [], 'top': []}
+
+    cutoff = dt.now() - timedelta(days=days)
+    watchlist_hits = []
+    top_buys = []
+
+    for row in table.find_all('tr')[1:]:
+        cells = [c.get_text(strip=True) for c in row.find_all('td')]
+        if len(cells) < 13:
+            continue
+        filing_date = cells[1]
+        trade_date = cells[2]
+        ticker = cells[3]
+        company = cells[4]
+        insider = cells[5]
+        title = cells[6]
+        tx_type = cells[7]
+        price = cells[8]
+        qty = cells[9]
+        value_str = cells[12]
+
+        if 'P - Purchase' not in tx_type:
+            continue
+        try:
+            filing_dt = dt.strptime(filing_date, '%Y-%m-%d %H:%M:%S')
+        except ValueError:
+            continue
+        if filing_dt < cutoff:
+            continue
+
+        is_key_role = bool(INSIDER_KEY_ROLES.search(title))
+        if not is_key_role:
+            continue
+
+        value = _parse_money(value_str)
+        item = {
+            'ticker': ticker,
+            'company': company[:30],
+            'insider': insider[:30],
+            'title': title[:25],
+            'price': price,
+            'qty': qty,
+            'value': value,
+            'value_str': value_str,
+            'filing_date': filing_dt.strftime('%m-%d %H:%M'),
+            'trade_date': trade_date,
+            'in_watchlist': ticker in watchlist_set,
+        }
+
+        if ticker in watchlist_set:
+            watchlist_hits.append(item)
+        elif value >= min_value:
+            top_buys.append(item)
+
+    top_buys.sort(key=lambda x: x['value'], reverse=True)
+    watchlist_hits.sort(key=lambda x: x['value'], reverse=True)
+    return {
+        'watchlist': watchlist_hits[:max_results],
+        'top': top_buys[:max_results],
+    }
+
+
 def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4) -> list:
     """For top movers, search news that explains the move. Filtered for catalysts."""
     import concurrent.futures
