@@ -167,21 +167,150 @@ def _load_ff_json_cached(max_age_hours: int = 6):
     return data
 
 
-def fetch_macro_events(date_str: str) -> list:
-    """Fetch macro economic events from ForexFactory JSON for the given date.
+PERIOD_SUFFIX_RE = re.compile(
+    r'(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC|Q[1-4])\b\s*$',
+    re.IGNORECASE,
+)
 
-    Returns events for date_str (YYYY-MM-DD). Filters US events (High+Med)
-    and EUR (High only). Has impact level, forecast, actual when available.
-    Cached for 6h to respect rate limits.
+
+def _strip_period_suffix(name: str) -> str:
+    """Remove trailing period markers like 'APR', 'MAR', 'Q1' from event names."""
+    return PERIOD_SUFFIX_RE.sub('', name).strip()
+
+
+def fetch_macro_events_tradingeconomics(date_str: str) -> list:
+    """Primary macro source. Scrapes TradingEconomics calendar with actuals.
+
+    Returns US (importance 3) events with actual/consensus/previous when released.
+    Time on TE is UTC, converted to Vilnius local.
     """
     from datetime import datetime as dt
+    url = "https://tradingeconomics.com/calendar?importance=3&country=united%20states"
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=20)
+        r.raise_for_status()
+    except Exception as e:
+        print(f"  warn: TradingEconomics fetch failed: {e}")
+        return []
+
+    soup = BeautifulSoup(r.text, 'lxml')
+    table = soup.find('table', class_='table')
+    if not table:
+        return []
+
+    target_dt = datetime.strptime(date_str, '%Y-%m-%d')
+    target_day_str = target_dt.strftime('%A %B %-d %Y')
+
+    events = []
+    current_date_match = False
+    for row in table.find_all('tr'):
+        cells = [c.get_text(strip=True) for c in row.find_all(['td', 'th'])]
+        if not cells:
+            continue
+        if len(cells) > 0 and any(weekday in cells[0] for weekday in
+                                   ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']):
+            current_date_match = (cells[0] == target_day_str)
+            continue
+        if not current_date_match or len(cells) < 9:
+            continue
+        time_utc = cells[0]
+        country = cells[1]
+        if country != 'US':
+            continue
+        event_raw = cells[4] if len(cells) >= 5 else ''
+        event_name = _strip_period_suffix(event_raw)
+        actual = cells[5] if len(cells) >= 6 and cells[5] else None
+        previous = cells[6] if len(cells) >= 7 and cells[6] else None
+        consensus = cells[7] if len(cells) >= 8 and cells[7] else None
+        forecast = cells[8] if len(cells) >= 9 and cells[8] else None
+
+        try:
+            t_naive = datetime.strptime(time_utc, '%I:%M %p')
+            t_utc = target_dt.replace(hour=t_naive.hour, minute=t_naive.minute, tzinfo=pytz.utc)
+            time_local = t_utc.astimezone(pytz.timezone('Europe/Vilnius')).strftime('%H:%M')
+        except Exception:
+            time_local = time_utc
+
+        expected = consensus or forecast
+        beat_miss = _classify_beat_miss(actual, expected)
+
+        events.append({
+            'time_local': time_local,
+            'time_raw': time_utc,
+            'name': event_name,
+            'country': 'US',
+            'period': '',
+            'actual': actual,
+            'expected': expected,
+            'prior': previous,
+            'high_impact': True,
+            'impact': 'High',
+            'description': get_event_description(event_name),
+            'beat_miss': beat_miss,
+        })
+
+    return events
+
+
+def fetch_macro_events(date_str: str) -> list:
+    """Fetch macro economic events. Primary: TradingEconomics (has actuals).
+
+    Fallbacks: ForexFactory JSON (forecasts only), then Yahoo. Merges
+    so we get actuals from TE plus any extra events from FF.
+    """
+    from datetime import datetime as dt
+
+    te_events = fetch_macro_events_tradingeconomics(date_str)
+    te_names = {(e['name'].lower(), e['time_local']) for e in te_events}
+
+    # Augment with ForexFactory events that TE doesn't have (e.g., Fed speeches)
     try:
         all_events = _load_ff_json_cached()
     except Exception as e:
-        print(f"  warn: ForexFactory fetch failed: {e}, falling back to Yahoo")
+        print(f"  warn: ForexFactory fetch failed: {e}")
+        if te_events:
+            return te_events
         return _fetch_macro_yahoo_fallback(date_str)
 
-    events = []
+    def _topic_keys(name: str) -> set:
+        """Extract topic keywords for cross-source dedup (CPI == Inflation Rate, etc.)."""
+        n = name.lower()
+        topics = set()
+        if 'cpi' in n or 'inflation' in n:
+            topics.add('cpi')
+            if 'core' in n:
+                topics.add('core_cpi')
+            if 'm/m' in n or 'mom' in n or 'monthly' in n:
+                topics.add('cpi_m')
+            if 'y/y' in n or 'yoy' in n or 'annual' in n:
+                topics.add('cpi_y')
+        if 'ppi' in n or 'producer pric' in n:
+            topics.add('ppi')
+        if 'pce' in n:
+            topics.add('pce')
+        if 'payroll' in n or 'nfp' in n or 'non-farm' in n:
+            topics.add('payrolls')
+        if 'unemploy' in n:
+            topics.add('unemployment')
+        if 'jobless' in n:
+            topics.add('jobless')
+        if 'fomc' in n or 'fed funds' in n:
+            topics.add('fomc')
+        if 'fed chair' in n:
+            topics.add('fed_chair')
+        if 'retail sales' in n:
+            topics.add('retail')
+        if 'gdp' in n:
+            topics.add('gdp')
+        if 'ism' in n:
+            topics.add('ism')
+        if 'pmi' in n:
+            topics.add('pmi')
+        return topics
+
+    te_signatures = {(t, frozenset(_topic_keys(e['name']))) for e in te_events for t in [e['time_local']]}
+
+    merged = list(te_events)
     for ev in all_events:
         date_iso = ev.get('date', '')
         if not date_iso.startswith(date_str):
@@ -189,9 +318,6 @@ def fetch_macro_events(date_str: str) -> list:
         ccy = ev.get('country', '')
         impact = ev.get('impact', 'Low')
 
-        # US: include High + Medium impact
-        # EUR: include only High impact (ECB, EZ aggregate CPI etc.)
-        # Everything else: skip
         if ccy in PRIORITY_CCY:
             if impact not in ('High', 'Medium'):
                 continue
@@ -201,7 +327,6 @@ def fetch_macro_events(date_str: str) -> list:
         else:
             continue
 
-        # Parse ISO datetime with timezone offset
         try:
             event_dt = dt.fromisoformat(date_iso)
             event_utc = event_dt.astimezone(pytz.utc)
@@ -211,6 +336,14 @@ def fetch_macro_events(date_str: str) -> list:
             time_local = '-'
 
         title = ev.get('title', '')
+        ff_topics = _topic_keys(title)
+        is_dup = any(
+            t == time_local and (ff_topics & te_topics)
+            for t, te_topics in te_signatures
+        )
+        if is_dup:
+            continue
+
         forecast = ev.get('forecast') or None
         previous = ev.get('previous') or None
         actual = ev.get('actual') or None
@@ -222,8 +355,7 @@ def fetch_macro_events(date_str: str) -> list:
             actual = None
 
         beat_miss = _classify_beat_miss(actual, forecast)
-
-        events.append({
+        merged.append({
             'time_local': time_local,
             'time_raw': date_iso,
             'name': title,
@@ -237,8 +369,8 @@ def fetch_macro_events(date_str: str) -> list:
             'description': get_event_description(title),
             'beat_miss': beat_miss,
         })
-    events.sort(key=lambda e: e['time_local'])
-    return events
+    merged.sort(key=lambda e: e['time_local'])
+    return merged
 
 
 def fetch_earnings(date_str: str, min_market_cap_b: float = 500.0,
