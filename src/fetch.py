@@ -759,12 +759,93 @@ def _fetch_rss_feed(url: str, source_label: str, timeout: int = 10) -> list:
 
 
 FINTWIT_ACCOUNTS = [
-    'DeItaone',         # DeltaOne - breaking news
-    'firstsquawk',      # First Squawk - real-time news
-    'unusual_whales',   # Unusual options flow + fintwit
-    'zerohedge',        # Macro/markets
-    'WSJmarkets',       # WSJ markets
+    'DeItaone', 'firstsquawk', 'unusual_whales', 'zerohedge', 'WSJmarkets',
 ]
+
+REDDIT_SUBS = [
+    ('stocks', 'top', 'day'),         # quality stock discussion
+    ('options', 'top', 'day'),        # options-seller content
+    ('StockMarket', 'top', 'day'),    # macro/market commentary
+]
+
+
+def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
+                             min_score: int = 50) -> list:
+    """Fetch quality discussions from r/stocks, r/options, r/StockMarket.
+
+    Filters by score (>=50 upvotes), prefers posts mentioning tickers or
+    substantive titles. Drops daily threads and meme content.
+    """
+    import concurrent.futures
+    from datetime import datetime as dt, timezone, timedelta
+    subs = subs or REDDIT_SUBS
+    cutoff = dt.now(timezone.utc) - timedelta(hours=24)
+
+    NOISE_TITLE_PATTERNS = [
+        re.compile(p, re.I) for p in [
+            r'^(daily|weekly|rate my)\s+',
+            r'discussion thread',
+            r'whats your',
+            r"what'?s your",
+            r'rate my portfolio',
+            r'^yolo',
+            r'mod\s*announcement',
+        ]
+    ]
+
+    def fetch_sub(spec):
+        sub, sort, t = spec
+        url = f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}"
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=12)
+            r.raise_for_status()
+            data = r.json().get('data', {}).get('children', [])
+        except Exception:
+            return []
+        out = []
+        for item in data:
+            p = item.get('data', {})
+            title = p.get('title', '')
+            score = p.get('score', 0)
+            num_comments = p.get('num_comments', 0)
+            created = p.get('created_utc', 0)
+            permalink = p.get('permalink', '')
+            stickied = p.get('stickied', False)
+            if stickied:
+                continue
+            if score < min_score:
+                continue
+            if any(pat.search(title) for pat in NOISE_TITLE_PATTERNS):
+                continue
+            pub_dt = dt.fromtimestamp(created, tz=timezone.utc) if created else None
+            if pub_dt and pub_dt < cutoff:
+                continue
+            out.append({
+                'sub': sub,
+                'title': title,
+                'score': score,
+                'num_comments': num_comments,
+                'pub_dt': pub_dt,
+                'link': f"https://reddit.com{permalink}",
+            })
+        return out
+
+    all_posts = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as ex:
+        for items in ex.map(fetch_sub, subs):
+            all_posts.extend(items)
+
+    seen = set()
+    deduped = []
+    for p in all_posts:
+        key = re.sub(r'\W+', '', p['title'].lower())[:60]
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(p)
+
+    deduped.sort(key=lambda x: x['score'], reverse=True)
+    return deduped[:max_total]
 
 
 def fetch_x_fintwit(accounts: list = None, per_account: int = 3,

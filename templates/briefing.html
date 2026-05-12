@@ -420,26 +420,35 @@
     margin-top: 3px;
   }
 
-  .fintwit-list { display: flex; flex-direction: column; gap: 8px; }
-  .fintwit-row {
-    background: rgba(78,201,214,0.05);
-    border-left: 3px solid #4ec9d6;
+  .reddit-list { display: flex; flex-direction: column; gap: 8px; }
+  .reddit-row {
+    background: rgba(255,138,76,0.04);
+    border-left: 3px solid #ff8a4c;
     border-radius: 6px;
     padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
   }
-  .fintwit-account {
-    font-size: 12px;
+  .reddit-sub {
+    font-size: 11px;
     font-weight: 700;
-    color: #4ec9d6;
-    margin-bottom: 4px;
+    color: #ff8a4c;
+    background: rgba(255,138,76,0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 90px;
+    text-align: center;
   }
-  .fintwit-text {
-    font-size: 13px;
+  .reddit-content { flex: 1; min-width: 0; }
+  .reddit-title {
+    font-size: 14px;
+    font-weight: 600;
     color: #e6e8ee;
-    line-height: 1.45;
+    line-height: 1.35;
   }
-  .fintwit-time {
-    font-size: 10px;
+  .reddit-meta {
+    font-size: 11px;
     color: #6c7588;
     margin-top: 4px;
     font-variant-numeric: tabular-nums;
@@ -687,18 +696,20 @@
 </section>
 {% endif %}
 
-{% if fintwit %}
+{% if reddit_posts %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title" style="color:#4ec9d6">Fintwit · X.com</div>
-    <span class="section-count" style="background:rgba(78,201,214,0.15);color:#4ec9d6">{{ fintwit|length }}</span>
+    <div class="section-title" style="color:#ff8a4c">Reddit · Hot Discussions</div>
+    <span class="section-count" style="background:rgba(255,138,76,0.15);color:#ff8a4c">{{ reddit_posts|length }}</span>
   </div>
-  <div class="fintwit-list">
-    {% for t in fintwit %}
-    <div class="fintwit-row">
-      <div class="fintwit-account">@{{ t.account }}</div>
-      <div class="fintwit-text">{{ t.text[:240] }}{% if t.text|length > 240 %}...{% endif %}</div>
-      {% if t.pub_dt %}<div class="fintwit-time">{{ t.pub_dt.strftime('%m-%d %H:%M') }}</div>{% endif %}
+  <div class="reddit-list">
+    {% for p in reddit_posts %}
+    <div class="reddit-row">
+      <div class="reddit-sub">r/{{ p.sub }}</div>
+      <div class="reddit-content">
+        <div class="reddit-title">{{ p.title[:140] }}</div>
+        <div class="reddit-meta">▲ {{ p.score }} · {{ p.num_comments }} comments{% if p.pub_dt %} · {{ p.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
+      </div>
     </div>
     {% endfor %}
   </div>
