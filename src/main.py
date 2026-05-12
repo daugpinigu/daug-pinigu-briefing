@@ -10,6 +10,7 @@ from fetch import (
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
     fetch_market_news, fetch_mover_catalysts, fetch_quotes,
     fetch_insider_purchases, fetch_reddit_discussions,
+    enrich_news_with_summaries,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -127,7 +128,12 @@ def main():
     news = mover_news + [n for n in market_news if not any(
         n['title'].lower()[:50] == m['title'].lower()[:50] for m in mover_news
     )]
-    news = news[:7]
+    news = news[:6]
+
+    print("  Enriching news with article summaries...")
+    news = _safe('enrich news', lambda: enrich_news_with_summaries(news), news)
+    summary_count = sum(1 for n in news if n.get('summary'))
+    print(f"    -> {summary_count}/{len(news)} enriched")
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(

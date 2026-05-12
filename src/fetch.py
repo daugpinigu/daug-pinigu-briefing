@@ -931,6 +931,72 @@ def fetch_x_fintwit(accounts: list = None, per_account: int = 3,
     return deduped[:max_total]
 
 
+def fetch_article_summary(url: str, max_chars: int = 600) -> str:
+    """Fetch first few paragraphs of an article body. Returns clean text."""
+    if not url:
+        return ''
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=12, allow_redirects=True)
+        if r.status_code != 200:
+            return ''
+        soup = BeautifulSoup(r.text, 'lxml')
+        for tag in soup.find_all(['script', 'style', 'aside', 'figure', 'nav', 'footer', 'header']):
+            tag.decompose()
+
+        article_root = (
+            soup.find('article') or
+            soup.find('div', attrs={'class': re.compile(r'(article-body|story-body|content-body|article-content)', re.I)}) or
+            soup.find('main') or
+            soup
+        )
+
+        paras = []
+        for p in article_root.find_all('p'):
+            txt = p.get_text(strip=True)
+            if not txt or len(txt) < 40:
+                continue
+            if any(skip in txt.lower() for skip in [
+                'sign up', 'subscribe', 'newsletter', 'follow us', 'click here',
+                'all rights reserved', 'terms of service', 'privacy policy',
+                'mln view', 'related:', 'related stories'
+            ]):
+                continue
+            paras.append(txt)
+            if sum(len(x) for x in paras) >= max_chars:
+                break
+
+        if not paras:
+            return ''
+        joined = ' '.join(paras)
+        if len(joined) > max_chars:
+            cut = joined[:max_chars]
+            last_period = cut.rfind('.')
+            if last_period > max_chars * 0.6:
+                cut = cut[:last_period + 1]
+            else:
+                cut = cut.rstrip() + '...'
+            joined = cut
+        return joined
+    except Exception:
+        return ''
+
+
+def enrich_news_with_summaries(news_items: list, max_workers: int = 6) -> list:
+    """For each news item with a link, fetch article summary in parallel."""
+    import concurrent.futures
+    if not news_items:
+        return news_items
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
+        futures = {ex.submit(fetch_article_summary, n.get('link', '')): n for n in news_items}
+        for fut in concurrent.futures.as_completed(futures):
+            n = futures[fut]
+            try:
+                n['summary'] = fut.result()
+            except Exception:
+                n['summary'] = ''
+    return news_items
+
+
 def fetch_market_news(max_total: int = 6, hours_window: int = 24) -> list:
     """Fetch quality market news from CNBC, MarketWatch, Yahoo. Filtered and scored."""
     from datetime import datetime as dt, timezone, timedelta

@@ -388,14 +388,17 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .news-list { display: flex; flex-direction: column; gap: 8px; }
+  .news-list { display: flex; flex-direction: column; gap: 10px; }
   .news-row {
     background: rgba(255,255,255,0.03);
     border-radius: 6px;
-    padding: 12px 14px;
+    padding: 14px 16px;
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
+  }
+  .news-row.has-summary {
+    background: rgba(255,255,255,0.045);
   }
   .news-ticker {
     font-size: 11px;
@@ -406,6 +409,11 @@
     border-radius: 4px;
     min-width: 60px;
     text-align: center;
+    flex-shrink: 0;
+  }
+  .news-ticker-blank {
+    color: #6c7588;
+    background: rgba(108,117,136,0.1);
   }
   .news-content { flex: 1; min-width: 0; }
   .news-title {
@@ -414,11 +422,29 @@
     color: #e6e8ee;
     line-height: 1.35;
   }
+  .news-title a {
+    color: #e6e8ee;
+    text-decoration: none;
+  }
+  .news-title a:hover { color: #f4cc6b; }
+  .news-summary {
+    font-size: 12.5px;
+    color: #b4bccf;
+    line-height: 1.55;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
   .news-meta {
     font-size: 11px;
     color: #6c7588;
-    margin-top: 3px;
+    margin-top: 6px;
   }
+  .news-link {
+    color: #4ec9d6;
+    text-decoration: none;
+  }
+  .news-link:hover { text-decoration: underline; }
 
   .reddit-list { display: flex; flex-direction: column; gap: 8px; }
   .reddit-row {
@@ -674,11 +700,12 @@
   </div>
   <div class="news-list">
     {% for n in news %}
-    <div class="news-row">
-      <div class="news-ticker">{{ n.ticker }}</div>
+    <div class="news-row{% if n.summary %} has-summary{% endif %}">
+      {% if n.ticker %}<div class="news-ticker">{{ n.ticker }}</div>{% else %}<div class="news-ticker news-ticker-blank">News</div>{% endif %}
       <div class="news-content">
-        <div class="news-title">{{ n.title[:110] }}</div>
-        <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
+        <div class="news-title">{% if n.link %}<a href="{{ n.link }}" target="_blank">{{ n.title[:130] }}</a>{% else %}{{ n.title[:130] }}{% endif %}</div>
+        {% if n.summary %}<div class="news-summary">{{ n.summary }}</div>{% endif %}
+        <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}{% if n.link %} · <a href="{{ n.link }}" target="_blank" class="news-link">read full</a>{% endif %}</div>
       </div>
     </div>
     {% endfor %}
