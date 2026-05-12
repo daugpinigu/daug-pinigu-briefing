@@ -167,6 +167,24 @@
     border-top: 1px dashed rgba(255,255,255,0.06);
     line-height: 1.4;
   }
+  .event-analysis {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(244,204,107,0.06);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.55;
+  }
+  .event-analysis::before {
+    content: 'Ką tai reiškia · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
 
   .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
   .earnings-card {
@@ -564,6 +582,22 @@
     align-items: center;
     gap: 12px;
   }
+  .insider-row.recent-week {
+    border-left: 3px solid #f4cc6b;
+    background: rgba(244,204,107,0.06);
+  }
+  .insider-fresh {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    margin-left: 6px;
+    border-radius: 3px;
+    background: rgba(244,204,107,0.2);
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    vertical-align: middle;
+  }
   .insider-row.watchlist-hit {
     background: linear-gradient(90deg, rgba(244,204,107,0.12) 0%, rgba(126,216,126,0.04) 100%);
     border-left: 3px solid #f4cc6b;
@@ -862,12 +896,6 @@
     <div class="snap-change" style="color: #7ed87e">+4.06%</div>
   </div>
   
-  <div class="snap-item">
-    <div class="snap-label">Gold</div>
-    <div class="snap-price">4,723</div>
-    <div class="snap-change" style="color: #7ed87e">+0.08%</div>
-  </div>
-  
 </div>
 
 
@@ -962,6 +990,7 @@
       
       <div class="event-desc">Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį</div>
       
+      
     </div>
     
     <div class="event-row high-impact">
@@ -986,6 +1015,7 @@
       </div>
       
       <div class="event-desc">Fed Chair nominacijos balsavimas - hawkish/dovish naujasis Chair&#39;as keičia rate path expectations</div>
+      
       
     </div>
     
@@ -1063,7 +1093,7 @@
       </div>
       
       
-      <div class="ec-analysis">Q2 guidance $680-700M atrodo solidžiai, tačiau FY revenue $2.8-3.0B vidurkis ($2.9B) yra žemiau to, ką rinka tikėjosi prieš kelis mėnesius - augimo tempas lėtėja, kai GLP-1 segmentas pereina nuo kompanijos suformuotų preparatų prie Novo Nordisk partnerystės produktų. EBITDA guidance $275-350M rodo labai platų intervalą - tai signalizuoja, kad vadovybė pati neaiškiai mato pelningumo trajektoriją šiame pereinamajame etape. Teigiama pusė: jei 100 000+ naujų abonentų per mėnesį tempas išsilaikys Q2-Q3, revenue pusė gali artėti prie $3.0B ribos, o tai keistų EBITDA skaičiavimus. Manau raktinis klausimas - ar naujų abonentų augimas padengs mažesnes maržas prie prekinio ženklo produktų; jei Q2 gross margin stabilizuojasi ties 60%+, akcija gali rasti pagrindą, tačiau kol kas EPS lygio neapibrėžtumas ir platus EBITDA intervalas daro vertinimas sudėtingą - P/S ties dabartinėmis kainomis dera lyginti tik tada, kai matosi aiškesnė maržų kryptis.</div>
+      <div class="ec-analysis">Q2 guidance $680-700M ir FY revenue $2.8-3.0B atrodo solidžiai, tačiau EBITDA gairės $275-350M rodo labai platų neapibrėžtumą - apatinis scenarijus yra beveik 20% žemiau viršutinio, o tai rodo, kad vadovybė pati nėra tikra dėl perėjimo kaštų. Bendrovė aiškiai signalizuoja, kad artimiausi ketvirčiai bus &#34;pereinamasis laikotarpis&#34; su GAAP rezultatų svyravimais - tai ne žodžiai, kurie ramina investuotoją, kuriam svarbus vertinimas dabar. Teigiama pusė: beveik visas naujas verslas jau ant firminių produktų, o Novo Nordisk partnerystė rodo, kad platforma strategiškai įsitvirtina - jei mėnesinis prieaugis viršys 100 000 prenumeratorių, Q3 galėtų būti pirmasis aiškus perėjimo patvirtinimas. Manau, akcija išlieka spekuliatyvi iki tol, kol EBITDA gairių vidurio susiaurės - dabar kaina atspindi geriausio scenarijaus tikėjimą, ne faktinį augimo tempą.</div>
       
     </div>
     
@@ -1098,7 +1128,7 @@
         
         <div class="ec-mc">
           <div class="ec-mc-label">Revenue</div>
-          <div class="ec-mc-value">$136M</div>
+          <div class="ec-mc-value">$0.136B</div>
           
         </div>
         
@@ -1114,16 +1144,14 @@
       <div class="ec-quotes-block">
         <div class="ec-quotes-label">Earnings call · key quotes</div>
         
-        <div class="ec-quote">"Mining funds the platform; AI monetizes it."</div>
+        <div class="ec-quote">"&#34;[mining] funds the platform; AI monetizes it&#34;"</div>
         
-        <div class="ec-quote">"The net loss includes unfavorable non-cash charges of approximately $263 million related to GAAP mark-to-market adjustments on Bitcoin balances."</div>
-        
-        <div class="ec-quote">"Only minimal investment will be made at sites like Sandersville until lease agreements are finalized."</div>
+        <div class="ec-quote">"&#34;includes unfavorable non-cash charges of approximately $263 million related to GAAP mark-to-market adjustments on Bitcoin balances&#34;"</div>
         
       </div>
       
       
-      <div class="ec-analysis">CLSK $136M revenue - kompanija toliau stato dvigubą modelį: kasybos pajamos finansuoja AI infrastruktūrą, kuri turi monetizuotis ateityje. $263M nekasybinis nuostolis - GAAP korekcija Bitcoin pozicijų rinkos verte, ne operacinis silpnumas, todėl EPS miss šiuo atveju mažiau reikšmingas nei atrodo. Tačiau gairės lieka miglotos - Sandersville ir panašios vietos negaus reikšmingų investicijų, kol nebus pasirašytos nuomos sutartys, o tai rodo, kad plėtros tempas artimiausiais ketvirčiais bus santūrus. Investuotojui svarbiausia stebėti, ar AI segmentas pradeda generuoti apčiuopiamas pajamas - kol to nėra, akcija juda tik Bitcoin kainų ir nuotaikų bangomis, o +5.80% reakcija greičiausiai atspindi palengvėjimą, kad operacinė pusė nenuvylė, ne tikrą fundamentalų posūkį.</div>
+      <div class="ec-analysis">CLSK EPS miss iš dalies paaiškinamas nebūdinėmis nekasybinėmis sąnaudomis - $263M nekasybiniai nurašymai dėl Bitcoin balanso GAAP rinkos vertės koregavimo iškreipė grynąjį rezultatą, todėl operacinis vaizdas yra švaresnis nei skaičiai rodo. Revenue $136M rodo, kad kasybos segmentas dirba, tačiau tikrasis klausimas - ar AI pajamų linija kada nors taps matoma atskaitomybėje, o ne tik valdymo retorikoje. Guidance nepateiktas konkrečiais skaičiais - tai investuotojui reiškia, kad &#34;funds the platform; AI monetizes it&#34; kol kas yra vizija, ne finansinis įsipareigojimas. Akcijos +5.8% reakcija AHs rodo, kad rinka atleido miss ir lošia ant Bitcoin eksposuros bei AI naratyvo, tačiau be aiškaus EPS kelio į teigiamą zoną vertinimas lieka spekuliatyvus - ką stebėti: pirmi konkretūs AI revenue skaičiai ir Bitcoin atsargų valdymo strategija sekančiuose ketvirčiuose.</div>
       
     </div>
     
@@ -1143,7 +1171,7 @@
       <div class="up-symbol">NBIS</div>
       <div class="up-date">Wed May 13</div>
       <div class="up-days">in 0d</div>
-      <div class="up-est">EPS est $-0.71</div>
+      <div class="up-est">EPS est $-0.78</div>
     </div>
     
     <div class="upcoming-card">
@@ -1263,36 +1291,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$80,671</div>
-      <div class="crypto-change" style="color: #ff7373">-1.25%</div>
+      <div class="crypto-price">$80,543</div>
+      <div class="crypto-change" style="color: #ff7373">-1.40%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
-      <div class="crypto-price">$2,285</div>
-      <div class="crypto-change" style="color: #ff7373">-2.29%</div>
+      <div class="crypto-price">$2,284</div>
+      <div class="crypto-change" style="color: #ff7373">-2.35%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$94.72</div>
-      <div class="crypto-change" style="color: #ff7373">-2.90%</div>
+      <div class="crypto-price">$94.64</div>
+      <div class="crypto-change" style="color: #ff7373">-2.95%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
-      <div class="crypto-price">$10.30</div>
-      <div class="crypto-change" style="color: #ff7373">-2.88%</div>
+      <div class="crypto-price">$10.31</div>
+      <div class="crypto-change" style="color: #ff7373">-2.72%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$310.84</div>
-      <div class="crypto-change" style="color: #ff7373">-3.97%</div>
+      <div class="crypto-price">$311.05</div>
+      <div class="crypto-change" style="color: #ff7373">-3.69%</div>
     </div>
     
   </div>
@@ -1367,6 +1395,15 @@
   </div>
   <div class="insider-list">
     
+    <div class="insider-row watchlist-hit recent-week">
+      <div class="insider-ticker">SOFI</div>
+      <div class="insider-info">
+        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span> <span class="insider-fresh">šią savaitę</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-05-11</div>
+      </div>
+      <div class="insider-value">+$2.00M</div>
+    </div>
+    
     <div class="insider-row watchlist-hit">
       <div class="insider-ticker">TSLA</div>
       <div class="insider-info">
@@ -1401,15 +1438,6 @@
         <div class="insider-meta">+17,175 sh @ $291.12 · 2025-05-16</div>
       </div>
       <div class="insider-value">+$4,999,919</div>
-    </div>
-    
-    <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">SOFI</div>
-      <div class="insider-info">
-        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
-        <div class="insider-meta">4 buys · paskutinis 2026-05-11</div>
-      </div>
-      <div class="insider-value">+$2.00M</div>
     </div>
     
     <div class="insider-row watchlist-hit">
@@ -1539,7 +1567,7 @@
         </div>
         
         
-        <div class="news-analysis">EPS miss yra ryškus - rinka tikėjosi bent lūžio taško, o HIMS pateikė nuostolį, kuris yra 22 centų žemiau praėjusių metų lygio. Revenue augimas 3.8% YoY atrodo silpnai įmonei, kuri ilgą laiką pozicionavo save kaip aukšto augimo tempą palaikančią platformą - 1.9% atsilikimas nuo analitikų lūkesčių rodo, kad GLP-1 segmento kainų spaudimas jau veikia pajamas. Gross margin kritimas yra pagrindinis klausimas: jei jis toliau smunka, EBITDA kelias į teigiamą teritoriją atsitraukia. Manau, kad šis pre-market kritimas gali būti per didelis, jei Q2 guidance pasirodys stipresnis - tačiau pirma reikia matyti tuos skaičius. Investuotojams svarbiausia sekti, ar gross margin stabilizuojasi Q2, nes nuo to priklauso, ar dabartinis lygis yra perpirkimo zona, ar tik pirmas laiptelis žemyn.</div>
+        <div class="news-analysis">EPS svarus miss - ne tik praleisti analitikų lūkesčiai, bet ir metinis posūkis iš pelno į nuostolį rodo, kad augimo kaštai auga greičiau nei revenue. 3.8% YoY augimas yra reikšmingas sulėtėjimas bendrovei, kuri anksčiau rodė dviženklius tempus - rinka tikėjosi daugiau. Gross margin kritimas signalizuoja kainų spaudimą, tikėtina GLP-1 segmente, kur konkurencija ir tiekimo grandinės pokyčiai spaudžia pelningumą. -15.2% pre-market reakcija atspindi ne tik šio ketvirčio rezultatus, bet ir nerimo dėl tolesnės pelningumo trajektorijos. Manau, prieš bet kokį įėjimą verta palaukti Q2 earnings ir pamatyti, ar gross margin stabilizuojasi - jei ne, dabartinis vertinimas neturi palaikymo.</div>
         
         <div class="news-meta">Zacks · 05-12 15:45 · <a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1562,7 +1590,7 @@
           <div class="nm-cell">
             <div class="nm-label">Revenue Q1 2026</div>
             <div class="nm-value">$12.1M</div>
-            <div class="nm-note">vs $0.7M Q1 2025 YoY</div>
+            <div class="nm-note">vs $0.7M Q1 2025</div>
           </div>
           
           <div class="nm-cell">
@@ -1572,25 +1600,25 @@
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Nerealizuotas nuostolis</div>
+            <div class="nm-label">Nerealizuoti nuostoliai</div>
             <div class="nm-value">-$506.7M</div>
-            <div class="nm-note">ETH vertės kritimas</div>
+            <div class="nm-note">2026 kovo 31 d.</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">SG&amp;A išlaidos</div>
             <div class="nm-value">$9.9M</div>
-            <div class="nm-note">vs $1.1M Q1 2025 YoY</div>
+            <div class="nm-note">vs $1.1M Q1 2025</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">ETH turtas</div>
+            <div class="nm-label">ETH portfelis</div>
             <div class="nm-value">589,305 ETH</div>
-            <div class="nm-note">fair value $1.2B kovo 31 d.</div>
+            <div class="nm-note">fair value $1.2B</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Grynieji pinigai</div>
+            <div class="nm-label">Grynųjų likutis</div>
             <div class="nm-value">$16.9M</div>
             <div class="nm-note">vs $28.5M gruodžio 31 d.</div>
           </div>
@@ -1598,7 +1626,7 @@
         </div>
         
         
-        <div class="news-analysis">Revenue augimas iš $0.7M iki $12.1M atrodo įspūdingai, tačiau tai - ne verslo operacijos, o kriptovaliutų prekybos realizuoti pelnas ($12M). SG&amp;A išaugus beveik 9 kartus iki $9.9M rodo, kad įmonė agresyviai plečia administracinę struktūrą, kol pagrindinis verslas dar nesubrendęs. $685.6M grynasis nuostolis beveik visiškai paaiškinamas nerealizuotu ETH vertės kritimu - tai buhalterinė pozicija, tačiau ji rodo, kiek SBET likimas priklauso nuo ETH kainos, ne nuo verslo. Grynųjų pinigų likutis $16.9M ir toliau mažėja, o ETH atsargos augo iki 872,984 vienetų iki gegužės 4 d. - įmonė akivaizdžiai renkasi kaupti ETH vietoj to, kad apsaugotų likvidumą. Manau šis modelis tinka tik tiems, kurie jau turi tiesioginę ETH poziciją ir ieško sverto - bet kaip atskira investicija, fundamentali rizika čia yra kriptovaliutų kainų volatilumas, o ne verslo kokybė.</div>
+        <div class="news-analysis">Revenue šuolis nuo $0.7M iki $12.1M YoY atrodo įspūdingai, bet praktiškai visa suma - $12M realizuotas pelnas iš ETH pardavimų, o ne veiklos pajamos. $685.6M grynasis nuostolis kyla iš $506.7M nerealizuotų ETH nuostolių - tai apskaitos poveikis, ne pinigų srautų problema, tačiau rodo, kad akcija tiesiogiai juda kartu su Ethereum kaina. SG&amp;A išaugimas beveik 9 kartais iki $9.9M per ketvirtį rodo agresyvų valdymo aparato augimą, o grynųjų likutis $16.9M - gana siauras rezervas, jei ETH rinka smunka ir reikia dengti operacines išlaidas. Manau, SBET vertinti kaip tradicinę įmonę nelogiška - tai praktiškai ETH exposure per akcijų rinką, panašiai kaip MSTR yra Bitcoin proxy. Investuotojui svarbiausia klausimas - ar ETH kaina pateisins ETH/akcijų santykį, nes 872,984 ETH portfelis (gegužės 4 d. duomenys) yra vienintelis realus catalyst arba rizika šiai akcijai.</div>
         
         <div class="news-meta">GuruFocus.com · 05-12 07:03 · <a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1611,7 +1639,7 @@
         <div class="news-title"><a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank">BofA drops blunt warning about Fed rate cuts</a></div>
         
         
-        <div class="news-analysis">BofA Global Research atidėjo palūkanų mažinimo lūkesčius - dabar tikimasi dviejų 0,25 procentinio punkto mažinimų 2027 m. liepą ir rugsėjį, o ne 2026 m. Pagrindas: aukštos energijos kainos ir stipri darbo rinka laiko infliaciją pakeltą. Reikšminga, kad tai ne vienas balsas - Reuters duomenimis, dauguma pasaulinių brokerių jau persvėrė 2026 m. prognozes ir dalis visiškai atmeta mažinimų galimybę kitais metais. Investuotojams tai reiškia, kad trumpojo galo palūkanos išlieka aukštos ilgiau - spaudimas vertinimams akcijų rinkoje, ypač augimo sektoriuje, kur diskontuojami būsimi pinigų srautai. Manau obligacijų rinka jau didžiąja dalimi tai įkainojo, tačiau jei 2027 m. datos vėl slinks - dar vienas pervertinimo ciklas bus neišvengiamas.</div>
+        <div class="news-analysis">BofA Global Research atidėjo palūkanų mažinimo lūkesčius - dabar tikisi dviejų 0,25 procentinio punkto sumažinimų, bet tik 2027 metų liepos ir rugsėjo mėnesiais. Iki tol Fed turėtų išlaikyti dabartinį lygį, remdamasi aukšta energetikos infliacija ir stipria darbo rinka. Tai atitinka platesnę tendenciją - kelios stambios brokerių įmonės persvarstė 2026 metų prognozes ir dabar balansuo­ja tarp nedidelio palūkanų mažinimo ir jokių pokyčių. Investuotojui tai reiškia, kad trumpojo galo palūkanos lieka aukštos ilgiau nei rinka tikėjosi - spaudimas vertinimams augimo akcijose išlieka, o obligacijų pajamingumas neturi aiškaus katalizatoriaus kristi. Manau labiausiai verta stebėti infliacijos duomenis antrąjį 2025 metų pusmetį - jei energetikos komponentas minkštės, BofA prognozė gali vėl keistis.</div>
         
         <div class="news-meta">Yahoo Finance · <a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1626,39 +1654,39 @@
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">Qualcomm akcija</div>
+            <div class="nm-label">Qualcomm kritimas</div>
             <div class="nm-value">-11%</div>
-            <div class="nm-note">blogiausias sesija nuo 2020</div>
+            <div class="nm-note">blogiausias rezultatas nuo 2020</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Intel akcija</div>
+            <div class="nm-label">Intel kritimas</div>
             <div class="nm-value">-7%</div>
-            <div class="nm-note">bendras atsitraukimas</div>
+            <div class="nm-note">tą pačią dieną</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Skyworks akcija</div>
+            <div class="nm-label">Skyworks kritimas</div>
             <div class="nm-value">-5%</div>
-            <div class="nm-note">lustų sektoriaus spaudimas</div>
+            <div class="nm-note">tą pačią dieną</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Marvell akcija</div>
+            <div class="nm-label">Marvell kritimas</div>
             <div class="nm-value">-4%</div>
-            <div class="nm-note">AI ralio korekcija</div>
+            <div class="nm-note">tą pačią dieną</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">iShares Semi ETF</div>
             <div class="nm-value">-3%</div>
-            <div class="nm-note">sektoriaus indeksas</div>
+            <div class="nm-note">sektoriaus rodiklis</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Atsitraukimas vyksta po to, kai lustų sektorius neseniai pasiekė naujus aukščiausius lygius, o AI prekybos bangą išplėtė už Nvidia ribų - tad korekcija po tokio ralio nėra netikėta. Katalizatorius - aukštesni nei tikėtasi vartotojų infliacijos duomenys kartu su kylančiomis naftos kainomis dėl Irano karo, o tai stumia investuotojus link gynybinių pozicijų. Qualcomm krenta labiausiai - 11% per vieną dieną rodo, kad akcija buvo labiausiai perkąsta ralio metu, todėl ir korekcija stipriausia. Investuotojui svarbu atskirti: tai makro sukelta rizikos vengimo reakcija, o ne sektoriaus fundamentalių pokyčių signalas - jei infliacijos duomenys nestiprėja toliau, lustų akcijų silpnumas gali būti trumpalaikis. Qualcomm ir Marvell verta stebėti artimiausias earnings sesas - tik tada bus aišku, ar AI exposure fundamentaliai pateisina buvusius aukštus lygius.</div>
+        <div class="news-analysis">Kritimas - ne fundamentalus, o makro reakcija: infliacijos duomenys viršijo lūkesčius, Irano konfliktas kelia naftos kainas, investuotojai traukiasi iš rizikingų pozicijų. Qualcomm -11% ypač ryškus, nes akcija prieš tai augo reikšmingai kartu su platesniu AI entuziazmu - tokia korekcija po didelio pakilimo yra įprasta, kai keičiasi makro tonas. Sektoriaus vertinimai prieš šią savaitę buvo išsitempę: investuotojai mokėjo premiją tikėdamiesi tęstinio AI paklausos augimo, todėl bet koks nepalankus katalizatorius sukelia greitą išpardavimą. Manau Qualcomm ir Intel pozicijos ilgalaikiam investuotojui nesikeičia nuo vienos dienos makro triukšmo - svarbu stebėti ateinančių ketvirčių earnings ir ar AI paklausa iš tiesų pasiekia šiuos gamintojus, o ne tik Nvidia grandinę.</div>
         
         <div class="news-meta">CNBC Top · 05-12 20:09 · <a href="https://www.cnbc.com/2026/05/12/qualcomm-chip-stocks-record-ai.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1671,7 +1699,7 @@
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank">Companies start getting tariff refunds after Supreme Court decision</a></div>
         
         
-        <div class="news-analysis">Aukščiausiasis teismas pripažino dalį muitų neteisėtais, ir pirmosios įmonės jau gauna grąžinamas sumas - Oshkosh Corporation patvirtino, kad kompensacijos pradėtos gauti nuo antradienio. Tikslus bendras grąžinamos sumos dydis dar nėra patvirtintas, tad kol kas sunku vertinti konkrečią įtaką pelningumui. Įmonėms, kurios per pastaruosius metus mokėjo padidintus muitus, tai gali tapti vienkartiniu teigiamu poveikiu grynajam pelnui - svarbu sekti, kokią dalį galutinės pretenzijų sumos Oshkosh realiai atgaus. Investuotojams, turintiems exposure į pramonės sektorių, verta patikrinti, ar jų įmonės taip pat pateikė panašius reikalavimus ir kokios jų pretenzijų apimtys - tai gali būti catalyst pozityviems pelno tikslinimams.</div>
+        <div class="news-analysis">Aukščiausiasis Teismas pripažino dalį muitų antikonstituciniais, ir pirmosios įmonės jau pradeda gauti grąžinamas lėšas - Oshkosh Corporation CFO patvirtino, kad įmonė nuo antradienio gauna išmokas pagal pateiktus reikalavimus. Bendra grąžintina suma dar nėra patvirtinta, tai reiškia, kad tikrasis poveikis pelningumui paaiškės vėliau. Oshkosh yra pramoninė įmonė su dideliu exposure muitų paveiktoms žaliavoms ir komponentams, todėl grąžinamos sumos gali būti reikšmingos - tačiau kol kas tai vienkartinis efektas, ne struktūrinis maržų pagerinimas. Investuotojams svarbu sekti, ar įmonė patikslins FY guidance įvertinus grąžinamas lėšas, nes tai galėtų būti teigiamas catalyst EPS revizijoms.</div>
         
         <div class="news-meta">CNBC Top · 05-12 18:43 · <a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1684,7 +1712,7 @@
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank">Markets raise chances for a Fed rate hike following hot inflation report</a></div>
         
         
-        <div class="news-analysis">Po kovo infliacijos ataskaitos, kuri viršijo lūkesčius, rinka visiškai išbraukė palūkanų mažinimo tikimybę iki 2027 metų pabaigos - tai reikšmingas lūkesčių pokytis. Vietoj mažinimo, CME FedWatch duomenimis, pradėjo augti tikimybė, kad kitas Fed žingsnis bus palūkanų kėlimas. Aukštos palūkanos ilgiau reiškia spaudimą vertinimams - ypač augimo akcijoms su aukštu P/E, kur diskontavimo norma tiesiogiai veikia kainą. Obligacijų rinkos reakcija ir trumpojo galo palūkanos artimiausiomis savaitėmis parodys, ar rinka šį scenarijų jau visiškai įkainojo. Manau labiausiai rizikuoja sektoriai su aukštu sverto lygiu ir bendrovės, kurių refinansavimo poreikis artimiausiais metais - jų kainų spaudimas gali tik didėti.</div>
+        <div class="news-analysis">Po karštesnio nei tikėtasi infliacijos ataskaitos rinka visiškai nurašė palūkanų mažinimo tikimybę iki 2027 metų pabaigos. Daugiau nei tai - CME FedWatch rodikliai rodo, kad pradėta kainoti reali tikimybė, jog kitas Fed žingsnis bus palūkanų kėlimas, ne mažinimas. Tai esminis lūkesčių posūkis: dar prieš kelis mėnesius rinka tikėjosi kelių mažinimų šiais metais. Obligacijų ir akcijų rinkoms tai reiškia ilgesni aukštų palūkanų laikotarpis - spaudimas vertinamam augimo akcijų premium ir jautresnio balanso bendrovėms. Manau, šioje aplinkoje svarbu sekti, ar toliau kylanti infliacija privers Fed komunikuoti kėlimo scenarijų oficialiai - tai būtų kur kas stipresnis catalyst nuosmukiui nei vien FedWatch tikimybių pokytis.</div>
         
         <div class="news-meta">CNBC Markets · 05-12 17:33 · <a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1706,7 +1734,7 @@
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>00:18 (Vilnius)</span>
+  <span>00:49 (Vilnius)</span>
 </footer>
 
 </body>
