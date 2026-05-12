@@ -385,6 +385,70 @@ def fetch_macro_events(date_str: str) -> list:
     return merged
 
 
+def fetch_watchlist_earnings_history(watchlist: list, days_back: int = 2,
+                                     days_fwd: int = 14) -> dict:
+    """Get recent/upcoming earnings for watchlist tickers via yfinance.
+
+    Returns {'recent': [...], 'upcoming': [...]} with actual vs estimate when available.
+    """
+    import concurrent.futures
+    from datetime import datetime as dt, timedelta, timezone
+
+    now_utc = dt.now(timezone.utc)
+    recent_cutoff = now_utc - timedelta(days=days_back)
+    upcoming_cutoff = now_utc + timedelta(days=days_fwd)
+
+    def one(sym):
+        try:
+            t = yf.Ticker(sym)
+            ed = t.get_earnings_dates(limit=6)
+            if ed is None or ed.empty:
+                return None, None
+            recent = []
+            upcoming = []
+            for idx, row in ed.iterrows():
+                dt_aware = idx.to_pydatetime()
+                if dt_aware.tzinfo is None:
+                    dt_aware = dt_aware.replace(tzinfo=timezone.utc)
+                est = row.get('EPS Estimate')
+                actual = row.get('Reported EPS')
+                surprise = row.get('Surprise(%)')
+
+                if recent_cutoff <= dt_aware <= now_utc:
+                    if pd.notna(actual):
+                        recent.append({
+                            'symbol': sym,
+                            'date': dt_aware,
+                            'eps_estimate': float(est) if pd.notna(est) else None,
+                            'eps_actual': float(actual) if pd.notna(actual) else None,
+                            'surprise_pct': float(surprise) if pd.notna(surprise) else None,
+                            'beat': pd.notna(actual) and pd.notna(est) and float(actual) > float(est),
+                        })
+                elif now_utc < dt_aware <= upcoming_cutoff:
+                    upcoming.append({
+                        'symbol': sym,
+                        'date': dt_aware,
+                        'eps_estimate': float(est) if pd.notna(est) else None,
+                        'days_away': (dt_aware - now_utc).days,
+                    })
+            return recent, upcoming
+        except Exception:
+            return None, None
+
+    all_recent = []
+    all_upcoming = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
+        for r, u in ex.map(one, watchlist):
+            if r:
+                all_recent.extend(r)
+            if u:
+                all_upcoming.extend(u)
+
+    all_recent.sort(key=lambda x: x['date'], reverse=True)
+    all_upcoming.sort(key=lambda x: x['date'])
+    return {'recent': all_recent, 'upcoming': all_upcoming[:6]}
+
+
 def fetch_earnings(date_str: str, min_market_cap_b: float = 500.0,
                    watchlist_symbols: list = None) -> list:
     """Fetch earnings calendar. Keep if mcap >= min_market_cap_b OR symbol in watchlist."""

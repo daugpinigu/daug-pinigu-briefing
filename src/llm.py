@@ -141,6 +141,84 @@ Tavo analizė:"""
         return ''
 
 
+def extract_earnings_details(ticker: str, news_body: str,
+                              model: str = HAIKU_MODEL) -> dict:
+    """Extract structured earnings data from news article via LLM.
+
+    Returns dict with: revenue_actual, revenue_estimate, guidance_next_q,
+    guidance_fy, key_quote, analyst_reaction.
+    """
+    client = _get_client()
+    if not client or not news_body:
+        return {}
+    import json as _json
+    prompt = f"""Iš šio earnings news straipsnio apie {ticker}, ištrauk struktūrinius duomenis. Grąžink TIK JSON, jokio paaiškinimo:
+
+{{
+  "revenue_actual": "$X.XB arba null",
+  "revenue_estimate": "$X.XB arba null",
+  "revenue_yoy_change": "+X% arba -X% arba null",
+  "guidance_next_q_rev": "$X-XB arba null",
+  "guidance_fy_rev": "$X.XB arba null",
+  "guidance_ebitda_fy": "$XM arba null",
+  "key_quote": "trumpa management citata jei yra, kitaip null",
+  "stock_reaction": "-X% AHs arba +X% pre-market arba null"
+}}
+
+STRAIPSNIS:
+{news_body[:2500]}"""
+
+    try:
+        resp = client.messages.create(
+            model=model,
+            max_tokens=400,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = resp.content[0].text.strip() if resp.content else ''
+        m = re.search(r'\{.*\}', text, re.DOTALL)
+        if not m:
+            return {}
+        data = _json.loads(m.group(0))
+        return {k: (None if v in (None, 'null', '', 'N/A') else v) for k, v in data.items()}
+    except Exception as e:
+        print(f"  warn: LLM extract_earnings failed: {e}")
+        return {}
+
+
+def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
+                           extracted: dict, model: str = HAIKU_MODEL) -> str:
+    """Generate 2-3 sentence Lithuanian analysis for an earnings card."""
+    client = _get_client()
+    if not client:
+        return ''
+    eps_line = ''
+    if eps_actual is not None and eps_estimate is not None:
+        delta = eps_actual - eps_estimate
+        verdict = 'BEAT' if delta > 0 else ('MISS' if delta < 0 else 'INLINE')
+        eps_line = f"EPS actual ${eps_actual:.2f} vs estimate ${eps_estimate:.2f} = {verdict}\n"
+
+    extracted_str = '\n'.join(f"{k}: {v}" for k, v in extracted.items() if v)
+    prompt = f"""{STYLE_GUIDE}
+
+UŽDUOTIS: 2-3 sakiniai earnings analizes apie {ticker}. Investicinė izvalga - ar atrodo bullish/bearish, kas yra svarbiausia. Nepakartoti skaičius, kurie jau lentelėje rodomi - tik kontekstas + izvalga.
+
+EARNINGS DUOMENYS:
+{eps_line}{extracted_str}
+
+Tavo izvalga:"""
+
+    try:
+        resp = client.messages.create(
+            model=model, max_tokens=250,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = resp.content[0].text.strip() if resp.content else ''
+        return re.sub(r'\s+', ' ', text).replace('—', '-').replace('–', '-')
+    except Exception as e:
+        print(f"  warn: LLM analyze_earnings_card failed: {e}")
+        return ''
+
+
 def analyze_reddit_thread(title: str, top_comments: list,
                           model: str = HAIKU_MODEL) -> str:
     """Summarize a Reddit thread - sentiment, key arguments, what bears/bulls say."""

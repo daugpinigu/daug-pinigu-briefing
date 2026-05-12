@@ -168,6 +168,159 @@
     line-height: 1.4;
   }
 
+  .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
+  .earnings-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid #7ed87e;
+  }
+  .earnings-card.miss { border-left-color: #ff7373; }
+  .ec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ec-symbol {
+    font-size: 22px;
+    font-weight: 900;
+    color: #e6e8ee;
+    letter-spacing: 0.3px;
+  }
+  .ec-verdict {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+  }
+  .ec-verdict.beat { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ec-verdict.miss { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ec-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-numbers {
+    display: flex;
+    align-items: end;
+    gap: 14px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .ec-metric { flex: 1; }
+  .ec-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .ec-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-value.beat-val { color: #7ed87e; }
+  .ec-value.miss-val { color: #ff7373; }
+  .ec-vs {
+    font-size: 13px;
+    color: #6c7588;
+    padding-bottom: 4px;
+  }
+  .ec-extracted {
+    background: rgba(255,255,255,0.025);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .ec-row {
+    font-size: 13px;
+    margin: 4px 0;
+    color: #c8cfdc;
+  }
+  .ec-row-label {
+    color: #8a92a3;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .ec-row-val {
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-vs-inline {
+    color: #8a92a3;
+    font-size: 12px;
+  }
+  .ec-yoy {
+    color: #4ec9d6;
+    font-size: 12px;
+  }
+  .ec-quote {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(78,201,214,0.08);
+    border-left: 2px solid #4ec9d6;
+    font-size: 12px;
+    color: #c8cfdc;
+    font-style: italic;
+  }
+  .ec-analysis {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+  }
+  .ec-analysis::before {
+    content: 'AI izvalga · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  .upcoming-card {
+    background: rgba(244,204,107,0.05);
+    border-top: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .up-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f4cc6b;
+  }
+  .up-date {
+    font-size: 11px;
+    color: #c8cfdc;
+    margin: 4px 0 2px;
+  }
+  .up-days {
+    font-size: 10px;
+    color: #8a92a3;
+  }
+  .up-est {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
   .earnings-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -604,21 +757,80 @@
 </section>
 {% endif %}
 
-{% if earnings %}
+{% if wl_earnings and wl_earnings.recent %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title">Top Earnings</div>
-    <span class="section-count">{{ earnings|length }}</span>
+    <div class="section-title" style="color:#7ed87e">Watchlist Earnings Reports</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ wl_earnings.recent|length }}</span>
   </div>
-  <div class="earnings-grid">
-    {% for e in earnings %}
-    <div class="earnings-row">
-      <div class="earnings-symbol">{{ e.symbol }}</div>
-      <div class="earnings-info">
-        <div class="earnings-company">{{ e.company[:26] }}</div>
-        <div class="earnings-meta">{% if e.eps_est %}EPS est: {{ e.eps_est }} · {% endif %}{{ e.market_cap }}</div>
+  <div class="earnings-cards">
+    {% for e in wl_earnings.recent %}
+    <div class="earnings-card {% if e.beat %}beat{% else %}miss{% endif %}">
+      <div class="ec-header">
+        <div class="ec-symbol">{{ e.symbol }}</div>
+        <div class="ec-verdict {% if e.beat %}beat{% else %}miss{% endif %}">
+          {% if e.beat %}BEAT{% else %}MISS{% endif %}
+        </div>
+        <div class="ec-date">{{ e.date.strftime('%m-%d %H:%M') }}</div>
       </div>
-      <div class="earnings-time">{{ e.call_time }}</div>
+      <div class="ec-numbers">
+        <div class="ec-metric">
+          <div class="ec-label">EPS Actual</div>
+          <div class="ec-value {% if e.beat %}beat-val{% else %}miss-val{% endif %}">{% if e.eps_actual is not none %}${{ "%.2f"|format(e.eps_actual) }}{% else %}-{% endif %}</div>
+        </div>
+        <div class="ec-vs">vs</div>
+        <div class="ec-metric">
+          <div class="ec-label">EPS Estimate</div>
+          <div class="ec-value">{% if e.eps_estimate is not none %}${{ "%.2f"|format(e.eps_estimate) }}{% else %}-{% endif %}</div>
+        </div>
+        {% if e.surprise_pct is not none %}
+        <div class="ec-metric">
+          <div class="ec-label">Surprise</div>
+          <div class="ec-value {% if e.beat %}beat-val{% else %}miss-val{% endif %}">{{ "%+.1f"|format(e.surprise_pct) }}%</div>
+        </div>
+        {% endif %}
+      </div>
+      {% if e.extracted %}
+      <div class="ec-extracted">
+        {% if e.extracted.revenue_actual %}
+        <div class="ec-row"><span class="ec-row-label">Revenue:</span> <span class="ec-row-val">{{ e.extracted.revenue_actual }}{% if e.extracted.revenue_estimate %} <span class="ec-vs-inline">vs est {{ e.extracted.revenue_estimate }}</span>{% endif %}{% if e.extracted.revenue_yoy_change %} <span class="ec-yoy">({{ e.extracted.revenue_yoy_change }} YoY)</span>{% endif %}</span></div>
+        {% endif %}
+        {% if e.extracted.guidance_next_q_rev %}
+        <div class="ec-row"><span class="ec-row-label">Next Q guide:</span> <span class="ec-row-val">{{ e.extracted.guidance_next_q_rev }}</span></div>
+        {% endif %}
+        {% if e.extracted.guidance_fy_rev %}
+        <div class="ec-row"><span class="ec-row-label">FY guide:</span> <span class="ec-row-val">{{ e.extracted.guidance_fy_rev }}{% if e.extracted.guidance_ebitda_fy %} · EBITDA {{ e.extracted.guidance_ebitda_fy }}{% endif %}</span></div>
+        {% endif %}
+        {% if e.extracted.stock_reaction %}
+        <div class="ec-row"><span class="ec-row-label">Stock reaction:</span> <span class="ec-row-val">{{ e.extracted.stock_reaction }}</span></div>
+        {% endif %}
+        {% if e.extracted.key_quote %}
+        <div class="ec-quote">"{{ e.extracted.key_quote }}"</div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if e.analysis %}
+      <div class="ec-analysis">{{ e.analysis }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if wl_earnings and wl_earnings.upcoming %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Upcoming Earnings (14d)</div>
+    <span class="section-count" style="background:rgba(244,204,107,0.15);color:#f4cc6b">{{ wl_earnings.upcoming|length }}</span>
+  </div>
+  <div class="upcoming-grid">
+    {% for e in wl_earnings.upcoming %}
+    <div class="upcoming-card">
+      <div class="up-symbol">{{ e.symbol }}</div>
+      <div class="up-date">{{ e.date.strftime('%a %b %d') }}</div>
+      <div class="up-days">in {{ e.days_away }}d</div>
+      {% if e.eps_estimate is not none %}<div class="up-est">EPS est ${{ "%.2f"|format(e.eps_estimate) }}</div>{% endif %}
     </div>
     {% endfor %}
   </div>

@@ -10,9 +10,13 @@ from fetch import (
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
     fetch_market_news, fetch_mover_catalysts, fetch_quotes,
     fetch_insider_purchases, fetch_reddit_discussions,
-    enrich_news_with_summaries,
+    enrich_news_with_summaries, fetch_watchlist_earnings_history,
+    fetch_article_summary,
 )
-from llm import batch_analyze_news, is_enabled as llm_is_enabled
+from llm import (
+    batch_analyze_news, is_enabled as llm_is_enabled,
+    extract_earnings_details, analyze_earnings_card,
+)
 from render import render_html, html_to_png
 from send import send_photo
 from publish_web import save_briefing_html, regenerate_index
@@ -80,6 +84,12 @@ def main():
                      [])
     print(f"    -> {len(earnings)} companies")
 
+    print("  Fetching watchlist earnings history (recent + upcoming)...")
+    wl_earnings = _safe('watchlist earnings',
+                        lambda: fetch_watchlist_earnings_history(STOCKS, days_back=3, days_fwd=14),
+                        {'recent': [], 'upcoming': []})
+    print(f"    -> {len(wl_earnings['recent'])} recent, {len(wl_earnings['upcoming'])} upcoming")
+
     print("  Fetching indices/futures/VIX...")
     indices = _safe('indices', lambda: fetch_index_snapshot(FUTURES), [])
     print(f"    -> {len(indices)} indices")
@@ -141,6 +151,31 @@ def main():
         news = _safe('LLM news analysis', lambda: batch_analyze_news(news), news)
         llm_count = sum(1 for n in news if n.get('llm_analysis'))
         print(f"    -> {llm_count}/{len(news)} analyzed by LLM")
+
+        if wl_earnings['recent']:
+            print("  LLM enriching recent earnings (guidance + analysis)...")
+            for e in wl_earnings['recent']:
+                related_news = next(
+                    (n for n in news if e['symbol'].upper() in (n.get('title', '').upper() + ' ' + n.get('ticker', '').upper())),
+                    None,
+                )
+                article_body = ''
+                if related_news and related_news.get('summary'):
+                    article_body = related_news['summary']
+                elif related_news and related_news.get('link'):
+                    article_body = _safe('article body', lambda: fetch_article_summary(related_news['link'], max_chars=2000), '')
+                if article_body:
+                    e['extracted'] = _safe(f"extract {e['symbol']}",
+                                            lambda body=article_body: extract_earnings_details(e['symbol'], body),
+                                            {})
+                else:
+                    e['extracted'] = {}
+                e['analysis'] = _safe(f"analyze {e['symbol']}",
+                                       lambda: analyze_earnings_card(
+                                           e['symbol'], e['eps_actual'], e['eps_estimate'],
+                                           e.get('extracted', {})
+                                       ), '')
+            print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis'))} cards enriched")
     else:
         print("  LLM disabled (no ANTHROPIC_API_KEY) - skipping analysis")
 
@@ -167,6 +202,7 @@ def main():
         'news': news,
         'insider': insider,
         'reddit_posts': reddit_posts,
+        'wl_earnings': wl_earnings,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }
