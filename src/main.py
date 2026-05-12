@@ -12,6 +12,7 @@ from fetch import (
     fetch_insider_purchases, fetch_reddit_discussions,
     enrich_news_with_summaries,
 )
+from llm import batch_analyze_news, is_enabled as llm_is_enabled
 from render import render_html, html_to_png
 from send import send_photo
 from publish_web import save_briefing_html, regenerate_index
@@ -134,6 +135,14 @@ def main():
     news = _safe('enrich news', lambda: enrich_news_with_summaries(news), news)
     summary_count = sum(1 for n in news if n.get('summary'))
     print(f"    -> {summary_count}/{len(news)} enriched")
+
+    if llm_is_enabled():
+        print("  LLM analyzing news (Lithuanian, Radoslavo balsu)...")
+        news = _safe('LLM news analysis', lambda: batch_analyze_news(news), news)
+        llm_count = sum(1 for n in news if n.get('llm_analysis'))
+        print(f"    -> {llm_count}/{len(news)} analyzed by LLM")
+    else:
+        print("  LLM disabled (no ANTHROPIC_API_KEY) - skipping analysis")
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(

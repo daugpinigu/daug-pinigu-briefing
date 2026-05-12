@@ -435,6 +435,24 @@
     padding-top: 8px;
     border-top: 1px dashed rgba(255,255,255,0.06);
   }
+  .news-analysis {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+  }
+  .news-analysis::before {
+    content: 'AI izvalga · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
   .news-meta {
     font-size: 11px;
     color: #6c7588;
@@ -700,11 +718,15 @@
   </div>
   <div class="news-list">
     {% for n in news %}
-    <div class="news-row{% if n.summary %} has-summary{% endif %}">
+    <div class="news-row{% if n.llm_analysis or n.summary %} has-summary{% endif %}">
       {% if n.ticker %}<div class="news-ticker">{{ n.ticker }}</div>{% else %}<div class="news-ticker news-ticker-blank">News</div>{% endif %}
       <div class="news-content">
         <div class="news-title">{% if n.link %}<a href="{{ n.link }}" target="_blank">{{ n.title[:130] }}</a>{% else %}{{ n.title[:130] }}{% endif %}</div>
-        {% if n.summary %}<div class="news-summary">{{ n.summary }}</div>{% endif %}
+        {% if n.llm_analysis %}
+        <div class="news-analysis">{{ n.llm_analysis }}</div>
+        {% elif n.summary %}
+        <div class="news-summary">{{ n.summary }}</div>
+        {% endif %}
         <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}{% if n.link %} · <a href="{{ n.link }}" target="_blank" class="news-link">read full</a>{% endif %}</div>
       </div>
     </div>
