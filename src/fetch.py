@@ -868,22 +868,30 @@ def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
 
     def fetch_sub(spec):
         sub, sort, t = spec
-        url = f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}"
+        # Reddit aggressively rate-limits datacenter IPs (GitHub Actions).
+        # Try old.reddit.com first (less protected), then www, then RSS fallback.
+        urls = [
+            f"https://old.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
+            f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
+        ]
         data = []
-        for attempt in range(2):
+        for url in urls:
             try:
                 r = requests.get(url, headers=reddit_headers, timeout=12)
-                if r.status_code == 429 and attempt == 0:
+                if r.status_code == 429:
                     _time.sleep(2)
                     continue
-                r.raise_for_status()
-                data = r.json().get('data', {}).get('children', [])
-                break
-            except Exception:
-                if attempt == 0:
-                    _time.sleep(1)
+                if r.status_code != 200:
+                    print(f"  reddit r/{sub} {url[:30]}... -> HTTP {r.status_code}")
                     continue
-                return []
+                data = r.json().get('data', {}).get('children', [])
+                if data:
+                    break
+            except Exception as e:
+                print(f"  reddit r/{sub} error: {type(e).__name__}: {str(e)[:80]}")
+                continue
+        if not data:
+            return []
         out = []
         for item in data:
             p = item.get('data', {})
