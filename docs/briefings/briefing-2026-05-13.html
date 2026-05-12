@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a0e1a; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background: #0a0e1a;
+    color: #e6e8ee;
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 44px 32px;
+  }
+  @media (max-width: 720px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px !important; }
+    .market-snapshot { grid-template-columns: repeat(3, 1fr) !important; }
+    .ai-grid { grid-template-columns: repeat(4, 1fr) !important; }
+    .iv-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .crypto-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .earnings-grid, .movers-grid { grid-template-columns: 1fr !important; }
+    .event-numbers { gap: 8px !important; }
+  }
+  header {
+    border-bottom: 2px solid rgba(244,204,107,0.2);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .date-line {
+    font-size: 17px;
+    color: #8a92a3;
+    letter-spacing: 0.3px;
+  }
+
+  .market-snapshot {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+  }
+  .snap-item { text-align: center; padding: 4px 0; }
+  .snap-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .snap-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .snap-change {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .section { margin-bottom: 28px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .section-count {
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .events-list { display: flex; flex-direction: column; gap: 10px; }
+  .event-row {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #4ec9d6;
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+  .event-row.high-impact {
+    background: rgba(244,204,107,0.08);
+    border-left-color: #f4cc6b;
+  }
+  .event-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .event-time {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f4cc6b;
+    min-width: 56px;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-country {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    padding: 3px 9px;
+    border-radius: 4px;
+    color: #c8cfdc;
+    min-width: 34px;
+    text-align: center;
+  }
+  .event-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e6e8ee;
+    flex: 1;
+  }
+  .event-numbers {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-num {
+    text-align: center;
+  }
+  .event-num-label {
+    font-size: 9px;
+    color: #6c7588;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .event-num-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8cfdc;
+  }
+  .event-num-value.beat { color: #7ed87e; }
+  .event-num-value.miss { color: #ff7373; }
+  .event-num-value.inline { color: #f4cc6b; }
+  .event-num-value.muted { color: #6c7588; font-weight: 500; }
+  .event-desc {
+    font-size: 12px;
+    color: #8a92a3;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+    line-height: 1.4;
+  }
+
+  .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
+  .earnings-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid #7ed87e;
+  }
+  .earnings-card.miss { border-left-color: #ff7373; }
+  .ec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ec-symbol {
+    font-size: 22px;
+    font-weight: 900;
+    color: #e6e8ee;
+    letter-spacing: 0.3px;
+  }
+  .ec-verdict {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+  }
+  .ec-verdict.beat { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ec-verdict.miss { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ec-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-transcript-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .ec-numbers {
+    display: flex;
+    align-items: end;
+    gap: 14px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .ec-metric { flex: 1; }
+  .ec-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .ec-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-value.beat-val { color: #7ed87e; }
+  .ec-value.miss-val { color: #ff7373; }
+  .ec-vs {
+    font-size: 13px;
+    color: #6c7588;
+    padding-bottom: 4px;
+  }
+  .ec-extracted {
+    background: rgba(255,255,255,0.025);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .ec-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(126,216,126,0.12);
+  }
+  .ec-mc { text-align: center; padding: 4px; }
+  .ec-mc-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .ec-mc-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .ec-mc-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-row {
+    font-size: 13px;
+    margin: 4px 0;
+    color: #c8cfdc;
+  }
+  .ec-row-label {
+    color: #8a92a3;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .ec-row-val {
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-vs-inline {
+    color: #8a92a3;
+    font-size: 12px;
+  }
+  .ec-yoy {
+    color: #4ec9d6;
+    font-size: 12px;
+  }
+  .ec-quote {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(78,201,214,0.08);
+    border-left: 2px solid #4ec9d6;
+    font-size: 12px;
+    color: #c8cfdc;
+    font-style: italic;
+  }
+  .ec-quotes-block {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(78,201,214,0.06);
+    border-radius: 6px;
+    border: 1px solid rgba(78,201,214,0.18);
+  }
+  .ec-quotes-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .ec-quotes-block .ec-quote {
+    background: transparent;
+    border-left: 2px solid #4ec9d6;
+    margin-top: 0;
+    margin-bottom: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .ec-analysis {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+  }
+  .ec-analysis::before {
+    content: 'Sum up · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  .upcoming-card {
+    background: rgba(244,204,107,0.05);
+    border-top: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .up-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f4cc6b;
+  }
+  .up-date {
+    font-size: 11px;
+    color: #c8cfdc;
+    margin: 4px 0 2px;
+  }
+  .up-days {
+    font-size: 10px;
+    color: #8a92a3;
+  }
+  .up-est {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .earnings-row {
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid #7ed87e;
+  }
+  .earnings-symbol {
+    font-size: 15px;
+    font-weight: 800;
+    color: #7ed87e;
+    min-width: 52px;
+  }
+  .earnings-info { flex: 1; min-width: 0; }
+  .earnings-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6e8ee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .earnings-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    margin-top: 2px;
+  }
+  .earnings-time {
+    background: rgba(126,216,126,0.15);
+    color: #7ed87e;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .movers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .movers-col-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #c8cfdc;
+  }
+  .mover-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 5px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .mover-symbol { font-weight: 700; color: #e6e8ee; min-width: 56px; }
+  .mover-price { color: #8a92a3; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mover-up { color: #7ed87e; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mover-down { color: #ff7373; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .crypto-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    border-top: 3px solid #d4a85e;
+  }
+  .crypto-symbol {
+    font-size: 16px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .crypto-name {
+    font-size: 10px;
+    color: #8a92a3;
+    margin: 2px 0 8px;
+  }
+  .crypto-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 3px;
+  }
+  .crypto-change {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .ai-card {
+    background: rgba(192,132,252,0.06);
+    border-top: 3px solid #c084fc;
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .ai-symbol {
+    font-size: 13px;
+    font-weight: 800;
+    color: #c084fc;
+    letter-spacing: 0.3px;
+  }
+  .ai-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e6e8ee;
+    margin: 4px 0 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ai-change {
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .iv-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .iv-row {
+    background: rgba(244,143,177,0.06);
+    border-left: 3px solid #f48fb1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iv-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    min-width: 50px;
+  }
+  .iv-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    flex: 1;
+  }
+  .iv-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .insider-list { display: flex; flex-direction: column; gap: 6px; }
+  .insider-row {
+    background: rgba(126,216,126,0.04);
+    border-left: 3px solid #7ed87e;
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .insider-row.watchlist-hit {
+    background: linear-gradient(90deg, rgba(244,204,107,0.12) 0%, rgba(126,216,126,0.04) 100%);
+    border-left: 3px solid #f4cc6b;
+  }
+  .insider-ticker {
+    font-size: 14px;
+    font-weight: 800;
+    color: #7ed87e;
+    background: rgba(126,216,126,0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .watchlist-hit .insider-ticker {
+    color: #f4cc6b;
+    background: rgba(244,204,107,0.15);
+  }
+  .insider-info { flex: 1; min-width: 0; }
+  .insider-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6e8ee;
+  }
+  .insider-title {
+    color: #8a92a3;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .insider-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .insider-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .news-list { display: flex; flex-direction: column; gap: 10px; }
+  .news-row {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .news-row.has-summary {
+    background: rgba(255,255,255,0.045);
+  }
+  .news-ticker {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4ec9d6;
+    background: rgba(78,201,214,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .news-ticker-blank {
+    color: #6c7588;
+    background: rgba(108,117,136,0.1);
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .news-title a {
+    color: #e6e8ee;
+    text-decoration: none;
+  }
+  .news-title a:hover { color: #f4cc6b; }
+  .news-summary {
+    font-size: 12.5px;
+    color: #b4bccf;
+    line-height: 1.55;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .news-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(244,204,107,0.12);
+  }
+  .nm-cell {
+    text-align: center;
+    padding: 4px;
+  }
+  .nm-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .nm-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #f4cc6b;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .nm-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .news-analysis {
+    font-size: 13.5px;
+    color: #e0e3eb;
+    line-height: 1.6;
+    margin-top: 12px;
+    padding: 0;
+  }
+  .news-analysis::before {
+    content: 'Sum up · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-right: 4px;
+  }
+  .news-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 6px;
+  }
+  .news-link {
+    color: #4ec9d6;
+    text-decoration: none;
+  }
+  .news-link:hover { text-decoration: underline; }
+  .news-extra-links {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .news-extra-link {
+    font-size: 11.5px;
+    color: #8fb3d4;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .news-extra-link:hover { color: #f4cc6b; text-decoration: underline; }
+
+  .reddit-list { display: flex; flex-direction: column; gap: 8px; }
+  .reddit-row {
+    background: rgba(255,138,76,0.04);
+    border-left: 3px solid #ff8a4c;
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .reddit-sub {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ff8a4c;
+    background: rgba(255,138,76,0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 90px;
+    text-align: center;
+  }
+  .reddit-content { flex: 1; min-width: 0; }
+  .reddit-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .reddit-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .reddit-title a { color: #e6e8ee; text-decoration: none; }
+  .reddit-title a:hover { color: #ff8a4c; }
+  .reddit-analysis {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(255,138,76,0.06);
+    border-left: 2px solid #ff8a4c;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #d8dde8;
+    line-height: 1.5;
+  }
+  .reddit-analysis::before {
+    content: 'Sum up · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #ff8a4c;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .key-takeaway {
+    margin-top: 16px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.12) 0%, rgba(232,156,91,0.06) 100%);
+    border: 1px solid rgba(244,204,107,0.25);
+    border-radius: 10px;
+  }
+  .takeaway-label {
+    font-size: 11px;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .takeaway-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f4f5f9;
+    line-height: 1.4;
+  }
+  footer {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    color: #6c7588;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DIENOS BRIEFING</h1>
+  <div class="date-line">2026 m. gegužės 13 d., trečiadienis · daug_pinigu daily</div>
+</header>
+
+
+<div class="market-snapshot">
+  
+  <div class="snap-item">
+    <div class="snap-label">S&amp;P 500</div>
+    <div class="snap-price">7,420</div>
+    <div class="snap-change" style="color: #ff7373">-0.22%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Nasdaq 100</div>
+    <div class="snap-price">29,134</div>
+    <div class="snap-change" style="color: #ff7373">-0.98%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Dow</div>
+    <div class="snap-price">49,867</div>
+    <div class="snap-change" style="color: #7ed87e">+0.15%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Russell 2k</div>
+    <div class="snap-price">2,849</div>
+    <div class="snap-change" style="color: #ff7373">-1.05%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">VIX</div>
+    <div class="snap-price">17.99</div>
+    <div class="snap-change" style="color: #ff7373">-2.12%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Crude Oil</div>
+    <div class="snap-price">102.05</div>
+    <div class="snap-change" style="color: #7ed87e">+4.06%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Gold</div>
+    <div class="snap-price">4,723</div>
+    <div class="snap-change" style="color: #7ed87e">+0.08%</div>
+  </div>
+  
+</div>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#c084fc">AI Sektorius</div>
+    <span class="section-count" style="background:rgba(192,132,252,0.15);color:#c084fc">8</span>
+  </div>
+  <div class="ai-grid">
+    
+    <div class="ai-card">
+      <div class="ai-symbol">CRWV</div>
+      <div class="ai-price">$107.75</div>
+      <div class="ai-change" style="color: #ff7373">-6.06%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">ZM</div>
+      <div class="ai-price">$102.96</div>
+      <div class="ai-change" style="color: #ff7373">-3.88%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">NBIS</div>
+      <div class="ai-price">$179.11</div>
+      <div class="ai-change" style="color: #ff7373">-3.76%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MU</div>
+      <div class="ai-price">$766.58</div>
+      <div class="ai-change" style="color: #ff7373">-3.61%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">ASML</div>
+      <div class="ai-price">$1,521</div>
+      <div class="ai-change" style="color: #ff7373">-2.87%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AMD</div>
+      <div class="ai-price">$448.29</div>
+      <div class="ai-change" style="color: #ff7373">-2.29%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AVGO</div>
+      <div class="ai-price">$419.30</div>
+      <div class="ai-change" style="color: #ff7373">-2.13%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">TSM</div>
+      <div class="ai-price">$397.28</div>
+      <div class="ai-change" style="color: #ff7373">-1.79%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Makro Events</div>
+    <span class="section-count">2</span>
+  </div>
+  <div class="events-list">
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">15:30</div>
+        <div class="event-country">US</div>
+        <div class="event-name">PPI MoM</div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value ">0.5%</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">0.5%</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Producer kainos - leading indicator CPI, ankstesnis signalas apie infliacijos kryptį</div>
+      
+    </div>
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">19:29</div>
+        <div class="event-country">US</div>
+        <div class="event-name">Fed Chair Nomination Vote</div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value ">Pass</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Fed Chair nominacijos balsavimas - hawkish/dovish naujasis Chair&#39;as keičia rate path expectations</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Watchlist Earnings Reports</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">2</span>
+  </div>
+  <div class="earnings-cards">
+    
+    <div class="earnings-card miss">
+      <div class="ec-header">
+        <div class="ec-symbol">HIMS</div>
+        <div class="ec-verdict miss">
+          MISS
+        </div>
+        <div class="ec-transcript-badge">Transcript</div>
+        <div class="ec-date">05-11 16:00</div>
+      </div>
+      <div class="ec-numbers">
+        <div class="ec-metric">
+          <div class="ec-label">EPS Actual</div>
+          <div class="ec-value miss-val">$-0.40</div>
+        </div>
+        <div class="ec-vs">vs</div>
+        <div class="ec-metric">
+          <div class="ec-label">EPS Estimate</div>
+          <div class="ec-value">$0.03</div>
+        </div>
+        
+        <div class="ec-metric">
+          <div class="ec-label">Surprise</div>
+          <div class="ec-value miss-val">-1267.9%</div>
+        </div>
+        
+      </div>
+      
+      <div class="ec-metrics-grid">
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">Revenue</div>
+          <div class="ec-mc-value">$0.608B</div>
+          <div class="ec-mc-note">+4% YoY</div>
+        </div>
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">Next Q guide</div>
+          <div class="ec-mc-value">$0.680B-$0.700B</div>
+          
+        </div>
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">FY guide</div>
+          <div class="ec-mc-value">$2.8B-$3.0B</div>
+          <div class="ec-mc-note">EBITDA $275M-$350M</div>
+        </div>
+        
+      </div>
+      
+      
+      <div class="ec-quotes-block">
+        <div class="ec-quotes-label">Earnings call · key quotes</div>
+        
+        <div class="ec-quote">"To reach our longer-term aspirations, we are undergoing what is likely to be a transition period that may create volatility in GAAP results and ratios, as reflected in our first quarter results."</div>
+        
+        <div class="ec-quote">"Almost all new business now on branded products, with most former compounded product subscribers transitioned following the Novo Nordisk partnership."</div>
+        
+        <div class="ec-quote">"On pace to add more than 100,000 per month after the branded product launch."</div>
+        
+      </div>
+      
+      
+      <div class="ec-analysis">Q2 guidance $680-700M atrodo solidžiai, tačiau FY revenue $2.8-3.0B vidurkis ($2.9B) yra žemiau to, ką rinka tikėjosi prieš kelis mėnesius - augimo tempas lėtėja, kai GLP-1 segmentas pereina nuo kompanijos suformuotų preparatų prie Novo Nordisk partnerystės produktų. EBITDA guidance $275-350M rodo labai platų intervalą - tai signalizuoja, kad vadovybė pati neaiškiai mato pelningumo trajektoriją šiame pereinamajame etape. Teigiama pusė: jei 100 000+ naujų abonentų per mėnesį tempas išsilaikys Q2-Q3, revenue pusė gali artėti prie $3.0B ribos, o tai keistų EBITDA skaičiavimus. Manau raktinis klausimas - ar naujų abonentų augimas padengs mažesnes maržas prie prekinio ženklo produktų; jei Q2 gross margin stabilizuojasi ties 60%+, akcija gali rasti pagrindą, tačiau kol kas EPS lygio neapibrėžtumas ir platus EBITDA intervalas daro vertinimas sudėtingą - P/S ties dabartinėmis kainomis dera lyginti tik tada, kai matosi aiškesnė maržų kryptis.</div>
+      
+    </div>
+    
+    <div class="earnings-card miss">
+      <div class="ec-header">
+        <div class="ec-symbol">CLSK</div>
+        <div class="ec-verdict miss">
+          MISS
+        </div>
+        <div class="ec-transcript-badge">Transcript</div>
+        <div class="ec-date">05-11 16:00</div>
+      </div>
+      <div class="ec-numbers">
+        <div class="ec-metric">
+          <div class="ec-label">EPS Actual</div>
+          <div class="ec-value miss-val">$-0.49</div>
+        </div>
+        <div class="ec-vs">vs</div>
+        <div class="ec-metric">
+          <div class="ec-label">EPS Estimate</div>
+          <div class="ec-value">$-0.23</div>
+        </div>
+        
+        <div class="ec-metric">
+          <div class="ec-label">Surprise</div>
+          <div class="ec-value miss-val">-114.9%</div>
+        </div>
+        
+      </div>
+      
+      <div class="ec-metrics-grid">
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">Revenue</div>
+          <div class="ec-mc-value">$136M</div>
+          
+        </div>
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">Reakcija</div>
+          <div class="ec-mc-value">+5.80%</div>
+          
+        </div>
+        
+      </div>
+      
+      
+      <div class="ec-quotes-block">
+        <div class="ec-quotes-label">Earnings call · key quotes</div>
+        
+        <div class="ec-quote">"Mining funds the platform; AI monetizes it."</div>
+        
+        <div class="ec-quote">"The net loss includes unfavorable non-cash charges of approximately $263 million related to GAAP mark-to-market adjustments on Bitcoin balances."</div>
+        
+        <div class="ec-quote">"Only minimal investment will be made at sites like Sandersville until lease agreements are finalized."</div>
+        
+      </div>
+      
+      
+      <div class="ec-analysis">CLSK $136M revenue - kompanija toliau stato dvigubą modelį: kasybos pajamos finansuoja AI infrastruktūrą, kuri turi monetizuotis ateityje. $263M nekasybinis nuostolis - GAAP korekcija Bitcoin pozicijų rinkos verte, ne operacinis silpnumas, todėl EPS miss šiuo atveju mažiau reikšmingas nei atrodo. Tačiau gairės lieka miglotos - Sandersville ir panašios vietos negaus reikšmingų investicijų, kol nebus pasirašytos nuomos sutartys, o tai rodo, kad plėtros tempas artimiausiais ketvirčiais bus santūrus. Investuotojui svarbiausia stebėti, ar AI segmentas pradeda generuoti apčiuopiamas pajamas - kol to nėra, akcija juda tik Bitcoin kainų ir nuotaikų bangomis, o +5.80% reakcija greičiausiai atspindi palengvėjimą, kad operacinė pusė nenuvylė, ne tikrą fundamentalų posūkį.</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Upcoming Earnings (14d)</div>
+    <span class="section-count" style="background:rgba(244,204,107,0.15);color:#f4cc6b">6</span>
+  </div>
+  <div class="upcoming-grid">
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">NBIS</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $-0.71</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">BABA</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $5.74</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">VLN</div>
+      <div class="up-date">Wed May 13</div>
+      <div class="up-days">in 0d</div>
+      <div class="up-est">EPS est $-0.06</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">FIG</div>
+      <div class="up-date">Thu May 14</div>
+      <div class="up-days">in 1d</div>
+      <div class="up-est">EPS est $0.06</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">BIDU</div>
+      <div class="up-date">Mon May 18</div>
+      <div class="up-days">in 5d</div>
+      <div class="up-est">EPS est $11.43</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">ENS</div>
+      <div class="up-date">Wed May 20</div>
+      <div class="up-days">in 7d</div>
+      <div class="up-est">EPS est $2.99</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Tavo Watchlist - Top Movers</div>
+  </div>
+  <div class="movers-grid">
+    <div>
+      <div class="movers-col-title">📈 Gainers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$396.39</span></span>
+        <span class="mover-up">+3.11%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.66</span></span>
+        <span class="mover-up">+2.59%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$56.56</span></span>
+        <span class="mover-up">+2.56%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">NVO</span> <span class="mover-price">$47.00</span></span>
+        <span class="mover-up">+1.29%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">PYPL</span> <span class="mover-price">$45.44</span></span>
+        <span class="mover-up">+0.82%</span>
+      </div>
+      
+    </div>
+    <div>
+      <div class="movers-col-title">📉 Losers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.03</span></span>
+        <span class="mover-down">-14.10%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.99</span></span>
+        <span class="mover-down">-11.56%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.32</span></span>
+        <span class="mover-down">-8.09%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">SBET</span> <span class="mover-price">$7.17</span></span>
+        <span class="mover-down">-7.60%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1452.02</span></span>
+        <span class="mover-down">-6.17%</span>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Crypto · 24h</div>
+  </div>
+  <div class="crypto-grid">
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">BTC</div>
+      <div class="crypto-name">Bitcoin</div>
+      <div class="crypto-price">$80,671</div>
+      <div class="crypto-change" style="color: #ff7373">-1.25%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">ETH</div>
+      <div class="crypto-name">Ethereum</div>
+      <div class="crypto-price">$2,285</div>
+      <div class="crypto-change" style="color: #ff7373">-2.29%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">SOL</div>
+      <div class="crypto-name">Solana</div>
+      <div class="crypto-price">$94.72</div>
+      <div class="crypto-change" style="color: #ff7373">-2.90%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">LINK</div>
+      <div class="crypto-name">Chainlink</div>
+      <div class="crypto-price">$10.30</div>
+      <div class="crypto-change" style="color: #ff7373">-2.88%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">TAO</div>
+      <div class="crypto-name">Bittensor</div>
+      <div class="crypto-price">$310.84</div>
+      <div class="crypto-change" style="color: #ff7373">-3.97%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">Top IV - Premium Selling</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">8</span>
+  </div>
+  <div class="iv-grid">
+    
+    <div class="iv-row">
+      <div class="iv-symbol">VLN</div>
+      <div class="iv-meta">$2.70 · 37d</div>
+      <div class="iv-value">164.8%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BMNU</div>
+      <div class="iv-meta">$1.99 · 37d</div>
+      <div class="iv-value">152.3%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">CONL</div>
+      <div class="iv-meta">$9.32 · 37d</div>
+      <div class="iv-value">139.6%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">SNDK</div>
+      <div class="iv-meta">$1452.02 · 31d</div>
+      <div class="iv-value">107.7%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BE</div>
+      <div class="iv-meta">$280.69 · 31d</div>
+      <div class="iv-value">106.1%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$56.56 · 31d</div>
+      <div class="iv-value">105.0%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">FIG</div>
+      <div class="iv-meta">$19.33 · 31d</div>
+      <div class="iv-value">104.9%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">NBIS</div>
+      <div class="iv-meta">$179.11 · 31d</div>
+      <div class="iv-value">104.6%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Watchlist Insider Buys</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">14</span>
+  </div>
+  <div class="insider-list">
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">TSLA</div>
+      <div class="insider-info">
+        <div class="insider-name">Musk Elon <span class="insider-title">CEO, 10%</span></div>
+        <div class="insider-meta">+2,568,732 sh @ $389.28 · 2025-09-12</div>
+      </div>
+      <div class="insider-value">+$999,959,042</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">UNH</div>
+      <div class="insider-info">
+        <div class="insider-name">Hemsley Stephen J <span class="insider-title">CEO, UHG</span></div>
+        <div class="insider-meta">+86,700 sh @ $288.57 · 2025-05-16</div>
+      </div>
+      <div class="insider-value">+$25,019,019</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">GME</div>
+      <div class="insider-info">
+        <div class="insider-name">Cohen Ryan <span class="insider-title">Pres, CEO, COB</span></div>
+        <div class="insider-meta">+1,000,000 sh @ $21.36 · 2026-01-20</div>
+      </div>
+      <div class="insider-value">+$21,359,200</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">UNH</div>
+      <div class="insider-info">
+        <div class="insider-name">Rex John F <span class="insider-title">Pres, CFO</span></div>
+        <div class="insider-meta">+17,175 sh @ $291.12 · 2025-05-16</div>
+      </div>
+      <div class="insider-value">+$4,999,919</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SOFI</div>
+      <div class="insider-info">
+        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-05-11</div>
+      </div>
+      <div class="insider-value">+$2.00M</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">MSTR</div>
+      <div class="insider-info">
+        <div class="insider-name">Le Phong <span class="insider-title">Pres, CEO</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-03-19</div>
+      </div>
+      <div class="insider-value">+$1.14M</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">AMD</div>
+      <div class="insider-info">
+        <div class="insider-name">Guido Philip <span class="insider-title">EVP, Chief Commercial Off</span></div>
+        <div class="insider-meta">+8,800 sh @ $113.56 · 2025-05-20</div>
+      </div>
+      <div class="insider-value">+$999,328</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENPH</div>
+      <div class="insider-info">
+        <div class="insider-name">Kothandaraman Badrinarayanan <span class="insider-title">Pres, CEO</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-02-05</div>
+      </div>
+      <div class="insider-value">+$877K</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">MSTR</div>
+      <div class="insider-info">
+        <div class="insider-name">Kang Andrew <span class="insider-title">EVP, CFO</span></div>
+        <div class="insider-meta">2 buys · paskutinis 2025-07-29</div>
+      </div>
+      <div class="insider-value">+$443K</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SBET</div>
+      <div class="insider-info">
+        <div class="insider-name">Phythian Rob <span class="insider-title">CEO</span></div>
+        <div class="insider-meta">+44,640 sh @ $6.72 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$299,981</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SBET</div>
+      <div class="insider-info">
+        <div class="insider-name">Delucia Robert Michael <span class="insider-title">CFO</span></div>
+        <div class="insider-meta">+7,440 sh @ $6.72 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$49,997</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">O&#39;Connell Shawn M. <span class="insider-title">Pres, CEO</span></div>
+        <div class="insider-meta">+475 sh @ $83.76 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$39,786</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">Funk Andrea J. <span class="insider-title">EVP, CFO</span></div>
+        <div class="insider-meta">+315 sh @ $80.20 · 2025-05-23</div>
+      </div>
+      <div class="insider-value">+$25,263</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">Uplinger Chad C <span class="insider-title">Pres, Motive Power Global</span></div>
+        <div class="insider-meta">+295 sh @ $83.65 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$24,677</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#e6e8ee">Naujienos</div>
+    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">6</span>
+  </div>
+  <div class="news-list">
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">HIMS</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank">Hims &amp; Hers Stock Plunges Post Q1 Earnings Miss, Gross Margin Down</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS faktinis</div>
+            <div class="nm-value">-$0.18</div>
+            <div class="nm-note">vs +$0.04 est, prieš metus +$0.20</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue Q1</div>
+            <div class="nm-value">$608.1M</div>
+            <div class="nm-note">+3.8% YoY, miss 1.9%</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Akcijos reakcija</div>
+            <div class="nm-value">-15.2%</div>
+            <div class="nm-note">pre-market po rezultatų</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS pokytis YoY</div>
+            <div class="nm-value">-$0.38</div>
+            <div class="nm-note">nuo +$0.20 iki -$0.18</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">EPS miss yra ryškus - rinka tikėjosi bent lūžio taško, o HIMS pateikė nuostolį, kuris yra 22 centų žemiau praėjusių metų lygio. Revenue augimas 3.8% YoY atrodo silpnai įmonei, kuri ilgą laiką pozicionavo save kaip aukšto augimo tempą palaikančią platformą - 1.9% atsilikimas nuo analitikų lūkesčių rodo, kad GLP-1 segmento kainų spaudimas jau veikia pajamas. Gross margin kritimas yra pagrindinis klausimas: jei jis toliau smunka, EBITDA kelias į teigiamą teritoriją atsitraukia. Manau, kad šis pre-market kritimas gali būti per didelis, jei Q2 guidance pasirodys stipresnis - tačiau pirma reikia matyti tuos skaičius. Investuotojams svarbiausia sekti, ar gross margin stabilizuojasi Q2, nes nuo to priklauso, ar dabartinis lygis yra perpirkimo zona, ar tik pirmas laiptelis žemyn.</div>
+        
+        <div class="news-meta">Zacks · 05-12 15:45 · <a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+        <div class="news-extra-links">
+          
+          <a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank" class="news-extra-link">+ CNBC Top: Hims &amp; Hers plummets 13% after first-quarter loss, weak earnings guidance</a>
+          
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">SBET</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank">Sharplink Inc (SBET) Q1 2026 Earnings Call Highlights: Revenue Surge Amidst Significant Net Loss</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue Q1 2026</div>
+            <div class="nm-value">$12.1M</div>
+            <div class="nm-note">vs $0.7M Q1 2025 YoY</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Grynasis nuostolis</div>
+            <div class="nm-value">-$685.6M</div>
+            <div class="nm-note">vs -$1M Q1 2025</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Nerealizuotas nuostolis</div>
+            <div class="nm-value">-$506.7M</div>
+            <div class="nm-note">ETH vertės kritimas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">SG&amp;A išlaidos</div>
+            <div class="nm-value">$9.9M</div>
+            <div class="nm-note">vs $1.1M Q1 2025 YoY</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">ETH turtas</div>
+            <div class="nm-value">589,305 ETH</div>
+            <div class="nm-note">fair value $1.2B kovo 31 d.</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Grynieji pinigai</div>
+            <div class="nm-value">$16.9M</div>
+            <div class="nm-note">vs $28.5M gruodžio 31 d.</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Revenue augimas iš $0.7M iki $12.1M atrodo įspūdingai, tačiau tai - ne verslo operacijos, o kriptovaliutų prekybos realizuoti pelnas ($12M). SG&amp;A išaugus beveik 9 kartus iki $9.9M rodo, kad įmonė agresyviai plečia administracinę struktūrą, kol pagrindinis verslas dar nesubrendęs. $685.6M grynasis nuostolis beveik visiškai paaiškinamas nerealizuotu ETH vertės kritimu - tai buhalterinė pozicija, tačiau ji rodo, kiek SBET likimas priklauso nuo ETH kainos, ne nuo verslo. Grynųjų pinigų likutis $16.9M ir toliau mažėja, o ETH atsargos augo iki 872,984 vienetų iki gegužės 4 d. - įmonė akivaizdžiai renkasi kaupti ETH vietoj to, kad apsaugotų likvidumą. Manau šis modelis tinka tik tiems, kurie jau turi tiesioginę ETH poziciją ir ieško sverto - bet kaip atskira investicija, fundamentali rizika čia yra kriptovaliutų kainų volatilumas, o ne verslo kokybė.</div>
+        
+        <div class="news-meta">GuruFocus.com · 05-12 07:03 · <a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank">BofA drops blunt warning about Fed rate cuts</a></div>
+        
+        
+        <div class="news-analysis">BofA Global Research atidėjo palūkanų mažinimo lūkesčius - dabar tikimasi dviejų 0,25 procentinio punkto mažinimų 2027 m. liepą ir rugsėjį, o ne 2026 m. Pagrindas: aukštos energijos kainos ir stipri darbo rinka laiko infliaciją pakeltą. Reikšminga, kad tai ne vienas balsas - Reuters duomenimis, dauguma pasaulinių brokerių jau persvėrė 2026 m. prognozes ir dalis visiškai atmeta mažinimų galimybę kitais metais. Investuotojams tai reiškia, kad trumpojo galo palūkanos išlieka aukštos ilgiau - spaudimas vertinimams akcijų rinkoje, ypač augimo sektoriuje, kur diskontuojami būsimi pinigų srautai. Manau obligacijų rinka jau didžiąja dalimi tai įkainojo, tačiau jei 2027 m. datos vėl slinks - dar vienas pervertinimo ciklas bus neišvengiamas.</div>
+        
+        <div class="news-meta">Yahoo Finance · <a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/qualcomm-chip-stocks-record-ai.html" target="_blank">Qualcomm drops 11% as chip stocks pull back from record AI-driven rally</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Qualcomm akcija</div>
+            <div class="nm-value">-11%</div>
+            <div class="nm-note">blogiausias sesija nuo 2020</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Intel akcija</div>
+            <div class="nm-value">-7%</div>
+            <div class="nm-note">bendras atsitraukimas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Skyworks akcija</div>
+            <div class="nm-value">-5%</div>
+            <div class="nm-note">lustų sektoriaus spaudimas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Marvell akcija</div>
+            <div class="nm-value">-4%</div>
+            <div class="nm-note">AI ralio korekcija</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">iShares Semi ETF</div>
+            <div class="nm-value">-3%</div>
+            <div class="nm-note">sektoriaus indeksas</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Atsitraukimas vyksta po to, kai lustų sektorius neseniai pasiekė naujus aukščiausius lygius, o AI prekybos bangą išplėtė už Nvidia ribų - tad korekcija po tokio ralio nėra netikėta. Katalizatorius - aukštesni nei tikėtasi vartotojų infliacijos duomenys kartu su kylančiomis naftos kainomis dėl Irano karo, o tai stumia investuotojus link gynybinių pozicijų. Qualcomm krenta labiausiai - 11% per vieną dieną rodo, kad akcija buvo labiausiai perkąsta ralio metu, todėl ir korekcija stipriausia. Investuotojui svarbu atskirti: tai makro sukelta rizikos vengimo reakcija, o ne sektoriaus fundamentalių pokyčių signalas - jei infliacijos duomenys nestiprėja toliau, lustų akcijų silpnumas gali būti trumpalaikis. Qualcomm ir Marvell verta stebėti artimiausias earnings sesas - tik tada bus aišku, ar AI exposure fundamentaliai pateisina buvusius aukštus lygius.</div>
+        
+        <div class="news-meta">CNBC Top · 05-12 20:09 · <a href="https://www.cnbc.com/2026/05/12/qualcomm-chip-stocks-record-ai.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank">Companies start getting tariff refunds after Supreme Court decision</a></div>
+        
+        
+        <div class="news-analysis">Aukščiausiasis teismas pripažino dalį muitų neteisėtais, ir pirmosios įmonės jau gauna grąžinamas sumas - Oshkosh Corporation patvirtino, kad kompensacijos pradėtos gauti nuo antradienio. Tikslus bendras grąžinamos sumos dydis dar nėra patvirtintas, tad kol kas sunku vertinti konkrečią įtaką pelningumui. Įmonėms, kurios per pastaruosius metus mokėjo padidintus muitus, tai gali tapti vienkartiniu teigiamu poveikiu grynajam pelnui - svarbu sekti, kokią dalį galutinės pretenzijų sumos Oshkosh realiai atgaus. Investuotojams, turintiems exposure į pramonės sektorių, verta patikrinti, ar jų įmonės taip pat pateikė panašius reikalavimus ir kokios jų pretenzijų apimtys - tai gali būti catalyst pozityviems pelno tikslinimams.</div>
+        
+        <div class="news-meta">CNBC Top · 05-12 18:43 · <a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank">Markets raise chances for a Fed rate hike following hot inflation report</a></div>
+        
+        
+        <div class="news-analysis">Po kovo infliacijos ataskaitos, kuri viršijo lūkesčius, rinka visiškai išbraukė palūkanų mažinimo tikimybę iki 2027 metų pabaigos - tai reikšmingas lūkesčių pokytis. Vietoj mažinimo, CME FedWatch duomenimis, pradėjo augti tikimybė, kad kitas Fed žingsnis bus palūkanų kėlimas. Aukštos palūkanos ilgiau reiškia spaudimą vertinimams - ypač augimo akcijoms su aukštu P/E, kur diskontavimo norma tiesiogiai veikia kainą. Obligacijų rinkos reakcija ir trumpojo galo palūkanos artimiausiomis savaitėmis parodys, ar rinka šį scenarijų jau visiškai įkainojo. Manau labiausiai rizikuoja sektoriai su aukštu sverto lygiu ir bendrovės, kurių refinansavimo poreikis artimiausiais metais - jų kainų spaudimas gali tik didėti.</div>
+        
+        <div class="news-meta">CNBC Markets · 05-12 17:33 · <a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+
+
+<div class="key-takeaway">
+  <div class="takeaway-label">Key Takeaway</div>
+  <div class="takeaway-text">PPI MoM (15:30) - didžiausias šios dienos event&#39;as.</div>
+</div>
+
+
+<footer>
+  <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
+  <span>00:18 (Vilnius)</span>
+</footer>
+
+</body>
+</html>
