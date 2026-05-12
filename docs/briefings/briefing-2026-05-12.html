@@ -203,6 +203,16 @@
     color: #8a92a3;
     font-variant-numeric: tabular-nums;
   }
+  .ec-transcript-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
   .ec-numbers {
     display: flex;
     align-items: end;
@@ -238,6 +248,38 @@
     border-radius: 6px;
     padding: 10px 14px;
     margin-bottom: 10px;
+  }
+  .ec-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(126,216,126,0.12);
+  }
+  .ec-mc { text-align: center; padding: 4px; }
+  .ec-mc-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .ec-mc-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .ec-mc-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
   }
   .ec-row {
     font-size: 13px;
@@ -649,6 +691,21 @@
     text-decoration: none;
   }
   .news-link:hover { text-decoration: underline; }
+  .news-extra-links {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .news-extra-link {
+    font-size: 11.5px;
+    color: #8fb3d4;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .news-extra-link:hover { color: #f4cc6b; text-decoration: underline; }
 
   .reddit-list { display: flex; flex-direction: column; gap: 8px; }
   .reddit-row {
@@ -682,6 +739,26 @@
     color: #6c7588;
     margin-top: 4px;
     font-variant-numeric: tabular-nums;
+  }
+  .reddit-title a { color: #e6e8ee; text-decoration: none; }
+  .reddit-title a:hover { color: #ff8a4c; }
+  .reddit-analysis {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(255,138,76,0.06);
+    border-left: 2px solid #ff8a4c;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #d8dde8;
+    line-height: 1.5;
+  }
+  .reddit-analysis::before {
+    content: 'Sum up · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #ff8a4c;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
   }
 
   .key-takeaway {
@@ -728,44 +805,44 @@
   
   <div class="snap-item">
     <div class="snap-label">S&amp;P 500</div>
-    <div class="snap-price">7,424</div>
-    <div class="snap-change" style="color: #ff7373">-0.17%</div>
+    <div class="snap-price">7,420</div>
+    <div class="snap-change" style="color: #ff7373">-0.23%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Nasdaq 100</div>
-    <div class="snap-price">29,122</div>
-    <div class="snap-change" style="color: #ff7373">-1.03%</div>
+    <div class="snap-price">29,124</div>
+    <div class="snap-change" style="color: #ff7373">-1.02%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Dow</div>
-    <div class="snap-price">49,884</div>
-    <div class="snap-change" style="color: #7ed87e">+0.18%</div>
+    <div class="snap-price">49,847</div>
+    <div class="snap-change" style="color: #7ed87e">+0.11%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Russell 2k</div>
-    <div class="snap-price">2,850</div>
-    <div class="snap-change" style="color: #ff7373">-0.99%</div>
+    <div class="snap-price">2,848</div>
+    <div class="snap-change" style="color: #ff7373">-1.08%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">VIX</div>
-    <div class="snap-price">18.00</div>
-    <div class="snap-change" style="color: #ff7373">-2.07%</div>
+    <div class="snap-price">17.99</div>
+    <div class="snap-change" style="color: #ff7373">-2.12%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Crude Oil</div>
-    <div class="snap-price">102.40</div>
-    <div class="snap-change" style="color: #7ed87e">+4.42%</div>
+    <div class="snap-price">102.38</div>
+    <div class="snap-change" style="color: #7ed87e">+4.39%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Gold</div>
-    <div class="snap-price">4,717</div>
-    <div class="snap-change" style="color: #ff7373">-0.04%</div>
+    <div class="snap-price">4,720</div>
+    <div class="snap-change" style="color: #7ed87e">+0.03%</div>
   </div>
   
 </div>
@@ -781,50 +858,50 @@
     
     <div class="ai-card">
       <div class="ai-symbol">CRWV</div>
-      <div class="ai-price">$107.58</div>
-      <div class="ai-change" style="color: #ff7373">-6.21%</div>
-    </div>
-    
-    <div class="ai-card">
-      <div class="ai-symbol">MU</div>
-      <div class="ai-price">$762.85</div>
-      <div class="ai-change" style="color: #ff7373">-4.08%</div>
+      <div class="ai-price">$107.75</div>
+      <div class="ai-change" style="color: #ff7373">-6.06%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ZM</div>
-      <div class="ai-price">$102.98</div>
-      <div class="ai-change" style="color: #ff7373">-3.86%</div>
+      <div class="ai-price">$102.96</div>
+      <div class="ai-change" style="color: #ff7373">-3.88%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">NBIS</div>
-      <div class="ai-price">$179.30</div>
-      <div class="ai-change" style="color: #ff7373">-3.65%</div>
+      <div class="ai-price">$179.11</div>
+      <div class="ai-change" style="color: #ff7373">-3.76%</div>
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MU</div>
+      <div class="ai-price">$766.58</div>
+      <div class="ai-change" style="color: #ff7373">-3.61%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ASML</div>
-      <div class="ai-price">$1,520</div>
-      <div class="ai-change" style="color: #ff7373">-2.93%</div>
+      <div class="ai-price">$1,521</div>
+      <div class="ai-change" style="color: #ff7373">-2.87%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AMD</div>
-      <div class="ai-price">$446.63</div>
-      <div class="ai-change" style="color: #ff7373">-2.65%</div>
+      <div class="ai-price">$448.29</div>
+      <div class="ai-change" style="color: #ff7373">-2.29%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AVGO</div>
-      <div class="ai-price">$419.98</div>
-      <div class="ai-change" style="color: #ff7373">-1.97%</div>
+      <div class="ai-price">$419.30</div>
+      <div class="ai-change" style="color: #ff7373">-2.13%</div>
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">TSM</div>
-      <div class="ai-price">$397.82</div>
-      <div class="ai-change" style="color: #ff7373">-1.66%</div>
+      <div class="ai-price">$397.28</div>
+      <div class="ai-change" style="color: #ff7373">-1.79%</div>
     </div>
     
   </div>
@@ -957,6 +1034,7 @@
         <div class="ec-verdict miss">
           MISS
         </div>
+        <div class="ec-transcript-badge">Transcript</div>
         <div class="ec-date">05-11 16:00</div>
       </div>
       <div class="ec-numbers">
@@ -977,20 +1055,31 @@
         
       </div>
       
-      <div class="ec-extracted">
+      <div class="ec-metrics-grid">
         
-        <div class="ec-row"><span class="ec-row-label">Revenue:</span> <span class="ec-row-val">$0.6B <span class="ec-vs-inline">vs est $0.6B</span> <span class="ec-yoy">(+3.8% YoY)</span></span></div>
+        <div class="ec-mc">
+          <div class="ec-mc-label">Revenue</div>
+          <div class="ec-mc-value">$0.608B</div>
+          <div class="ec-mc-note">+4% YoY</div>
+        </div>
         
+        <div class="ec-mc">
+          <div class="ec-mc-label">Next Q guide</div>
+          <div class="ec-mc-value">$0.68-0.70B</div>
+          
+        </div>
         
-        
-        
-        <div class="ec-row"><span class="ec-row-label">Stock reaction:</span> <span class="ec-row-val">-15.2% pre-market</span></div>
-        
+        <div class="ec-mc">
+          <div class="ec-mc-label">FY guide</div>
+          <div class="ec-mc-value">$2.8-3.0B</div>
+          <div class="ec-mc-note">EBITDA $275M-$350M</div>
+        </div>
         
       </div>
       
       
-      <div class="ec-analysis">HIMS Q1 revenue $608M atitiko lūkesčius (+3.8% YoY), bet EPS miss $0.40 nukrito šešis kartus žemiau $0.03 prognozės - tai signalizuoja pelningumo stagnaciją. Q2 guidance $680-700M rodo 11-15% augimą, tai žemiau kompanijos 20%+ tempų praeityje, o Q4 EBITDA margin $350M iš $3B revenue (11.7%) lieka siaura GLP-1 kainų spaudimo dėl. Pre-market -15.2% kritimas greičiausiai atspindi tik EPS šoką, nes augimas formaliai sutampa su rinka. Jei Q2 guidance pasiteisins šįart, pelningumas pradės kilti - tada 25-30x P/E nuokaida atrodytu patraukli, tačiau jei žemesnė marža išsiliks, akcija lieka risk-on, o pirkimo momentum būtų reikalingas žymiai didesnis margin ekspanzijos įrodymas.</div>
+      
+      <div class="ec-analysis">HIMS Q2 guidance $680-700M ir FY revenue $2.8-3.0B atrodytų solidžiai, bet rinka tikėjosi agresyvesnio augimo po +4% YoY - tai ženkliai lėtesnis tempas nei ankstesniuose ketvirčiuose. FY EBITDA guidance $275-350M yra platus diapazonas, kas signalizuoja vadovybės neapibrėžtumą dėl GLP-1 segmento kainų spaudimo - apatinis scenarijus reikštų ~9-10% EBITDA maržą, kas sunkiai pateisina augimo vertinimą. Manau, kad raktinis dalykas stebėti artimiausiuose ketvirčiuose - ar gross margin stabilizuojasi virš 60%, nes tolimesnis kritimas reikštų, kad kainų spaudimas valgo augimo naudą greičiau nei rinka kainoja. Bearish setup tol, kol vadovybė nepateiks aiškesnio signalo, kad GLP-1 maržos grįžta aukštyn - tik tada FY guidance viršutinis scenarijus tampa realus catalyst akcijos kainai.</div>
       
     </div>
     
@@ -1000,6 +1089,7 @@
         <div class="ec-verdict miss">
           MISS
         </div>
+        <div class="ec-transcript-badge">Transcript</div>
         <div class="ec-date">05-11 16:00</div>
       </div>
       <div class="ec-numbers">
@@ -1020,8 +1110,21 @@
         
       </div>
       
+      <div class="ec-metrics-grid">
+        
+        <div class="ec-mc">
+          <div class="ec-mc-label">Revenue</div>
+          <div class="ec-mc-value">$0.136B</div>
+          
+        </div>
+        
+      </div>
       
-      <div class="ec-analysis">CLSK pateikė EPS miss beveik dvigubai blogesnį nei analitikų lūkesčiai - tai rodo, kad einamosios veiklos sąnaudos auga greičiau nei revenue. Bendrovė kol kas nepateikė aiškių FY guidance gairių, o tai investuotojams siunčia papildomą neapibrėžtumo signalą - rinka sunkiai vertina akcijas be matomumo į pelningumą. CLSK veikia HPC/AI infrastruktūros segmente, kur augimo tempas stiprus sektoriaus lygiu, tačiau individuali pelningumo trajektorija kol kas nepatvirtinta skaičiais. Manau, ką reikia stebėti toliau - ar Q2 duomenys parodys sąnaudų kontrolę ir ar atsiras bent preliminarios EBITDA gairės, nes be jų bullish tezė remiasi tik sektoriaus vėju, ne pačios bendrovės fundamentais.</div>
+      
+      <div class="ec-quote">"[mining] funds the plan"</div>
+      
+      
+      <div class="ec-analysis">CLSK Q1 revenue $136M - absoliutus skaičius nėra blogas HPC/AI infrastruktūros segmentui, tačiau EPS miss beveik du kartus didesnis nei lūkesčiai signalizuoja, kad einamosios išlaidos auga greičiau nei pajamos. Pagrindinė įtampa čia - kompanija remiasi kasyba kaip vidinio finansavimo šaltiniu (&#34;mining funds the plan&#34;), o tai reiškia, kad Bitcoin kainų dinamika tiesiogiai veikia investicijų į duomenų centrus tempą. Jei BTC išlieka ties dabartiniais lygiais arba krenta - capex planai gali slinkti dešinėn, ir tada augimo tempas HPC segmente sulėtės greičiau nei rinka tikisi. Manau svarbiausia stebėti Q2 HPC revenue dalį bendrose pajamose ir tai, ar kompanija pradeda mažinti priklausomybę nuo kasybos kaip catalyst finansavimui - tik tada vertinimas bus pateisinamas augimo premium.</div>
       
     </div>
     
@@ -1061,7 +1164,7 @@
     <div class="upcoming-card">
       <div class="up-symbol">FIG</div>
       <div class="up-date">Thu May 14</div>
-      <div class="up-days">in 2d</div>
+      <div class="up-days">in 1d</div>
       <div class="up-est">EPS est $0.06</div>
     </div>
     
@@ -1075,7 +1178,7 @@
     <div class="upcoming-card">
       <div class="up-symbol">ENS</div>
       <div class="up-date">Wed May 20</div>
-      <div class="up-days">in 8d</div>
+      <div class="up-days">in 7d</div>
       <div class="up-est">EPS est $2.99</div>
     </div>
     
@@ -1093,28 +1196,28 @@
       <div class="movers-col-title">📈 Gainers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$396.73</span></span>
-        <span class="mover-up">+3.20%</span>
+        <span><span class="mover-symbol">UNH</span> <span class="mover-price">$396.39</span></span>
+        <span class="mover-up">+3.11%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.68</span></span>
-        <span class="mover-up">+2.62%</span>
+        <span><span class="mover-symbol">NFLX</span> <span class="mover-price">$87.66</span></span>
+        <span class="mover-up">+2.59%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$56.08</span></span>
-        <span class="mover-up">+1.70%</span>
+        <span><span class="mover-symbol">IREN</span> <span class="mover-price">$56.56</span></span>
+        <span class="mover-up">+2.56%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NVO</span> <span class="mover-price">$46.98</span></span>
-        <span class="mover-up">+1.25%</span>
+        <span><span class="mover-symbol">NVO</span> <span class="mover-price">$47.00</span></span>
+        <span class="mover-up">+1.29%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">DUOL</span> <span class="mover-price">$106.45</span></span>
-        <span class="mover-up">+1.24%</span>
+        <span><span class="mover-symbol">PYPL</span> <span class="mover-price">$45.44</span></span>
+        <span class="mover-up">+0.82%</span>
       </div>
       
     </div>
@@ -1122,28 +1225,28 @@
       <div class="movers-col-title">📉 Losers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.06</span></span>
-        <span class="mover-down">-14.00%</span>
+        <span><span class="mover-symbol">HIMS</span> <span class="mover-price">$25.03</span></span>
+        <span class="mover-down">-14.10%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.98</span></span>
-        <span class="mover-down">-12.07%</span>
+        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.99</span></span>
+        <span class="mover-down">-11.56%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.22</span></span>
-        <span class="mover-down">-9.10%</span>
+        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$9.32</span></span>
+        <span class="mover-down">-8.09%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">SBET</span> <span class="mover-price">$7.22</span></span>
-        <span class="mover-down">-7.02%</span>
+        <span><span class="mover-symbol">SBET</span> <span class="mover-price">$7.17</span></span>
+        <span class="mover-down">-7.60%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CRWV</span> <span class="mover-price">$107.57</span></span>
-        <span class="mover-down">-6.22%</span>
+        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1452.02</span></span>
+        <span class="mover-down">-6.17%</span>
       </div>
       
     </div>
@@ -1161,36 +1264,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$80,809</div>
-      <div class="crypto-change" style="color: #ff7373">-1.39%</div>
+      <div class="crypto-price">$80,745</div>
+      <div class="crypto-change" style="color: #ff7373">-1.36%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
-      <div class="crypto-price">$2,285</div>
-      <div class="crypto-change" style="color: #ff7373">-2.33%</div>
+      <div class="crypto-price">$2,283</div>
+      <div class="crypto-change" style="color: #ff7373">-2.37%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$94.82</div>
-      <div class="crypto-change" style="color: #ff7373">-3.33%</div>
+      <div class="crypto-price">$94.78</div>
+      <div class="crypto-change" style="color: #ff7373">-3.13%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
       <div class="crypto-price">$10.31</div>
-      <div class="crypto-change" style="color: #ff7373">-3.11%</div>
+      <div class="crypto-change" style="color: #ff7373">-2.78%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$308.82</div>
-      <div class="crypto-change" style="color: #ff7373">-5.30%</div>
+      <div class="crypto-price">$309.24</div>
+      <div class="crypto-change" style="color: #ff7373">-4.61%</div>
     </div>
     
   </div>
@@ -1207,50 +1310,50 @@
     
     <div class="iv-row">
       <div class="iv-symbol">VLN</div>
-      <div class="iv-meta">$2.68 · 37d</div>
-      <div class="iv-value">173.4%</div>
+      <div class="iv-meta">$2.70 · 37d</div>
+      <div class="iv-value">164.8%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">BMNU</div>
-      <div class="iv-meta">$1.98 · 37d</div>
-      <div class="iv-value">142.6%</div>
+      <div class="iv-meta">$1.99 · 37d</div>
+      <div class="iv-value">152.3%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">CONL</div>
-      <div class="iv-meta">$9.22 · 37d</div>
+      <div class="iv-meta">$9.32 · 37d</div>
       <div class="iv-value">139.6%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">SNDK</div>
-      <div class="iv-meta">$1459.40 · 31d</div>
-      <div class="iv-value">106.4%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">FIG</div>
-      <div class="iv-meta">$19.38 · 31d</div>
-      <div class="iv-value">105.4%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">NBIS</div>
-      <div class="iv-meta">$179.35 · 31d</div>
-      <div class="iv-value">104.4%</div>
+      <div class="iv-meta">$1452.02 · 31d</div>
+      <div class="iv-value">107.7%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">BE</div>
-      <div class="iv-meta">$282.69 · 31d</div>
-      <div class="iv-value">103.5%</div>
+      <div class="iv-meta">$280.69 · 31d</div>
+      <div class="iv-value">106.1%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">IREN</div>
-      <div class="iv-meta">$56.08 · 31d</div>
-      <div class="iv-value">103.1%</div>
+      <div class="iv-meta">$56.56 · 31d</div>
+      <div class="iv-value">105.1%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">FIG</div>
+      <div class="iv-meta">$19.33 · 31d</div>
+      <div class="iv-value">104.9%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">NBIS</div>
+      <div class="iv-meta">$179.11 · 31d</div>
+      <div class="iv-value">104.6%</div>
     </div>
     
   </div>
@@ -1261,62 +1364,26 @@
 <section class="section">
   <div class="section-header">
     <div class="section-title" style="color:#7ed87e">Watchlist Insider Buys</div>
-    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">8</span>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">14</span>
   </div>
   <div class="insider-list">
     
     <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">SOFI</div>
+      <div class="insider-ticker">TSLA</div>
       <div class="insider-info">
-        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
-        <div class="insider-meta">+15,545 sh @ $16.00 · 2026-05-11</div>
+        <div class="insider-name">Musk Elon <span class="insider-title">CEO, 10%</span></div>
+        <div class="insider-meta">+2,568,732 sh @ $389.28 · 2025-09-12</div>
       </div>
-      <div class="insider-value">+$248,781</div>
+      <div class="insider-value">+$999,959,042</div>
     </div>
     
     <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">SOFI</div>
+      <div class="insider-ticker">UNH</div>
       <div class="insider-info">
-        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
-        <div class="insider-meta">+15,878 sh @ $15.73 · 2026-05-08</div>
+        <div class="insider-name">Hemsley Stephen J <span class="insider-title">CEO, UHG</span></div>
+        <div class="insider-meta">+86,700 sh @ $288.57 · 2025-05-16</div>
       </div>
-      <div class="insider-value">+$249,769</div>
-    </div>
-    
-    <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">MSTR</div>
-      <div class="insider-info">
-        <div class="insider-name">Le Phong <span class="insider-title">Pres, CEO</span></div>
-        <div class="insider-meta">+2,509 sh @ $99.62 · 2026-03-19</div>
-      </div>
-      <div class="insider-value">+$249,947</div>
-    </div>
-    
-    <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">SOFI</div>
-      <div class="insider-info">
-        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
-        <div class="insider-meta">+28,900 sh @ $17.32 · 2026-03-17</div>
-      </div>
-      <div class="insider-value">+$500,516</div>
-    </div>
-    
-    <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">SOFI</div>
-      <div class="insider-info">
-        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
-        <div class="insider-meta">+56,000 sh @ $17.88 · 2026-03-02</div>
-      </div>
-      <div class="insider-value">+$1,001,515</div>
-    </div>
-    
-    <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">ENPH</div>
-      <div class="insider-info">
-        <div class="insider-name">Kothandaraman Badrinarayanan <span class="insider-title">Pres, CEO</span></div>
-        <div class="insider-meta">+5,000 sh @ $51.98 · 2026-02-05</div>
-      </div>
-      <div class="insider-value">+$259,884</div>
+      <div class="insider-value">+$25,019,019</div>
     </div>
     
     <div class="insider-row watchlist-hit">
@@ -1329,12 +1396,102 @@
     </div>
     
     <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">UNH</div>
+      <div class="insider-info">
+        <div class="insider-name">Rex John F <span class="insider-title">Pres, CFO</span></div>
+        <div class="insider-meta">+17,175 sh @ $291.12 · 2025-05-16</div>
+      </div>
+      <div class="insider-value">+$4,999,919</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SOFI</div>
+      <div class="insider-info">
+        <div class="insider-name">Noto Anthony <span class="insider-title">CEO</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-05-11</div>
+      </div>
+      <div class="insider-value">+$2.00M</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">MSTR</div>
+      <div class="insider-info">
+        <div class="insider-name">Le Phong <span class="insider-title">Pres, CEO</span></div>
+        <div class="insider-meta">4 buys · paskutinis 2026-03-19</div>
+      </div>
+      <div class="insider-value">+$1.14M</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">AMD</div>
+      <div class="insider-info">
+        <div class="insider-name">Guido Philip <span class="insider-title">EVP, Chief Commercial Off</span></div>
+        <div class="insider-meta">+8,800 sh @ $113.56 · 2025-05-20</div>
+      </div>
+      <div class="insider-value">+$999,328</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
       <div class="insider-ticker">ENPH</div>
       <div class="insider-info">
         <div class="insider-name">Kothandaraman Badrinarayanan <span class="insider-title">Pres, CEO</span></div>
-        <div class="insider-meta">+5,000 sh @ $30.69 · 2025-11-10</div>
+        <div class="insider-meta">4 buys · paskutinis 2026-02-05</div>
       </div>
-      <div class="insider-value">+$153,439</div>
+      <div class="insider-value">+$877K</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">MSTR</div>
+      <div class="insider-info">
+        <div class="insider-name">Kang Andrew <span class="insider-title">EVP, CFO</span></div>
+        <div class="insider-meta">2 buys · paskutinis 2025-07-29</div>
+      </div>
+      <div class="insider-value">+$443K</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SBET</div>
+      <div class="insider-info">
+        <div class="insider-name">Phythian Rob <span class="insider-title">CEO</span></div>
+        <div class="insider-meta">+44,640 sh @ $6.72 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$299,981</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">SBET</div>
+      <div class="insider-info">
+        <div class="insider-name">Delucia Robert Michael <span class="insider-title">CFO</span></div>
+        <div class="insider-meta">+7,440 sh @ $6.72 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$49,997</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">O&#39;Connell Shawn M. <span class="insider-title">Pres, CEO</span></div>
+        <div class="insider-meta">+475 sh @ $83.76 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$39,786</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">Funk Andrea J. <span class="insider-title">EVP, CFO</span></div>
+        <div class="insider-meta">+315 sh @ $80.20 · 2025-05-23</div>
+      </div>
+      <div class="insider-value">+$25,263</div>
+    </div>
+    
+    <div class="insider-row watchlist-hit">
+      <div class="insider-ticker">ENS</div>
+      <div class="insider-info">
+        <div class="insider-name">Uplinger Chad C <span class="insider-title">Pres, Motive Power Global</span></div>
+        <div class="insider-meta">+295 sh @ $83.65 · 2025-05-30</div>
+      </div>
+      <div class="insider-value">+$24,677</div>
     </div>
     
   </div>
@@ -1357,29 +1514,36 @@
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">Q1 EPS (adjusted)</div>
+            <div class="nm-label">EPS (pakoreguotas)</div>
             <div class="nm-value">-$0.18</div>
-            <div class="nm-note">vs +$0.20 metais atgal, -$0.04 vs est</div>
+            <div class="nm-note">vs +$0.04 est, -$0.20 YoY</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Q1 Revenue</div>
+            <div class="nm-label">Revenue</div>
             <div class="nm-value">$608.1M</div>
-            <div class="nm-note">+3.8% YoY, -1.9% vs $619M est</div>
+            <div class="nm-note">+3.8% YoY, miss 1.9%</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">AHs pokytis</div>
+            <div class="nm-label">Akcijos reakcija</div>
             <div class="nm-value">-15.2%</div>
-            <div class="nm-note">pre-market mažėjimas</div>
+            <div class="nm-note">pre-market po rezultatų</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">HIMS metai atgal buvo pelningas (+$0.20 EPS), šiais metais Q1 gali gerokai nukrypo - adjusted loss $0.18 už akciją. Revenue augimas 3.8% YoY labai lėtas lyginant su naujatrumų kompanija tikėtinais tempais, o dar ir nepasiektas analitikų lūkesčiai $619M. Pre-market kritimas 15.2% signalizuoja, jog žemiausias augimas ir gerokai prastas pelningumas - du hali hiti vienu metu. Jei gross margin irgi smukęs (kaip rodo antraštė), tai rodo kainų spaudimą, greičiausiai GLP-1 segmente kur konkurencija augia. Investuotojui čia klausimas - ar tai keičiantis rinkos dinamika ar laikinoji korekcija; jei margin toliau krenta, akcija gali smukti žemiau šios kainos.</div>
+        <div class="news-analysis">EPS miss yra reikšmingas - rinka tikėjosi pelno, gavo nuostolį, o prieš metus buvo +$0.20, tai reiškia, kad pelningumo trajektorija pablogėjo reikšmingai per vienerius metus. Revenue augimo tempas +3.8% YoY tokiai augimo įmonei yra silpnas signalas - investuotojai tikėjosi spartesnio plėtros tempo, ypač GLP-1 segmente. Straipsnis mini bruto maržos kritimą, kuris kartu su EPS miss rodo kainų spaudimą - jei ši tendencija tęsiasi į Q2, -15.2% pre-market reakcija gali būti tik pradžia. Ką stebėti: Q2 guidance tikslumas ir bruto maržos dinamika - jei ji stabilizuojasi ties 60%+, galima svarstyti poziciją, jei toliau krenta - rizika išlieka.</div>
         
         <div class="news-meta">Zacks · 05-12 15:45 · <a href="https://finance.yahoo.com/markets/stocks/articles/hims-hers-stock-plunges-post-154500224.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+        <div class="news-extra-links">
+          
+          <a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank" class="news-extra-link">+ CNBC Top: Hims &amp; Hers plummets 13% after first-quarter loss, weak earnings guidance</a>
+          
+        </div>
+        
       </div>
     </div>
     
@@ -1393,45 +1557,106 @@
           <div class="nm-cell">
             <div class="nm-label">Revenue Q1 2026</div>
             <div class="nm-value">$12.1M</div>
-            <div class="nm-note">vs $0.7M Q1 2025, +1628% YoY</div>
+            <div class="nm-note">vs $0.7M Q1 2025 YoY</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Net Loss Q1 2026</div>
+            <div class="nm-label">Grynasis nuostolis</div>
             <div class="nm-value">-$685.6M</div>
-            <div class="nm-note">vs -$1M Q1 2025</div>
+            <div class="nm-note">vs -$1M Q1 2025 YoY</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Unrealized Loss</div>
+            <div class="nm-label">Nerealizuotas nuostolis</div>
             <div class="nm-value">-$506.7M</div>
-            <div class="nm-note">ETH pozicijos mark-to-market 31 kovas 2026</div>
+            <div class="nm-note">2026 kovo 31 d.</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">SG&amp;A Expenses</div>
+            <div class="nm-label">SG&amp;A išlaidos</div>
             <div class="nm-value">$9.9M</div>
-            <div class="nm-note">vs $1.1M Q1 2025, +800% YoY</div>
+            <div class="nm-note">vs $1.1M Q1 2025 YoY</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Cash Position</div>
-            <div class="nm-value">$16.9M</div>
-            <div class="nm-note">vs $28.5M 31 gruodžio 2025, -$11.6M per ketvirtį</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">ETH Holdings</div>
+            <div class="nm-label">ETH turtas</div>
             <div class="nm-value">589,305 ETH</div>
-            <div class="nm-note">$1.2B fair value, 31 kovas 2026</div>
+            <div class="nm-note">fair value $1.2B</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Pinigai kasoje</div>
+            <div class="nm-value">$16.9M</div>
+            <div class="nm-note">vs $28.5M gruodžio 31 d.</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">SBET augimas tiesiogiai susijęs su ETH kainos kilmu - revenue šokis iš $0.7M į $12.1M atspindi turto revalorizacijos efektą, o ne organinį verslo augimą. Tačiau neto nuostoliai -$685.6M (gegužę jie dar turėjo 872,984 ETH) rodo kritinę problemą: grynųjų pinigų likutis sumažėjo $11.6M per ketvirtį iki $16.9M, o SG&amp;A išlaidos žiauri - $9.9M per ketvirtį. Jei grynųjų pinigų santaka tęsis tokiu tempu, likutis išseks per 2-3 ketvirčius. Manau šis modelis yra spekuliacinė ETH pozicija su verslo fasadu - jei ETH kaina krinta, nerealizuoti nuostoliai gali greitai virtis realizuotais. Investuotojui vertėtų žinoti: jie faktiškai perkupę Ethereumą, o operacinė veikla -$9.9M per ketvirtį, be jokio matymo šioms išlaidoms susigrąžinti.</div>
+        <div class="news-analysis">SBET iš esmės yra ETH turėjimo įmonė, o ne tradicinis verslas - revenue šuolis nuo $0.7M iki $12.1M YoY skamba įspūdingai, tačiau SG&amp;A išaugimo nuo $1.1M iki $9.9M tempas rodo, kad operacinė struktūra brangsta greičiau nei pelningumas. $685.6M grynasis nuostolis paaiškinamas $506.7M nerealizuotu ETH kurso kritimu - tai balanso matematika, ne pinigų srautų katastrofa, tačiau investuotojams svarbu suprasti, kad $16.9M grynųjų kasoje duoda labai siaurą likvidumo pagalvę. 872,984 ETH pozicija iki gegužės 4 d. rodo, kad kompanija toliau kaupė turtą net ir nepalaankaus ketvirčio metu - tai catalyst arba rizika, priklausomai nuo ETH kainos krypties. Manau, SBET vertinti tradiciniais P/E ar EBITDA metodais beveik neįmanoma - čia grynai exposure į ETH su operacine išlaidų našta, ir pozicija tinka tik tiems, kurie tiki ilgalaikiu ETH vertės augimu.</div>
         
         <div class="news-meta">GuruFocus.com · 05-12 07:03 · <a href="https://finance.yahoo.com/markets/crypto/articles/sharplink-inc-sbet-q1-2026-070359374.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank">BofA drops blunt warning about Fed rate cuts</a></div>
+        
+        
+        <div class="news-analysis">BofA Global Research perstumdė palūkanų mažinimo prognozes - dabar tikisi, kad Fed nekeičia palūkanų visą 2026 m., o pirmieji du ketvirčio punkto sumažinimai ateis tik 2027 m. liepos ir rugsėjo mėnesiais. Pagrindiniai argumentai: aukštos energijos kainos laiko infliaciją pakilusią, darbo rinka išlieka stipri - abu veiksniai mažina Fed spaudimą mažinti normas. Reikšminga, kad BofA nėra vieniša - kelios stambios brokerių įstaigos jau persvarstė 2026 m. prognozes, dalis tikisi mažo sušvelninimo, dalis - jokių pokyčių. Investuotojui tai reiškia, kad ilgesnio laikotarpio obligacijų kaina išlieka spaudžiama, o aukštos palūkanų normos aplinka teikia pranašumą sektoriams su stipria pinigų srautų generacija ir mažu skolos lygiu. Manau, vertinimų tikrosios rizikos lieka obligacijų jautriose akcijose - komunaliniai, nekilnojamas turtas, dividendų mokėtojai - jei 2027 m. scenrijus taps konsensuso pagrindu.</div>
+        
+        <div class="news-meta">Yahoo Finance · <a href="https://finance.yahoo.com/economy/policy/articles/bofa-drops-blunt-warning-fed-023300848.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/qualcomm-chip-stocks-record-ai.html" target="_blank">Qualcomm drops 11% as chip stocks pull back from record AI-driven rally</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Qualcomm akcija</div>
+            <div class="nm-value">-11%</div>
+            <div class="nm-note">blogiausias seansas nuo 2020</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Intel akcija</div>
+            <div class="nm-value">-7%</div>
+            <div class="nm-note">sektoriaus išpardavimas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Skyworks akcija</div>
+            <div class="nm-value">-5%+</div>
+            <div class="nm-note">lustų sektoriaus korekcija</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Marvell akcija</div>
+            <div class="nm-value">-4%</div>
+            <div class="nm-note">sektoriaus išpardavimas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">iShares Semi ETF</div>
+            <div class="nm-value">-3%</div>
+            <div class="nm-note">sektoriaus indeksas</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Qualcomm -11% - blogiausias seansas nuo 2020, tačiau tai ne įmonės specifinė problema: visas lustų sektorius traukiasi po rekordinės AI bangos, kuri pastaraisiais mėnesiais buvo išplėtota toli už Nvidia ribų. Pagrindinis katalizatorius - infliacijos duomenys viršijo lūkesčius, tuo pačiu metu Irano karo rizika kelia naftos kainas, todėl investuotojai perėjo į gynybinę poziciją. Šis išpardavimas nesugriauna AI paklausos istorijos, tačiau rodo, kad sektorius buvo įkainotas pagal optimistišką scenarijų - bet kokia makro rizika greitai koreguoja premium. Manau, Qualcomm šiuo lygiu įdomu stebėti: jei infliacijos baimė nesiplečia - tai gali būti patrauklus įėjimo taškas tiems, kurie turi exposure šiam sektoriui per ilgesnį horizontą.</div>
+        
+        <div class="news-meta">CNBC Top · 05-12 20:09 · <a href="https://www.cnbc.com/2026/05/12/qualcomm-chip-stocks-record-ai.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
       </div>
     </div>
     
@@ -1441,73 +1666,10 @@
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank">Companies start getting tariff refunds after Supreme Court decision</a></div>
         
         
-        <div class="news-analysis">Oshkosh Corporation pradėjo gauti muitų grąžinimus po Aukščiausiojo teismo sprendimo, kuris pripažino dalį muitų nekonstitucingais. Kompanija dar nepatikrinusi bendros grąžinamo turto sumos, bet CFO patvirtino, kad mokėjimai pradėti antradienį. Tai posityvus signalas Oshkosh ir panašiems gamybos sektoriaus veikėjams - muitų grąžinimai sumažins istorines sąnaudas ir pagerinę pelningumą artėjančiuose kvartaliuose. Svarbu sekti, kiek grąžinimų paskelbins kitos kompanijos iš transportavimo, automobilių dalių ir prekybos sektorių - jei grąžinimai bus didesni nei rinkos tikėjosi, tai gali pakelti šių akcijų vertinimus. Kol Oshkosh nepaskelbys konkretaus turto dydžio, sunku vertinti poveikį EPS lygiu, bet investuotojai turėtų domėtis artėjančiame earnings call&#39;e.</div>
+        <div class="news-analysis">Aukščiausiasis Teismas pripažino dalį muitų neteisėtais, ir pirmosios grąžinamosios išmokos jau pasiekė įmones - Oshkosh Corporation CFO patvirtino, kad kompanija nuo antradienio gauna mokėjimus pagal pateiktus reikalavimus. Konkretūs skaičiai dar nepatvirtinti: Oshkosh teigia, kad gauti mokėjimai sudaro tik pradinę dalį visų pateiktų reikalavimų. Investuotojams svarbu sekti, kokia bus galutinė grąžintina suma - ji tiesiogiai paveiks EBITDA ir laisvąjį pinigų srautą įmonėms su dideliu importo exposure. Manau šis precedentas ypač aktualus gamybos ir pramonės sektoriuje - įmonės, kurios atidėjo muitus kaip sąnaudas, gali fiksuoti vienkartinį teigiamą poveikį artimiausių ketvirčių ataskaitose.</div>
         
         <div class="news-meta">CNBC Top · 05-12 18:43 · <a href="https://www.cnbc.com/2026/05/12/trump-tariff-refunds.html" target="_blank" class="news-link">visas straipsnis</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank">Hims &amp; Hers plummets 13% after first-quarter loss, weak earnings guidance</a></div>
         
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">Q1 rezultatas</div>
-            <div class="nm-value">nuostolis</div>
-            <div class="nm-note">konkrečios EPS negrąžintos</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Q2 revenue guidance</div>
-            <div class="nm-value">$680-700M</div>
-            <div class="nm-note">rinka tikėjosi agresyvesnio augimo</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">FY revenue guidance</div>
-            <div class="nm-value">$3B</div>
-            <div class="nm-note">pilnais metais</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Q2 EBITDA guidance</div>
-            <div class="nm-value">iki $55M</div>
-            <div class="nm-note">adjusted, nulinės rebalanso</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">FY EBITDA guidance</div>
-            <div class="nm-value">iki $350M</div>
-            <div class="nm-note">adjusted, pilniems metams</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Akcijos kritimas</div>
-            <div class="nm-value">-13%</div>
-            <div class="nm-note">vidurdienio prekyboje</div>
-          </div>
-          
-        </div>
-        
-        
-        <div class="news-analysis">Hims Q1 nuostolis kartu su bloga Q2 guidance ($680-700M) ir metinio revenue $3B lūkesčiais signalizuoja, kad telehealth sektorius patiria stiprų kainų spaudimą, greičiausiai dėl GLP-1 medikamentų konkurencijos ir mažesnių maržų. Q2 EBITDA guidance iki $55M rodo, kad pelningumas lieka siauras net augant pajamoms - margin&#39;ai ne išlaikyti. Investuotojui kritinis klausimas: ar $3B metinis revenue su $350M EBITDA (11.7% marža) yra priimtina Hims valorizacijai? Rekomenduoju sekti Q2 faktines rezultatus - jei margin&#39;ai ir toliau krenta, akcija bus dar toliau nuo perpirkimo zonos. Šiuo metu kainos spaudimas dominuoja augimo optimizmą.</div>
-        
-        <div class="news-meta">CNBC Top · 05-12 18:21 · <a href="https://www.cnbc.com/2026/05/12/hims-hers-plummets-16percent-after-first-quarter-loss-weak-guidance-.html" target="_blank" class="news-link">visas straipsnis</a></div>
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank">Markets raise chances for a Fed rate hike following hot inflation report</a></div>
-        
-        
-        <div class="news-analysis">Po karštesnio nei tikėtasi infliacijos atskaito, CME FedWatch rodikliai iš esmės pašalino bet kokią palūkanų normų mažinimo tikimybę iki 2027 metų pabaigos - tai reikšmingas lūkesčių pokytis. Prekyba dabar atspindi didėjančią tikimybę, kad kitas Fed žingsnis bus ne mažinimas, o kėlimas. Investuotojams tai reiškia, kad trumpojo galo obligacijos ir toliau išlieka spaudime, o augimo akcijų vertinimas - ypač su dideliu duration jautrumu - tampa sunkiau pagrindžiamas. Manau, jog svarbiausia stebėti, ar infliacija fiksuos antrą karštą ataskaitą iš eilės - vienas duomenų taškas keičia toną, du keičia ciklą. Aukštos palūkanų normos ilgiau reiškia ir didesnį slėgį vartotojų kreditavimui bei būsto rinkos aktyvumui.</div>
-        
-        <div class="news-meta">CNBC Markets · 05-12 17:33 · <a href="https://www.cnbc.com/2026/05/12/markets-raise-chances-for-a-fed-rate-hike-following-hot-inflation-report.html" target="_blank" class="news-link">visas straipsnis</a></div>
       </div>
     </div>
     
@@ -1526,7 +1688,7 @@
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>22:53 (Vilnius)</span>
+  <span>23:33 (Vilnius)</span>
 </footer>
 
 </body>
