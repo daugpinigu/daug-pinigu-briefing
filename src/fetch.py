@@ -996,88 +996,82 @@ def _parse_money(s: str) -> float:
         return 0
 
 
-def fetch_insider_purchases(watchlist: list = None, min_value: float = 50_000,
-                            days: int = 2, max_results: int = 10) -> dict:
-    """Fetch recent insider C-suite/officer PURCHASES from OpenInsider.
-
-    Filters for CEO/CFO/COO/President/Chair/Founder roles only (no random directors).
-    Returns dict with:
-      - 'watchlist': purchases on user's watchlist tickers (any size)
-      - 'top': other top-value purchases (>= min_value)
-    """
+def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
+    """Fetch all insider transactions for one ticker via OpenInsider per-ticker page."""
     from datetime import datetime as dt, timedelta
-    watchlist_set = set(watchlist or [])
-    url = "http://openinsider.com/latest-officer-purchases"
+    url = f"http://openinsider.com/screener?s={ticker}"
     try:
-        r = requests.get(url, headers=HEADERS, timeout=20)
+        r = requests.get(url, headers=HEADERS, timeout=12)
         r.raise_for_status()
-    except Exception as e:
-        print(f"  warn: OpenInsider fetch failed: {e}")
-        return {'watchlist': [], 'top': []}
-
+    except Exception:
+        return []
     soup = BeautifulSoup(r.text, 'lxml')
     table = soup.find('table', class_='tinytable')
     if not table:
-        return {'watchlist': [], 'top': []}
+        return []
 
+    # Per-ticker page columns (no company column since we know the ticker):
+    # 0: flag, 1: filing, 2: trade, 3: ticker, 4: insider, 5: title,
+    # 6: tx_type, 7: price, 8: qty, 9: shares_owned, 10: %, 11: value
     cutoff = dt.now() - timedelta(days=days)
-    watchlist_hits = []
-    top_buys = []
-
+    hits = []
     for row in table.find_all('tr')[1:]:
         cells = [c.get_text(strip=True) for c in row.find_all('td')]
-        if len(cells) < 13:
-            continue
-        filing_date = cells[1]
-        trade_date = cells[2]
-        ticker = cells[3]
-        company = cells[4]
-        insider = cells[5]
-        title = cells[6]
-        tx_type = cells[7]
-        price = cells[8]
-        qty = cells[9]
-        value_str = cells[12]
-
-        if 'P - Purchase' not in tx_type:
+        if len(cells) < 12:
             continue
         try:
-            filing_dt = dt.strptime(filing_date, '%Y-%m-%d %H:%M:%S')
+            trade_dt = dt.strptime(cells[2], '%Y-%m-%d')
         except ValueError:
             continue
-        if filing_dt < cutoff:
+        if trade_dt < cutoff:
             continue
-
-        is_key_role = bool(INSIDER_KEY_ROLES.search(title))
-        if not is_key_role:
+        if 'P - Purchase' not in cells[6]:
             continue
-
-        value = _parse_money(value_str)
-        item = {
+        title = cells[5]
+        if not INSIDER_KEY_ROLES.search(title):
+            continue
+        value = _parse_money(cells[11])
+        if value < min_value:
+            continue
+        hits.append({
             'ticker': ticker,
-            'company': company[:30],
-            'insider': insider[:30],
+            'insider': cells[4][:30],
             'title': title[:25],
-            'price': price,
-            'qty': qty,
+            'price': cells[7],
+            'qty': cells[8],
             'value': value,
-            'value_str': value_str,
-            'filing_date': filing_dt.strftime('%m-%d %H:%M'),
-            'trade_date': trade_date,
-            'in_watchlist': ticker in watchlist_set,
-        }
+            'value_str': cells[11],
+            'filing_date': cells[1][:10],
+            'trade_date': cells[2],
+        })
+    return hits
 
-        if ticker in watchlist_set:
-            watchlist_hits.append(item)
-        elif value >= min_value:
-            top_buys.append(item)
 
-    top_buys.sort(key=lambda x: x['value'], reverse=True)
-    watchlist_hits.sort(key=lambda x: x['value'], reverse=True)
-    return {
-        'watchlist': watchlist_hits[:max_results],
-        'top': top_buys[:max_results],
-    }
+def fetch_insider_purchases(watchlist: list, days: int = 365,
+                            min_value: float = 10_000, max_results: int = 8) -> list:
+    """Fetch C-suite insider PURCHASES for each watchlist ticker (parallel).
+
+    Per-ticker OpenInsider queries to capture all transactions, regardless of
+    how the bulk page truncates by date. Returns most recent purchases (any date
+    within window).
+    """
+    import concurrent.futures
+    watchlist_set = set(watchlist or [])
+    if not watchlist_set:
+        return []
+
+    all_hits = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(_fetch_ticker_insider, t, days, min_value): t
+                   for t in watchlist_set}
+        for fut in concurrent.futures.as_completed(futures):
+            try:
+                all_hits.extend(fut.result())
+            except Exception:
+                continue
+
+    all_hits.sort(key=lambda x: x['trade_date'], reverse=True)
+    return all_hits[:max_results]
 
 
 def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4) -> list:

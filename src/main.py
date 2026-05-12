@@ -49,6 +49,15 @@ def build_takeaway(macro: list, earnings: list) -> str:
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
 
 
+def _safe(label, fn, fallback):
+    """Run a fetcher with fallback on exception. Don't let one source kill the briefing."""
+    try:
+        return fn()
+    except Exception as e:
+        print(f"  warn: {label} failed ({type(e).__name__}: {str(e)[:80]})")
+        return fallback
+
+
 def main():
     now = datetime.now(VILNIUS)
 
@@ -60,51 +69,59 @@ def main():
     print(f"[{now.strftime('%H:%M:%S')}] Building briefing for {date_str}...")
 
     print("  Fetching macro events...")
-    macro = fetch_macro_events(date_str)
+    macro = _safe('macro', lambda: fetch_macro_events(date_str), [])
     print(f"    -> {len(macro)} events")
 
     print("  Fetching earnings (>=$500B mcap OR in watchlist)...")
-    earnings = fetch_earnings(date_str, min_market_cap_b=500.0, watchlist_symbols=STOCKS)
+    earnings = _safe('earnings',
+                     lambda: fetch_earnings(date_str, min_market_cap_b=500.0, watchlist_symbols=STOCKS),
+                     [])
     print(f"    -> {len(earnings)} companies")
 
     print("  Fetching indices/futures/VIX...")
-    indices = fetch_index_snapshot(FUTURES)
+    indices = _safe('indices', lambda: fetch_index_snapshot(FUTURES), [])
     print(f"    -> {len(indices)} indices")
 
     print("  Fetching watchlist movers...")
-    watchlist = fetch_watchlist_movers(STOCKS, top_n=5)
+    watchlist = _safe('watchlist movers',
+                      lambda: fetch_watchlist_movers(STOCKS, top_n=5),
+                      {'gainers': [], 'losers': []})
     print(f"    -> {len(watchlist['gainers'])} gainers, {len(watchlist['losers'])} losers")
 
     print("  Fetching crypto...")
-    crypto = fetch_crypto(CRYPTO)
+    crypto = _safe('crypto', lambda: fetch_crypto(CRYPTO), [])
     print(f"    -> {len(crypto)} coins")
 
     print("  Fetching AI sector quotes...")
-    ai_quotes_raw = fetch_quotes(AI_TICKERS)
+    ai_quotes_raw = _safe('AI quotes', lambda: fetch_quotes(AI_TICKERS), [])
     ai_quotes = sorted(ai_quotes_raw, key=lambda x: abs(x['change_pct']), reverse=True)[:8]
     print(f"    -> {len(ai_quotes)} AI tickers")
 
     print("  Fetching IV metrics (option-selling opportunities)...")
-    iv_data = fetch_iv_metrics(STOCKS)
+    iv_data = _safe('IV', lambda: fetch_iv_metrics(STOCKS), [])
     high_iv = iv_data[:8]
     print(f"    -> {len(iv_data)} tickers ranked, top {len(high_iv)} shown")
 
     print("  Fetching Reddit discussions (r/stocks, r/options, r/StockMarket)...")
-    reddit_posts = fetch_reddit_discussions(max_total=6, min_score=100)
+    reddit_posts = _safe('Reddit', lambda: fetch_reddit_discussions(max_total=6, min_score=100), [])
     print(f"    -> {len(reddit_posts)} posts")
 
-    print("  Fetching insider purchases (CEO/CFO/COO)...")
-    insider = fetch_insider_purchases(watchlist=STOCKS, min_value=100_000, days=2, max_results=8)
-    print(f"    -> {len(insider['watchlist'])} watchlist hits, {len(insider['top'])} other top buys")
+    print("  Fetching insider purchases (watchlist only, latest 8)...")
+    insider = _safe('insider',
+                    lambda: fetch_insider_purchases(STOCKS, days=365, min_value=10_000, max_results=8),
+                    [])
+    print(f"    -> {len(insider)} watchlist insider buys")
 
     print("  Fetching market news (quality filtered)...")
-    market_news = fetch_market_news(max_total=5)
+    market_news = _safe('market news', lambda: fetch_market_news(max_total=5), [])
     print(f"    -> {len(market_news)} market headlines")
 
     print("  Fetching mover catalysts...")
     big_movers = [m['symbol'] for m in (watchlist['gainers'] + watchlist['losers'])
                   if abs(m['change_pct']) >= 5.0]
-    mover_news = fetch_mover_catalysts(big_movers, max_per=1, max_total=4)
+    mover_news = _safe('mover catalysts',
+                       lambda: fetch_mover_catalysts(big_movers, max_per=1, max_total=4),
+                       [])
     print(f"    -> {len(mover_news)} mover catalysts (from {len(big_movers)} big movers)")
 
     news = mover_news + [n for n in market_news if not any(

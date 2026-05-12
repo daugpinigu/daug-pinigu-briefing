@@ -645,25 +645,15 @@
 </section>
 {% endif %}
 
-{% if insider and (insider.watchlist or insider.top) %}
+{% if insider %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title" style="color:#7ed87e">Insider Purchases (C-Suite)</div>
-    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ (insider.watchlist|length) + (insider.top|length) }}</span>
+    <div class="section-title" style="color:#7ed87e">Watchlist Insider Buys</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ insider|length }}</span>
   </div>
   <div class="insider-list">
-    {% for x in insider.watchlist %}
+    {% for x in insider %}
     <div class="insider-row watchlist-hit">
-      <div class="insider-ticker">{{ x.ticker }}</div>
-      <div class="insider-info">
-        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
-        <div class="insider-meta">{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}</div>
-      </div>
-      <div class="insider-value">{{ x.value_str }}</div>
-    </div>
-    {% endfor %}
-    {% for x in insider.top[:6] %}
-    <div class="insider-row">
       <div class="insider-ticker">{{ x.ticker }}</div>
       <div class="insider-info">
         <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span></div>
