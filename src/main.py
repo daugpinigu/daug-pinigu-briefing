@@ -7,8 +7,8 @@ import pytz
 
 from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
-    fetch_crypto, fetch_index_snapshot, fetch_iv_metrics, fetch_news,
-    fetch_quotes,
+    fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
+    fetch_market_news, fetch_mover_catalysts, fetch_quotes,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -88,9 +88,20 @@ def main():
     high_iv = iv_data[:8]
     print(f"    -> {len(iv_data)} tickers ranked, top {len(high_iv)} shown")
 
-    print("  Fetching news...")
-    news = fetch_news(NEWS_TICKERS, per_ticker=1, max_total=6)
-    print(f"    -> {len(news)} headlines")
+    print("  Fetching market news (quality filtered)...")
+    market_news = fetch_market_news(max_total=5)
+    print(f"    -> {len(market_news)} market headlines")
+
+    print("  Fetching mover catalysts...")
+    big_movers = [m['symbol'] for m in (watchlist['gainers'] + watchlist['losers'])
+                  if abs(m['change_pct']) >= 5.0]
+    mover_news = fetch_mover_catalysts(big_movers, max_per=1, max_total=4)
+    print(f"    -> {len(mover_news)} mover catalysts (from {len(big_movers)} big movers)")
+
+    news = mover_news + [n for n in market_news if not any(
+        n['title'].lower()[:50] == m['title'].lower()[:50] for m in mover_news
+    )]
+    news = news[:7]
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(

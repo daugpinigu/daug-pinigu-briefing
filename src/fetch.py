@@ -626,62 +626,232 @@ def fetch_iv_metrics(symbols: list) -> list:
     return out
 
 
-def fetch_news(symbols: list, per_ticker: int = 1, max_total: int = 6) -> list:
-    """Fetch latest news per ticker via yfinance. Deduplicates by title."""
-    import concurrent.futures
+NEWS_NOISE_PATTERNS = [
+    re.compile(p, re.I) for p in [
+        r'price\s+target',
+        r'price\s+prediction',
+        r'\d+%?\s+upside',
+        r'(should|could)\s+(buy|invest|own)',
+        r'analyst.*(?:raises|lowers|cuts|hikes).*target',
+        r'\b(buy|sell)\s+(now|today)\b',
+        r'top\s+\d+\s+stocks?',
+        r'best\s+stocks?\s+to',
+        r'\d+\s+halo\s+stocks',
+        r'simply\s+wall',
+        r'\d+\s+reasons?\s+to',
+        r'why\s+(invest|own|buy)',
+        r'(reasons?|signs?)\s+(?:to\s+)?(buy|sell)',
+        r'flavor of the day',
+        r'reduced their stake by 100%',  # Often misleading - small insider, full sale
+        r'\bclass\s+action',  # Law firm spam
+        r'reminds investors',
+        r'investor\s+rights',
+        r'price\s+forecast',
+        r'penny stocks?',
+        r'best\s+\d+\s+(?:cheap|small)',
+        r'fool\.com',
+    ]
+]
+
+NEWS_BOOST_PATTERNS = [
+    re.compile(p, re.I) for p in [
+        r'\b(?:drops?|falls?|plunges?|tumbles?|sinks?)\s+\d+',
+        r'\b(?:surges?|soars?|jumps?|spikes?|rallies?|skyrockets?)\s+\d+',
+        r'\b(?:climbs?|gains?|rises?)\s+\d+%',
+        r'\b(?:slumps?|slides?|crashes?)\s+\d+',
+        r'(?:beats?|tops?|misses?|trails?)\s+(?:estimates?|expectations?|forecast)',
+        r'(?:reports?|reported|posts?)\s+(?:Q\d|quarterly|earnings)',
+        r'(?:raises?|lowers?|cuts?)\s+(?:guidance|outlook|forecast)',
+        r'(?:acquires?|acquisition|to\s+acquire|merger\s+with|buys?\s+\w+\s+for)',
+        r'(?:lawsuit|sued|charged|FTC|DOJ|SEC\s+(?:probe|investigation))',
+        r'(?:downgrade|upgrade)\s+to\s+(?:buy|sell|hold|overweight|underweight)',
+        r'(?:layoffs?|fires?|cuts?)\s+\d+',
+        r'(?:CEO|CFO|COO).*(?:steps?\s+down|fired|resigns?|appointed?|named|out)',
+        r'(?:approves?|approved|rejects?|rejection).*FDA',
+        r'\bguidance\b',
+        r'\b(?:warning|cuts|slashes)\b',
+        r'\b(?:beats?|misses?)\b.*(?:Q\d|earnings)',
+        r'\b(?:hires?|hired|joins?)\b.*\b(?:CEO|CFO|board)',
+        r'(?:data\s+center|AI\s+(?:deal|contract|partnership))',
+        r'(?:bankruptcy|chapter\s+11|delisting)',
+        r'(?:Tesla|Apple|Nvidia|Microsoft|Google|Meta|Amazon|Anthropic|OpenAI).*(?:announces?|launches?|unveils?)',
+        r'(?:tariffs?|trade\s+war|sanctions?)',
+        r'(?:Fed|FOMC|Powell).*(?:hikes?|cuts?|holds?|signals?)',
+    ]
+]
+
+NEWS_BLOCKED_PUBLISHERS = {
+    'simply wall st.', 'simply wall st', 'motley fool', 'the motley fool',
+    '247 wall st.', '24/7 wall st.', '24/7 wall st', 'yahoo finance video',
+    'investorplace', 'tipranks', 'gurufocus', 'tradingview',
+}
+
+NEWS_GOOD_PUBLISHERS_BOOST = {
+    'bloomberg', 'reuters', 'wsj', 'wall street journal', 'financial times',
+    'ft', 'cnbc', 'marketwatch', 'barron\'s', 'barrons', 'forbes',
+    'business insider', 'the information', 'axios', 'semafor',
+}
+
+
+def _score_headline(title: str, publisher: str) -> int:
+    """Score a news headline. Positive = quality catalyst, negative = noise."""
+    if not title:
+        return -10
+    score = 0
+    pub_l = (publisher or '').lower().strip()
+    if pub_l in NEWS_BLOCKED_PUBLISHERS:
+        score -= 5
+    if any(g in pub_l for g in NEWS_GOOD_PUBLISHERS_BOOST):
+        score += 2
+    for pat in NEWS_NOISE_PATTERNS:
+        if pat.search(title):
+            score -= 4
+    for pat in NEWS_BOOST_PATTERNS:
+        if pat.search(title):
+            score += 3
+    return score
+
+
+def _fetch_rss_feed(url: str, source_label: str, timeout: int = 10) -> list:
+    """Fetch and parse an RSS feed. Returns list of {title, publisher, pub_dt, link}."""
     from datetime import datetime as dt
+    import email.utils
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=timeout)
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, 'xml')
+    except Exception:
+        return []
+    out = []
+    for item in soup.find_all('item')[:30]:
+        title_el = item.find('title')
+        title = title_el.get_text(strip=True) if title_el else ''
+        if not title:
+            continue
+        pub_el = item.find('pubDate')
+        pub_dt = None
+        if pub_el:
+            try:
+                pub_dt = email.utils.parsedate_to_datetime(pub_el.get_text(strip=True))
+            except Exception:
+                pub_dt = None
+        link_el = item.find('link')
+        link = link_el.get_text(strip=True) if link_el else ''
+        out.append({
+            'title': title,
+            'publisher': source_label,
+            'pub_dt': pub_dt,
+            'link': link,
+        })
+    return out
+
+
+def fetch_market_news(max_total: int = 6, hours_window: int = 24) -> list:
+    """Fetch quality market news from CNBC, MarketWatch, Yahoo. Filtered and scored."""
+    from datetime import datetime as dt, timezone, timedelta
+    feeds = [
+        ('CNBC Top', 'https://www.cnbc.com/id/100003114/device/rss/rss.html'),
+        ('CNBC Markets', 'https://www.cnbc.com/id/15839069/device/rss/rss.html'),
+        ('CNBC Tech', 'https://www.cnbc.com/id/19854910/device/rss/rss.html'),
+        ('Yahoo Finance', 'https://finance.yahoo.com/news/rssindex'),
+        ('MarketWatch', 'https://feeds.marketwatch.com/marketwatch/topstories/'),
+    ]
+
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
+    all_items = []
+    for label, url in feeds:
+        items = _fetch_rss_feed(url, label)
+        all_items.extend(items)
+
+    # Filter by recency
+    recent = []
+    for item in all_items:
+        if item['pub_dt'] and item['pub_dt'].tzinfo:
+            if item['pub_dt'] < cutoff:
+                continue
+        recent.append(item)
+
+    # Dedup by title
+    seen = set()
+    deduped = []
+    for n in recent:
+        k = re.sub(r'\W+', '', n['title'].lower())[:60]
+        if k in seen:
+            continue
+        seen.add(k)
+        deduped.append(n)
+
+    # Score and filter
+    scored = []
+    for n in deduped:
+        s = _score_headline(n['title'], n['publisher'])
+        if s < -2:
+            continue
+        scored.append((s, n))
+
+    # Sort by score, then recency
+    scored.sort(key=lambda x: (x[0], x[1]['pub_dt'] or dt.min.replace(tzinfo=timezone.utc)), reverse=True)
+    return [{'ticker': '', **n} for _, n in scored[:max_total]]
+
+
+def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4) -> list:
+    """For top movers, search news that explains the move. Filtered for catalysts."""
+    import concurrent.futures
+    from datetime import datetime as dt, timezone, timedelta
+
+    cutoff = dt.now(timezone.utc) - timedelta(hours=24)
 
     def one(sym):
         try:
             t = yf.Ticker(sym)
             news = getattr(t, 'news', None) or []
-            picked = []
-            for n in news[:per_ticker * 3]:
+            ranked = []
+            for n in news[:8]:
                 content = n.get('content') or n
-                title = content.get('title') or n.get('title')
-                if not title:
-                    continue
+                title = content.get('title') or n.get('title') or ''
                 pub_ts = content.get('pubDate') or n.get('providerPublishTime')
                 publisher = (content.get('provider') or {}).get('displayName') or n.get('publisher', '')
                 link = (content.get('canonicalUrl') or {}).get('url') or n.get('link', '')
+                pub_dt = None
                 if isinstance(pub_ts, str):
                     try:
                         pub_dt = dt.fromisoformat(pub_ts.replace('Z', '+00:00'))
                     except Exception:
-                        pub_dt = None
+                        pass
                 elif isinstance(pub_ts, (int, float)):
-                    pub_dt = dt.fromtimestamp(pub_ts)
-                else:
-                    pub_dt = None
-                picked.append({
+                    pub_dt = dt.fromtimestamp(pub_ts, tz=timezone.utc)
+                if pub_dt and pub_dt < cutoff:
+                    continue
+                score = _score_headline(title, publisher)
+                # Require ticker symbol in title for relevance OR strong catalyst
+                if sym not in title.upper() and score < 3:
+                    continue
+                if score < -1:
+                    continue
+                ranked.append((score, {
                     'ticker': sym,
                     'title': title,
                     'publisher': publisher,
                     'link': link,
                     'pub_dt': pub_dt,
-                })
-                if len(picked) >= per_ticker:
-                    break
-            return picked
+                }))
+            ranked.sort(key=lambda x: x[0], reverse=True)
+            return [n for _, n in ranked[:max_per]]
         except Exception:
             return []
 
-    all_news = []
+    out = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
-        for items in ex.map(one, symbols):
-            all_news.extend(items)
-
-    # Deduplicate by title (case-insensitive)
+        for items in ex.map(one, mover_symbols):
+            out.extend(items)
     seen = set()
     deduped = []
-    for n in all_news:
-        key = (n['title'] or '').lower()[:80]
-        if key in seen:
+    for n in out:
+        k = re.sub(r'\W+', '', n['title'].lower())[:60]
+        if k in seen:
             continue
-        seen.add(key)
+        seen.add(k)
         deduped.append(n)
-
-    deduped.sort(key=lambda x: x['pub_dt'] or dt.min, reverse=True)
     return deduped[:max_total]
 
 
