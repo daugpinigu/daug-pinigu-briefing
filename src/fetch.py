@@ -832,6 +832,34 @@ REDDIT_SUBS = [
     ('StockMarket', 'top', 'day'),    # macro/market commentary
 ]
 
+REDDIT_UA = 'daug-pinigu-briefing/1.0 (by /u/daugpinigu)'
+
+
+def _reddit_oauth_token() -> str:
+    """Get a Reddit application-only OAuth token using client_credentials grant.
+
+    Requires REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET env vars.
+    Returns '' if creds are missing or auth fails.
+    """
+    import os as _os
+    cid = _os.environ.get('REDDIT_CLIENT_ID')
+    csec = _os.environ.get('REDDIT_CLIENT_SECRET')
+    if not cid or not csec:
+        return ''
+    try:
+        r = requests.post(
+            'https://www.reddit.com/api/v1/access_token',
+            auth=(cid, csec),
+            headers={'User-Agent': REDDIT_UA},
+            data={'grant_type': 'client_credentials'},
+            timeout=12,
+        )
+        r.raise_for_status()
+        return r.json().get('access_token', '')
+    except Exception as e:
+        print(f"  reddit OAuth failed: {type(e).__name__}: {str(e)[:120]}")
+        return ''
+
 
 def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
                              min_score: int = 50) -> list:
@@ -857,23 +885,26 @@ def fetch_reddit_discussions(subs: list = None, max_total: int = 6,
         ]
     ]
 
-    # Reddit blocks generic browser UAs from datacenter IPs. Use a unique,
-    # descriptive UA per their TOS (helps GH Actions hosts).
-    reddit_headers = {
-        'User-Agent': 'daug-pinigu-briefing/1.0 (+https://github.com/daugpinigu/daug-pinigu-briefing)',
-        'Accept': 'application/json',
-    }
+    # OAuth path bypasses Reddit's datacenter-IP block. Falls back to public
+    # JSON if creds aren't set (works locally, fails on GH Actions).
+    token = _reddit_oauth_token()
+    reddit_headers = {'User-Agent': REDDIT_UA, 'Accept': 'application/json'}
+    if token:
+        reddit_headers['Authorization'] = f'bearer {token}'
 
     import time as _time
 
     def fetch_sub(spec):
         sub, sort, t = spec
-        # Reddit aggressively rate-limits datacenter IPs (GitHub Actions).
-        # Try old.reddit.com first (less protected), then www, then RSS fallback.
-        urls = [
-            f"https://old.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
-            f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
-        ]
+        # When authenticated, use oauth.reddit.com. Otherwise try old.reddit.com
+        # then www.reddit.com as best-effort fallbacks.
+        if token:
+            urls = [f"https://oauth.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}"]
+        else:
+            urls = [
+                f"https://old.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
+                f"https://www.reddit.com/r/{sub}/{sort}.json?limit=15&t={t}",
+            ]
         data = []
         for url in urls:
             try:
@@ -997,11 +1028,15 @@ def fetch_reddit_comments(permalink_url: str, top_n: int = 8) -> list:
     """
     if not permalink_url:
         return []
-    url = permalink_url.rstrip('/') + '.json?limit=' + str(top_n * 2)
-    reddit_headers = {
-        'User-Agent': 'daug-pinigu-briefing/1.0 (+https://github.com/daugpinigu/daug-pinigu-briefing)',
-        'Accept': 'application/json',
-    }
+    token = _reddit_oauth_token()
+    reddit_headers = {'User-Agent': REDDIT_UA, 'Accept': 'application/json'}
+    if token:
+        # Rewrite permalink path onto oauth.reddit.com
+        path = permalink_url.split('reddit.com', 1)[-1] if 'reddit.com' in permalink_url else permalink_url
+        url = 'https://oauth.reddit.com' + path.rstrip('/') + '.json?limit=' + str(top_n * 2)
+        reddit_headers['Authorization'] = f'bearer {token}'
+    else:
+        url = permalink_url.rstrip('/') + '.json?limit=' + str(top_n * 2)
     try:
         r = requests.get(url, headers=reddit_headers, timeout=12)
         r.raise_for_status()
