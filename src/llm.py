@@ -148,42 +148,62 @@ def is_enabled() -> bool:
 
 
 def analyze_news(title: str, body: str, ticker: str = '',
-                 stock_move: str = '', model: str = DEFAULT_MODEL) -> str:
-    """Generate Lithuanian analysis of a news article.
+                 stock_move: str = '', model: str = DEFAULT_MODEL) -> dict:
+    """Generate Lithuanian analysis with structured key metrics extracted.
 
-    Returns analytic summary in Radoslav's voice. Returns empty string on failure.
+    Returns dict with 'metrics' (list of {label, value, note}) and 'analysis' (prose).
+    Returns {'metrics': [], 'analysis': ''} on failure.
     """
+    import json as _json
     client = _get_client()
     if not client or not body:
-        return ''
+        return {'metrics': [], 'analysis': ''}
 
     ticker_ctx = f"\nTicker: {ticker}" if ticker else ""
     move_ctx = f"\nStock reaction: {stock_move}" if stock_move else ""
 
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: Pateik gilią investicinę analizę šios naujienos. 3-5 sakinių, su BENT 2 konkrečiais skaičiais, taisyklinga lietuvių kalba. PRIVALO būti gilesnė nei tiesiog "kompanija praleido lūkesčius".{ticker_ctx}{move_ctx}
+UŽDUOTIS: Iš naujienos ištrauk svarbiausius SKAIČIUS į struktūrinę formą, tada parašyk gilią analizę.
+
+Grąžink TIK JSON, jokio paaiškinimo aplink:
+{{
+  "metrics": [
+    {{"label": "trumpas Lietuviškas pavadinimas (max 20 simbolių)", "value": "skaičius su vienetu, pvz. -$0.40", "note": "konteksto eilutė, max 30 simbolių, pvz. vs +$0.03 est arba +3.8% YoY"}},
+    ... iki 6 svarbiausių metrikų ...
+  ],
+  "analysis": "3-5 sakinių GILI investicinė analizė lietuvių kalba. NEPAKARTOTI skaičių iš metrics - tik kontekstas, ką tai reiškia, ką daryti. Naudoti tik leidžiamus anglicizmus iš style guide."
+}}
+
+JEI naujienoje NĖRA konkrečių skaičių (pvz., makro komentaras, ne earnings) - "metrics" gali būti tuščias [].
+{ticker_ctx}{move_ctx}
 
 HEADLINE: {title}
 
 STRAIPSNIO TEKSTAS:
-{body[:3000]}
-
-Tavo analizė (TAISYKLINGA lietuvių kalba, tik leidžiami anglicizmai iš STYLE_GUIDE):"""
+{body[:3000]}"""
 
     try:
         resp = client.messages.create(
             model=model,
-            max_tokens=500,
+            max_tokens=700,
             messages=[{"role": "user", "content": prompt}],
         )
         text = resp.content[0].text.strip() if resp.content else ''
-        text = re.sub(r'\s+', ' ', text)
-        text = _cleanup_text(text)
-        return text
+        m = re.search(r'\{.*\}', text, re.DOTALL)
+        if not m:
+            return {'metrics': [], 'analysis': _cleanup_text(text)}
+        try:
+            data = _json.loads(m.group(0))
+        except _json.JSONDecodeError:
+            return {'metrics': [], 'analysis': _cleanup_text(text)}
+        return {
+            'metrics': data.get('metrics', []) or [],
+            'analysis': _cleanup_text(data.get('analysis', '')),
+        }
     except Exception as e:
         print(f"  warn: LLM analyze_news failed: {e}")
-        return ''
+        return {'metrics': [], 'analysis': ''}
 
 
 def analyze_earnings(ticker: str, company: str, report_data: dict,
@@ -332,7 +352,7 @@ Tavo apibendrinimas:"""
 
 
 def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
-    """Apply LLM analysis to a list of news items (in place + return)."""
+    """Apply LLM analysis (with metrics extraction) to news items. Returns only items with successful analysis."""
     if not is_enabled() or not news_items:
         return news_items
 
@@ -343,7 +363,7 @@ def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
         title = n.get('title', '')
         ticker = n.get('ticker', '')
         if not body or len(body) < 50:
-            return ''
+            return {'metrics': [], 'analysis': ''}
         return analyze_news(title, body, ticker=ticker)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
@@ -351,9 +371,10 @@ def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
         for fut in concurrent.futures.as_completed(futures):
             n = futures[fut]
             try:
-                analysis = fut.result()
-                if analysis:
-                    n['llm_analysis'] = analysis
+                result = fut.result()
+                if result and result.get('analysis'):
+                    n['llm_analysis'] = result['analysis']
+                    n['llm_metrics'] = result.get('metrics', [])
             except Exception:
                 pass
     return news_items

@@ -147,10 +147,11 @@ def main():
     print(f"    -> {summary_count}/{len(news)} enriched")
 
     if llm_is_enabled():
-        print("  LLM analyzing news (Lithuanian, Radoslavo balsu)...")
+        print("  LLM analyzing news (Lithuanian + structured metrics)...")
         news = _safe('LLM news analysis', lambda: batch_analyze_news(news), news)
-        llm_count = sum(1 for n in news if n.get('llm_analysis'))
-        print(f"    -> {llm_count}/{len(news)} analyzed by LLM")
+        # Filter to only news with successful LLM analysis - no English fallbacks
+        news = [n for n in news if n.get('llm_analysis')]
+        print(f"    -> {len(news)} news kept (with LLM analysis)")
 
         if wl_earnings['recent']:
             print("  LLM enriching recent earnings (guidance + analysis)...")

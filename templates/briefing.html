@@ -588,15 +588,47 @@
     padding-top: 8px;
     border-top: 1px dashed rgba(255,255,255,0.06);
   }
+  .news-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(244,204,107,0.12);
+  }
+  .nm-cell {
+    text-align: center;
+    padding: 4px;
+  }
+  .nm-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .nm-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #f4cc6b;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .nm-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
   .news-analysis {
-    font-size: 13px;
-    color: #d8dde8;
-    line-height: 1.55;
-    margin-top: 10px;
-    padding: 10px 12px;
-    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
-    border-left: 2px solid #f4cc6b;
-    border-radius: 4px;
+    font-size: 13.5px;
+    color: #e0e3eb;
+    line-height: 1.6;
+    margin-top: 12px;
+    padding: 0;
   }
   .news-analysis::before {
     content: 'Sum up · ';
@@ -604,7 +636,8 @@
     font-weight: 700;
     color: #f4cc6b;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
+    margin-right: 4px;
   }
   .news-meta {
     font-size: 11px;
@@ -930,16 +963,25 @@
   </div>
   <div class="news-list">
     {% for n in news %}
-    <div class="news-row{% if n.llm_analysis or n.summary %} has-summary{% endif %}">
+    <div class="news-row{% if n.llm_analysis %} has-summary{% endif %}">
       {% if n.ticker %}<div class="news-ticker">{{ n.ticker }}</div>{% else %}<div class="news-ticker news-ticker-blank">News</div>{% endif %}
       <div class="news-content">
-        <div class="news-title">{% if n.link %}<a href="{{ n.link }}" target="_blank">{{ n.title[:130] }}</a>{% else %}{{ n.title[:130] }}{% endif %}</div>
+        <div class="news-title">{% if n.link %}<a href="{{ n.link }}" target="_blank">{{ n.title[:140] }}</a>{% else %}{{ n.title[:140] }}{% endif %}</div>
+        {% if n.llm_metrics %}
+        <div class="news-metrics">
+          {% for m in n.llm_metrics %}
+          <div class="nm-cell">
+            <div class="nm-label">{{ m.label }}</div>
+            <div class="nm-value">{{ m.value }}</div>
+            {% if m.note %}<div class="nm-note">{{ m.note }}</div>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
         {% if n.llm_analysis %}
         <div class="news-analysis">{{ n.llm_analysis }}</div>
-        {% elif n.summary %}
-        <div class="news-summary">{{ n.summary }}</div>
         {% endif %}
-        <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}{% if n.link %} · <a href="{{ n.link }}" target="_blank" class="news-link">read full</a>{% endif %}</div>
+        <div class="news-meta">{{ n.publisher }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}{% if n.link %} · <a href="{{ n.link }}" target="_blank" class="news-link">visas straipsnis</a>{% endif %}</div>
       </div>
     </div>
     {% endfor %}
