@@ -642,13 +642,68 @@ def fetch_index_snapshot(futures: list) -> list:
     return out
 
 
-def fetch_iv_metrics(symbols: list) -> list:
+def _normal_cdf(x: float) -> float:
+    from math import erf, sqrt
+    return 0.5 * (1.0 + erf(x / sqrt(2.0)))
+
+
+def _bs_price(S: float, K: float, T: float, r: float, sigma: float, is_call: bool) -> float:
+    """Black-Scholes European option price (no dividends)."""
+    from math import log, sqrt, exp
+    if sigma <= 0 or T <= 0:
+        return max(0.0, (S - K) if is_call else (K - S))
+    d1 = (log(S / K) + (r + 0.5 * sigma * sigma) * T) / (sigma * sqrt(T))
+    d2 = d1 - sigma * sqrt(T)
+    if is_call:
+        return S * _normal_cdf(d1) - K * exp(-r * T) * _normal_cdf(d2)
+    return K * exp(-r * T) * _normal_cdf(-d2) - S * _normal_cdf(-d1)
+
+
+def _implied_vol(market_price: float, S: float, K: float, T: float,
+                  r: float, is_call: bool) -> float:
+    """Solve for implied volatility via bisection. Returns sigma (decimal) or 0."""
+    if market_price <= 0 or S <= 0 or K <= 0 or T <= 0:
+        return 0.0
+    # Intrinsic floor — if market price below intrinsic, can't solve
+    intrinsic = max(0.0, (S - K) if is_call else (K - S))
+    if market_price <= intrinsic + 0.01:
+        return 0.0
+    low, high = 0.005, 5.0
+    for _ in range(80):
+        mid = (low + high) / 2
+        price = _bs_price(S, K, T, r, mid, is_call)
+        if abs(price - market_price) < 0.005:
+            return mid
+        if price < market_price:
+            low = mid
+        else:
+            high = mid
+        if high - low < 1e-5:
+            break
+    return mid
+
+
+def fetch_iv_metrics(symbols: list, risk_free: float = 0.045) -> list:
     """Compute current ATM IV per ticker via yfinance options chain.
 
-    For each symbol: averages ATM call/put IV from nearest expiration.
-    Returns list sorted by IV desc - highest IV first (best premium-selling candidates).
+    Calculates IV ourselves using Black-Scholes from ATM call/put mid prices —
+    yfinance's `impliedVolatility` field returns placeholder values (1e-05)
+    that are unusable. Prefers bid/ask mid when market is open, falls back to
+    lastPrice when market is closed (bid/ask = 0).
+
+    Returns list sorted by IV desc — highest IV first (best premium-selling
+    candidates).
     """
     import concurrent.futures
+    from datetime import date
+
+    def _mid_price(row) -> float:
+        bid = float(row.get('bid', 0) or 0)
+        ask = float(row.get('ask', 0) or 0)
+        last = float(row.get('lastPrice', 0) or 0)
+        if bid > 0 and ask > 0 and ask >= bid:
+            return (bid + ask) / 2.0
+        return last
 
     def one(sym):
         try:
@@ -660,8 +715,6 @@ def fetch_iv_metrics(symbols: list) -> list:
             expirations = t.options
             if not expirations:
                 return None
-            # Find expiration ~30-45 DTE for stable IV
-            from datetime import date
             today = date.today()
             target_exp = None
             for exp in expirations:
@@ -673,22 +726,29 @@ def fetch_iv_metrics(symbols: list) -> list:
             if not target_exp:
                 target_exp = expirations[0]
             chain = t.option_chain(target_exp)
-            calls = chain.calls
-            puts = chain.puts
+            calls, puts = chain.calls, chain.puts
             if calls.empty or puts.empty:
                 return None
             atm_call = calls.iloc[(calls['strike'] - spot).abs().argmin()]
             atm_put = puts.iloc[(puts['strike'] - spot).abs().argmin()]
-            iv_call = float(atm_call.get('impliedVolatility', 0))
-            iv_put = float(atm_put.get('impliedVolatility', 0))
-            iv = (iv_call + iv_put) / 2 * 100
-            if iv <= 0:
+            call_K = float(atm_call['strike'])
+            put_K = float(atm_put['strike'])
+            call_price = _mid_price(atm_call)
+            put_price = _mid_price(atm_put)
+            dte = (datetime.strptime(target_exp, '%Y-%m-%d').date() - today).days
+            T = max(dte, 1) / 365.0
+            iv_call = _implied_vol(call_price, spot, call_K, T, risk_free, is_call=True)
+            iv_put = _implied_vol(put_price, spot, put_K, T, risk_free, is_call=False)
+            # Average where both available, otherwise use whichever solved
+            ivs = [v for v in (iv_call, iv_put) if v > 0]
+            if not ivs:
                 return None
+            iv = (sum(ivs) / len(ivs)) * 100
             return {
                 'symbol': sym,
                 'iv': iv,
                 'spot': spot,
-                'dte': (datetime.strptime(target_exp, '%Y-%m-%d').date() - today).days,
+                'dte': dte,
             }
         except Exception:
             return None
