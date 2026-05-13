@@ -1301,12 +1301,24 @@ def fetch_x_fintwit(accounts: list = None, per_account: int = 3,
 
 
 def fetch_article_summary(url: str, max_chars: int = 600) -> str:
-    """Fetch first few paragraphs of an article body. Returns clean text."""
+    """Fetch first few paragraphs of an article body. Returns clean text.
+
+    Returns '' for Google News redirect URLs that land on consent pages —
+    those need Playwright fallback to resolve to the actual publisher.
+    """
     if not url:
         return ''
     try:
         r = requests.get(url, headers=HEADERS, timeout=12, allow_redirects=True)
         if r.status_code != 200:
+            return ''
+        # Detect consent / interstitial pages — they masquerade as article body.
+        if any(s in r.url for s in ('consent.google.com', 'consent.yahoo.com',
+                                      'guce.', '/cookieconsent', '/privacy/notice')):
+            return ''
+        if any(s in r.text[:2500] for s in ('Before you continue',
+                                              'guce guce', 'Mums rūpi jūsų privatumas',
+                                              'We use cookies and data to')):
             return ''
         soup = BeautifulSoup(r.text, 'lxml')
         for tag in soup.find_all(['script', 'style', 'aside', 'figure', 'nav', 'footer', 'header']):
@@ -1350,8 +1362,105 @@ def fetch_article_summary(url: str, max_chars: int = 600) -> str:
         return ''
 
 
+def fetch_articles_with_browser(urls: list, max_chars: int = 5000) -> dict:
+    """Fetch article bodies using Playwright. Used as fallback when the
+    requests-based path returns empty (Google News redirects, JS sites).
+
+    For Google News URLs: navigate, accept consent, capture the final
+    resolved URL, then extract body from the destination publisher's page.
+    Returns {original_url: {body, resolved_url}} dict.
+    """
+    if not urls:
+        return {}
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return {}
+
+    out = {}
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=['--disable-blink-features=AutomationControlled'],
+            )
+            context = browser.new_context(
+                user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                           '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                viewport={'width': 1280, 'height': 800},
+                locale='en-US',
+                timezone_id='America/New_York',
+            )
+            # Hide webdriver flag (some sites bot-detect on it)
+            context.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+            )
+            page = context.new_page()
+            # Block heavy resources to speed up load
+            page.route('**/*.{png,jpg,jpeg,gif,webp,svg,woff,woff2,mp4,webm}',
+                       lambda route: route.abort())
+            for url in urls:
+                resolved_url = url
+                body = ''
+                try:
+                    page.goto(url, wait_until='domcontentloaded', timeout=20000)
+                    # Handle Google consent page if present
+                    if 'consent.google.com' in page.url:
+                        for sel in ['button:has-text("Reject all")',
+                                     'button:has-text("Accept all")',
+                                     'form[action*="save"] button']:
+                            try:
+                                page.click(sel, timeout=2000)
+                                page.wait_for_load_state('domcontentloaded', timeout=10000)
+                                break
+                            except Exception:
+                                continue
+                    try:
+                        page.wait_for_load_state('networkidle', timeout=5000)
+                    except Exception:
+                        pass
+                    resolved_url = page.url
+                    text = page.evaluate("""() => {
+                        const selectors = [
+                            'article', 'div.article-body', 'div.story-body',
+                            'main article', 'main', '[data-test-id*="article"]',
+                            'div[class*="ArticleBody"]', 'div[class*="article-content"]',
+                            'div[class*="story"]', 'div[itemprop="articleBody"]',
+                        ];
+                        for (const sel of selectors) {
+                            const el = document.querySelector(sel);
+                            if (el && el.innerText && el.innerText.length > 200) {
+                                return el.innerText;
+                            }
+                        }
+                        return document.body ? document.body.innerText : '';
+                    }""")
+                    if text and len(text) > 200:
+                        cleaned = re.sub(r'\s+', ' ', text).strip()
+                        cleaned_lo = cleaned.lower()[:300]
+                        is_interstitial = any(s in cleaned_lo for s in (
+                            'before you continue', 'guce guce', 'mums rūpi',
+                            'we use cookies and data to', '403 forbidden',
+                            'access denied', 'are you a robot',
+                        ))
+                        if not is_interstitial:
+                            body = cleaned[:max_chars]
+                except Exception:
+                    pass
+                out[url] = {'body': body, 'resolved_url': resolved_url}
+            browser.close()
+    except Exception as e:
+        print(f"  warn: Playwright article fetch failed: {type(e).__name__}: {str(e)[:80]}")
+    return out
+
+
 def enrich_news_with_summaries(news_items: list, max_workers: int = 6) -> list:
-    """For each news item with a link, fetch article summary in parallel."""
+    """For each news item with a link, fetch article summary.
+
+    Phase 1: parallel requests-based fetch (fast, works for most sources).
+    Phase 2: Playwright fallback for items that failed (Google News redirects,
+    JS-heavy sources). Single browser session for all phase-2 URLs.
+    """
     import concurrent.futures
     if not news_items:
         return news_items
@@ -1363,6 +1472,42 @@ def enrich_news_with_summaries(news_items: list, max_workers: int = 6) -> list:
                 n['summary'] = fut.result()
             except Exception:
                 n['summary'] = ''
+
+    # Phase 2: Playwright for URLs that returned empty body
+    failed_urls = [n['link'] for n in news_items
+                    if n.get('link') and not (n.get('summary') or '').strip()]
+    if failed_urls:
+        print(f"    -> {len(failed_urls)} articles need browser rendering...")
+        results = fetch_articles_with_browser(failed_urls, max_chars=5000)
+        # Phase 2b: for items where Playwright resolved a URL but didn't get
+        # body (bot-blocked publisher), retry that resolved URL via requests.
+        retry_urls = []
+        for n in news_items:
+            url = n.get('link', '')
+            if url not in results:
+                continue
+            r = results[url]
+            if r['body']:
+                n['summary'] = r['body']
+                if r['resolved_url'] and r['resolved_url'] != url:
+                    n['link'] = r['resolved_url']  # update to real article URL
+            elif r['resolved_url'] and r['resolved_url'] != url and \
+                 'news.google.com' not in r['resolved_url']:
+                n['link'] = r['resolved_url']
+                retry_urls.append(r['resolved_url'])
+        if retry_urls:
+            print(f"    -> retrying {len(retry_urls)} resolved URLs via requests...")
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as ex:
+                url_to_body = {u: ex.submit(fetch_article_summary, u) for u in retry_urls}
+                for n in news_items:
+                    if n.get('summary'):
+                        continue
+                    fut = url_to_body.get(n.get('link', ''))
+                    if fut:
+                        try:
+                            n['summary'] = fut.result() or ''
+                        except Exception:
+                            pass
     return news_items
 
 
