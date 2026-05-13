@@ -450,6 +450,82 @@ Tavo apibendrinimas:"""
         return ''
 
 
+def synthesize_youtube_insights(videos: list, watchlist: list,
+                                model: str = DEFAULT_MODEL) -> str:
+    """Synthesize multiple YouTube video transcripts into one investor narrative.
+
+    OUTPUT STILIUS (kritinis): tai turi atrodyti kaip Radoslav asmeniniai pamąstymai
+    po medžiagos peržiūros, NE kaip "kūrėjas X sakė". Jokio video pavadinimo,
+    jokio kanalo paminėjimo, jokios "kažkas YouTube'e sakė" formuluotės.
+
+    Returns markdown-ish Lithuanian prose, 4-6 paragraphs, ~600-1000 words.
+    """
+    client = _get_client()
+    if not client or not videos:
+        return ''
+
+    # Build a context block: title + description + transcript snippet per video.
+    # Cap individual transcripts to keep total prompt manageable.
+    pieces = []
+    for i, v in enumerate(videos, 1):
+        title = v.get('title', '')
+        desc = (v.get('description') or '')[:600]
+        transcript = (v.get('transcript') or '')
+        # Cap transcript length per video so 5+ videos fit in context
+        if len(transcript) > 5000:
+            transcript = transcript[:2500] + ' [...] ' + transcript[-2500:]
+        if not transcript and not desc:
+            continue
+        block = f"--- ŠALTINIS #{i} ---\nPavadinimas: {title}\n"
+        if desc:
+            block += f"Aprašymas: {desc}\n"
+        if transcript:
+            block += f"Transcript:\n{transcript}\n"
+        pieces.append(block)
+
+    if not pieces:
+        return ''
+
+    context_block = '\n\n'.join(pieces)
+    watchlist_str = ', '.join(watchlist[:30])
+
+    prompt = f"""{STYLE_GUIDE}
+
+UŽDUOTIS: Tu peržiūrėjai kelis investicinius video šaltinius per pastarąsias 48h. Dabar rašyk kaip ASMENINIUS PAMĄSTYMUS - tarsi tai būtų tavo paties įžvalgos po medžiagos peržiūros. Tikslas: 4-6 pastraipos, ~600-900 žodžių, vientisas naratyvas.
+
+PRIVALOMOS TAISYKLĖS:
+1. NEMINĖTI video pavadinimų, kūrėjų vardų, kanalų - rašyti pirmu asmeniu ("matau", "manau", "stebėdamas rinkas").
+2. NEDUOTI nuorodų į šaltinius.
+3. Sutelkti dėmesį į PRIORITETUS:
+   - Watchlist kompanijos: {watchlist_str}
+   - Makro: Fed, palūkanos, CPI/PPI/PCE, infliacija, recession signalai
+   - Geopolitika ir US politika veikianti rinkas (tarifai, Kinija, Iranas, karai)
+   - Sektoriniai trendai (semis, AI, crypto, energy)
+4. Synthesizuoti per visus šaltinius - jei keli kūrėjai liečia tą pačią temą, surask konsensusą ir prieštaras.
+5. Pateik VALUE - kiekvienas paragrafas turi turėti "ką tai reiškia investuotojui" elementą.
+6. Pradėk paragrafais kaip natūralus pasakojimas, ne sausi bullet'ai. Bet leiskite konkretiems skaičiams ir tezėms (ne tik abstrakcijos).
+7. Lietuvių kalba pagal style guide. Galima vartoti finansų anglicizmus (capex, guidance, beat/miss, dovish/hawkish, etc.).
+8. Jeigu kuriame šaltinyje yra prieštaringa nuomonė kitiems - akcentuok įdomias įžvalgas ir kontrargumentus, ne konsensus thinking.
+
+VENGTI:
+- "Matau YouTube'e..." / "Vienas analitikas sakė..." / "Kažkas teigia..." - VISKAS turi būti tavo pamąstymai
+- Generic frazių ("rinka neaišku", "viskas priklauso")
+- Brūkšnių (em-dash) - tik trumpi "-"
+
+ŠALTINIAI:
+{context_block}
+
+Tavo pamąstymai (4-6 paragrafai, vientisas tekstas):"""
+
+    try:
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=2000)
+        text = resp.content[0].text.strip() if resp.content else ''
+        return _cleanup_text(text)
+    except Exception as e:
+        print(f"  warn: LLM youtube synthesis failed: {e}")
+        return ''
+
+
 def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
     """Apply LLM analysis (with metrics extraction) to news items. Returns only items with successful analysis."""
     if not is_enabled() or not news_items:

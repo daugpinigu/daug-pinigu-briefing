@@ -13,16 +13,18 @@ from fetch import (
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
     fetch_earnings_transcript, fetch_watchlist_catalysts,
+    fetch_youtube_videos, fetch_youtube_transcript,
 )
 from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
     extract_earnings_details, analyze_earnings_card,
     analyze_reddit_thread, analyze_macro_event,
+    synthesize_youtube_insights,
 )
 from render import render_html, html_to_png
 from send import send_photo
 from publish_web import save_briefing_html, regenerate_index
-from watchlist import STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS
+from watchlist import STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS, YOUTUBE_CHANNELS
 
 VILNIUS = pytz.timezone('Europe/Vilnius')
 
@@ -305,6 +307,30 @@ def main():
     ibkr_news = _load_ibkr_news()
     print(f"  Loaded {len(ibkr_news)} IBKR headlines from data/ibkr_news.json")
 
+    # YouTube synthesis: pull recent videos from finance channels, fetch transcripts,
+    # synthesize into "personal thoughts" prose (no source attribution shown).
+    print("  Fetching YouTube videos (last 48h, finance channels)...")
+    yt_videos = _safe('YouTube RSS',
+                      lambda: fetch_youtube_videos(YOUTUBE_CHANNELS, hours_back=48,
+                                                    max_per_channel=2, max_total=10),
+                      [])
+    print(f"    -> {len(yt_videos)} videos found")
+    if yt_videos:
+        print("  Fetching YouTube transcripts...")
+        for v in yt_videos:
+            v['transcript'] = _safe(f"transcript {v['video_id']}",
+                                     lambda vid=v['video_id']: fetch_youtube_transcript(vid, max_chars=6000),
+                                     '')
+        # Keep videos with usable content (either transcript or rich description)
+        yt_videos = [v for v in yt_videos
+                     if (v.get('transcript') and len(v['transcript']) > 500)
+                     or len(v.get('description', '')) > 300]
+        # Prefer top 5 most recent with transcripts
+        yt_videos.sort(key=lambda x: (1 if x.get('transcript') else 0, x['published_dt']), reverse=True)
+        yt_videos = yt_videos[:6]
+        tx_count = sum(1 for v in yt_videos if v.get('transcript'))
+        print(f"    -> {len(yt_videos)} kept ({tx_count} with transcript)")
+
     print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
                     lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=15),
@@ -397,6 +423,14 @@ def main():
             commented = sum(1 for e in high_impact_with_actual if e.get('llm_analysis'))
             print(f"    -> {commented}/{len(high_impact_with_actual[:4])} events with commentary")
 
+        # YouTube synthesis: combine all video transcripts into one narrative
+        yt_synthesis = ''
+        if yt_videos:
+            print(f"  LLM synthesizing {len(yt_videos)} YouTube videos into investor narrative...")
+            yt_synthesis = _safe('YouTube synthesis',
+                                  lambda: synthesize_youtube_insights(yt_videos, STOCKS), '')
+            print(f"    -> {len(yt_synthesis)} chars of synthesis")
+
         if reddit_posts:
             print("  LLM analyzing Reddit threads (top comments → sentiment summary)...")
             for p in reddit_posts:
@@ -413,6 +447,7 @@ def main():
             print(f"    -> {enriched}/{len(reddit_posts)} threads enriched")
     else:
         print("  LLM disabled (no ANTHROPIC_API_KEY) - skipping analysis")
+        yt_synthesis = ''
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
     macro_sorted = sorted(
@@ -439,6 +474,7 @@ def main():
         'reddit_posts': reddit_posts,
         'x_posts': x_posts,
         'ibkr_news': ibkr_news,
+        'yt_synthesis': yt_synthesis,
         'wl_earnings': wl_earnings,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),

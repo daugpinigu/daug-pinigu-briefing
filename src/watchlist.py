@@ -37,3 +37,16 @@ AI_TICKERS = [
 
 # Tickers to fetch news for (limited to keep briefing fast)
 NEWS_TICKERS = ['NVDA', 'AMZN', 'GOOGL', 'MSFT', 'META', 'ZM', 'PLTR', 'MU', 'AVGO']
+
+# YouTube channels to monitor for daily insights (resolved 2026-05-13).
+# Output rendered as synthesis prose - no channel/title attribution shown to reader.
+YOUTUBE_CHANNELS = [
+    ('UCBRpqrzuuqE8TZcWw75JSdw', 'The Compound'),           # Josh Brown, Michael Batnick
+    ('UCcBzKSM4A-pIHMJWSnxmi_g', 'Fundstrat Direct'),       # Tom Lee
+    ('UC6ipRbtXU3-xJLET6oz6Hsw', 'Couch Investor'),
+    ('UC5cEHfCr6WOE1R1zcohd1IA', 'Jose Najarro Stocks'),    # Semis focus
+    ('UCRhQsN8AVIfZuBNeRV1A37w', 'Norges Bank IM'),          # Norway sovereign fund
+    ('UCPss8jtpAyp3k829QVX3jhQ', 'Steven Fiorillo'),
+    ('UCvWx0-NX-9qVLCSW9yjdX-g', 'Future Investing'),
+    ('UCD0yDGUSqKLyHviB6FUZzzg', 'Dr Crossroads'),           # Macro/geopolitics
+]

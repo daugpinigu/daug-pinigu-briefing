@@ -835,6 +835,21 @@
     font-variant-numeric: tabular-nums;
   }
   .ibkr-news-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .yt-synthesis {
+    background: linear-gradient(135deg, rgba(244,204,107,0.08), rgba(126,216,126,0.05));
+    border-left: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+  }
+  .yt-synthesis p { margin-bottom: 12px; }
+  .yt-synthesis p:last-child { margin-bottom: 0; }
+  .yt-synthesis strong { color: #f4cc6b; font-weight: 600; }
   .ibkr-news-row {
     display: flex;
     gap: 10px;
@@ -1257,6 +1272,15 @@
     </div>
     {% endfor %}
   </div>
+</section>
+{% endif %}
+
+{% if yt_synthesis %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Pamąstymai iš rinkų · 48h</div>
+  </div>
+  <div class="yt-synthesis">{{ yt_synthesis|safe }}</div>
 </section>
 {% endif %}
 

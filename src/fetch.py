@@ -2037,6 +2037,110 @@ def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int 
     return deduped[:max_total]
 
 
+def fetch_youtube_videos(channels: list, hours_back: int = 48,
+                         max_per_channel: int = 3, max_total: int = 12) -> list:
+    """Pull latest videos from YouTube channels via RSS, filtered to recent window.
+
+    Returns list of dicts: {video_id, title, channel, published_dt, description, views}
+    sorted by published_dt desc. RSS is free and unauthenticated; no API key.
+    Skip Shorts (under 90s, link contains /shorts/).
+    """
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    import xml.etree.ElementTree as _ET
+
+    cutoff = _dt.now(_tz.utc) - _td(hours=hours_back)
+    ns = {
+        'atom': 'http://www.w3.org/2005/Atom',
+        'yt': 'http://www.youtube.com/xml/schemas/2015',
+        'media': 'http://search.yahoo.com/mrss/',
+    }
+    out = []
+    for channel_id, channel_name in channels:
+        try:
+            url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
+            r = requests.get(url, headers=HEADERS, timeout=15)
+            if r.status_code != 200:
+                print(f"  warn: YT RSS {channel_name} status {r.status_code}")
+                continue
+            root = _ET.fromstring(r.content)
+            count = 0
+            for entry in root.findall('atom:entry', ns):
+                if count >= max_per_channel:
+                    break
+                vid = entry.find('yt:videoId', ns)
+                title = entry.find('atom:title', ns)
+                pub = entry.find('atom:published', ns)
+                link = entry.find('atom:link', ns)
+                if vid is None or title is None or pub is None:
+                    continue
+                link_href = link.get('href', '') if link is not None else ''
+                if '/shorts/' in link_href:
+                    continue  # skip shorts
+                try:
+                    pub_dt = _dt.fromisoformat(pub.text.replace('Z', '+00:00'))
+                except Exception:
+                    continue
+                if pub_dt < cutoff:
+                    continue
+                mg = entry.find('media:group', ns)
+                desc_el = mg.find('media:description', ns) if mg is not None else None
+                desc = desc_el.text if desc_el is not None and desc_el.text else ''
+                stats = mg.find('media:community/media:statistics', ns) if mg is not None else None
+                views = int(stats.get('views', 0)) if stats is not None else 0
+                out.append({
+                    'video_id': vid.text,
+                    'title': title.text,
+                    'channel': channel_name,
+                    'published_dt': pub_dt,
+                    'description': desc[:2000],
+                    'views': views,
+                    'link': link_href,
+                })
+                count += 1
+        except Exception as e:
+            print(f"  warn: YT RSS {channel_name} failed: {type(e).__name__}: {str(e)[:80]}")
+            continue
+    out.sort(key=lambda x: x['published_dt'], reverse=True)
+    return out[:max_total]
+
+
+def fetch_youtube_transcript(video_id: str, max_chars: int = 8000) -> str:
+    """Fetch transcript via youtube-transcript-api in any available language.
+
+    LLM synthesizer handles translation (Lithuanian output regardless of source lang).
+    Empty string on hard failure (captions disabled, IP block, etc).
+    """
+    try:
+        from youtube_transcript_api import YouTubeTranscriptApi
+    except ImportError:
+        return ''
+    api = YouTubeTranscriptApi()
+    # Try English first (cleaner for LLM), then any other language
+    for langs in (['en', 'en-US', 'en-GB'], ['de', 'lt', 'fr', 'es', 'pl', 'ru'], None):
+        try:
+            if langs:
+                t = api.fetch(video_id, languages=langs)
+            else:
+                # List all available, pick first
+                tr_list = api.list(video_id)
+                first = next(iter(tr_list), None)
+                if first is None:
+                    continue
+                t = first.fetch()
+            snippets = t.snippets if hasattr(t, 'snippets') else list(t)
+            text = ' '.join(s.text.strip() for s in snippets if s.text)
+            text = re.sub(r'\s+', ' ', text)
+            if not text:
+                continue
+            if len(text) > max_chars:
+                half = max_chars // 2
+                text = text[:half] + ' [...] ' + text[-half:]
+            return text
+        except Exception:
+            continue
+    return ''
+
+
 def fetch_premarket_change(symbols: list) -> list:
     """Get pre-market % change for symbols via yfinance prepost data."""
     if not symbols:
