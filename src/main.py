@@ -59,6 +59,40 @@ def build_takeaway(macro: list, earnings: list) -> str:
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
 
 
+def _load_manual_notes() -> list:
+    """Load manual notes injected by Radoslav (or me) into data/manual_notes.json.
+
+    Use case: Radoslav sends operational data, news, or context that he wants
+    in tomorrow's briefing. We write to this file; pipeline picks it up next run.
+    Notes expire automatically (expires_at field) so they don't haunt forever.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz
+    path = Path(__file__).resolve().parent.parent / 'data' / 'manual_notes.json'
+    if not path.exists():
+        return []
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return []
+    notes = data.get('notes', [])
+    out = []
+    now_utc = _dt.now(_tz.utc)
+    for n in notes:
+        exp = n.get('expires_at') or data.get('expires_at')
+        if exp:
+            try:
+                exp_dt = _dt.fromisoformat(exp.replace('Z', '+00:00'))
+                if exp_dt.tzinfo is None:
+                    exp_dt = exp_dt.replace(tzinfo=_tz.utc)
+                if now_utc > exp_dt:
+                    continue  # expired, skip
+            except Exception:
+                pass
+        out.append(n)
+    return out
+
+
 def _load_ibkr_news() -> list:
     """Load IBKR-sourced news from data/ibkr_news.json.
 
@@ -307,6 +341,12 @@ def main():
     ibkr_news = _load_ibkr_news()
     print(f"  Loaded {len(ibkr_news)} IBKR headlines from data/ibkr_news.json")
 
+    # Manual notes - explicit content Radoslav (or I) want in the next briefing,
+    # injected via data/manual_notes.json with auto-expiry. Outlives single
+    # conversations and survives the GH Actions pipeline boundary.
+    manual_notes = _load_manual_notes()
+    print(f"  Loaded {len(manual_notes)} manual notes from data/manual_notes.json")
+
     # YouTube synthesis: pull recent videos from finance channels, fetch transcripts,
     # synthesize into "personal thoughts" prose (no source attribution shown).
     print("  Fetching YouTube videos (last 48h, finance channels)...")
@@ -497,6 +537,7 @@ def main():
         'reddit_posts': reddit_posts,
         'x_posts': x_posts,
         'ibkr_news': ibkr_news,
+        'manual_notes': manual_notes,
         'yt_synthesis': yt_synthesis,
         'wl_earnings': wl_earnings,
         'takeaway': build_takeaway(macro_sorted, earnings_top),

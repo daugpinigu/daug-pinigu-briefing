@@ -850,6 +850,69 @@
   .yt-synthesis p { margin-bottom: 12px; }
   .yt-synthesis p:last-child { margin-bottom: 0; }
   .yt-synthesis strong { color: #f4cc6b; font-weight: 600; }
+
+  .manual-note {
+    background: linear-gradient(135deg, rgba(126,216,126,0.10), rgba(244,204,107,0.04));
+    border-left: 4px solid #7ed87e;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+  .manual-note-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .manual-note-ticker {
+    background: #7ed87e;
+    color: #0a0e1a;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .manual-note-headline {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+  }
+  .manual-note-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .manual-note-metric {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+  .manual-note-metric-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .manual-note-metric-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f4cc6b;
+    margin-top: 2px;
+  }
+  .manual-note-metric-change {
+    font-size: 11px;
+    color: #b8c0d0;
+    margin-top: 2px;
+  }
+  .manual-note-analysis {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+  }
   .ibkr-news-row {
     display: flex;
     gap: 10px;
@@ -1272,6 +1335,37 @@
     </div>
     {% endfor %}
   </div>
+</section>
+{% endif %}
+
+{% if manual_notes %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Šios dienos akcentai</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ manual_notes|length }}</span>
+  </div>
+  {% for n in manual_notes %}
+  <div class="manual-note">
+    <div class="manual-note-header">
+      {% if n.ticker %}<div class="manual-note-ticker">{{ n.ticker }}</div>{% endif %}
+      <div class="manual-note-headline">{{ n.headline }}</div>
+    </div>
+    {% if n.metrics %}
+    <div class="manual-note-metrics">
+      {% for m in n.metrics %}
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">{{ m.label }}</div>
+        <div class="manual-note-metric-value">{{ m.value }}</div>
+        {% if m.change %}<div class="manual-note-metric-change">{{ m.change }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if n.analysis %}
+    <div class="manual-note-analysis">{{ n.analysis }}</div>
+    {% endif %}
+  </div>
+  {% endfor %}
 </section>
 {% endif %}
 

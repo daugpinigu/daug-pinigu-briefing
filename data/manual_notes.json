@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-05-13T19:50:00+00:00",
+  "expires_at": "2026-05-15T00:00:00+00:00",
+  "notes": [
+    {
+      "ticker": "HOOD",
+      "headline": "Robinhood balandžio 2026 m. operating data",
+      "kind": "operating_metrics",
+      "released_at": "2026-05-13",
+      "metrics": [
+        {"label": "Total Platform Assets", "value": "$345B", "change": "+12% MoM · +49% YoY"},
+        {"label": "Funded Customers", "value": "27.6M", "change": "+110K MoM · +7% YoY"},
+        {"label": "Net Deposits", "value": "$6.0B", "change": "balandis"},
+        {"label": "Equity volume", "value": "$249B", "change": "+15% MoM · +57% YoY"},
+        {"label": "Options contracts", "value": "225M", "change": "+9% MoM · +34% YoY"},
+        {"label": "Crypto volume", "value": "$11.9B", "change": "-33% MoM · +38% YoY"},
+        {"label": "Event Contracts", "value": "3.2B", "change": "+7% MoM"},
+        {"label": "Margin balances", "value": "$18.0B", "change": "+6% MoM · +114% YoY"},
+        {"label": "Cash + Deposits", "value": "$18.1B", "change": "+8% MoM · +59% YoY"},
+        {"label": "Cash Sweep", "value": "$27.6B", "change": "+6% MoM · -4% YoY"},
+        {"label": "Securities Lending Revenue", "value": "$32M", "change": "-3% MoM · +28% YoY"}
+      ],
+      "analysis": "HOOD balandžio operating data rodo paradoksalų vaizdą - viskas dideliais skaičiais auga, bet po dangtelius matau du atskirus naratyvus. Platform Assets $345B (+12% MoM, +49% YoY) ir Equity volume +57% YoY yra rinkos beta'os funkcija - HOOD išgyvena svajonių aplinką kai rinkos volatile ir retail aktyvūs. Tačiau Funded Customers +7% YoY (vos +110K per mėnesį prie 27.6M bazės = ~0.4% MoM) signalizuoja, kad customer acquisition pradeda lėtėti į subrendusios platformos zoną. Tai reiškia, kad ARPU plėtra tampa pagrindiniu vertinimo varikliu, ne user growth.\n\nMargin balances $18.0B +114% YoY yra svarbiausias signalas šioje ataskaitoje - retail leverage padvigubėjo per metus. Tai bullish kol rinkos kyla (interest income komponentas auga, plius trading impulsas), bet asimetriškai pavojinga jei matytume 10%+ korekciją: margin call'ai kelia volatilumą, plius dalis customer base'o gali patirti rimtų nuostolių. HOOD interest revenue yra labai jautrus šiam balansui - margin balansų $18B prie ~7% spread'o = ~$1.26B annualized interest spread potencialo.\n\nEvent Contracts 3.2B (+7% MoM) tyliai tampa reikšminga nauja revenue linija - tai prediction markets segmentas (rinkimai, sporto įvykiai, ekonominiai duomenys), kuris yra struktūriškai didelės maržos produktas. Per metus jis gali generuoti $300-500M revenue jei augimo tempas išlaikomas, plius defensive characteristic - veikia net kai akcijų rinka neaktyvi.\n\nDu ryškūs įspėjimai: Crypto -33% MoM rodo, kad balandis buvo silpnas crypto trading mėnuo (BTC volatilumas mažėjo, retail traders išėjo), tai trumpalaikis revenue spaudimas Q2. Cash Sweep -4% YoY yra subtili, bet svarbi tendencija - vartotojai aktyviai ieško aukštesnio yield'o ir traukiasi iš HOOD sweep produkto į T-bills ar money market'ą. Tai struktūrinis interest income headwind, kurį HOOD turės kompensuoti per kitas pajamų linijas.\n\nInvestuotojui: HOOD šiuo metu yra leveraged play į retail trading boom'ą su konkrečiu kataizatoriumi (event contracts). Tačiau vertinimas jau įskaičiuoja didelį augimą, o margin balansų +114% YoY ribina ankstyvą reakciją į korekciją. Pagrindinis stebėjimo taškas Q2: ar Equity volume momentum išlieka po balandžio peak, ar Options contracts 34% YoY plėtra išlieka. Jei taip - akcija veiks toliau; jei trading aktivumas ima slūgti, $345B AuC bazė lieka, bet revenue augimo dinamika lėtėja. Mano galvoje HOOD yra trim/hold zona aukščiau dabartinių lygių, ne pirkti."
+    }
+  ]
+}
