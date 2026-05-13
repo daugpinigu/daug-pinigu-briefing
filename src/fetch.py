@@ -1123,6 +1123,157 @@ def fetch_watchlist_catalysts(watchlist: list, max_total: int = 10,
     return deduped[:max_total]
 
 
+def fetch_x_posts(watchlist: list, max_total: int = 8,
+                   hours_window: int = 24) -> list:
+    """Fetch X.com posts mentioning watchlist tickers via authenticated session.
+
+    Requires X_SESSION_B64 env var (base64 of x_session.json captured by
+    scripts/x_login.py). Uses Playwright to perform the search with the
+    user's auth so we get full content + chronological results.
+
+    Returns list of {ticker, author, handle, text, likes, retweets, link, pub_dt}.
+    """
+    import os as _os
+    import base64 as _b64
+    import json as _json
+    from datetime import datetime as dt, timezone, timedelta
+    from email.utils import parsedate_to_datetime as _parsedate
+
+    session_b64 = _os.environ.get('X_SESSION_B64')
+    if not session_b64:
+        return []
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return []
+
+    # Decode session and write to a temp file for Playwright
+    import tempfile
+    try:
+        session_json = _b64.b64decode(session_b64).decode('utf-8')
+    except Exception:
+        print("  warn: X_SESSION_B64 not valid base64")
+        return []
+    with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as f:
+        f.write(session_json)
+        session_path = f.name
+
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
+    # Pick a smaller set of high-signal tickers (full search per ticker is slow)
+    priority_tickers = watchlist[:25] if len(watchlist) > 25 else watchlist
+
+    posts = []
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=['--disable-blink-features=AutomationControlled'],
+            )
+            context = browser.new_context(
+                storage_state=session_path,
+                user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
+                           'AppleWebKit/537.36 (KHTML, like Gecko) '
+                           'Chrome/120.0.0.0 Safari/537.36',
+                viewport={'width': 1280, 'height': 900},
+                locale='en-US',
+            )
+            context.add_init_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+            )
+            page = context.new_page()
+            for ticker in priority_tickers:
+                if len(posts) >= max_total * 2:
+                    break
+                # Search "Latest" tab for ticker-tagged posts, exclude replies
+                search_url = (f'https://x.com/search?q=%24{ticker}%20-filter%3Areplies'
+                              f'%20min_faves%3A50%20lang%3Aen&src=typed_query&f=live')
+                try:
+                    page.goto(search_url, wait_until='domcontentloaded', timeout=20000)
+                    try:
+                        page.wait_for_selector('article', timeout=8000)
+                    except Exception:
+                        continue
+                    # Scroll a bit to load more
+                    page.evaluate('window.scrollBy(0, 600)')
+                    page.wait_for_timeout(800)
+                    articles = page.query_selector_all('article')
+                    for a in articles[:5]:
+                        try:
+                            text_el = a.query_selector('div[data-testid="tweetText"]')
+                            text = text_el.inner_text() if text_el else ''
+                            if not text or len(text) < 30:
+                                continue
+                            time_el = a.query_selector('time')
+                            pub_str = time_el.get_attribute('datetime') if time_el else ''
+                            try:
+                                pub_dt = dt.fromisoformat(pub_str.replace('Z', '+00:00'))
+                            except Exception:
+                                continue
+                            if pub_dt < cutoff:
+                                continue
+                            user_link = a.query_selector('a[href^="/"][role="link"] div[dir="ltr"] span')
+                            author = user_link.inner_text() if user_link else ''
+                            handle_el = a.query_selector('a[href^="/"][tabindex="-1"]')
+                            handle = handle_el.get_attribute('href').lstrip('/') if handle_el else ''
+                            # Tweet permalink
+                            status_a = a.query_selector('a[href*="/status/"]')
+                            link = ''
+                            if status_a:
+                                link = 'https://x.com' + status_a.get_attribute('href')
+                            # Engagement counts
+                            def _count(selector):
+                                el = a.query_selector(f'[data-testid="{selector}"]')
+                                if not el:
+                                    return 0
+                                txt = el.inner_text() or '0'
+                                txt = txt.replace(',', '').upper()
+                                if 'K' in txt:
+                                    try:
+                                        return int(float(txt.replace('K', '')) * 1000)
+                                    except Exception:
+                                        return 0
+                                try:
+                                    return int(txt)
+                                except Exception:
+                                    return 0
+                            likes = _count('like')
+                            retweets = _count('retweet')
+                            posts.append({
+                                'ticker': ticker,
+                                'author': author[:50],
+                                'handle': handle[:30],
+                                'text': text[:600],
+                                'likes': likes,
+                                'retweets': retweets,
+                                'link': link,
+                                'pub_dt': pub_dt,
+                            })
+                        except Exception:
+                            continue
+                except Exception as e:
+                    print(f"  x.com {ticker} fail: {type(e).__name__}: {str(e)[:60]}")
+                    continue
+            browser.close()
+    except Exception as e:
+        print(f"  warn: X fetch failed: {type(e).__name__}: {str(e)[:80]}")
+
+    # Dedup by tweet link, sort by engagement
+    seen = set()
+    out = []
+    for p in posts:
+        if p['link'] in seen or not p['link']:
+            continue
+        seen.add(p['link'])
+        out.append(p)
+    out.sort(key=lambda x: x['likes'] + x['retweets'], reverse=True)
+
+    try:
+        _os.unlink(session_path)
+    except Exception:
+        pass
+    return out[:max_total]
+
+
 def fetch_earnings_transcript(ticker: str, max_chars: int = 5000) -> str:
     """Find most recent Motley Fool earnings call transcript for ticker.
 
@@ -1650,10 +1801,18 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             except Exception:
                 continue
 
-    # Aggregate by (ticker, insider) — same person buying repeatedly = 1 entry
+    # Aggregate by (ticker, insider) — same person buying repeatedly = 1 entry.
+    # Preserve individual transactions in `buys` list so template can render the breakdown.
     grouped = {}
     for h in all_hits:
         key = (h['ticker'], h['insider'])
+        single = {
+            'trade_date': h['trade_date'],
+            'qty': h['qty'],
+            'price': h['price'],
+            'value': h['value'],
+            'value_str': h['value_str'],
+        }
         if key not in grouped:
             grouped[key] = {
                 'ticker': h['ticker'],
@@ -1666,12 +1825,14 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
                 'trade_date': h['trade_date'],
                 'filing_date': h['filing_date'],
                 'buys_count': 1,
+                'buys': [single],
             }
         else:
             g = grouped[key]
             g['value'] += h['value']
             g['buys_count'] += 1
-            # Keep most recent trade_date
+            g['buys'].append(single)
+            # Keep most recent trade_date as the "latest" pointer
             if h['trade_date'] > g['trade_date']:
                 g['trade_date'] = h['trade_date']
                 g['filing_date'] = h['filing_date']
@@ -1679,6 +1840,10 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
                 g['qty'] = h['qty']
             # Reformat aggregated value
             g['value_str'] = _fmt_money(g['value'])
+
+    # Sort buys within each group by date DESC
+    for g in grouped.values():
+        g['buys'].sort(key=lambda b: b['trade_date'], reverse=True)
 
     # Flag aggregations where the latest buy is within past 7 days — these
     # are "this week" signals worth surfacing prominently.

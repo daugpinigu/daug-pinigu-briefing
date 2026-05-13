@@ -586,6 +586,32 @@
     border-left: 3px solid #f4cc6b;
     background: rgba(244,204,107,0.06);
   }
+  .insider-row-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .insider-breakdown {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .insider-buy-row {
+    display: grid;
+    grid-template-columns: 92px 1fr 1fr auto;
+    gap: 8px;
+    font-size: 11.5px;
+    color: #c8cfdc;
+    font-variant-numeric: tabular-nums;
+    padding: 2px 0 2px 8px;
+  }
+  .ib-date { color: #8a92a3; }
+  .ib-qty { color: #c8cfdc; }
+  .ib-price { color: #8a92a3; }
+  .ib-value { color: #7ed87e; font-weight: 600; text-align: right; }
   .insider-fresh {
     font-size: 9px;
     font-weight: 700;
@@ -793,6 +819,48 @@
   }
   .reddit-meta {
     font-size: 11px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .x-list { display: flex; flex-direction: column; gap: 8px; }
+  .x-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgba(29,155,240,0.04);
+    border: 1px solid rgba(29,155,240,0.15);
+    border-radius: 8px;
+  }
+  .x-ticker {
+    font-weight: 800;
+    font-size: 11px;
+    color: #1d9bf0;
+    background: rgba(29,155,240,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    height: fit-content;
+    letter-spacing: 0.5px;
+  }
+  .x-content { flex: 1; min-width: 0; }
+  .x-header {
+    font-size: 11px;
+    color: #8a92a3;
+    margin-bottom: 4px;
+  }
+  .x-author { color: #e6e8ee; font-weight: 600; }
+  .x-handle { color: #8a92a3; margin-left: 4px; }
+  .x-time { color: #6c7588; margin-left: 4px; }
+  .x-text {
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+  .x-text a { color: #e0e3eb; text-decoration: none; }
+  .x-text a:hover { color: #1d9bf0; }
+  .x-meta {
+    font-size: 10.5px;
     color: #6c7588;
     margin-top: 4px;
     font-variant-numeric: tabular-nums;
@@ -1083,12 +1151,26 @@
   <div class="insider-list">
     {% for x in insider %}
     <div class="insider-row watchlist-hit{% if x.recent_week %} recent-week{% endif %}">
-      <div class="insider-ticker">{{ x.ticker }}</div>
-      <div class="insider-info">
-        <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
-        <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} buys · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+      <div class="insider-row-main">
+        <div class="insider-ticker">{{ x.ticker }}</div>
+        <div class="insider-info">
+          <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
+          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} buys · viso {{ x.value_str }} · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+        </div>
+        <div class="insider-value">{{ x.value_str }}</div>
       </div>
-      <div class="insider-value">{{ x.value_str }}</div>
+      {% if x.buys and x.buys|length > 1 %}
+      <div class="insider-breakdown">
+        {% for b in x.buys %}
+        <div class="insider-buy-row">
+          <span class="ib-date">{{ b.trade_date }}</span>
+          <span class="ib-qty">{{ b.qty }} sh</span>
+          <span class="ib-price">@ {{ b.price }}</span>
+          <span class="ib-value">{{ b.value_str }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
@@ -1129,6 +1211,31 @@
           {% endfor %}
         </div>
         {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if x_posts %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#1d9bf0">X · Watchlist Posts</div>
+    <span class="section-count" style="background:rgba(29,155,240,0.15);color:#1d9bf0">{{ x_posts|length }}</span>
+  </div>
+  <div class="x-list">
+    {% for p in x_posts %}
+    <div class="x-row">
+      <div class="x-ticker">{{ p.ticker }}</div>
+      <div class="x-content">
+        <div class="x-header">
+          <span class="x-author">{{ p.author }}</span>
+          <span class="x-handle">@{{ p.handle }}</span>
+          {% if p.pub_dt %}<span class="x-time">· {{ p.pub_dt.strftime('%m-%d %H:%M') }}</span>{% endif %}
+        </div>
+        <div class="x-text">{% if p.link %}<a href="{{ p.link }}" target="_blank">{{ p.text }}</a>{% else %}{{ p.text }}{% endif %}</div>
+        <div class="x-meta">♥ {{ p.likes }} · ↻ {{ p.retweets }}</div>
       </div>
     </div>
     {% endfor %}

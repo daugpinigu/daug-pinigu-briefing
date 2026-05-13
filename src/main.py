@@ -13,6 +13,7 @@ from fetch import (
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
     fetch_earnings_transcript, fetch_watchlist_catalysts,
+    fetch_x_posts,
 )
 from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
@@ -185,6 +186,10 @@ def main():
     reddit_posts = _safe('Reddit', lambda: fetch_reddit_discussions(max_total=6, min_score=100), [])
     print(f"    -> {len(reddit_posts)} posts")
 
+    print("  Fetching X.com posts (watchlist tickers, authenticated)...")
+    x_posts = _safe('X.com', lambda: fetch_x_posts(STOCKS, max_total=8, hours_window=24), [])
+    print(f"    -> {len(x_posts)} X posts")
+
     print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
                     lambda: fetch_insider_purchases(STOCKS, days=365, min_value=10_000, max_results=15),
@@ -317,6 +322,7 @@ def main():
         'news': news,
         'insider': insider,
         'reddit_posts': reddit_posts,
+        'x_posts': x_posts,
         'wl_earnings': wl_earnings,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
