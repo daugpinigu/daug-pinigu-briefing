@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-05-13T12:17:51.409683+00:00",
+  "source": "IBKR Dow Jones + Briefing.com",
+  "items": [
+    {
+      "ticker": "ASML",
+      "headline": "Press Release: ASML reports transactions under its current share buyback program",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e6514f6",
+      "time": "2026-05-11T12:00:00"
+    },
+    {
+      "ticker": "AVGO",
+      "headline": "Space Stock ETFs Are Suddenly Hot. Only 1 Owns SpaceX Before the IPO. -- Barrons.com",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e64541f",
+      "time": "2026-05-11T06:00:00"
+    },
+    {
+      "ticker": "RKLB",
+      "headline": "Dow Jones Futures: Trump Says U.S.-Iran Ceasefire Holds; Akamai, Cloudflare, IREN Are Big Earnings Movers -- IBD",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e606cf8",
+      "time": "2026-05-08T11:55:00"
+    },
+    {
+      "ticker": "META",
+      "headline": "Magnificent Seven Has Gained $3 Trillion in Market Value During Iran War -- WSJ",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e603995",
+      "time": "2026-05-08T10:46:00"
+    },
+    {
+      "ticker": "RKLB",
+      "headline": "Dow Jones Futures: Trump Says U.S.-Iran Ceasefire Holds; Rocket Lab, Cloudflare, IREN Are Big Earnings Movers -- IBD",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e603792",
+      "time": "2026-05-08T10:44:00"
+    },
+    {
+      "ticker": "PYPL",
+      "headline": "AI-Related Layoffs Continue to Roll In -- Market Talk",
+      "provider": "DJ-RT",
+      "article_id": "DJ-RT$1e5e5757",
+      "time": "2026-05-07T21:57:00"
+    },
+    {
+      "ticker": "RIOT",
+      "headline": "Terrestrial Energy, Riot to Build Colocated Nuclear Plants, Data Centers",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e587bac",
+      "time": "2026-05-06T13:32:00"
+    },
+    {
+      "ticker": "PLTR",
+      "headline": "Correction to \"Palantir Beats Forecasts\" on May 4. -- WSJ",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e568dd0",
+      "time": "2026-05-05T22:08:00"
+    },
+    {
+      "ticker": "PYPL",
+      "headline": "PayPal, Coinbase Tie Deep Layoffs to AI -- Market Talk",
+      "provider": "DJ-RT",
+      "article_id": "DJ-RT$1e55edbf",
+      "time": "2026-05-05T17:12:00"
+    },
+    {
+      "ticker": "PYPL",
+      "headline": "PayPal to Cut 20% of Staff Amid Turnaround Push -- 2nd Update",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e557cba",
+      "time": "2026-05-05T15:08:00"
+    },
+    {
+      "ticker": "NBIS",
+      "headline": "Press Release: Nebius Agrees to Acquire Eigen AI, Strengthening Nebius Token Factory as a Frontier Inference Platform",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e4e1a5f",
+      "time": "2026-05-01T11:00:00"
+    },
+    {
+      "ticker": "NBIS",
+      "headline": "* Nebius Agrees To Acquire Eigen AI, Strengthening Nebius Token Factory As A Frontier Inference Platform >NBIS",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e4e197e",
+      "time": "2026-05-01T11:00:00"
+    },
+    {
+      "ticker": "ADBE",
+      "headline": "* Adobe Completes Semrush Acquisition >ADBE",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e429ddc",
+      "time": "2026-04-28T13:01:00"
+    },
+    {
+      "ticker": "ADBE",
+      "headline": "Press Release: Adobe Completes Semrush Acquisition, Strengthening CX Enterprise with Enhanced Brand Visibility Capabilities",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e429a9c",
+      "time": "2026-04-28T13:00:00"
+    },
+    {
+      "ticker": "ADBE",
+      "headline": "Adobe Completes Semrush Acquisition, Strengthening CX Enterprise with Enhanced Brand Visibility Capabilities",
+      "provider": "DJ-RTG",
+      "article_id": "DJ-RTG$1e42999b",
+      "time": "2026-04-28T13:00:00"
+    }
+  ]
+}

@@ -1,133 +1,181 @@
 {
-  "generated_at": "2026-05-13T11:50:37.804542+00:00",
+  "generated_at": "2026-05-13T12:17:51.405344+00:00",
   "source": "IBKR TWS API (delayed-frozen)",
   "metrics": [
     {
-      "symbol": "MU",
-      "iv": 97.83,
-      "spot": 805.77,
+      "symbol": "VLN",
+      "iv": 167.75,
+      "spot": 2.59,
+      "dte": 36,
+      "strike": 2.5,
+      "expiration": "20260618"
+    },
+    {
+      "symbol": "BMNU",
+      "iv": 151.32,
+      "spot": 2.0,
+      "dte": 36,
+      "strike": 2.0,
+      "expiration": "20260618"
+    },
+    {
+      "symbol": "CONL",
+      "iv": 137.6,
+      "spot": 9.49,
+      "dte": 36,
+      "strike": 9.0,
+      "expiration": "20260618"
+    },
+    {
+      "symbol": "IREN",
+      "iv": 105.45,
+      "spot": 58.315,
       "dte": 30,
-      "strike": 810.0,
+      "strike": 58.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "RKLB",
-      "iv": 95.73,
-      "spot": 125.0,
+      "symbol": "CRWV",
+      "iv": 85.27,
+      "spot": 112.46,
       "dte": 30,
-      "strike": 125.0,
+      "strike": 112.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "TSLL",
-      "iv": 90.68,
+      "symbol": "CLSK",
+      "iv": 83.59,
+      "spot": 13.65,
+      "dte": 30,
+      "strike": 13.5,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "ENPH",
+      "iv": 71.07,
+      "spot": 38.5,
+      "dte": 30,
+      "strike": 38.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "MSTR",
+      "iv": 67.49,
+      "spot": 184.9,
+      "dte": 30,
+      "strike": 185.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "GME",
+      "iv": 61.05,
+      "spot": 22.43,
+      "dte": 30,
+      "strike": 22.5,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "ZM",
+      "iv": 60.96,
+      "spot": 103.3,
+      "dte": 30,
+      "strike": 103.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "SHOP",
+      "iv": 56.34,
+      "spot": 100.43,
+      "dte": 30,
+      "strike": 100.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "ZETA",
+      "iv": 54.87,
       "spot": 16.38,
       "dte": 30,
       "strike": 16.5,
       "expiration": "20260612"
     },
     {
-      "symbol": "PATH",
-      "iv": 89.12,
-      "spot": 10.07,
+      "symbol": "AVGO",
+      "iv": 53.56,
+      "spot": 421.94,
       "dte": 30,
-      "strike": 10.0,
-      "expiration": "20260612"
-    },
-    {
-      "symbol": "BMNR",
-      "iv": 77.93,
-      "spot": 21.86,
-      "dte": 30,
-      "strike": 22.0,
-      "expiration": "20260612"
-    },
-    {
-      "symbol": "AMD",
-      "iv": 68.69,
-      "spot": 455.62,
-      "dte": 30,
-      "strike": 455.0,
-      "expiration": "20260612"
-    },
-    {
-      "symbol": "MSTR",
-      "iv": 67.49,
-      "spot": 184.23,
-      "dte": 30,
-      "strike": 185.0,
-      "expiration": "20260612"
-    },
-    {
-      "symbol": "SHOP",
-      "iv": 56.28,
-      "spot": 100.75,
-      "dte": 30,
-      "strike": 101.0,
+      "strike": 420.0,
       "expiration": "20260612"
     },
     {
       "symbol": "SOFI",
       "iv": 51.73,
-      "spot": 16.0,
+      "spot": 15.985,
       "dte": 30,
       "strike": 16.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "ADBE",
-      "iv": 51.11,
-      "spot": 240.09,
+      "symbol": "PLTR",
+      "iv": 48.25,
+      "spot": 135.1,
       "dte": 30,
-      "strike": 240.0,
+      "strike": 135.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "ASML",
-      "iv": 49.64,
-      "spot": 1532.0,
+      "symbol": "NVDA",
+      "iv": 45.42,
+      "spot": 225.6,
       "dte": 30,
-      "strike": 1530.0,
+      "strike": 225.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "BABA",
-      "iv": 46.41,
-      "spot": 130.55,
+      "symbol": "NVO",
+      "iv": 39.43,
+      "spot": 47.28,
       "dte": 30,
-      "strike": 131.0,
+      "strike": 47.0,
       "expiration": "20260612"
     },
     {
       "symbol": "PYPL",
       "iv": 32.44,
-      "spot": 45.51,
+      "spot": 45.56,
       "dte": 30,
       "strike": 46.0,
       "expiration": "20260612"
     },
     {
+      "symbol": "GOOGL",
+      "iv": 31.62,
+      "spot": 388.88,
+      "dte": 30,
+      "strike": 390.0,
+      "expiration": "20260612"
+    },
+    {
       "symbol": "NFLX",
       "iv": 30.27,
-      "spot": 87.21,
+      "spot": 87.16,
       "dte": 30,
       "strike": 87.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "AMZN",
-      "iv": 28.95,
-      "spot": 266.04,
+      "symbol": "UNH",
+      "iv": 29.47,
+      "spot": 394.6,
       "dte": 30,
-      "strike": 265.0,
+      "strike": 395.0,
       "expiration": "20260612"
     },
     {
-      "symbol": "GLD",
-      "iv": 24.28,
-      "spot": 431.42,
+      "symbol": "AMZN",
+      "iv": 28.95,
+      "spot": 266.0,
       "dte": 30,
-      "strike": 431.0,
+      "strike": 265.0,
       "expiration": "20260612"
     }
   ]

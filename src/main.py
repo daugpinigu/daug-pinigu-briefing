@@ -57,6 +57,45 @@ def build_takeaway(macro: list, earnings: list) -> str:
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
 
 
+def _load_ibkr_news() -> list:
+    """Load IBKR-sourced news from data/ibkr_news.json.
+
+    Returns list of {ticker, headline, provider, time, pub_dt} entries,
+    deserialized + filtered to ≤36h old. Empty if file missing/stale.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    path = Path(__file__).resolve().parent.parent / 'data' / 'ibkr_news.json'
+    if not path.exists():
+        return []
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return []
+    try:
+        gen = _dt.fromisoformat(data.get('generated_at', '').replace('Z', '+00:00'))
+        if _dt.now(_tz.utc) - gen > _td(hours=24):
+            return []
+    except Exception:
+        pass
+    items = data.get('items', [])
+    cutoff = _dt.now(_tz.utc) - _td(hours=36)
+    out = []
+    for item in items:
+        t = item.get('time', '')
+        try:
+            pub_dt = _dt.fromisoformat(t.replace('Z', '+00:00'))
+            if pub_dt.tzinfo is None:
+                pub_dt = pub_dt.replace(tzinfo=_tz.utc)
+            if pub_dt < cutoff:
+                continue
+        except Exception:
+            pub_dt = None
+        item['pub_dt'] = pub_dt
+        out.append(item)
+    return out
+
+
 def _load_ibkr_iv() -> dict:
     """Load IBKR-sourced IV from data/iv_metrics.json (refreshed locally).
 
@@ -264,6 +303,11 @@ def main():
     x_posts = _load_x_posts()
     print(f"  Loaded {len(x_posts)} X posts from data/x_posts.json")
 
+    # IBKR news — pre-filtered market-moving headlines from Dow Jones + Briefing
+    # Refreshed locally by scripts/iv_refresh.py (twice daily via launchd).
+    ibkr_news = _load_ibkr_news()
+    print(f"  Loaded {len(ibkr_news)} IBKR headlines from data/ibkr_news.json")
+
     print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
                     lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=15),
@@ -397,6 +441,7 @@ def main():
         'insider': insider,
         'reddit_posts': reddit_posts,
         'x_posts': x_posts,
+        'ibkr_news': ibkr_news,
         'wl_earnings': wl_earnings,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),

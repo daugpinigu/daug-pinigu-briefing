@@ -33,6 +33,135 @@ OUTPUT = DATA_DIR / 'iv_metrics.json'
 sys.path.insert(0, str(ROOT / 'src'))
 
 
+# ---- News filter ----
+import re
+
+# Skip auto-generated mechanical headlines (just price changes, ETF rises X%, etc.)
+NEWS_NOISE_PATTERNS = [re.compile(p, re.I) for p in [
+    r'^[^A-Za-z]*[A-Z]+\s+(ETF\s+)?(Climbs|Gains|Falls|Rises|Declines|Closes\s+Flat|Outperforms|Underperforms)\s+\d',
+    r'^Today Is All About',
+    r'Insider Review For Week Ended',
+    r"^[A-Z]+'s\s+(?:Movers|Top Stocks)",
+    r"^These Stocks Are Today's Movers",
+    r"^Substantial Insider (Purchases|Sales): (Morning|Afternoon|Mid-Day) Report",
+    r"^\w+ Stock Rises$",
+    r"^\w+ Stock Falls$",
+    r"^Best Stocks Of",
+    r"^Stocks To Watch:",
+    r"Price Target (Announced|Raised|Lowered|Cut|Maintained) (at|to)",  # too granular
+    r"^Top \d+ Stocks",
+]]
+
+# Keep market-moving headlines
+NEWS_KEEP_PATTERNS = [re.compile(p, re.I) for p in [
+    # M&A
+    r'\b(acquires?|acquisition|to acquire|merger|buyout|takeover)\b',
+    # FDA / pharma
+    r'\bFDA\s+(approval|approves?|rejects?|rejection|clearance|denies?|decision)\b',
+    r'\b(phase\s+(?:2|3|II|III))\b',
+    # Earnings strong signals
+    r'\b(beats?|misses?)\s+(estimates?|expectations|forecasts?)\b',
+    r'\b(raises?|cuts?|lowers?|withdraws?)\s+(guidance|outlook|FY|full[- ]year)\b',
+    # Geopolitics / war / sanctions
+    r'\b(war|ceasefire|sanctions?|invasion|airstrike|missile|nuclear|strike|attack|escalation)\b',
+    r'\b(Russia|Ukraine|Iran|Israel|Gaza|Hamas|Hezbollah|Taiwan|China)\b.{0,40}\b(strike|attack|missile|war|invasion|sanction|conflict|threat|warns?)\b',
+    # Macro / Fed
+    r'\b(Fed|FOMC|Powell|ECB|BoJ|BoE|Lagarde)\b.{0,30}\b(hikes?|cuts?|holds?|raises?|lowers?|signals?|decision|meeting|minutes)\b',
+    r'\b(CPI|PPI|PCE|GDP|NFP|payroll|jobless|unemployment|inflation)\b.{0,30}\b(beats?|misses?|surprise|hotter|cooler|higher|lower|rose|fell)\b',
+    r'\b(rate (cut|hike|hold|pause|decision))\b',
+    r'\b(recession|stagflation|hard landing|soft landing)\b',
+    # Trade / tariffs
+    r'\b(tariffs?|trade war|trade deal|export controls)\b',
+    # Major corporate events
+    r'\b(bankruptcy|chapter 11|delisting|spin[- ]off|IPO)\b',
+    r'\b(?:lawsuit|sues|settles?|fined?)\s+(?:for|over|with)\s+\$',  # big lawsuits
+    r'\b(layoffs?|cuts?\s+\d+%?\s+(?:of\s+)?(?:staff|workforce|jobs))\b',
+    # Leadership
+    r'\b(CEO|CFO|COO|chairman)\s+(steps?\s+down|fired|resigns?|named|appointed)\b',
+    # Insider buying activity
+    r'\b(insider\s+buying|insider\s+purchases?|CEO\s+(?:buys?|bought))\b',
+    # Big moves
+    r'\b(?:surge|plunge|tumble|rally|crash|jumps?|sinks?)\s+\d{2,}%',
+    # Capital actions
+    r'\b(buyback|repurchase|capital\s+raise|secondary\s+offering|stock\s+split|dividend\s+(?:increase|hike|cut))\b',
+]]
+
+
+def _is_market_moving(headline: str) -> bool:
+    """True if headline matches a market-moving keyword AND isn't noise."""
+    if not headline or len(headline) < 15:
+        return False
+    # Strip IBKR metadata prefix {A:ID:L:lang}
+    h = re.sub(r'^\s*\{[^}]+\}\s*', '', headline)
+    # Strip language suffix " -- Source.com" etc.
+    if any(p.search(h) for p in NEWS_NOISE_PATTERNS):
+        return False
+    return any(p.search(h) for p in NEWS_KEEP_PATTERNS)
+
+
+def _strip_meta(headline: str) -> str:
+    """Remove IBKR {A:...} prefix from headline."""
+    return re.sub(r'^\s*\{[^}]+\}\s*', '', headline or '').strip()
+
+
+def fetch_ibkr_news(ib, tickers: list, hours_back: int = 36, max_per_ticker: int = 3,
+                     max_total: int = 15) -> list:
+    """Fetch market-moving headlines per ticker via IBKR Dow Jones + Briefing.
+
+    Filters out auto-generated noise (price-only updates, mechanical
+    insider/movers summaries). Dedups by both article_id and headline text
+    (same wire story often appears under multiple tickers).
+    """
+    from ib_insync import Stock
+    end = datetime.now()
+    start = end - __import__('datetime').timedelta(hours=hours_back)
+    providers = 'BRFG+DJ-RT+DJ-RTG+BRFUPDN+DJNL'
+    all_items = []
+    seen_ids = set()
+    seen_text = set()
+    for sym in tickers:
+        try:
+            contract = Stock(sym, 'SMART', 'USD')
+            qc = ib.qualifyContracts(contract)
+            if not qc:
+                continue
+            news = ib.reqHistoricalNews(
+                conId=contract.conId,
+                providerCodes=providers,
+                startDateTime=start.strftime('%Y-%m-%d %H:%M:%S'),
+                endDateTime=end.strftime('%Y-%m-%d %H:%M:%S'),
+                totalResults=20,
+            )
+            kept = 0
+            for n in news:
+                if n.articleId in seen_ids:
+                    continue
+                clean_headline = _strip_meta(n.headline)
+                if not _is_market_moving(clean_headline):
+                    continue
+                # Text-based dedup: normalize to alphanumeric, take first 60 chars
+                norm = re.sub(r'\W+', '', clean_headline.lower())[:60]
+                if norm in seen_text:
+                    continue
+                seen_ids.add(n.articleId)
+                seen_text.add(norm)
+                all_items.append({
+                    'ticker': sym,
+                    'headline': clean_headline[:200],
+                    'provider': n.providerCode,
+                    'article_id': n.articleId,
+                    'time': n.time.isoformat() if n.time else '',
+                })
+                kept += 1
+                if kept >= max_per_ticker:
+                    break
+        except Exception:
+            continue
+    # Sort by time DESC, cap total
+    all_items.sort(key=lambda x: x['time'], reverse=True)
+    return all_items[:max_total]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--commit', action='store_true', help='git add/commit/push after writing')
@@ -158,6 +287,11 @@ def main():
         except Exception as e:
             print(f"err: {type(e).__name__}: {str(e)[:60]}")
 
+    # ----- News fetch (IBKR Dow Jones + Briefing.com) -----
+    print("\nFetching IBKR news...")
+    news_results = fetch_ibkr_news(ib, STOCKS)
+    print(f"  -> {len(news_results)} market-moving headlines")
+
     ib.disconnect()
 
     results.sort(key=lambda x: x['iv'], reverse=True)
@@ -172,9 +306,21 @@ def main():
     for r in results[:10]:
         print(f"  {r['symbol']:6} IV={r['iv']:5.1f}%  spot=${r['spot']:7.2f}  DTE={r['dte']}")
 
+    # Write news JSON
+    news_path = DATA_DIR / 'ibkr_news.json'
+    news_payload = {
+        'generated_at': datetime.now(timezone.utc).isoformat(),
+        'source': 'IBKR Dow Jones + Briefing.com',
+        'items': news_results,
+    }
+    news_path.write_text(json.dumps(news_payload, indent=2, ensure_ascii=False))
+    print(f"\nWrote {news_path}: {len(news_results)} headlines")
+    for n in news_results[:10]:
+        print(f"  [{n.get('ticker','-'):6}] {n['time'][:16]} | {n['headline'][:100]}")
+
     if args.commit:
         print("\nCommitting...")
-        subprocess.run(['git', 'add', str(OUTPUT)], check=True, cwd=ROOT)
+        subprocess.run(['git', 'add', str(OUTPUT), str(news_path)], check=True, cwd=ROOT)
         diff = subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=ROOT)
         if diff.returncode == 0:
             print("No changes to commit.")

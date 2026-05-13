@@ -834,6 +834,37 @@
     margin-top: 4px;
     font-variant-numeric: tabular-nums;
   }
+  .ibkr-news-list { display: flex; flex-direction: column; gap: 6px; }
+  .ibkr-news-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 10px;
+    background: rgba(244,143,177,0.04);
+    border: 1px solid rgba(244,143,177,0.12);
+    border-radius: 6px;
+  }
+  .ibkr-news-ticker {
+    font-weight: 800;
+    font-size: 11px;
+    color: #f48fb1;
+    background: rgba(244,143,177,0.15);
+    padding: 3px 7px;
+    border-radius: 3px;
+    height: fit-content;
+    letter-spacing: 0.5px;
+  }
+  .ibkr-news-content { flex: 1; min-width: 0; }
+  .ibkr-news-headline {
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.4;
+  }
+  .ibkr-news-meta {
+    font-size: 10.5px;
+    color: #6c7588;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
   .x-list { display: flex; flex-direction: column; gap: 8px; }
   .x-row {
     display: flex;
@@ -1222,6 +1253,26 @@
           {% endfor %}
         </div>
         {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if ibkr_news %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">IBKR Premium · Market-Moving Headlines</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">{{ ibkr_news|length }}</span>
+  </div>
+  <div class="ibkr-news-list">
+    {% for n in ibkr_news %}
+    <div class="ibkr-news-row">
+      <div class="ibkr-news-ticker">{{ n.ticker }}</div>
+      <div class="ibkr-news-content">
+        <div class="ibkr-news-headline">{{ n.headline[:200] }}</div>
+        <div class="ibkr-news-meta">{{ n.provider }}{% if n.pub_dt %} · {{ n.pub_dt.strftime('%m-%d %H:%M') }}{% endif %}</div>
       </div>
     </div>
     {% endfor %}
