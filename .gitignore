@@ -6,3 +6,5 @@ output/*.png
 .DS_Store
 x_session.json
 x_session.b64
+
+logs/
