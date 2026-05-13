@@ -13,7 +13,6 @@ from fetch import (
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
     fetch_earnings_transcript, fetch_watchlist_catalysts,
-    fetch_x_posts,
 )
 from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
@@ -56,6 +55,39 @@ def build_takeaway(macro: list, earnings: list) -> str:
         e = macro_today[0]
         return f"{e['name']} {e['time_local']} ({e['country']}) - svarbiausias rytojaus signalas."
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
+
+
+def _load_x_posts() -> list:
+    """Load X posts from data/x_posts.json (refreshed locally).
+
+    Empty list if file missing or older than 48h (stale).
+    Deserializes pub_dt back to datetime.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    path = Path(__file__).resolve().parent.parent / 'data' / 'x_posts.json'
+    if not path.exists():
+        return []
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return []
+    try:
+        gen = _dt.fromisoformat(data.get('generated_at', '').replace('Z', '+00:00'))
+        age = _dt.now(_tz.utc) - gen
+        if age > _td(hours=48):
+            print(f"  warn: x_posts.json is {age.total_seconds()/3600:.1f}h old (stale)")
+            return []
+    except Exception:
+        pass
+    posts = data.get('posts', [])
+    for p in posts:
+        if 'pub_dt' in p and isinstance(p['pub_dt'], str):
+            try:
+                p['pub_dt'] = _dt.fromisoformat(p['pub_dt'].replace('Z', '+00:00'))
+            except Exception:
+                p['pub_dt'] = None
+    return posts
 
 
 def _safe(label, fn, fallback):
@@ -186,9 +218,10 @@ def main():
     reddit_posts = _safe('Reddit', lambda: fetch_reddit_discussions(max_total=6, min_score=100), [])
     print(f"    -> {len(reddit_posts)} posts")
 
-    print("  Fetching X.com posts (watchlist tickers, authenticated)...")
-    x_posts = _safe('X.com', lambda: fetch_x_posts(STOCKS, max_total=8, hours_window=24), [])
-    print(f"    -> {len(x_posts)} X posts")
+    # X posts come from data/x_posts.json — refreshed locally by scripts/x_refresh.py
+    # since X binds sessions to IP and rejects GH Actions datacenter requests.
+    x_posts = _load_x_posts()
+    print(f"  Loaded {len(x_posts)} X posts from data/x_posts.json")
 
     print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
