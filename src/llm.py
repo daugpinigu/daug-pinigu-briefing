@@ -450,6 +450,73 @@ Tavo apibendrinimas:"""
         return ''
 
 
+def research_past_event_with_web(event: dict, model: str = DEFAULT_MODEL) -> dict:
+    """Use Anthropic web_search tool to find actual result + analysis for a
+    past-time high-impact macro event with no actual data in our sources.
+
+    Critical: this auto-fills the gap that the user saw on 2026-05-13 with
+    Fed Chair vote — event time passed (21:40), result was in news (Warsh
+    54-45) but briefing rendered with actual="-". The pipeline must NEVER
+    leave a past-time high-impact event without a result.
+
+    Returns {actual, llm_analysis} dict; empty on failure.
+    """
+    client = _get_client()
+    if not client:
+        return {}
+
+    name = event.get('name', '')
+    country = event.get('country', '')
+    time_local = event.get('time_local', '')
+    estimate = event.get('estimate', '')
+    if not name:
+        return {}
+
+    from datetime import datetime as _dt
+    today = _dt.now().strftime('%Y-%m-%d')
+
+    prompt = f"""{STYLE_GUIDE}
+
+Šiandien ({today}) įvyko šis makro įvykis:
+- Pavadinimas: {name}
+- Šalis: {country}
+- Planuotas laikas: {time_local}
+- Lūkestis: {estimate or 'nepateiktas'}
+
+UŽDUOTIS: Atlik web paiešką, surask FAKTINĮ rezultatą šiam įvykiui (ne lūkestis - kas iš tiesų įvyko). Tada parašyk analizę.
+
+Privalomas atsakymo formatas (BE jokio kito teksto):
+ACTUAL: <trumpai, max 25 simboliai - pvz. "PASS 54-45" arba "0.5%" arba "Patvirtinta">
+ANALYSIS: <3-5 sakiniai lietuviškai - kas iš tiesų įvyko (konkretūs skaičiai/pavadinimai), kodėl tai svarbu rinkoms, ką tai reiškia Fed politikai/investuotojui. Naudok WebSearch rezultatus.>
+
+JOKIO ICONS, jokių brūkšnių (em-dash), tik trumpi "-"."""
+
+    try:
+        resp = client.messages.create(
+            model=model,
+            max_tokens=1500,
+            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 4}],
+            messages=[{"role": "user", "content": prompt}]
+        )
+        text = ''
+        for block in (resp.content or []):
+            if hasattr(block, 'text') and block.text:
+                text += block.text
+        text = text.strip()
+        if not text:
+            return {}
+
+        actual_match = re.search(r'ACTUAL\s*:\s*(.+?)(?:\n|ANALYSIS|$)', text, re.I | re.DOTALL)
+        analysis_match = re.search(r'ANALYSIS\s*:\s*(.+)', text, re.I | re.DOTALL)
+        actual = (actual_match.group(1).strip() if actual_match else '')[:60]
+        analysis = analysis_match.group(1).strip() if analysis_match else ''
+        analysis = _cleanup_text(analysis)
+        return {'actual': actual, 'llm_analysis': analysis}
+    except Exception as e:
+        print(f"  warn: research_past_event_with_web {name}: {e}")
+        return {}
+
+
 def synthesize_youtube_insights(videos: list, watchlist: list,
                                 model: str = DEFAULT_MODEL) -> str:
     """Synthesize multiple YouTube video transcripts into one investor narrative.

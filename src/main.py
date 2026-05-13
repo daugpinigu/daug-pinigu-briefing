@@ -19,7 +19,7 @@ from llm import (
     batch_analyze_news, is_enabled as llm_is_enabled,
     extract_earnings_details, analyze_earnings_card,
     analyze_reddit_thread, analyze_macro_event,
-    synthesize_youtube_insights,
+    synthesize_youtube_insights, research_past_event_with_web,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -409,12 +409,35 @@ def main():
                 e['extracted_metrics'] = _earnings_extracted_to_metrics(e.get('extracted', {}))
             print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis'))} cards enriched")
 
-        # LLM commentary for high-impact US/EZ macro events with actual values.
-        # Gives the "what does this CPI/Fed/NFP mean for me" perspective.
+        # Auto-research: any past-time high-impact event WITHOUT actual data
+        # gets filled via Anthropic web_search tool. Critical guarantee:
+        # pipeline NEVER leaves a past-time high-impact event with "actual=-".
+        # (This is what made Fed Chair vote show empty actual on 2026-05-13.)
+        now_hhmm = now.strftime('%H:%M')
+        past_missing = [e for e in macro
+                        if e.get('high_impact')
+                        and not e.get('actual')
+                        and e.get('country') in ('US', 'EZ')
+                        and e.get('time_local', '99:99') <= now_hhmm]
+        if past_missing:
+            print(f"  Auto-researching {len(past_missing)} past-time events missing actual data...")
+            for e in past_missing[:4]:
+                researched = _safe(f"web research {e.get('name','')}",
+                                    lambda ev=e: research_past_event_with_web(ev), {})
+                if researched.get('actual'):
+                    e['actual'] = researched['actual']
+                if researched.get('llm_analysis'):
+                    e['llm_analysis'] = researched['llm_analysis']
+                if researched.get('actual') or researched.get('llm_analysis'):
+                    print(f"    + filled {e['name']}: actual={researched.get('actual','')[:40]}")
+
+        # LLM commentary for high-impact US/EZ macro events with actual values
+        # (now including auto-researched ones from previous step).
         high_impact_with_actual = [e for e in macro
                                     if e.get('high_impact')
                                     and e.get('actual')
-                                    and e.get('country') in ('US', 'EZ')]
+                                    and e.get('country') in ('US', 'EZ')
+                                    and not e.get('llm_analysis')]  # skip already-analyzed
         if high_impact_with_actual:
             print(f"  LLM commenting on {len(high_impact_with_actual)} high-impact macro events...")
             for e in high_impact_with_actual[:4]:
