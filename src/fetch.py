@@ -705,6 +705,27 @@ def fetch_iv_metrics(symbols: list, risk_free: float = 0.045) -> list:
             return (bid + ask) / 2.0
         return last
 
+    def _row_iv(row, S, K, T, r, is_call):
+        """Compute IV from a single strike, requiring liquid quote."""
+        bid = float(row.get('bid', 0) or 0)
+        ask = float(row.get('ask', 0) or 0)
+        last = float(row.get('lastPrice', 0) or 0)
+        vol = float(row.get('volume', 0) or 0)
+        oi = float(row.get('openInterest', 0) or 0)
+        # Liquidity gate: need either a tight quote OR meaningful open interest.
+        # Filters out illiquid strikes that show garbage IVs.
+        has_quote = bid > 0 and ask > 0 and (ask - bid) / max(ask, 0.01) < 0.6
+        has_oi = oi >= 50 or vol >= 5
+        if not (has_quote or has_oi):
+            return 0.0
+        if has_quote:
+            price = (bid + ask) / 2.0
+        else:
+            price = last
+        if price <= 0.05:
+            return 0.0
+        return _implied_vol(price, S, K, T, r, is_call)
+
     def one(sym):
         try:
             t = yf.Ticker(sym)
@@ -729,21 +750,27 @@ def fetch_iv_metrics(symbols: list, risk_free: float = 0.045) -> list:
             calls, puts = chain.calls, chain.puts
             if calls.empty or puts.empty:
                 return None
-            atm_call = calls.iloc[(calls['strike'] - spot).abs().argmin()]
-            atm_put = puts.iloc[(puts['strike'] - spot).abs().argmin()]
-            call_K = float(atm_call['strike'])
-            put_K = float(atm_put['strike'])
-            call_price = _mid_price(atm_call)
-            put_price = _mid_price(atm_put)
             dte = (datetime.strptime(target_exp, '%Y-%m-%d').date() - today).days
             T = max(dte, 1) / 365.0
-            iv_call = _implied_vol(call_price, spot, call_K, T, risk_free, is_call=True)
-            iv_put = _implied_vol(put_price, spot, put_K, T, risk_free, is_call=False)
-            # Average where both available, otherwise use whichever solved
-            ivs = [v for v in (iv_call, iv_put) if v > 0]
+            # Sample 5 strikes nearest to spot from each side. Averaging across
+            # near-ATM strikes filters noise from single-strike outliers.
+            near_calls = calls.iloc[(calls['strike'] - spot).abs().argsort()[:5]]
+            near_puts = puts.iloc[(puts['strike'] - spot).abs().argsort()[:5]]
+            ivs = []
+            for _, row in near_calls.iterrows():
+                iv = _row_iv(row, spot, float(row['strike']), T, risk_free, True)
+                # Sanity bounds: 5% to 250%
+                if 0.05 <= iv <= 2.5:
+                    ivs.append(iv)
+            for _, row in near_puts.iterrows():
+                iv = _row_iv(row, spot, float(row['strike']), T, risk_free, False)
+                if 0.05 <= iv <= 2.5:
+                    ivs.append(iv)
             if not ivs:
                 return None
-            iv = (sum(ivs) / len(ivs)) * 100
+            # Use median to reject outliers, not mean
+            ivs.sort()
+            iv = ivs[len(ivs) // 2] * 100
             return {
                 'symbol': sym,
                 'iv': iv,
