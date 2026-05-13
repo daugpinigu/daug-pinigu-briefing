@@ -1181,6 +1181,20 @@ def fetch_x_posts(watchlist: list, max_total: int = 8,
                 "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
             )
             page = context.new_page()
+            # First verify the session is valid by visiting home
+            try:
+                page.goto('https://x.com/home', wait_until='domcontentloaded', timeout=15000)
+                page.wait_for_timeout(2000)
+                url_after = page.url
+                title_after = page.title()
+                print(f"  x.com session check: url={url_after[:60]} title={title_after[:40]}")
+                if 'login' in url_after.lower() or 'flow/login' in url_after:
+                    print("  x.com: session not recognized (login wall)")
+                    browser.close()
+                    return []
+            except Exception as e:
+                print(f"  x.com home check failed: {type(e).__name__}: {str(e)[:60]}")
+
             for ticker in priority_tickers:
                 if len(posts) >= max_total * 2:
                     break
@@ -1192,6 +1206,8 @@ def fetch_x_posts(watchlist: list, max_total: int = 8,
                     try:
                         page.wait_for_selector('article', timeout=8000)
                     except Exception:
+                        if ticker == priority_tickers[0]:
+                            print(f"  x.com {ticker} no articles. url={page.url[:80]}")
                         continue
                     # Scroll a bit to load more
                     page.evaluate('window.scrollBy(0, 600)')
