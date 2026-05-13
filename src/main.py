@@ -79,7 +79,6 @@ def _load_ibkr_news() -> list:
     except Exception:
         pass
     items = data.get('items', [])
-    cutoff = _dt.now(_tz.utc) - _td(hours=36)
     out = []
     for item in items:
         t = item.get('time', '')
@@ -87,8 +86,6 @@ def _load_ibkr_news() -> list:
             pub_dt = _dt.fromisoformat(t.replace('Z', '+00:00'))
             if pub_dt.tzinfo is None:
                 pub_dt = pub_dt.replace(tzinfo=_tz.utc)
-            if pub_dt < cutoff:
-                continue
         except Exception:
             pub_dt = None
         item['pub_dt'] = pub_dt
