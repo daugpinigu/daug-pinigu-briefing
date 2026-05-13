@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-05-13T11:50:37.804542+00:00",
+  "source": "IBKR TWS API (delayed-frozen)",
+  "metrics": [
+    {
+      "symbol": "MU",
+      "iv": 97.83,
+      "spot": 805.77,
+      "dte": 30,
+      "strike": 810.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "RKLB",
+      "iv": 95.73,
+      "spot": 125.0,
+      "dte": 30,
+      "strike": 125.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "TSLL",
+      "iv": 90.68,
+      "spot": 16.38,
+      "dte": 30,
+      "strike": 16.5,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "PATH",
+      "iv": 89.12,
+      "spot": 10.07,
+      "dte": 30,
+      "strike": 10.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "BMNR",
+      "iv": 77.93,
+      "spot": 21.86,
+      "dte": 30,
+      "strike": 22.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "AMD",
+      "iv": 68.69,
+      "spot": 455.62,
+      "dte": 30,
+      "strike": 455.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "MSTR",
+      "iv": 67.49,
+      "spot": 184.23,
+      "dte": 30,
+      "strike": 185.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "SHOP",
+      "iv": 56.28,
+      "spot": 100.75,
+      "dte": 30,
+      "strike": 101.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "SOFI",
+      "iv": 51.73,
+      "spot": 16.0,
+      "dte": 30,
+      "strike": 16.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "ADBE",
+      "iv": 51.11,
+      "spot": 240.09,
+      "dte": 30,
+      "strike": 240.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "ASML",
+      "iv": 49.64,
+      "spot": 1532.0,
+      "dte": 30,
+      "strike": 1530.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "BABA",
+      "iv": 46.41,
+      "spot": 130.55,
+      "dte": 30,
+      "strike": 131.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "PYPL",
+      "iv": 32.44,
+      "spot": 45.51,
+      "dte": 30,
+      "strike": 46.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "NFLX",
+      "iv": 30.27,
+      "spot": 87.21,
+      "dte": 30,
+      "strike": 87.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "AMZN",
+      "iv": 28.95,
+      "spot": 266.04,
+      "dte": 30,
+      "strike": 265.0,
+      "expiration": "20260612"
+    },
+    {
+      "symbol": "GLD",
+      "iv": 24.28,
+      "spot": 431.42,
+      "dte": 30,
+      "strike": 431.0,
+      "expiration": "20260612"
+    }
+  ]
+}

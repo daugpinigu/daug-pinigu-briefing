@@ -103,30 +103,43 @@ def main():
             exp_date = datetime.strptime(best_exp, '%Y%m%d').date()
             dte = (exp_date - today).days
 
-            # Find ATM strike (closest to spot)
+            # chain.strikes lists all strikes across all expirations including
+            # historical ones that don't exist for our chosen exp. Try up to 8
+            # closest strikes — first valid (call+put both exist) wins.
             strikes_sorted = sorted(chain.strikes, key=lambda s: abs(s - spot))
-            atm_strike = strikes_sorted[0]
+            qualified_call, qualified_put, atm_strike = None, None, None
+            for candidate in strikes_sorted[:10]:
+                call = Option(sym, best_exp, candidate, 'C', 'SMART')
+                put = Option(sym, best_exp, candidate, 'P', 'SMART')
+                try:
+                    results_q = ib.qualifyContracts(call, put)
+                except Exception:
+                    continue
+                if len(results_q) == 2 and results_q[0].conId and results_q[1].conId:
+                    qualified_call, qualified_put = results_q
+                    atm_strike = candidate
+                    break
+            if not qualified_call:
+                print("no valid strike")
+                continue
 
-            # Request both call and put at ATM
-            call = Option(sym, best_exp, atm_strike, 'C', 'SMART')
-            put = Option(sym, best_exp, atm_strike, 'P', 'SMART')
-            try:
-                ib.qualifyContracts(call, put)
-            except Exception:
-                # Some strikes don't have both call/put — fall back to neighbor
-                if len(strikes_sorted) >= 2:
-                    atm_strike = strikes_sorted[1]
-                    call = Option(sym, best_exp, atm_strike, 'C', 'SMART')
-                    put = Option(sym, best_exp, atm_strike, 'P', 'SMART')
-                    ib.qualifyContracts(call, put)
-
-            call_t = ib.reqMktData(call, '', False, False)
-            put_t = ib.reqMktData(put, '', False, False)
-            ib.sleep(2.5)
-            iv_c = call_t.modelGreeks.impliedVol if call_t.modelGreeks else None
-            iv_p = put_t.modelGreeks.impliedVol if put_t.modelGreeks else None
-            ib.cancelMktData(call)
-            ib.cancelMktData(put)
+            call_t = ib.reqMktData(qualified_call, '', False, False)
+            put_t = ib.reqMktData(qualified_put, '', False, False)
+            # Poll up to 6s — modelGreeks can take a moment to populate.
+            iv_c, iv_p = None, None
+            for _ in range(12):
+                ib.sleep(0.5)
+                for src in ('modelGreeks', 'lastGreeks', 'bidGreeks', 'askGreeks'):
+                    g = getattr(call_t, src, None)
+                    if g and g.impliedVol and not iv_c:
+                        iv_c = g.impliedVol
+                    g = getattr(put_t, src, None)
+                    if g and g.impliedVol and not iv_p:
+                        iv_p = g.impliedVol
+                if iv_c and iv_p:
+                    break
+            ib.cancelMktData(qualified_call)
+            ib.cancelMktData(qualified_put)
 
             ivs = [v for v in (iv_c, iv_p) if v and not math.isnan(v) and 0.05 < v < 3.0]
             if not ivs:

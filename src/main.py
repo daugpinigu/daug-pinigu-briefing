@@ -57,6 +57,31 @@ def build_takeaway(macro: list, earnings: list) -> str:
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
 
 
+def _load_ibkr_iv() -> dict:
+    """Load IBKR-sourced IV from data/iv_metrics.json (refreshed locally).
+
+    Returns {symbol: iv_pct} dict. Empty if file missing or older than 24h.
+    main() merges this on top of in-process Black-Scholes IV — IBKR values
+    win where present, BS fills the rest.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    path = Path(__file__).resolve().parent.parent / 'data' / 'iv_metrics.json'
+    if not path.exists():
+        return {}
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return {}
+    try:
+        gen = _dt.fromisoformat(data.get('generated_at', '').replace('Z', '+00:00'))
+        if _dt.now(_tz.utc) - gen > _td(hours=24):
+            return {}
+    except Exception:
+        pass
+    return {m['symbol']: m['iv'] for m in data.get('metrics', []) if 'symbol' in m and 'iv' in m}
+
+
 def _load_x_posts() -> list:
     """Load X posts from data/x_posts.json (refreshed locally).
 
@@ -213,6 +238,20 @@ def main():
 
     print("  Fetching IV metrics (option-selling opportunities)...")
     iv_data = _safe('IV', lambda: fetch_iv_metrics(STOCKS), [])
+    # Merge IBKR IV (data/iv_metrics.json from local refresh) on top — IBKR wins
+    # when present (most-active tickers), Black-Scholes covers the long tail.
+    ibkr_iv = _load_ibkr_iv()
+    if ibkr_iv:
+        ibkr_count = 0
+        for row in iv_data:
+            if row['symbol'] in ibkr_iv:
+                row['iv'] = ibkr_iv[row['symbol']]
+                row['source'] = 'IBKR'
+                ibkr_count += 1
+            else:
+                row['source'] = 'BS'
+        iv_data.sort(key=lambda x: x['iv'], reverse=True)
+        print(f"    merged IBKR overrides for {ibkr_count}/{len(iv_data)} tickers")
     high_iv = iv_data[:8]
     print(f"    -> {len(iv_data)} tickers ranked, top {len(high_iv)} shown")
 

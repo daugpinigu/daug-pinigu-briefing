@@ -565,6 +565,17 @@
     color: #8a92a3;
     flex: 1;
   }
+  .iv-src {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #f48fb1;
+    background: rgba(244,143,177,0.18);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 4px;
+    letter-spacing: 0.6px;
+    vertical-align: middle;
+  }
   .iv-value {
     font-size: 14px;
     font-weight: 800;
@@ -1133,7 +1144,7 @@
   <div class="iv-grid">
     {% for x in high_iv %}
     <div class="iv-row">
-      <div class="iv-symbol">{{ x.symbol }}</div>
+      <div class="iv-symbol">{{ x.symbol }}{% if x.source == 'IBKR' %} <span class="iv-src">IBKR</span>{% endif %}</div>
       <div class="iv-meta">${{ "%.2f"|format(x.spot) }} · {{ x.dte }}d</div>
       <div class="iv-value">{{ "%.1f"|format(x.iv) }}%</div>
     </div>
