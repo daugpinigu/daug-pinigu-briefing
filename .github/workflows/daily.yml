@@ -2,8 +2,12 @@ name: Daily Briefing
 
 on:
   schedule:
-    - cron: '0 4 * * 1-5'
-    - cron: '0 5 * * 1-5'
+    # 09:00 Vilnius (morning preview): 06:00 UTC summer, 07:00 UTC winter
+    - cron: '0 6 * * 1-5'
+    - cron: '0 7 * * 1-5'
+    # 22:00 Vilnius (evening recap): 19:00 UTC summer, 20:00 UTC winter
+    - cron: '0 19 * * 1-5'
+    - cron: '0 20 * * 1-5'
   workflow_dispatch: {}
 
 permissions:

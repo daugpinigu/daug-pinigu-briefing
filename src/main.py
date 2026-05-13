@@ -167,8 +167,10 @@ def _dedup_news_by_ticker(news_items: list, watchlist: list) -> list:
 def main():
     now = datetime.now(VILNIUS)
 
-    if os.environ.get('GITHUB_EVENT_NAME') == 'schedule' and now.hour != 7:
-        print(f"Scheduled run at {now.strftime('%H:%M')} Vilnius - skipping (only run at 07:xx).")
+    # Twice-daily runs: 09:00 Vilnius (morning preview) + 22:00 Vilnius
+    # (evening recap with same-day actuals). Other hours skipped.
+    if os.environ.get('GITHUB_EVENT_NAME') == 'schedule' and now.hour not in (9, 22):
+        print(f"Scheduled run at {now.strftime('%H:%M')} Vilnius - skipping (only run at 09:xx or 22:xx).")
         sys.exit(0)
 
     date_str = now.strftime('%Y-%m-%d')
@@ -186,7 +188,7 @@ def main():
 
     print("  Fetching watchlist earnings history (recent + upcoming)...")
     wl_earnings = _safe('watchlist earnings',
-                        lambda: fetch_watchlist_earnings_history(STOCKS, days_back=3, days_fwd=14),
+                        lambda: fetch_watchlist_earnings_history(STOCKS, days_back=2, days_fwd=14),
                         {'recent': [], 'upcoming': []})
     print(f"    -> {len(wl_earnings['recent'])} recent, {len(wl_earnings['upcoming'])} upcoming")
 
@@ -225,7 +227,7 @@ def main():
 
     print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
     insider = _safe('insider',
-                    lambda: fetch_insider_purchases(STOCKS, days=365, min_value=10_000, max_results=15),
+                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=15),
                     [])
     print(f"    -> {len(insider)} watchlist insider buys")
 
@@ -243,7 +245,7 @@ def main():
 
     print("  Fetching watchlist catalysts (M&A, FDA, lawsuits, buybacks across all 50 tickers)...")
     wl_catalysts = _safe('watchlist catalysts',
-                         lambda: fetch_watchlist_catalysts(STOCKS, max_total=12, hours_window=48),
+                         lambda: fetch_watchlist_catalysts(STOCKS, max_total=12, hours_window=48),  # 2 dienos
                          [])
     print(f"    -> {len(wl_catalysts)} watchlist catalyst items")
 
