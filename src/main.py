@@ -444,13 +444,20 @@ def main():
                                             {})
                 else:
                     e['extracted'] = {}
-                e['analysis'] = _safe(f"analyze {e['symbol']}",
-                                       lambda: analyze_earnings_card(
-                                           e['symbol'], e['eps_actual'], e['eps_estimate'],
-                                           e.get('extracted', {})
-                                       ), '')
+                analysis_result = _safe(f"analyze {e['symbol']}",
+                                         lambda: analyze_earnings_card(
+                                             e['symbol'], e['eps_actual'], e['eps_estimate'],
+                                             e.get('extracted', {})
+                                         ), {'short_term': '', 'long_term': ''})
+                # Backward compat: if old-style string returned, wrap it
+                if isinstance(analysis_result, str):
+                    analysis_result = {'short_term': analysis_result, 'long_term': ''}
+                e['analysis_short_term'] = analysis_result.get('short_term', '')
+                e['analysis_long_term'] = analysis_result.get('long_term', '')
+                # Keep e['analysis'] as legacy single-string for templates not yet updated
+                e['analysis'] = e['analysis_short_term']
                 e['extracted_metrics'] = _earnings_extracted_to_metrics(e.get('extracted', {}))
-            print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis'))} cards enriched")
+            print(f"    -> {sum(1 for e in wl_earnings['recent'] if e.get('analysis_short_term'))} cards enriched")
 
         # Auto-research: any past-time high-impact event WITHOUT actual data
         # gets filled via Anthropic web_search tool. Critical guarantee:

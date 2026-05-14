@@ -351,11 +351,22 @@ def extract_earnings_details(ticker: str, news_body: str,
 
 
 def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
-                           extracted: dict, model: str = DEFAULT_MODEL) -> str:
-    """Generate 2-3 sentence Lithuanian analysis for an earnings card."""
+                           extracted: dict, model: str = DEFAULT_MODEL) -> dict:
+    """Generate structured Lithuanian earnings analysis with two distinct horizons.
+
+    Returns dict with two fields:
+      - short_term: 3-4 sentences on 3-12 month tactical view (valuation,
+        catalysts, momentum, what to watch next quarter)
+      - long_term: 2-3 sentences on 3-5+ year structural picture (TAM,
+        durable moat, secular drivers, structural risk)
+
+    Both labeled "[Trumpalaikis 3-12 mėn]" / "[Ilgalaikis 3-5+ m]" tags are
+    added in the template, not the prose itself. EXPERIMENTAL: time-horizon
+    labels visible to user, will check after first brief if they stay.
+    """
     client = _get_client()
     if not client:
-        return ''
+        return {'short_term': '', 'long_term': ''}
     eps_line = ''
     if eps_actual is not None and eps_estimate is not None:
         delta = eps_actual - eps_estimate
@@ -365,7 +376,13 @@ def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
     extracted_str = '\n'.join(f"{k}: {v}" for k, v in extracted.items() if v)
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: Pateik gilią earnings izvalgą apie {ticker}, 3-4 sakiniai. NEpakartoti EPS skaičių (jau lentelėje), o paliesti GAIRES (guidance) ir KĄ TAI REIŠKIA. Bullish/bearish setup, augimo tempas, valuation, ką stebėti toliau. TAISYKLINGA lietuvių kalba.
+UŽDUOTIS: Pateik {ticker} earnings izvalgą su DVIEM ATSKIROMIS sekcijomis. Tikslas - aiškiai atskirti tactical (3-12 mėn) nuo strategic (3-5+ metai) perspektyvos, kad investuotojas su skirtingu horizonu suprastų skirtingus prioritetus.
+
+PRIVALOMAS atsakymo formatas (TIKSLIAI šis pavidalas, BE jokio kito teksto):
+SHORT_TERM: <3-4 sakiniai apie 3-12 mėn perspektyvą. Liesti: guidance, šio ketvirčio momentum, valuation, artimi katalizatoriai/rizikos, ką stebėti kitą ketvirtį. NEpakartoti EPS skaičių - jie jau lentelėje.>
+LONG_TERM: <2-3 sakiniai apie 3-5+ metų struktūrinį paveikslą. Liesti: TAM ekspansija, durable competitive moat, sekularūs varikliai (pvz. AI capex ciklas, demografijos trendai, reguliacinis pranašumas), struktūrinis risk. NE tactical info - kažkas tinkamo ilgalaikiui pozicijai.>
+
+JOKIO kitų sekcijų, jokių brūkšnių (em-dash), tik trumpi "-". Lietuviška TAISYKLINGA gramatika.
 
 EARNINGS DUOMENYS:
 {eps_line}{extracted_str}
@@ -373,12 +390,20 @@ EARNINGS DUOMENYS:
 Tavo izvalga:"""
 
     try:
-        resp = _llm_call_with_retry(client, prompt, model, max_tokens=400)
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=800)
         text = resp.content[0].text.strip() if resp.content else ''
-        return _cleanup_text(text)
+        # Parse SHORT_TERM and LONG_TERM blocks
+        st_match = re.search(r'SHORT_TERM\s*:\s*(.+?)(?:\n\s*LONG_TERM|$)', text, re.I | re.DOTALL)
+        lt_match = re.search(r'LONG_TERM\s*:\s*(.+)', text, re.I | re.DOTALL)
+        short_term = _cleanup_text(st_match.group(1).strip()) if st_match else ''
+        long_term = _cleanup_text(lt_match.group(1).strip()) if lt_match else ''
+        # Backward compat: if parsing fails, return whole text as short_term
+        if not short_term and not long_term and text:
+            short_term = _cleanup_text(text)
+        return {'short_term': short_term, 'long_term': long_term}
     except Exception as e:
         print(f"  warn: LLM analyze_earnings_card failed: {e}")
-        return ''
+        return {'short_term': '', 'long_term': ''}
 
 
 def analyze_macro_event(event: dict, model: str = DEFAULT_MODEL) -> str:

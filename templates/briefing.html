@@ -370,6 +370,35 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+  .ec-short-term, .ec-long-term {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+  .ec-short-term {
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+  }
+  .ec-long-term {
+    background: linear-gradient(135deg, rgba(126,216,126,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #7ed87e;
+  }
+  .horizon-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    margin-right: 8px;
+    border-radius: 3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .horizon-tag.short { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .horizon-tag.long { background: rgba(126,216,126,0.18); color: #7ed87e; }
 
   .upcoming-grid {
     display: grid;
@@ -930,6 +959,17 @@
     color: #d8dde7;
     white-space: pre-wrap;
   }
+  .manual-note-long {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+    background: rgba(126,216,126,0.06);
+    border-left: 3px solid #7ed87e;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
   .ibkr-news-row {
     display: flex;
     gap: 10px;
@@ -1191,7 +1231,16 @@
       <div class="ec-quote">"{{ e.extracted.key_quote }}"</div>
       {% endif %}
       {% if e.analysis %}
+      {% if e.analysis_short_term or e.analysis_long_term %}
+      {% if e.analysis_short_term %}
+      <div class="ec-short-term"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>{{ e.analysis_short_term }}</div>
+      {% endif %}
+      {% if e.analysis_long_term %}
+      <div class="ec-long-term"><span class="horizon-tag long">Ilgalaikis 3-5+ m</span>{{ e.analysis_long_term }}</div>
+      {% endif %}
+      {% elif e.analysis %}
       <div class="ec-analysis">{{ e.analysis }}</div>
+      {% endif %}
       {% endif %}
     </div>
     {% endfor %}
@@ -1382,7 +1431,10 @@
     </div>
     {% endif %}
     {% if n.analysis %}
-    <div class="manual-note-analysis">{{ n.analysis }}</div>
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>{{ n.analysis }}</div>
+    {% endif %}
+    {% if n.long_term %}
+    <div class="manual-note-long"><span class="horizon-tag long">Ilgalaikis 3-5+ m</span>{{ n.long_term }}</div>
     {% endif %}
   </div>
   {% endfor %}
