@@ -370,6 +370,35 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+  .ec-short-term, .ec-long-term {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+  .ec-short-term {
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+  }
+  .ec-long-term {
+    background: linear-gradient(135deg, rgba(126,216,126,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #7ed87e;
+  }
+  .horizon-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    margin-right: 8px;
+    border-radius: 3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .horizon-tag.short { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .horizon-tag.long { background: rgba(126,216,126,0.18); color: #7ed87e; }
 
   .upcoming-grid {
     display: grid;
@@ -533,6 +562,23 @@
     color: #e6e8ee;
     margin: 4px 0 2px;
     font-variant-numeric: tabular-nums;
+  }
+  .ext-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  .ext-badge.pre { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .ext-badge.post { background: rgba(126,140,216,0.18); color: #7e8cd8; }
+  .ext-change {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
   }
   .ai-change {
     font-size: 11px;
@@ -913,6 +959,17 @@
     color: #d8dde7;
     white-space: pre-wrap;
   }
+  .manual-note-long {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+    background: rgba(126,216,126,0.06);
+    border-left: 3px solid #7ed87e;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
   .ibkr-news-row {
     display: flex;
     gap: 10px;
@@ -1050,44 +1107,44 @@
   
   <div class="snap-item">
     <div class="snap-label">S&amp;P 500</div>
-    <div class="snap-price">7,485</div>
-    <div class="snap-change" style="color: #7ed87e">+0.20%</div>
+    <div class="snap-price">7,529</div>
+    <div class="snap-change" style="color: #7ed87e">+0.80%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Nasdaq 100</div>
-    <div class="snap-price">29,607</div>
-    <div class="snap-change" style="color: #7ed87e">+0.43%</div>
+    <div class="snap-price">29,722</div>
+    <div class="snap-change" style="color: #7ed87e">+0.83%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Dow</div>
-    <div class="snap-price">49,944</div>
-    <div class="snap-change" style="color: #7ed87e">+0.31%</div>
+    <div class="snap-price">50,155</div>
+    <div class="snap-change" style="color: #7ed87e">+0.73%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Russell 2k</div>
-    <div class="snap-price">2,852</div>
-    <div class="snap-change" style="color: #ff7373">-0.00%</div>
+    <div class="snap-price">2,869</div>
+    <div class="snap-change" style="color: #7ed87e">+0.59%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">VIX</div>
-    <div class="snap-price">17.83</div>
-    <div class="snap-change" style="color: #ff7373">-0.22%</div>
+    <div class="snap-price">17.26</div>
+    <div class="snap-change" style="color: #ff7373">-3.41%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Crude Oil</div>
-    <div class="snap-price">101.25</div>
-    <div class="snap-change" style="color: #7ed87e">+0.23%</div>
+    <div class="snap-price">101.76</div>
+    <div class="snap-change" style="color: #7ed87e">+0.73%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Gold</div>
-    <div class="snap-price">4,711</div>
-    <div class="snap-change" style="color: #7ed87e">+0.28%</div>
+    <div class="snap-price">4,663</div>
+    <div class="snap-change" style="color: #ff7373">-0.74%</div>
   </div>
   
 </div>
@@ -1102,51 +1159,59 @@
   <div class="ai-grid">
     
     <div class="ai-card">
-      <div class="ai-symbol">NBIS</div>
-      <div class="ai-price">$207.27</div>
-      <div class="ai-change" style="color: #7ed87e">+15.72%</div>
-    </div>
-    
-    <div class="ai-card">
-      <div class="ai-symbol">MU</div>
-      <div class="ai-price">$803.63</div>
-      <div class="ai-change" style="color: #7ed87e">+4.83%</div>
+      <div class="ai-symbol">NVDA</div>
+      <div class="ai-price">$235.52</div>
+      <div class="ai-change" style="color: #7ed87e">+4.37%</div>
+      
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">PLTR</div>
-      <div class="ai-price">$130.05</div>
-      <div class="ai-change" style="color: #ff7373">-4.37%</div>
+      <div class="ai-price">$133.49</div>
+      <div class="ai-change" style="color: #7ed87e">+2.69%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MU</div>
+      <div class="ai-price">$784.96</div>
+      <div class="ai-change" style="color: #ff7373">-2.29%</div>
+      
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ASML</div>
-      <div class="ai-price">$1,582</div>
-      <div class="ai-change" style="color: #7ed87e">+3.99%</div>
+      <div class="ai-price">$1,593</div>
+      <div class="ai-change" style="color: #7ed87e">+0.68%</div>
+      
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">GOOGL</div>
-      <div class="ai-price">$402.62</div>
-      <div class="ai-change" style="color: #7ed87e">+3.94%</div>
+      <div class="ai-price">$400.09</div>
+      <div class="ai-change" style="color: #ff7373">-0.64%</div>
+      
     </div>
     
     <div class="ai-card">
-      <div class="ai-symbol">CRWV</div>
-      <div class="ai-price">$111.31</div>
-      <div class="ai-change" style="color: #7ed87e">+3.30%</div>
+      <div class="ai-symbol">AMD</div>
+      <div class="ai-price">$450.86</div>
+      <div class="ai-change" style="color: #7ed87e">+1.20%</div>
+      
     </div>
     
     <div class="ai-card">
-      <div class="ai-symbol">NVDA</div>
-      <div class="ai-price">$225.83</div>
-      <div class="ai-change" style="color: #7ed87e">+2.29%</div>
+      <div class="ai-symbol">AMZN</div>
+      <div class="ai-price">$267.47</div>
+      <div class="ai-change" style="color: #ff7373">-0.99%</div>
+      
     </div>
     
     <div class="ai-card">
-      <div class="ai-symbol">META</div>
-      <div class="ai-price">$616.63</div>
-      <div class="ai-change" style="color: #7ed87e">+2.26%</div>
+      <div class="ai-symbol">MSFT</div>
+      <div class="ai-price">$409.36</div>
+      <div class="ai-change" style="color: #7ed87e">+1.02%</div>
+      
     </div>
     
   </div>
@@ -1169,7 +1234,7 @@
         <div class="event-numbers">
           <div class="event-num">
             <div class="event-num-label">Actual</div>
-            <div class="event-num-value muted">-</div>
+            <div class="event-num-value inline">0.5%</div>
           </div>
           <div class="event-num">
             <div class="event-num-label">Expect</div>
@@ -1177,13 +1242,15 @@
           </div>
           <div class="event-num">
             <div class="event-num-label">Prior</div>
-            <div class="event-num-value ">1.7%</div>
+            <div class="event-num-value ">1.6%®</div>
           </div>
         </div>
       </div>
       
       <div class="event-desc">Vartotojų išlaidos - GDP komponentas, US ekonomikos sveikatos check</div>
       
+      
+      <div class="event-analysis">Gegužės mažmeninė prekyba augo 0,5% per mėnesį - tai tvirtas vartojimo signalas, kuris mažina tikimybę, kad Fed skubės mažinti palūkanas. Vartotojai išlaiko išlaidų tempą nepaisant aukštų palūkanų, tad Fed turi erdvės laukti. Cikliniams sektoriams - mažmenininkams, vartojimo prekių gamintojams - tai trumpalaikiai teigiami duomenys, tačiau ilgesnė &#34;higher for longer&#34; pozicija toliau slegia augimo akcijų vertinimus ir ilgojo galo obligacijų kainas.</div>
       
     </div>
     
@@ -1216,220 +1283,6 @@
 
 
 
-<section class="section">
-  <div class="section-header">
-    <div class="section-title" style="color:#7ed87e">Watchlist Earnings Reports</div>
-    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">3</span>
-  </div>
-  <div class="earnings-cards">
-    
-    <div class="earnings-card beat">
-      <div class="ec-header">
-        <div class="ec-symbol">NBIS</div>
-        <div class="ec-verdict beat">
-          BEAT
-        </div>
-        <div class="ec-transcript-badge">Transcript</div>
-        <div class="ec-date">05-13 07:00</div>
-      </div>
-      <div class="ec-numbers">
-        <div class="ec-metric">
-          <div class="ec-label">EPS Actual</div>
-          <div class="ec-value beat-val">$2.11</div>
-        </div>
-        <div class="ec-vs">vs</div>
-        <div class="ec-metric">
-          <div class="ec-label">EPS Estimate</div>
-          <div class="ec-value">$-0.71</div>
-        </div>
-        
-        <div class="ec-metric">
-          <div class="ec-label">Surprise</div>
-          <div class="ec-value beat-val">+396.1%</div>
-        </div>
-        
-      </div>
-      
-      <div class="ec-metrics-grid">
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">Revenue</div>
-          <div class="ec-mc-value">$0.399B</div>
-          <div class="ec-mc-note">+684% YoY</div>
-        </div>
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">FY guide</div>
-          <div class="ec-mc-value">$3.0B-$3.4B</div>
-          
-        </div>
-        
-      </div>
-      
-      
-      <div class="ec-quotes-block">
-        <div class="ec-quotes-label">Earnings call · key quotes</div>
-
-        <div class="ec-quote">"Q1 2026 revenue +684% YoY į $399M, ARR pasiekė $1.25B." - Arkady Volozh, CEO</div>
-
-        <div class="ec-quote">"Matom unprecedented demand visoje rinkoje - nauja 1.2 GW infrastruktūros vieta užtikrinta." - Arkady Volozh, CEO</div>
-
-        <div class="ec-quote">"FY26 revenue guidance $3B-$3.4B, ARR tikslas $7B-$9B iki metų pabaigos; capex $16B-$20B GPU + duomenų centrams." - Toby Xu, CFO</div>
-
-      </div>
-      
-      
-      <div class="ec-analysis">NBIS FY revenue guidance $3.0B-$3.4B reiškia, kad įmonė tikisi išlaikyti itin aukštą augimo tempą - nuo dabartinių $0.4B iki $3B+ per vienerius finansinius metus yra agresyvus, bet ne neįmanomas šuolis duomenų infrastruktūros sektoriuje, kur sutartys dažnai užrašomos blokais. +684% YoY augimas šiame ketvirtyje rodo, kad revenue pripažinimas jau prasidėjo, tačiau klausimas - ar $3.0-3.4B yra tolygiai paskirstytas per metus, ar H2 sunkus. vertinimas kampas sudėtingas: esant tokiam augimo tempui tradiciniai P/E rodikliai mažai sako, tačiau jei FY guidance bus įvykdyta - dabartinis įkainojimas atrodo konservatyvus. Stebėčiau, ar Q2 revenue patvirtins tiesinę trajektoriją link $3B+ - jei H1 sudarys mažiau nei 30% FY tikslo, rinka greičiausiai reaguos su skepsiu dėl H2 koncentracijos rizikos.</div>
-      
-    </div>
-    
-    <div class="earnings-card beat">
-      <div class="ec-header">
-        <div class="ec-symbol">VLN</div>
-        <div class="ec-verdict beat">
-          BEAT
-        </div>
-        <div class="ec-transcript-badge">Transcript</div>
-        <div class="ec-date">05-13 06:00</div>
-      </div>
-      <div class="ec-numbers">
-        <div class="ec-metric">
-          <div class="ec-label">EPS Actual</div>
-          <div class="ec-value beat-val">$-0.05</div>
-        </div>
-        <div class="ec-vs">vs</div>
-        <div class="ec-metric">
-          <div class="ec-label">EPS Estimate</div>
-          <div class="ec-value">$-0.06</div>
-        </div>
-        
-        <div class="ec-metric">
-          <div class="ec-label">Surprise</div>
-          <div class="ec-value beat-val">+21.1%</div>
-        </div>
-        
-      </div>
-      
-      <div class="ec-metrics-grid">
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">Revenue</div>
-          <div class="ec-mc-value">$16.9M</div>
-          <div class="ec-mc-note">vs est $16.3M-$16.7M · +0.6% YoY</div>
-        </div>
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">Next Q guide</div>
-          <div class="ec-mc-value">$17.2M-$17.6M</div>
-          
-        </div>
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">FY guide</div>
-          <div class="ec-mc-value">$75M-$77M</div>
-          
-        </div>
-        
-        <div class="ec-mc">
-          <div class="ec-mc-label">Reakcija</div>
-          <div class="ec-mc-value">+9.26%</div>
-          
-        </div>
-        
-      </div>
-      
-      
-      <div class="ec-quotes-block">
-        <div class="ec-quotes-label">Earnings call · key quotes</div>
-        
-        <div class="ec-quote">"don&#39;t see any risk in our ability to meet full-year targets, citing control over supply and demand for its products."</div>
-        
-        <div class="ec-quote">"5% growth for CIB across the year, specifying that acceleration would become visible in the third and fourth quarters."</div>
-        
-        <div class="ec-quote">"advancing well aligned with the time line, with revenue expected to materialize post-2026."</div>
-        
-      </div>
-      
-      
-      <div class="ec-analysis">VLN revenue $16.9M šiek tiek viršijo viršutinę analitikų lūkesčių ribą ($16.7M), tačiau +0.6% augimas YoY lieka itin lėtas. Q2 guidance $17.2M-$17.6M ir metinis tikslas $75M-$77M rodo, kad vadovybė tikisi augimo pagreičio antroje metų pusėje - CIB segmente prognozuojama 5% augimas per metus, kuris turėtų tapti matomas Q3-Q4. Tai reiškia, kad artimiausius du ketvirčius bus spaudimas įrodyti, jog pagreitis iš tikrųjų materializuojasi, o ne lieka tik gairėse. Ilgesnio horizonto projektas, kurio pajamos tikimasi po 2026 m., kol kas vertinimo neįkainoja - tai optionalumas, bet ne šiandienos katalizatorius. +9.26% reakcija po rezultatų atrodo kaip rinkos palengvėjimas, kad vadovybė tvirtina esanti metinių tikslų kelyje, tačiau manau, kad Q3 earnings bus tikrasis egzaminas - jei augimo pagreitis tada neatsiras, šis optimizmas gali greitai išblėsti.</div>
-      
-    </div>
-    
-    <div class="earnings-card miss">
-      <div class="ec-header">
-        <div class="ec-symbol">BABA</div>
-        <div class="ec-verdict miss">
-          MISS
-        </div>
-        <div class="ec-transcript-badge">Transcript</div>
-        <div class="ec-date">05-13 08:00</div>
-      </div>
-      <div class="ec-numbers">
-        <div class="ec-metric">
-          <div class="ec-label">EPS Actual (non-GAAP per ADS)</div>
-          <div class="ec-value miss-val">$3.89</div>
-        </div>
-        <div class="ec-vs">vs</div>
-        <div class="ec-metric">
-          <div class="ec-label">EPS Estimate</div>
-          <div class="ec-value">$5.74</div>
-        </div>
-
-        <div class="ec-metric">
-          <div class="ec-label">Surprise</div>
-          <div class="ec-value miss-val">-32.2% · -59% YoY</div>
-        </div>
-
-      </div>
-
-      <div class="ec-metrics-grid">
-
-        <div class="ec-mc">
-          <div class="ec-mc-label">Revenue</div>
-          <div class="ec-mc-value">$35.28B</div>
-          <div class="ec-mc-note">vs est $35.23B · +3% YoY</div>
-        </div>
-
-        <div class="ec-mc">
-          <div class="ec-mc-label">Cloud Intelligence</div>
-          <div class="ec-mc-value">$6.04B</div>
-          <div class="ec-mc-note">+38% YoY · EBITA +57%</div>
-        </div>
-
-        <div class="ec-mc">
-          <div class="ec-mc-label">Adj EBITA</div>
-          <div class="ec-mc-value">$740M</div>
-          <div class="ec-mc-note">-84% YoY (AI capex)</div>
-        </div>
-
-        <div class="ec-mc">
-          <div class="ec-mc-label">FY26 dividendas</div>
-          <div class="ec-mc-value">$1.05/ADS</div>
-          <div class="ec-mc-note">$2.5B total · record 06-11</div>
-        </div>
-
-      </div>
-
-
-      <div class="ec-quotes-block">
-        <div class="ec-quotes-label">Earnings call · key quotes</div>
-
-        <div class="ec-quote">"Over the next 5 years, our goal is to surpass USD 100 billion in combined cloud and AI external revenue, including MaaS." - Eddie Wu, CEO</div>
-
-        <div class="ec-quote">"Cloud Intelligence Group's external revenue growth accelerated to 40%, with AI-related products accounting for 30% of this revenue." - Eddie Wu, CEO</div>
-
-        <div class="ec-quote">"AI-related product revenue achieving triple-digit growth for the eleventh consecutive quarter." - Toby Xu, CFO</div>
-
-      </div>
-
-
-      <div class="ec-analysis">BABA Q4 non-GAAP EPS $3.89 vs $5.74 est (-32%) reiškia ne struktūrinę problemą, o tikslingą capex pasirinkimą - adjusted EBITA -84% YoY dėl masyvių AI investicijų ir quick commerce subsidijų. Revenue $35.28B vos viršijo $35.23B konsensusą, bet už šio skaičiaus slypi du priešingi naratyvai: Cloud Intelligence segmento +38% YoY su +57% EBITA augimu ir AI revenue triple-digit augimas 11-ą ketvirtį iš eilės yra struktūriškai bullish signalai, o China e-commerce adjusted EBITA -40% kontrakcija rodo, kad core verslo pelningumas valdomas dėl strateginių subsidijų. Eddie Wu 5 metų $100B cloud+AI revenue tikslas yra ambicingas - jei tai išsipildys per ATH (Alibaba Token Hub) struktūrą, dabartinis vertinimas atrodys atpigęs. Trumpalaikis spaudimas: -1.3% premarket reakcija parodo, kad rinka kol kas nelaiko šio capex ciklo proporcingu - akcija liks aukšto volatilumo zonoje kol cloud revenue pasieks $30B+ metinį tempą. Investuotojui pagrindinis signalas: $2.5B dividendas (record 06-11) + cloud akceleracija sukuria asimetrišką setup - jei AI capex generuoja revenue per artimiausius 2-3 ketvirčius, rinkos reakcija pasikeis; jei ne, vertinimas toliau spaudžiamas dėl pelningumo erozijos.</div>
-
-    </div>
-    
-  </div>
-</section>
-
 
 
 <section class="section">
@@ -1449,7 +1302,7 @@
     <div class="upcoming-card">
       <div class="up-symbol">BIDU</div>
       <div class="up-date">Mon May 18</div>
-      <div class="up-days">in 4d</div>
+      <div class="up-days">in 3d</div>
       <div class="up-est">EPS est $11.43</div>
     </div>
     
@@ -1488,28 +1341,28 @@
       <div class="movers-col-title">📈 Gainers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NBIS</span> <span class="mover-price">$207.27</span></span>
-        <span class="mover-up">+15.72%</span>
+        <span><span class="mover-symbol">MSTR</span> <span class="mover-price">$187.48</span></span>
+        <span class="mover-up">+5.24%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">ENPH</span> <span class="mover-price">$42.00</span></span>
-        <span class="mover-up">+12.06%</span>
+        <span><span class="mover-symbol">RIOT</span> <span class="mover-price">$24.54</span></span>
+        <span class="mover-up">-1.59%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">VLN</span> <span class="mover-price">$2.95</span></span>
-        <span class="mover-up">+9.26%</span>
+        <span><span class="mover-symbol">AMZN</span> <span class="mover-price">$267.56</span></span>
+        <span class="mover-up">-0.99%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">BABA</span> <span class="mover-price">$145.81</span></span>
-        <span class="mover-up">+8.18%</span>
+        <span><span class="mover-symbol">NVDA</span> <span class="mover-price">$235.71</span></span>
+        <span class="mover-up">+4.35%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">BIDU</span> <span class="mover-price">$150.50</span></span>
-        <span class="mover-up">+7.55%</span>
+        <span><span class="mover-symbol">HOOD</span> <span class="mover-price">$81.10</span></span>
+        <span class="mover-up">+5.64%</span>
       </div>
       
     </div>
@@ -1517,28 +1370,28 @@
       <div class="movers-col-title">📉 Losers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">CONL</span> <span class="mover-price">$8.80</span></span>
-        <span class="mover-down">-5.58%</span>
+        <span><span class="mover-symbol">GRAB</span> <span class="mover-price">$3.59</span></span>
+        <span class="mover-down">-0.83%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">PATH</span> <span class="mover-price">$9.47</span></span>
-        <span class="mover-down">-5.39%</span>
+        <span><span class="mover-symbol">SNDK</span> <span class="mover-price">$1383.85</span></span>
+        <span class="mover-down">-4.34%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">BMNU</span> <span class="mover-price">$1.89</span></span>
-        <span class="mover-down">-5.03%</span>
+        <span><span class="mover-symbol">CLSK</span> <span class="mover-price">$13.89</span></span>
+        <span class="mover-down">+4.47%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">SHOP</span> <span class="mover-price">$95.40</span></span>
-        <span class="mover-down">-4.45%</span>
+        <span><span class="mover-symbol">CRWV</span> <span class="mover-price">$113.19</span></span>
+        <span class="mover-down">+1.72%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">PLTR</span> <span class="mover-price">$130.05</span></span>
-        <span class="mover-down">-4.37%</span>
+        <span><span class="mover-symbol">SOFI</span> <span class="mover-price">$15.93</span></span>
+        <span class="mover-down">+4.08%</span>
       </div>
       
     </div>
@@ -1556,36 +1409,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$79,872</div>
-      <div class="crypto-change" style="color: #ff7373">-1.29%</div>
+      <div class="crypto-price">$81,392</div>
+      <div class="crypto-change" style="color: #7ed87e">+2.34%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
-      <div class="crypto-price">$2,269</div>
-      <div class="crypto-change" style="color: #ff7373">-1.31%</div>
+      <div class="crypto-price">$2,299</div>
+      <div class="crypto-change" style="color: #7ed87e">+1.99%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$90.80</div>
-      <div class="crypto-change" style="color: #ff7373">-4.40%</div>
+      <div class="crypto-price">$92.95</div>
+      <div class="crypto-change" style="color: #7ed87e">+2.23%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
-      <div class="crypto-price">$10.25</div>
-      <div class="crypto-change" style="color: #ff7373">-2.76%</div>
+      <div class="crypto-price">$10.62</div>
+      <div class="crypto-change" style="color: #7ed87e">+4.35%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$296.16</div>
-      <div class="crypto-change" style="color: #ff7373">-3.20%</div>
+      <div class="crypto-price">$305.15</div>
+      <div class="crypto-change" style="color: #7ed87e">+4.09%</div>
     </div>
     
   </div>
@@ -1601,51 +1454,51 @@
   <div class="iv-grid">
     
     <div class="iv-row">
-      <div class="iv-symbol">VLN <span class="iv-src">IBKR</span></div>
-      <div class="iv-meta">$2.95 · 35d</div>
-      <div class="iv-value">167.8%</div>
+      <div class="iv-symbol">VLN</div>
+      <div class="iv-meta">$3.44 · 35d</div>
+      <div class="iv-value">197.6%</div>
     </div>
     
     <div class="iv-row">
-      <div class="iv-symbol">BMNU <span class="iv-src">IBKR</span></div>
-      <div class="iv-meta">$1.89 · 35d</div>
-      <div class="iv-value">151.3%</div>
+      <div class="iv-symbol">BMNU</div>
+      <div class="iv-meta">$2.03 · 35d</div>
+      <div class="iv-value">172.2%</div>
     </div>
     
     <div class="iv-row">
-      <div class="iv-symbol">CONL <span class="iv-src">IBKR</span></div>
-      <div class="iv-meta">$8.80 · 35d</div>
-      <div class="iv-value">137.6%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">BE</div>
-      <div class="iv-meta">$289.76 · 29d</div>
-      <div class="iv-value">115.7%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">SNDK</div>
-      <div class="iv-meta">$1447.23 · 29d</div>
-      <div class="iv-value">113.9%</div>
-    </div>
-    
-    <div class="iv-row">
-      <div class="iv-symbol">FIG</div>
-      <div class="iv-meta">$18.94 · 29d</div>
-      <div class="iv-value">108.8%</div>
+      <div class="iv-symbol">CONL</div>
+      <div class="iv-meta">$9.74 · 35d</div>
+      <div class="iv-value">166.8%</div>
     </div>
     
     <div class="iv-row">
       <div class="iv-symbol">NBIS</div>
-      <div class="iv-meta">$207.27 · 29d</div>
-      <div class="iv-value">106.0%</div>
+      <div class="iv-meta">$223.40 · 29d</div>
+      <div class="iv-value">119.3%</div>
     </div>
     
     <div class="iv-row">
-      <div class="iv-symbol">IREN <span class="iv-src">IBKR</span></div>
-      <div class="iv-meta">$55.17 · 29d</div>
-      <div class="iv-value">105.5%</div>
+      <div class="iv-symbol">FIG</div>
+      <div class="iv-meta">$20.33 · 29d</div>
+      <div class="iv-value">112.7%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BE</div>
+      <div class="iv-meta">$302.76 · 29d</div>
+      <div class="iv-value">109.5%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$58.53 · 29d</div>
+      <div class="iv-value">109.2%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">SNDK</div>
+      <div class="iv-meta">$1385.22 · 29d</div>
+      <div class="iv-value">104.8%</div>
     </div>
     
   </div>
@@ -2054,54 +1907,154 @@
 <section class="section">
   <div class="section-header">
     <div class="section-title" style="color:#e6e8ee">Naujienos</div>
-    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">10</span>
+    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">12</span>
   </div>
   <div class="news-list">
     
     <div class="news-row has-summary">
-      <div class="news-ticker">NBIS</div>
+      <div class="news-ticker">AAPL</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://finance.yahoo.com/markets/article/nebius-stock-soars-as-revenue-jumps-684-on-booming-data-center-demand-152316937.html" target="_blank">Nebius stock soars as revenue jumps 684% on booming data center demand</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">Q1 Revenue</div>
-            <div class="nm-value">$399M</div>
-            <div class="nm-note">+684% YoY, +75% QoQ</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Akcijos augimas</div>
-            <div class="nm-value">+15%</div>
-            <div class="nm-note">po earnings paskelbimo</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">2026 Capex guidance</div>
-            <div class="nm-value">$20B-$25B</div>
-            <div class="nm-note">ankstesnis: $16B-$20B</div>
-          </div>
-          
-        </div>
+        <div class="news-title"><a href="https://simplywall.st/stocks/us/tech/nasdaq-aapl/apple/news/the-bull-case-for-apple-aapl-could-change-following-massive" target="_blank">The Bull Case For Apple (AAPL) Could Change Following Massive AI Settlement Talks And Record Buybacks</a></div>
         
         
-        <div class="news-analysis">Q1 revenue $399M su +684% YoY augimu - tai ne tik beat, tai struktūrinis paklausos signalas: CEO tiesiogiai sakė, kad visa pajėgumų produkcija yra išparduota. 2026 capex guidance padidintas iki $20-25B nuo $16-20B rodo, kad vadovybė mato paklausą bent dvejus metus į priekį - tai neįprasta tokio dydžio kapitalinių investicijų atveju. Pagrindinė rizika investuotojui - ar šis augimas virš 600% YoY yra bazinio efekto rezultatas, ar tikra rinkos dalis. Manau, kad kitas svarbus rodiklis bus gross margin ir EBITDA dinamika, nes agresyvus capex plėtimas gali spausti pelningumą trumpuoju laikotarpiu. Jei vadovybė teisinga ir paklausa išlieka, esamas revenue tempas pateisina aukštą premium prie sektoriaus vidurkio.</div>
+        <div class="news-analysis">```json { &#34;metrics&#34;: [ {&#34;label&#34;: &#34;Q2 Revenue&#34;, &#34;value&#34;: &#34;$111.18B&#34;, &#34;note&#34;: &#34;faktinis rezultatas&#34;}, {&#34;label&#34;: &#34;Q2 Grynasis pelnas&#34;, &#34;value&#34;: &#34;$29.58B&#34;, &#34;note&#34;: &#34;faktinis rezultatas&#34;}, {&#34;label&#34;: &#34;Dividendas&#34;, &#34;value&#34;: &#34;$0.27/akc.&#34;, &#34;note&#34;: &#34;padidintas&#34;}, {&#34;label&#34;: &#34;Išpirkimo programa&#34;, &#34;value&#34;: &#34;$100B&#34;, &#34;note&#34;: &#34;nauja autorizacija&#34;}, {&#34;label&#34;: &#34;AI ieškinys&#34;, &#34;value&#34;: &#34;$250M&#34;, &#34;note&#34;: &#34;siūlomas susitarimas&#34;}, {&#34;label&#34;: &#34;FY2029 Revenue progn.&#34;, &#34;value&#34;: &#34;$550.2B&#34;, &#34;note&#34;: &#34;8.1% augimas per metus&#34;} ], &#34;analysis&#34;: &#34;Q2 skaičiai rodo, kad „Apple&#34; finansiškai sugeba absorbuoti $250M teisinio susitarimo naštą - tai mažiau nei viena grynojo pelno savaitė. Tikrasis klausimas yra ne šis ieškinys, o precedentas: jei teismai pradės tikrinti AI rinkodaros teiginius sistemingai, „Apple Intelligence&#34; pozicionavimas ateinančiuose produktuose gali reikalauti atsargumo, o tai lėtintų premium kainodarą Services segmente. $100B išpirkimo programa kartu su dividendo padidinimu signalizuoja, kad vadovybė laiko akciją neįvertinta arba mato ribotą geresnių panaudojimo galimybių - abu atvejai palaiko EPS augimą net ir lėtesnio revenue tempo sąlygomis. Analitikų $297.88 tikroji vertė yra artima dabartinei kainai, vadinasi didžioji dalis bazinio scenarijaus jau įkainota. Manau catalyst šiuo metu yra WWDC - jei AI funkcijų pristatymas bus stiprus ir teisiškai pagrįstas, rinka gali persvertinti FY2029 $550.2B prognozes aukštyn; jei ne - $250M ieškinys gali atrodyti tik pirmu iš kelių.&#34; } ```</div>
         
-        <div class="news-meta">Yahoo Finance · 05-13 15:23 · <a href="https://finance.yahoo.com/markets/article/nebius-stock-soars-as-revenue-jumps-684-on-booming-data-center-demand-152316937.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">simplywall.st · 05-14 17:04 · <a href="https://simplywall.st/stocks/us/tech/nasdaq-aapl/apple/news/the-bull-case-for-apple-aapl-could-change-following-massive" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
     
     <div class="news-row has-summary">
-      <div class="news-ticker">ENPH</div>
+      <div class="news-ticker">OSS</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://www.barrons.com/articles/nextpower-earnings-stock-price-2eb218a5?siteid=yhoof2&amp;yptr=yahoo" target="_blank">Nextpower Stock Rises Sharply. Why the Solar Company Is Raising Guidance.</a></div>
+        <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/know-one-stop-systems-oss-160001083.html" target="_blank">All You Need to Know About One Stop Systems (OSS) Rating Upgrade to Strong Buy</a></div>
         
         
-        <div class="news-analysis">Straipsnio turinys neprieinamas, todėl konkrečių skaičių išgauti neįmanoma. Antraštė nurodo, kad saulės energetikos bendrovė kelia guidance - tai paprastai reiškia geresnį nei tikėtasi paklausos vaizdą arba gerėjančią kainų aplinką. ENPH yra saulės mikro-inverterių gamintojas, kurio revenue pastaraisiais ketvirčiais spaudė silpna namų saulės energetikos paklausa JAV - jei guidance didinamas, verta sekti, ar tai vienkartinis efektas, ar struktūrinis paklausos atsistatymas. Be faktinių skaičių - EPS, revenue, gross margin - vertinti šį žingsnį investuotojo požiūriu per anksti.</div>
+        <div class="news-analysis">Tai ne earnings ataskaita - Zacks pakėlė OSS reitingą iki Strong Buy, remdamiesi augančiais EPS lūkesčiais, bet straipsnyje nėra pateikta jokių konkrečių skaičių: nei revenue, nei EPS estimate, nei margin duomenų. Reitingo pakėlimas rodo, kad analitikai tikisi geresnių rezultatų, tačiau be faktinių rodiklių sunku vertinti, ar kainų judėjimas (+8.51%) pagrįstas. OSS yra mažos kapitalizacijos įmonė - institucinių investuotojų dėmesio pokyčiai čia gali stipriai judinti kainą net ir be esminių pokyčių versle. Prieš priimant sprendimą, rekomenduoju palaukti artimiausio earnings ir patikrinti, ar EPS revizijos atspindi realų verslo augimą, o ne tik lūkesčių korekciją žemyn prieš tai.</div>
         
-        <div class="news-meta">Barrons.com · 05-13 13:49 · <a href="https://www.barrons.com/articles/nextpower-earnings-stock-price-2eb218a5?siteid=yhoof2&amp;yptr=yahoo" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">Yahoo Finance · 05-14 16:00 · <a href="https://finance.yahoo.com/markets/stocks/articles/know-one-stop-systems-oss-160001083.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">SOFI</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.msn.com/en-us/money/companies/sofi-technologies-to-acquire-most-of-primarybid-report/ar-AA22Wazv?ocid=finance-verthp-feeds" target="_blank">SoFi Technologies to acquire most of PrimaryBid - report</a></div>
+        
+        
+        <div class="news-analysis">Straipsnyje nėra konkrečių finansinių duomenų - tik pranešimas, kad SoFi Technologies planuoja įsigyti didžiąją dalį PrimaryBid. PrimaryBid yra Londone įsikūrusi platforma, leidžianti mažmeniniams investuotojams dalyvauti pirminėse akcijų platinimo procedūrose - tai papildytų SoFi brokerinę infrastruktūrą ir potencialiai išplėstų geografinę aprėptį už JAV ribų. Sandorio vertė ir finansavimo šaltinis kol kas nenurodyti, todėl sunku įvertinti poveikį balansui ar kapitalo pakankamumui - SOFI šiuo metu stato pelningumą, tad bet kokia didelė akvizicija turėtų būti stebima per kapitalo išlaidų ir leverage prizmę. Manau, ši žinia yra preliminari ir be skaičių investuotojams vertėtų laukti oficialaus patvirtinimo ir sandorio sąlygų prieš darant bet kokias pozicijų korekcijas.</div>
+        
+        <div class="news-meta">MSN · 05-14 13:15 · <a href="https://www.msn.com/en-us/money/companies/sofi-technologies-to-acquire-most-of-primarybid-report/ar-AA22Wazv?ocid=finance-verthp-feeds" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">NFLX</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://insurancenewsnet.com/oarticle/netflix-inc-nflx-shares-acquired-by-knuff-co-llc" target="_blank">Netflix, Inc. $NFLX Shares Acquired by Knuff &amp;amp; Co LLC</a></div>
+        
+        
+        <div class="news-analysis">Knuff &amp; Co LLC įsigijo NFLX akcijų - tai institucinės nuosavybės pokytis, tačiau be atskleidžiamo pozicijos dydžio ar sandorio vertės šis žingsnis praktiškai neinformatyvus. Instituciniai pirkimai savaime nėra catalyst, nebent pozicija yra reikšminga portfelio ar bendros akcijų struktūros atžvilgiu. Manau, šios naujienos investicinė vertė minimali - ji neatskleidžia nei vertinimas požiūrio, nei strateginio tikslo. Verta sekti sekantį 13F dokumentą, kuris parodys faktinį pozicijos dydį ir ar tai vienkartinis pirkimas, ar sistemingas kaupimas.</div>
+        
+        <div class="news-meta">InsuranceNewsNet · 05-14 09:58 · <a href="https://insurancenewsnet.com/oarticle/netflix-inc-nflx-shares-acquired-by-knuff-co-llc" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">RDDT</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-reddit-inc-rddt-shares-acquired-by-swiss-life-asset-management-ltd-2026-05-14/" target="_blank">Reddit Inc. $RDDT Shares Acquired by Swiss Life Asset Management Ltd</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS (paskutinis ketv.)</div>
+            <div class="nm-value">$1.01</div>
+            <div class="nm-note">viršijo analitikų lūkesčius</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue (paskutinis ketv.)</div>
+            <div class="nm-value">$663.41M</div>
+            <div class="nm-note">+69.1% YoY, beat</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Swiss Life pozicija</div>
+            <div class="nm-value">32,003 akcijų</div>
+            <div class="nm-note">+63.2% per Q4, ~$7.36M</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">UBS AM pozicija</div>
+            <div class="nm-value">216,960 akcijų</div>
+            <div class="nm-note">+106.3% per Q1, ~$22.76M</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Analitikų kainų tikslas</div>
+            <div class="nm-value">$228.61</div>
+            <div class="nm-note">Moderate Buy konsensusas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Truist kainų tikslas</div>
+            <div class="nm-value">$265.00</div>
+            <div class="nm-note">nustatytas 2026-05-01</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Institucijų pirkimo aktyvumas Q1 yra pastebimas - UBS AM padvigubino poziciją, Swiss Life padidino 63%, tai rodo augantį stambių fondų pasitikėjimą. Tačiau Citizens JMP sumažino kainų tikslą nuo $250 iki $240, o Roth MKM palaiko neutralų vertinimą su $215 - tai signalizuoja, kad ne visi analitikai tiki, jog augimo tempas išsilaikys po +69.1% YoY revenue šuolio. Manau, kad esminis klausimas investuotojui - ar reklamos revenue augimas tęsis, kai bazinis efektas darysis vis sudėtingesnis. Esamas $228.61 konsensuso kainų tikslas suteikia ribotą potencialą, jei akcija jau artima tam lygiui - prieš naują catalyst verta stebėti sekantį earnings, kur lūkesčiai bus aukšti po tokio beat.</div>
+        
+        <div class="news-meta">MarketBeat · 05-14 09:09 · <a href="https://www.marketbeat.com/instant-alerts/filing-reddit-inc-rddt-shares-acquired-by-swiss-life-asset-management-ltd-2026-05-14/" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">PYPL</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://simplywall.st/stocks/us/diversified-financials/nasdaq-pypl/paypal-holdings/news/paypal-doj-settlement-reshapes-dei-programs-and-small-busine" target="_blank">PayPal DOJ Settlement Reshapes DEI Programs And Small Business Economics</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">DOJ susitarimas</div>
+            <div class="nm-value">$30M</div>
+            <div class="nm-note">baudos suma DOJ</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Sandorių atleidimas</div>
+            <div class="nm-value">$1B</div>
+            <div class="nm-note">maks. sandoriai be mokesčių</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Tiesioginės įtakos revenue</div>
+            <div class="nm-value">nežinoma</div>
+            <div class="nm-note">mokesčių atsisakymo suma</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">PayPal sumokės $30M DOJ susitarimą dėl DEI programų struktūros - tai nedidelė suma bendrovei, kurios revenue viršija $30B per metus, tačiau atskleidžia reguliacinę riziką, kuri anksčiau nebuvo aiškiai įkainota. Mokesčių atsisakymas iki $1B sandorių mažoms įmonėms yra tiesioginis revenue praradimas, bet jo dydis priklausys nuo dalyvių skaičiaus ir programos sąlygų - šių duomenų kol kas nėra. Manau reikšmingesnė rizika yra ne ši bauda, o tai, kad PayPal vienu metu turi kelias reguliacines bylas: JK FCA skaitmeniniu piniginės tyrimas ir akcininkų pasiūlymai dėl politikos konflikto zonose - tai rodo, kad atitikties našta auga. Investuotojui svarbu sekti, ar naujos mažojo verslo programos sąlygos didins apyvartą ir taip kompensuos mokesčių atsisakymą, ar tai grynai gynybinė išlaida be augimo poveikio.</div>
+        
+        <div class="news-meta">simplywall.st · 05-13 23:07 · <a href="https://simplywall.st/stocks/us/diversified-financials/nasdaq-pypl/paypal-holdings/news/paypal-doj-settlement-reshapes-dei-programs-and-small-busine" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+        <div class="news-extra-links">
+          
+          <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxNZlpOUWpGazJVcDAxNl9fMDh1dXBJVVU1U0FJbF9zeC1BbGM3b0dSTDhQcG00Mm1FeWoyYWNzZ09jbUNZUHJZQXZpZ3VyektKWXBwQUQ3OWpXdWs5UXQxREh0QXpvMXFnTHU2YkZzSG5ZWHBKc1VEMGlZY2ZZNWFLaFN3X21TTl84ckpwYlN1LTVidG1rUF9Pc2JzSmZmSjJSbk5KSmJ1Q2R3Wkc1MTExZEpR0gG3AUFVX3lxTE5TaWZTZnZMaFNzMmkxRk1vRUVYbkMwX1JRTXdhS041S1d1Zi1teDdnZ3FGWHV0Qmp0eW16M2ZURVg2OU9CaUw2VnNUYXpOTDRBbFpoQTBEVm1qaUUxSUliWjFXcElMU1NDQjRwbThiQy0tQk4td0xXX3dwMHNwTHNod3I3bVB4YlNqX3BhZFBFR01EdU8zUnhXN0VQcDcyZ1ZXeE9WNE4zMWFpSlhJd3lYY2tXajlUdw?oc=5" target="_blank" class="news-extra-link">+ Fox Business: Paypal agrees to $30 million settlement with Trump&#39;s Justice Department over &#39;il</a>
+          
+          <a href="https://news.google.com/rss/articles/CBMipAFBVV95cUxQRUZKVDE0MzMxMWxpUVFoNFBYZWU0ZExkalVzWUxsUW1GUGxTUEFiSkVmNW5EcFM0QmZSdTZURS1UbmpicDQ3Wlp0ejMyaHFjekhuWmZ5YjA1QnlhUm5nZXVHVkNQMjB6Tkl6eU04SWp2bGd5ODZUNTNkTnBqYUt6TFZHbTZTYVpOMHZ0cHBWYkxXZFJzMEdGbW5BS2RoVkd0Y20xQg?oc=5" target="_blank" class="news-extra-link">+ Seeking Alpha: PayPal partners with Anthropic to educate small businesses on AI (PYPL:NASDAQ)</a>
+          
+        </div>
         
       </div>
     </div>
@@ -2109,87 +2062,38 @@
     <div class="news-row has-summary">
       <div class="news-ticker">VLN</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://finance.yahoo.com/news/valens-semiconductor-ltd-vln-reports-114002090.html" target="_blank">Valens Semiconductor, Ltd. (VLN) Reports Q1 Loss, Tops Revenue Estimates</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">EPS faktinis</div>
-            <div class="nm-value">-$0.05</div>
-            <div class="nm-note">vs -$0.06 est - beat</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">EPS prieš metus</div>
-            <div class="nm-value">-$0.03</div>
-            <div class="nm-note">YoY prastėjimas</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">EPS staigmena</div>
-            <div class="nm-value">+16.67%</div>
-            <div class="nm-note">Q1 earnings surprise</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Praėjęs ketvirtis</div>
-            <div class="nm-value">-$0.04</div>
-            <div class="nm-note">vs -$0.03 est - miss -33%</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Beat&#39;ų serija</div>
-            <div class="nm-value">2 iš 4</div>
-            <div class="nm-note">paskutiniai 4 ketvirčiai</div>
-          </div>
-          
-        </div>
+        <div class="news-title"><a href="https://seekingalpha.com/article/4904168-valens-semiconductor-downgrade-sell-lackluster-q1-earnings" target="_blank">Valens Semiconductor: Downgrade To Sell On Lackluster Q1 Earnings (NYSE:VLN)</a></div>
         
         
-        <div class="news-analysis">EPS beat techniškai egzistuoja - -$0.05 prieš -$0.06 lūkestį - tačiau nuostolis gilėja YoY nuo -$0.03, o tai rodo, kad pelno kelias nėra tiesus. Revenue beat yra teigiamas signalas, tačiau straipsnyje nėra pateikti konkretūs revenue skaičiai ar guidance, todėl sunku vertinti augimo tvarumą. Paskutinių keturių ketvirčių įrašas - tik 2 beat&#39;ai iš 4 - rodo nekonstantų vykdymą, ypač Q4 miss -33.33% kelia abejonių dėl valdymo prognozavimo tikslingumo. Investuotojui svarbiausia stebėti artėjančio kvartalo guidance ir revenue dinamiką - vien EPS beat nuostolingoje įmonėje be aiškaus pelno kelio nesuteikia pakankamo pagrindo pozicijai.</div>
+        <div class="news-analysis">Analitikas sumažino VLN rekomendaciją iki &#39;parduoti&#39; po, jo vertinimu, silpnų Q1 rezultatų - tačiau pilno straipsnio teksto neturiu, todėl konkretūs skaičiai neprieinami. Tai reiškia, kad analizė grindžiama tik antrašte. &#39;Lackluster&#39; kontekste dažniausiai reiškia revenue arba EPS miss kartu su silpnu guidance - abu faktoriai paprastai stumia akcijos kainą žemyn trumpuoju laikotarpiu. Jei downgrade&#39;as ateina iš žinomo analitiko su tiksline kaina, verta patikrinti, koks atstumas iki jo nurodyto lygio - tai padės įvertinti, ar rinka jau įkainojo blogą scenarijų, ar dar yra nuosmukio erdvės. Rekomenduoju palaukti pilno Q1 ataskaitos teksto su konkrečiais skaičiais prieš priimant sprendimą.</div>
         
-        <div class="news-meta">Zacks · 05-13 11:40 · <a href="https://finance.yahoo.com/news/valens-semiconductor-ltd-vln-reports-114002090.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">Seeking Alpha · 05-13 22:22 · <a href="https://seekingalpha.com/article/4904168-valens-semiconductor-downgrade-sell-lackluster-q1-earnings" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
     
     <div class="news-row has-summary">
-      <div class="news-ticker">BABA</div>
+      <div class="news-ticker">MSTR</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://finance.yahoo.com/sectors/technology/articles/ant-profit-drops-79-ai-032110711.html" target="_blank">Ant Profit Drops 79% As AI Spending Accelerates</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">Ant pelnas BABA daliai</div>
-            <div class="nm-value">$55M</div>
-            <div class="nm-note">375M yuan, Q4 2024</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Ant pelno kritimas</div>
-            <div class="nm-value">-79% YoY</div>
-            <div class="nm-note">vs ~5.38B yuan prieš metus</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Ant bendras pelnas</div>
-            <div class="nm-value">1.13B yuan</div>
-            <div class="nm-note">Bloomberg skaičiavimas, Q4</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">BABA nuosavybė Ant</div>
-            <div class="nm-value">~33%</div>
-            <div class="nm-note">viena trečioji įmonės</div>
-          </div>
-          
-        </div>
+        <div class="news-title"><a href="http://videos.coindesk.com/previews/2hF8CXjn" target="_blank">Blockspace: MARA’s Q1 Earnings, Nebius’ Blowout Q1, the $1,000 Bull Case for MSTR</a></div>
         
         
-        <div class="news-analysis">Ant Group pelno kritimas 79% YoY - ne vienkartinis efektas, o struktūrinis: investicijos į dirbtinį intelektą sveikatos priežiūros, kalbos modelių ir mokėjimų srityse dar tik įsibėgėja, todėl spaudimas pelnui gali tęstis kelis ketvirčius. BABA gauna tik trečdalį Ant pelno, tad $55M įnašas yra mažareikšmis BABA bendrų pajamų kontekste - tačiau tai signalizuoja, kad ši investicinė vertė trumpuoju laikotarpiu nekuria grąžos. Investuotojui svarbu stebėti, ar Ant AI išlaidos ateityje virsta pajamomis - jei ne, BABA vertinime Ant dalis turėtų būti diskontuojama. Manau, kol Ant nedemonstruoja aiškaus grąžos kelio iš AI investicijų, ši BABA ekspozicinė dalis yra neutrali ar silpnai neigiamai vertintina.</div>
+        <div class="news-analysis">Naujienoje nėra konkrečių MSTR skaičių - tik antraštėje minimas 1 000 USD bulių scenarijus, tačiau jokio pagrindimo ar modelio nepateikiama. MARA ir Nebius rezultatai šiame kontekste yra foninė informacija, tiesiogiai nesusijusi su MSTR vertinimu. Nebius +684% revenue YoY augimas rodo stiprią AI infrastruktūros paklausą, tačiau ryšys su MSTR - tik naratyvo lygmeniu. Manau, 1 000 USD tikslinė kaina be duomenų bazės yra spekuliacinis kampas, kurį reikia vertinti atsargiai - MSTR kaina ir toliau išlieka glaudžiai susijusi su Bitcoin kainų dinamika, o ne AI verslo plėtra.</div>
         
-        <div class="news-meta">GuruFocus.com · 05-14 03:21 · <a href="https://finance.yahoo.com/sectors/technology/articles/ant-profit-drops-79-ai-032110711.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">CoinDesk · 05-14 14:18 · <a href="http://videos.coindesk.com/previews/2hF8CXjn" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">HOOD</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/nmr-hood-better-value-stock-154003019.html" target="_blank">NMR or HOOD: Which Is the Better Value Stock Right Now?</a></div>
+        
+        
+        <div class="news-analysis">Straipsnyje nėra konkrečių finansinių duomenų - nei revenue, nei EPS, nei guidance skaičių. Tai kokybinis palyginimas tarp HOOD ir NMR pagal vertinimo metodikas, todėl tiesioginis kiekybinis vertinimas neįmanomas. Norint palyginti šias dvi akcijas, reikėtų žiūrėti į P/E, P/B santykius ir EPS revizijų tendencijas - to straipsnis nepateikia. Investuotojui šis tekstas mažai naudingas be konkrečių skaičių.</div>
+        
+        <div class="news-meta">Zacks · 05-14 15:40 · <a href="https://finance.yahoo.com/markets/stocks/articles/nmr-hood-better-value-stock-154003019.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
@@ -2197,164 +2101,53 @@
     <div class="news-row has-summary">
       <div class="news-ticker news-ticker-blank">News</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/14/oil-prices-today-wti-brent-hormuz-trump-xi-meeting.html" target="_blank">Oil rises as IEA flags greater volatility ahead, OPEC cuts demand forecast</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">Brent birželis</div>
-            <div class="nm-value">+0.34%</div>
-            <div class="nm-note">$105.99 už barelį</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">WTI birželis</div>
-            <div class="nm-value">+0.43%</div>
-            <div class="nm-note">$101.45 už barelį</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">OPEC paklausa 2026</div>
-            <div class="nm-value">1.2 mln. b/d</div>
-            <div class="nm-note">ankstesnė: 1.4 mln. b/d</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">OPEC gamyba balandis</div>
-            <div class="nm-value">-1.7 mln. b/d</div>
-            <div class="nm-note">MoM kritimas</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">OPEC gamyba -30%+</div>
-            <div class="nm-value">-9+ mln. b/d</div>
-            <div class="nm-note">nuo piko lygio</div>
-          </div>
-          
-        </div>
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/14/fbi-patel-appeal-defamation-lawsuit-frank-figliuzzi.html" target="_blank">Kash Patel appeals dismissal of defamation lawsuit against ex-FBI official Figliuzzi</a></div>
         
         
-        <div class="news-analysis">OPEC paklausos augimo perspektyvos sumažinimas nuo 1.4 iki 1.2 mln. barelių per dieną 2026 metams rodo, kad kartelis pats mato silpnėjančią pasaulio ekonomiką - tai struktūrinis signalas, ne vienkartinis koregavimas. Tuo pat metu realus OPEC gamybos kritimas daugiau nei 30% nuo piko lygio tiekimo pusėje sukuria buferį kainoms - todėl Brent išlaiko $105 zoną nepaisant blogesnių paklausos prognozių. IEA perspėjimas dėl didesnio kintamumo artimiausiu laikotarpiu atspindi geopolitinės ir paklausos neapibrėžties sankirtą: viena vertus, tiekimo sutrikimai gali greitai išstumti kainas aukštyn, kita vertus - lėtėjantis Kinijos ir Europos paklausos augimas yra realus kainų lubos veiksnys. Investuotojui tai reiškia, kad energetikos sektoriaus pozicijos išlaiko pagrįstą pagrindą trumpuoju laikotarpiu, tačiau 2026 metų paklausos perkainojimas kelia klausimą, ar dabartinės kainos jau įskaičiuoja optimistinį scenarijų.</div>
+        <div class="news-analysis">Ši naujiena neturi investicinio turinio - tai teisinis ginčas tarp vyriausybės pareigūnų. Jokio tiesioginio poveikio rinkoms, akcijoms ar sektoriams nematyti. Jei Patelio, kaip FTB direktoriaus, reputacijos bylų raida taptų platesnė politinė tema, galima būtų stebėti netiesiogį poveikį reguliaciniam fonui finansų ar gynybos sektoriuose - tačiau šiuo metu tai spekuliacija be pagrindo. Praleisk.</div>
         
-        <div class="news-meta">CNBC Top · 05-14 04:25 · <a href="https://www.cnbc.com/2026/05/14/oil-prices-today-wti-brent-hormuz-trump-xi-meeting.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">CNBC Top · 05-14 19:40 · <a href="https://www.cnbc.com/2026/05/14/fbi-patel-appeal-defamation-lawsuit-frank-figliuzzi.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
     
     <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
+      <div class="news-ticker">BE</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/13/allegiant-sun-country-acquisition-ceo.html" target="_blank">Allegiant CEO makes case for low-cost airline model as Sun Country acquisition closes</a></div>
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/14/ford-surges-20percent-in-two-days-it-might-be-an-ai-meme-stock-after-energy-pivot.html" target="_blank">Ford surges 20% in two days. It might be an AI &#39;meme&#39; stock after energy pivot</a></div>
         
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">Sandorio vertė</div>
-            <div class="nm-value">$1.5B</div>
-            <div class="nm-note">grynųjų ir akcijų sandoris</div>
-          </div>
-          
-        </div>
-        
-        
-        <div class="news-analysis">Allegiant užbaigė Sun Country įsigijimą už $1.5B (įskaitant skolą) - tai svarbus žingsnis mažų sąnaudų segmente, tačiau konkrečių finansinių rezultatų šis pranešimas nepateikia. CEO Greg Anderson akcentuoja maržų apsaugą, o ne augimo persekiojimą - tai konservatyvus signalas, ypač kylančių kuro kainų fone. Abu prekių ženklai ir užsakymų platformos kol kas lieka atskiri, vadinasi sinergijų realizavimas užtruks. Investuotojui svarbu stebėti, kaip greitai įmonė pradės skelbti konsoliduotus revenue ir EBITDA rodiklius - tik tada bus galima vertinti, ar $1.5B kaina buvo pagrįsta.</div>
-        
-        <div class="news-meta">CNBC Top · 05-13 20:59 · <a href="https://www.cnbc.com/2026/05/13/allegiant-sun-country-acquisition-ceo.html" target="_blank" class="news-link">visas straipsnis</a></div>
-        
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/13/traders-predict-trump-will-make-major-announcements-during-china-trip.html" target="_blank">Trump in China: Traders predict a tariff truce extension and Boeing aircraft purchases</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">Boeing akcija</div>
-            <div class="nm-value">+2%</div>
-            <div class="nm-note">iki susitikimo su Xi</div>
+            <div class="nm-label">2 dienų augimas</div>
+            <div class="nm-value">+20%</div>
+            <div class="nm-note">F akcijų šuolis per 2 dienas</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Kalshi tikimybė</div>
-            <div class="nm-value">86%</div>
-            <div class="nm-note">Boeing užsakymas iš Kinijos</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Galimas užsakymas</div>
-            <div class="nm-value">100+ mlrd. $</div>
-            <div class="nm-note">spekuliacija, ne patvirtinta</div>
-          </div>
-          
-        </div>
-        
-        
-        <div class="news-analysis">Kalshi rinkos dalyviai 86% tikimybe vertina, kad Trumpas Pekine paskelbys Boeing lėktuvų pirkimo sandorį - spekuliuojama, kad užsakymas galėtų viršyti šimtą milijardų dolerių, kas būtų rekordinis aviacijoje. Boeing akcija +2% dar prieš susitikimą rodo, kad rinka šį scenarijų jau iš dalies įkainoja. Tačiau svarbu atskirti: tai dar nepatvirtintas sandoris, o Kinijos aviacijos pirkimai istoriškai dažnai atsiranda kaip politinis gestas derybų metu ir ne visada virsta greitais pristatymais. Investuotojui Boeing - tai trumpalaikis katalizatorius su neaiškiu įgyvendinimo grafiku; jei sandoris bus paskelbtas su konkrečiais lėktuvų kiekiais ir terminais, reakcija rinkoje gali būti reikšmingesnė nei šiandienis +2%.</div>
-        
-        <div class="news-meta">CNBC Top · 05-13 18:13 · <a href="https://www.cnbc.com/2026/05/13/traders-predict-trump-will-make-major-announcements-during-china-trip.html" target="_blank" class="news-link">visas straipsnis</a></div>
-        
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/13/nvidia-says-ceo-jensen-huang-is-joining-trumps-china-trip.html" target="_blank">Jensen Huang joins Trump&#39;s China trip after the U.S. president called the Nvidia CEO</a></div>
-        
-        
-        <div class="news-analysis">Jensen Huang asmeniškai pakviestas Trumpo po to, kai žiniasklaida pastebėjo jo nebuvimą delegacijoje - tai signalizuoja, kad puslaidininkių eksporto tema bus tiesiogiai keliama Xi Jinpingo susitikimuose. Nvidia turi didžiulį exposure Kinijos rinkai: H20 lustų eksporto apribojimai, įvesti 2024 m., stipriai riboja galimą revenue iš antros pagal dydį ekonomikos pasaulyje. Jei susitikimai duotų bent dalinį eksporto ribojimų atpalaidavimas - tai būtų reikšmingas catalyst Nvidia akcijai. Manau rinka reaguos į kiekvieną konkretų signalą iš Pekino - stebėti oficialius komentarus po penktadienio susitikimo.</div>
-        
-        <div class="news-meta">CNBC Tech · 05-13 13:54 · <a href="https://www.cnbc.com/2026/05/13/nvidia-says-ceo-jensen-huang-is-joining-trumps-china-trip.html" target="_blank" class="news-link">visas straipsnis</a></div>
-        
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker news-ticker-blank">News</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/13/ppi-inflation-report-april-2026-.html" target="_blank">Wholesale inflation jumps 6% in April on annual basis, biggest increase since 2022</a></div>
-        
-        <div class="news-metrics">
-          
-          <div class="nm-cell">
-            <div class="nm-label">PPI metinis augimas</div>
+            <div class="nm-label">Ketvirtadienis</div>
             <div class="nm-value">+6%</div>
-            <div class="nm-note">didžiausias nuo 2022 gruod.</div>
+            <div class="nm-note">vienos sesijos augimas</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">PPI mėnesinis augimas</div>
-            <div class="nm-value">+1.4%</div>
-            <div class="nm-note">vs +0.5% analitikų lūkestis</div>
+            <div class="nm-label">Trečiadienis</div>
+            <div class="nm-value">+13%</div>
+            <div class="nm-note">dienos prieš augimas</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Bazinis PPI (be maisto/energ.)</div>
-            <div class="nm-value">+1.0%</div>
-            <div class="nm-note">vs +0.4% lūkestis</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Kovo PPI (pataisytas)</div>
-            <div class="nm-value">+0.7%</div>
-            <div class="nm-note">anksčiau skelbtas mažesnis</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Mėnesinis rekordas</div>
-            <div class="nm-value">nuo 2022 kovo</div>
-            <div class="nm-note">didžiausias mėnesio šuolis</div>
+            <div class="nm-label">Pirmadienio-antradienio</div>
+            <div class="nm-value">-2%</div>
+            <div class="nm-note">nuosmukis prieš šuolį</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">PPI duomenys ženkliai viršijo lūkesčius tiek mėnesiniu, tiek metiniu pjūviu - bazinis rodiklis 2.5 karto aplenkė prognozes, o tai rodo, kad kainų spaudimas gamintojų lygmenyje platus, ne sektorinis. Svarbiausia - kovo duomenys buvo pataisyti aukštyn, vadinasi infliacija pagreitėjo dar prieš balandį, ir tai silpnina argumentą, kad ankstesnė statistika buvo vienkartiniu reiškiniu. Investuotojui tai reiškia, kad Federalinio rezervo palūkanų mažinimo lūkesčiai turės toliau slinkti į antrą pusmetį arba 2026-uosius - trumpojo galo obligacijų pajamingumas gali likti aukštas. Akcijų rinkoje labiausiai jautri gamybos sektoriaus marža: jei gamintojai negali perkelti augančių sąnaudų galutiniam vartotojui, antrojo ketvirčio earnings galime matyti spaudimą. Stebėsiu, kaip reaguos spalio mėnesio Fed pozicija po gegužės CPI - tai artimiausias catalyst.</div>
+        <div class="news-analysis">Ford Energy - naujai įkurta 100% dukterinė įmonė - orientuota į baterijų energijos kaupimo sistemas, surenkamas JAV. Šuolis atrodo spekuliatyvus: konkretūs revenue ar EBITDA planai nepaskelbti, tad rinka reaguoja į naratyvą, ne į skaičius. +20% per dvi dienas be fundamentalaus earnings catalyst primena meme dinamiką - pirkimas iš impulso, ne iš vertinimo. Investuotojui tai reiškia aukštą riziką: jei Ford Energy nepasirodys sekančiuose ketvirčiuose su apčiuopiamais augimo rodikliais, korekcija gali būti greita. Manau pozicija šiame lygyje be pelno matomumo - gryna spekuliacija.</div>
         
-        <div class="news-meta">CNBC Top · 05-13 13:21 · <a href="https://www.cnbc.com/2026/05/13/ppi-inflation-report-april-2026-.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">CNBC Top · 05-14 17:49 · <a href="https://www.cnbc.com/2026/05/14/ford-surges-20percent-in-two-days-it-might-be-an-ai-meme-stock-after-energy-pivot.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
@@ -2362,12 +2155,12 @@
     <div class="news-row has-summary">
       <div class="news-ticker news-ticker-blank">News</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://www.cnbc.com/2026/05/13/amazon-ditches-rufus-ai-chatbot-in-favor-of-alexa-shopping-agent.html" target="_blank">Amazon ditches Rufus chatbot, launches Alexa shopping agent in AI strategy pivot</a></div>
+        <div class="news-title"><a href="https://www.cnbc.com/2026/05/14/cuba-oil-diesel-fuel-us-sanctions-blockade.html" target="_blank">Cuba says oil and diesel supplies have run dry under U.S. sanctions</a></div>
         
         
-        <div class="news-analysis">Amazon sujungė Rufus ir Alexa+ į vieną platformą - Alexa for Shopping - kas signalizuoja aiškų strateginį posūkį: vienas AI agentas valdo visą apsipirkimo kelią nuo užklausos iki pirkimo. Tai svarbu ne tik produkto požiūriu - personalizuotas pirkimų agentas, besinaudojantis vartotojo istorija, galėtų padidinti konversijų rodiklius ir vidutinį krepšelio dydį, o tai tiesiogiai veikia Amazon e-komercijos revenue. Manau esminis klausimas investuotojui - ar Alexa for Shopping pagreitins reklamos segmento augimą, nes personalizuoti AI pasiūlymai natūraliai integruoja sponsoruotus produktus. AWS ir reklama šiuo metu laiko Amazon pelningumo lygį - jei AI apsipirkimo agentas padidina reklamos efektyvumą, EBITDA spaudimas mažėja. Q2 earnings bus pirmas taškas, kur galima matyti pirmuosius signalus apie šio posūkio poveikį.</div>
+        <div class="news-analysis">Kuba pranešė apie visišką naftos ir dyzelino atsargų išeikvojimą - tai struktūrinė energetikos krizė, ne trumpalaikis tiekimo sutrikimas. Energetikos ministras patvirtino, kad šalyje neliko nei žalios naftos, nei mazuto, nei dyzelino - vienintelis likęs šaltinis yra vietinių gręžinių dujos. Tiesioginės investicinės reikšmės čia mažai - Kuba nėra viešai prekiaujamos rinkos dalyvis, o JAV sankcijos uždaro bet kokį legalų exposure. Netiesiogiai verta stebėti Lotynų Amerikos naftos tiekėjus, ypač tuos, kurie istoriškai tiekė Kubai - Venesuelą ir Rusiją - nes bet koks tiekimo atnaujinimas reikštų geopolitinį signalą dėl sankcijų režimo pokyčių.</div>
         
-        <div class="news-meta">CNBC Top · 05-13 13:13 · <a href="https://www.cnbc.com/2026/05/13/amazon-ditches-rufus-ai-chatbot-in-favor-of-alexa-shopping-agent.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">CNBC Top · 05-14 07:17 · <a href="https://www.cnbc.com/2026/05/14/cuba-oil-diesel-fuel-us-sanctions-blockade.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
@@ -2382,75 +2175,79 @@
     <div class="section-title" style="color:#7ed87e">Šios dienos akcentai</div>
     <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">2</span>
   </div>
-
+  
   <div class="manual-note">
     <div class="manual-note-header">
       <div class="manual-note-ticker">MACRO</div>
-      <div class="manual-note-headline">Trump-Xi summit Beijing'e (geguzes 13-15) - rinku pokyciai</div>
+      <div class="manual-note-headline">Trump-Xi summit Beijing&#39;e (gegužės 13-15) - rinkų pokyčiai</div>
     </div>
-
+    
     <div class="manual-note-metrics">
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Pirmas susitikimas</div>
         <div class="manual-note-metric-value">2h 15min</div>
-        <div class="manual-note-metric-change">geguzes 14 rytas</div>
+        <div class="manual-note-metric-change">gegužės 14 rytas</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">NVDA market cap</div>
         <div class="manual-note-metric-value">$5.4T</div>
         <div class="manual-note-metric-change">all-time high 05-13</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">NVDA China revenue</div>
         <div class="manual-note-metric-value">$0</div>
-        <div class="manual-note-metric-change">Q1 inventory charge -$4.5B</div>
+        <div class="manual-note-metric-change">Q1 inventorius -$4.5B</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">H200 framework</div>
         <div class="manual-note-metric-value">~$3.5-4B</div>
         <div class="manual-note-metric-change">metiniai NVDA China potencialūs</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Boeing užsakymas</div>
         <div class="manual-note-metric-value">iki 500 lėktuvų</div>
         <div class="manual-note-metric-change">tikimasi paskelbimo</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Tariff truce</div>
-        <div class="manual-note-metric-value">iki 2026-11-10</div>
-        <div class="manual-note-metric-change">81% trader spēja extension</div>
+        <div class="manual-note-metric-value">iki 11-10</div>
+        <div class="manual-note-metric-change">81% trader&#39;ių spėja extension</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Fentanyl tariff</div>
         <div class="manual-note-metric-value">10%</div>
         <div class="manual-note-metric-change">buvęs 20%, dabar truce</div>
       </div>
-
+      
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Taivanas - JAV ginklai</div>
         <div class="manual-note-metric-value">$14B</div>
-        <div class="manual-note-metric-change">deal'as ant svarstyklių</div>
+        <div class="manual-note-metric-change">deal&#39;as ant svarstyklių</div>
       </div>
-
+      
     </div>
+    
+    
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>Trump-Xi summit&#39;as Beijing&#39;e yra šių dienų svarbiausias makro įvykis - Trump atvyko su CEO delegacija (Musk, Cook, Huang) ir tai signalizuoja struktūrinį pokytį, ne kosmetinį diplomatinį susitikimą. Pirmas posėdis truko 2h 15min, Xi atvirai įspėjo dėl Taivano kaip &#39;svarbiausio klausimo&#39;, kuris jei netvarkomas tinkamai - santykius gali nustumti į &#39;pavojingą zoną&#39;. Tai signalas Vakarams, kad bet kokia eskalacija Taivane (įskaitant $14B JAV ginklų pardavimus) yra red line.
 
-    <div class="manual-note-analysis">Trump-Xi summit'as Beijing'e yra šių dienų svarbiausias makro įvykis - Trump atvyko su CEO delegacija (Musk, Cook, Huang) ir tai signalizuoja struktūrinį pokytį, ne kosmetinį diplomatinį susitikimą. Pirmas posėdis truko 2h 15min, Xi atvirai įspėjo dėl Taivano kaip "svarbiausio klausimo", kuris jei netvarkomas tinkamai - santykius gali nustumti į "pavojingą zoną". Tai signalas Vakarams, kad bet kokia eskalacija Taivane (įskaitant $14B JAV ginklų pardavimus) yra red line.
+NVDA pusėje vyksta tai, ko investicija į akciją iš dalies laukė ištisus metus. Į rinką nutekėjo, kad summit&#39;as gali įforminti H200 chip eksporto framework&#39;ą - &#39;presumption of approval for commercial AI research&#39; pakeičianti dabartinę &#39;presumption of denial&#39;. Tai grąžintų NVDA ~$3.5-4B metinę Kinijos revenue (atminkim, dabar tai yra $0, plius $4.5B inventory charge&#39;as Q1 ir $8B Q2 disappeared). Mainais Kinija mažintų gallium, germanium, antimony, graphite eksporto apribojimus - kritiniai rare earth metalai pusladininkių industrijai. Tai yra didelis quid-pro-quo, kuris jei pasitvirtins formaliai, perversiniai veikia ne tik NVDA, bet ir AMD, ASML, MU - visus AI semiconductor supply chain dalyvius.
 
-NVDA pusėje vyksta tai, ko investicija į akciją iš dalies laukė ištisus metus. Į rinką nutekėjo, kad summit'as gali įforminti H200 chip eksporto framework'ą - "presumption of approval for commercial AI research" pakeičianti dabartinę "presumption of denial". Tai grąžintų NVDA ~$3.5-4B metinę Kinijos revenue (atminkim, dabar tai yra $0, plius $4.5B inventory charge Q1 ir $8B Q2 disappeared). Mainais Kinija mažintų gallium, germanium, antimony, graphite eksporto apribojimus - kritiniai rare earth metalai puslaidininkių industrijai. Tai yra didelis quid-pro-quo, kuris jei pasitvirtins formaliai, perversiniai veikia ne tik NVDA, bet ir AMD, ASML, MU - visus AI semiconductor supply chain dalyvius.
+Man svarbiausi du elementai investiciniu kampu: pirma, NVDA earnings ateina jau gegužės 20 d. (sekmadienį) - tai reiškia, kad summit&#39;o pasekmės pasimatys earnings call guidance&#39;e. Jei H200 framework formaliai patvirtintas iki gegužės 20, Q2 FY27 guidance gali įtraukti Kinijos revenue add-back&#39;ą - tai būtų $0.50-0.80 EPS šuolis virš dabartinio konsensuso. Antra, Boeing 500-lėktuvų užsakymas (jei pasitvirtins) yra dramatiškas - tai didžiausias single deal aviacijos istorijoj, kuris BA akcijai galėtų reikšti 15-25% revaluation tik dėl backlog&#39;o pailgėjimo. Plius tai signalizuoja, kad fentanyl tarifų truce pratęsimas (dabar 81% rinka spėja) yra fait accompli.
 
-Man svarbiausi du elementai investiciniu kampu. Pirma, NVDA earnings ateina jau gegužės 20 d. - tai reiškia, kad summit'o pasekmės pasimatys earnings call guidance'e. Jei H200 framework formaliai patvirtintas iki gegužės 20, Q2 FY27 guidance gali įtraukti Kinijos revenue add-back'ą - tai būtų $0.50-0.80 EPS šuolis virš dabartinio konsensuso. Antra, Boeing 500-lėktuvų užsakymas (jei pasitvirtins) yra dramatiškas - tai didžiausias single deal aviacijos istorijoj, kuris BA akcijai galėtų reikšti 15-25% revaluation tik dėl backlog'o pailgėjimo. Plius tai signalizuoja, kad fentanyl tarifų truce pratęsimas (dabar 81% rinka spēja) yra fait accompli.
-
-Macro implication'as platesnis: jei summit'as duos konkrečių rezultatų (rare earths, NVDA framework, Boeing), tai yra de-escalation signalas, kuris paspaustų USD žemyn ir paskatintų EM akcijas. BABA ir BIDU jau matomas relief rally - jei reguliacinė atmosfera atsiveria, šie tickeriai gali užbaigti metus su 25-40% upside nuo dabartinių lygių. Tačiau atvirkščias scenarijus (jei Taivano klausimas susprogdina derybas) gali per dieną panaikinti dviejų savaičių AI rally - tai yra binarinė savaitė. Mano pozicijos kampu: NVDA core pozicija išlaikyti iki gegužės 20 earnings (ne pirkti agresyviai virš dabartinio $5.4T mcap), AMD - geresnis asimetrinis play jei H200 framework patvirtinamas (mažesnis valuation premium), BABA spekuliacinė dalis liks, bet tik kaip 3-5% portfelio limit dėl Taivano risk.</div>
-
+Macro implication&#39;as platesnis: jei summit&#39;as duos konkrečių rezultatų (rare earths, NVDA framework, Boeing), tai yra de-escalation signalas, kuris paspaustų USD žemyn ir paskatintų EM akcijas. BABA ir BIDU jau matomas relief rally - jei reguliacinė atmosfera atsiveria, šie tickeriai gali užbaigti metus su 25-40% upside nuo dabartinių lygių. Tačiau atvirkščias scenarijus (jei Taivano klausimas susprogdina derybas) gali per dieną panaikinti dviejų savaičių AI rally - tai yra binarinė savaitė. Mano pozicijos kampu: NVDA core pozicija išlaikyti iki gegužės 20 earnings (ne pirkti agresyviai virš dabartinio $5.4T mcap), AMD - geresnis asimetrinis play jei H200 framework patvirtinamas (mažesnis valuation premium), BABA spekuliacinė dalis liks - bet tik kaip 3-5% portfelio limit dėl Taivano risk.</div>
+    
+    
+    <div class="manual-note-long"><span class="horizon-tag long">Ilgalaikis 3-5+ m</span>5-10 metų horizontu Trump-Xi rezultatas yra labiau apie sienų brėžimą, ne taikos susitarimą - JAV ir Kinija pereina nuo &#39;globalization++&#39; epochos prie struktūrinio bipoliario pasaulio kūrimo, ir abi pusės dabar legalizuoja šio padalijimo taisykles. Tai reiškia, kad AI semiconductor sektorius lieka strateginiu Vakarų prioritetu (NVDA, AMD, ASML, MU, TSM struktūriškai protected&#39;ūs), o Kinija statys lygiagrečią ekosistemą (SMIC, Huawei, CXMT) - tai du paraleliniai capex ciklai, plūstantys metalo ir energijos paklausą iki 2030+. Tariff&#39;ai gali svyruoti, bet nuolatinis &#39;decoupling-lite&#39; režimas yra naujasis baseline&#39;as - tai struktūrinė inflation tail&#39;as ekonomikoje, plius reshoring/onshoring temos (industrial automation, robotics, US manufacturing) lieka 5+ metų sekulariniu pavažiavimu. Kinijos akcijos (BABA, BIDU, PDD) ilgalaikiu horizontu lieka jautrios reguliaciniam šokui, todėl portfelio konstrukcijoje turi turėti ne core, o opportunistic dydį.</div>
+    
   </div>
-
+  
   <div class="manual-note">
     <div class="manual-note-header">
       <div class="manual-note-ticker">HOOD</div>
@@ -2528,7 +2325,7 @@ Macro implication'as platesnis: jei summit'as duos konkrečių rezultatų (rare 
     </div>
     
     
-    <div class="manual-note-analysis">HOOD balandžio operating data rodo paradoksalų vaizdą - viskas dideliais skaičiais auga, bet po dangtelius matau du atskirus naratyvus. Platform Assets $345B (+12% MoM, +49% YoY) ir Equity volume +57% YoY yra rinkos beta&#39;os funkcija - HOOD išgyvena svajonių aplinką kai rinkos volatile ir retail aktyvūs. Tačiau Funded Customers +7% YoY (vos +110K per mėnesį prie 27.6M bazės = ~0.4% MoM) signalizuoja, kad customer acquisition pradeda lėtėti į subrendusios platformos zoną. Tai reiškia, kad ARPU plėtra tampa pagrindiniu vertinimo varikliu, ne user growth.
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>HOOD balandžio operating data rodo paradoksalų vaizdą - viskas dideliais skaičiais auga, bet po dangtelius matau du atskirus naratyvus. Platform Assets $345B (+12% MoM, +49% YoY) ir Equity volume +57% YoY yra rinkos beta&#39;os funkcija - HOOD išgyvena svajonių aplinką kai rinkos volatile ir retail aktyvūs. Tačiau Funded Customers +7% YoY (vos +110K per mėnesį prie 27.6M bazės = ~0.4% MoM) signalizuoja, kad customer acquisition pradeda lėtėti į subrendusios platformos zoną. Tai reiškia, kad ARPU plėtra tampa pagrindiniu vertinimo varikliu, ne user growth.
 
 Margin balances $18.0B +114% YoY yra svarbiausias signalas šioje ataskaitoje - retail leverage padvigubėjo per metus. Tai bullish kol rinkos kyla (interest income komponentas auga, plius trading impulsas), bet asimetriškai pavojinga jei matytume 10%+ korekciją: margin call&#39;ai kelia volatilumą, plius dalis customer base&#39;o gali patirti rimtų nuostolių. HOOD interest revenue yra labai jautrus šiam balansui - margin balansų $18B prie ~7% spread&#39;o = ~$1.26B annualized interest spread potencialo.
 
@@ -2536,7 +2333,10 @@ Event Contracts 3.2B (+7% MoM) tyliai tampa reikšminga nauja revenue linija - t
 
 Du ryškūs įspėjimai: Crypto -33% MoM rodo, kad balandis buvo silpnas crypto trading mėnuo (BTC volatilumas mažėjo, retail traders išėjo), tai trumpalaikis revenue spaudimas Q2. Cash Sweep -4% YoY yra subtili, bet svarbi tendencija - vartotojai aktyviai ieško aukštesnio yield&#39;o ir traukiasi iš HOOD sweep produkto į T-bills ar money market&#39;ą. Tai struktūrinis interest income headwind, kurį HOOD turės kompensuoti per kitas pajamų linijas.
 
-Investuotojui: HOOD šiuo metu yra leveraged play į retail trading boom&#39;ą su konkrečiu kataizatoriumi (event contracts). Tačiau vertinimas jau įskaičiuoja didelį augimą, o margin balansų +114% YoY ribina ankstyvą reakciją į korekciją. Pagrindinis stebėjimo taškas Q2: ar Equity volume momentum išlieka po balandžio peak, ar Options contracts 34% YoY plėtra išlieka. Jei taip - akcija veiks toliau; jei trading aktivumas ima slūgti, $345B AuC bazė lieka, bet revenue augimo dinamika lėtėja. Mano galvoje HOOD yra trim/hold zona aukščiau dabartinių lygių, ne pirkti.</div>
+Tactical takeaway: HOOD šiuo metu yra leveraged play į retail trading boom&#39;ą. Vertinimas jau įskaičiuoja didelį augimą, o margin balansų +114% YoY ribina ankstyvą reakciją į korekciją. Q2 stebėjimo taškas: ar Equity volume momentum išlieka po balandžio peak, ar Options contracts 34% YoY plėtra išlieka. Trumpalaikiu horizontu - trim/hold zona aukščiau dabartinių lygių, ne pirkti agresyviai.</div>
+    
+    
+    <div class="manual-note-long"><span class="horizon-tag long">Ilgalaikis 3-5+ m</span>5-10 metų horizontu HOOD turi keturis struktūrinius tailwind&#39;us, kurie keičia kalbą iš &#39;trim/hold&#39; į &#39;core holding&#39;. Pirma, demografija - Robinhood yra dominantas under-40 amžiaus retail platformoje, o ši karta dar tik pradeda kaupti turtą; per dešimtmetį AUM bazė gali augti 5-10x tiesiog dėl gyvenimo etapo natūralaus capital flow. Antra, event contracts (prediction markets) yra visiškai naujas multi-billion TAM, kurį HOOD turi pirmojo žaidėjo pranašumą - tai struktūrinis high-margin produktas, kuris veikia ir bull, ir bear rinkose, todėl reduces revenue cyclicality. Trečia, &#39;financial supermarket&#39; tezė: banking, retirement, crypto, derivatives, prediction markets po vienu UX stogu - kiekvienas pridėtas produktas didina ARPU ir switching cost&#39;us, kas yra durable moat&#39;as. Ketvirta, AI-native generation ateinanti į rinką per ateinančius 5 metus matys HOOD kaip default platformą, ne TD/Schwab tipo legacy brokerius. Pagrindinė ilgalaikė rizika nėra konkurencija, o reguliacinė atmosfera - jei SEC ar Kongresas apribos payment for order flow (PFOF) modelį, ~50% revenue dalis išnyksta. Bet net su PFOF reform, diversified platform thesis išlieka. Long-term core position pateisinama; trumpalaikiai svyravimai aukščiau $50-60 nėra priežastis trim&#39;inti jei horizontas 5+ metai.</div>
     
   </div>
   
@@ -2548,140 +2348,10 @@ Investuotojui: HOOD šiuo metu yra leveraged play į retail trading boom&#39;ą 
   <div class="section-header">
     <div class="section-title" style="color:#f4cc6b">Pamąstymai iš rinkų · 48h</div>
   </div>
-  <div class="yt-synthesis">Pastarąją porą dienų stebėdamas rinkas vienas dalykas traukia dėmesį labiausiai - S&P 500 istorinių aukštumų fone fundamentalus klausimas: ar šis augimas turi pagrindą, ar tai tiesiog impulso logika? PPI duomenys vakar atėjo gerokai aukštesni nei tikėtasi - 1.4% MoM vs 0.5% lūkesčių, didžiausias šuolis nuo 2022 m. kovo, daugiausia dėl gasoline +15.6% Iran tensions fone. Tai padidina spaudimą Fed kryptimi - rate cuts kelias 2026 H2 lieka neapibrėžtas, ypač po Kevin Warsh patvirtinimo Fed Chair'u 54-45 vakar (mostly party-line, hawkish signalas). Trumpojo galo palūkanos lieka aukštos, infliacijos lūkesčiai vis dar pakelti, ir tol kol taip, augimo akcijoms multiple ekspansija yra ribota. NVDA pasiekė naujus rekordus - ir čia matau įdomią dinamiką. Cerebras IPO kainodara, kuri, atrodo, bus aukštesnė nei pirminis diapazonas, signalizuoja, kad AI infrastruktūros apetitas institucijose nesumažėjo. Tačiau Cerebras tiesiogiai nėra NVDA grėsmė trumpuoju laikotarpiu - jų WSE architektūra sprendžia specifines inference užduotis, ne bendrą GPU paklausą. Tai veikiau patvirtina, kad AI compute rinka auga tiek, kad atsiranda vietos keliems žaidėjams. AMD šiame kontekste man kelia klausimą: jei Cerebras gauna premium vertinimą inference nišoje, tai AMD MI300X tezė lieka neįkainota - analitikų konsensusas čia atrodo per atsargus. NBIS earnings buvo aiškus beat - ir tai įdomu, nes kompanija yra ankstyvos stadijos AI infrastruktūros žaidėjas, kurį daugelis ignoruoja. Kai tokio dydžio beat nutinka smulkesnėje kompanijoje, institucinis dėmesys paprastai ateina vėluodamas keliais kvartalais. Manau šioje vietoje rizikos ir atlygio santykis išlieka patrauklus investuotojui su 12-18 mėnesių horizontu, bet reikia pripažinti - likvidumas menkas, o pozicijų dydis turi atitikti tą riziką. MU situacija man atrodo viena įdomiausių šiuo metu. Atminties ciklas istoriškai yra vienas patikimiausių sektorinių signalų, ir šiuo metu HBM3E paklausa iš AI serverių gamintojų auga greičiau nei tiekimas. MU guidance paskutinį kartą buvo konservatyvus - jei Q3 earnings bus beat, rinka tai įkainuos greitai, nes akcija vis dar prekiaujama su nuolaida lyginant su Samsung ir SK Hynix HBM exposure. Tai vienas atvejų, kur peer comparison vertinimas turi realią reikšmę, ne tik akademinę. Geopolitinis fonas šią savaitę nesikeitė smarkiai, bet tarifų tema su Kinija niekur nedingo. BABA ir BIDU lieka akcijomis, kurias sunku vertinti įprastais metodais - ne dėl fundamentalų, o dėl reguliacinio ir geopolitinio neapibrėžtumo. Manau šiuo metu exposure į kiniškas akcijas logiškas tik kaip nedidelė spekuliacinė dalis, ne kaip pagrindinis pozicijų blokas. ASML yra kita istorija - Europos semiconductor exposure su mažesniu tiesioginiu Kinijos rizikos kampu, ir jei eksporto apribojimai nesiplečia, Q3-Q4 earnings ciklas turėtų būti stiprus dėl EUV užsakymų atsinaujinimo. Bendra mano nuostata šiuo metu - rinka atrodo brangi absoliučiais skaičiais, bet ne absurdiška, jei AI capex ciklas tęsiasi dar 2-3 metus. CSCO earnings parodė, kad tinklų infrastruktūra irgi gauna AI spinoff paklausą - revenue beat ir guidance pakeltas. Tai reiškia, kad AI tema nėra tik NVDA ir hyperscaleriai, ji plinta į antrąjį ir trečiąjį lygį. Investuotojui tai praktiškai reiškia: koncentracija NVDA yra pateisinama, bet diversifikacija į AVGO, CSCO tipo pralaidumo žaidėjus mažina vieno pokyčio riziką neaukojant temos exposure.</div>
+  <div class="yt-synthesis">S&P 500 peržengė 5 700 lygį ir dabar kalba apie 5 800 - rinka elgiasi lyg recesijos baimės baigėsi. Stebėdamas šią dinamiką, matau kažką neįprasto: korekcijos, kurias visi laukė, vis nėra, o kiekvienas "pavojingas" momentas virsta dar vienu atkūrimo žingsniu. JAV ir Kinijos derybų signalai prideda optimizmo - jei tarifų frontas šiek tiek atslūgsta, tai tiesiogiai veikia NVDA, AVGO, AMD, ASML pajamų lūkesčius antroje metų pusėje. Bet čia yra ir kita pusė: rinka kainoja "geros baigties" scenarijų, ir jei derybos stringa - korekcija gali būti greitesnė nei daugelis tikisi. AI sektoriuje svarbiausia naujien yra Cerebras IPO - kompanija tikisi akcijas kainoti aukščiau nei iš pradžių planuota, o tai reiškia, kad institucinė paklausa yra reali. Cerebras sprendžia konkretų AI inference greitaveikos problemą ir jų partnerystė su OpenAI - ne tik marketingas, bet ir potencialus revenue katalizatorius. Klausimas, kurį sau užduodu: ar tai competitor NVDA, ar papildomoji infrastruktūra? Manau - kol kas papildomoji, nes NVDA H100/H200 dominuoja training workloads, o Cerebras eina į inference nišą. Vis dėlto IPO kaina rodo, kad rinka nori AI "antro ešelono" istorijų po to, kai NVDA jau kainoja 30x+ revenue. CRWV irgi šiame kontekste įdomus - ne pirmas kartas, kai matome, kad AI infrastruktūros bendrovės kaina artimų mėnesių lūkesčiais, ne dabartiniais fundamentalais. NVDA pati sau išlieka centrine pozicija portfelyje - ir manau tai teisinga. Tačiau stebiu, kad AMD guidance tolesniems ketvirčiams tapo konservatyvesnis, o MI300 ramp tempas lėtesnis nei tikėtasi prieš 6 mėnesius. AMD šiuo metu kainuoja ~25x forward earnings, kas nėra pigu kompanijai, kuri dar neįrodė duomenų centro mastelio. Jei Q2 earnings nerodys aiškaus MI300 traction - manau akcija gali atpigti dar 10-15%. Tuo tarpu ASML situacija skiriasi: jų backlog išlieka stiprus, tačiau Kinijos eksporto ribojimai kerta tiesiai į pajamas. Stebėsiu, ar H2 2025 ASML guidance bus revizuotas žemyn - tai bus signalas visam puslaidininkių sektoriui. Makro fone Fed pozicija nesikeičia - palūkanos lieka aukštos, ir CME tikimybės rodo, kad pirmasis sumažinimas anksčiausiai rudeniop. PCE infliacija vis dar per aukšta, kad Fed galėtų drąsiai signalizuoti "pivot". Tai reiškia, kad augimo akcijoms, ypač ilgo duration, kaip SHOP, ADBE, ZM - trumpojo galo palūkanos išlieka priešvėjis. ADBE konkrečiai: akcija kainuoja apie 22x forward EPS, kas istoriškai yra žemiau vidurkio, bet AI kūrybinių įrankių competitive threat iš OpenAI ir kitų nėra išnykęs. Manau ADBE yra "pigi dėl priežasties" situacija, ir pirma pirksiu kitų sektorių idėjas. Nubank Q1 rezultatai - įdomus pavyzdys, kaip fintech Lotynų Amerikoje gali augti sparčiau nei tradiciniai bankai. Revenue augimas buvo dviženklis YoY, o aktyvių klientų bazė viršijo 100 milijonų - tai mastas, kurį sunku ignoruoti. Bet exposure prie Brazilijos realio ir Kolumbijos peso reiškia, kad valiutų rizika yra reali ir ją reikia vertinti. Investuotojui, žiūrinčiam į NU, klausimas paprastas: ar esi pasiruošęs FX volatilumui mainais už augimo tempą, kurio JAV bankų sektoriuje nerasi? Manau tai spekuliatyvesnė pozicija nei atrodo iš pirmo žvilgsnio. META ir GOOGL išlieka mano mėgstamiausi "didelių technologijų" vardai šiame kontekste - abu turi aiškų AI monetizavimo kelią per reklamą, abu generuoja laisvą pinigų srautą net ir aukštų palūkanų aplinkoje. GOOGL šiuo metu kainuoja apie 20x forward EPS - tai pigesnis entry nei MSFT ar AAPL, turint panašų ar geresnį augimo profilį. Vienintelis realus rizikos veiksnys - antitrust spaudimas ir galimas verslo modelio priverstinis keitimas. Jei šis scenarijus materializuojasi, tai bus triukšminga, bet kol teismai sprendžia - GOOGL fundamentalai kuria vertę.</div>
 </section>
 
 
-
-<section class="section">
-  <div class="section-header">
-    <div class="section-title" style="color:#f48fb1">IBKR Premium · Market-Moving Headlines</div>
-    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">15</span>
-  </div>
-  <div class="ibkr-news-list">
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">ASML</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Press Release: ASML reports transactions under its current share buyback program</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-11 12:00</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">AVGO</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Space Stock ETFs Are Suddenly Hot. Only 1 Owns SpaceX Before the IPO. -- Barrons.com</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-11 06:00</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">RKLB</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Dow Jones Futures: Trump Says U.S.-Iran Ceasefire Holds; Akamai, Cloudflare, IREN Are Big Earnings Movers -- IBD</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-08 11:55</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">META</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Magnificent Seven Has Gained $3 Trillion in Market Value During Iran War -- WSJ</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-08 10:46</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">RKLB</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Dow Jones Futures: Trump Says U.S.-Iran Ceasefire Holds; Rocket Lab, Cloudflare, IREN Are Big Earnings Movers -- IBD</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-08 10:44</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">PYPL</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">AI-Related Layoffs Continue to Roll In -- Market Talk</div>
-        <div class="ibkr-news-meta">DJ-RT · 05-07 21:57</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">RIOT</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Terrestrial Energy, Riot to Build Colocated Nuclear Plants, Data Centers</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-06 13:32</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">PLTR</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Correction to &#34;Palantir Beats Forecasts&#34; on May 4. -- WSJ</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-05 22:08</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">PYPL</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">PayPal, Coinbase Tie Deep Layoffs to AI -- Market Talk</div>
-        <div class="ibkr-news-meta">DJ-RT · 05-05 17:12</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">PYPL</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">PayPal to Cut 20% of Staff Amid Turnaround Push -- 2nd Update</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-05 15:08</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">NBIS</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Press Release: Nebius Agrees to Acquire Eigen AI, Strengthening Nebius Token Factory as a Frontier Inference Platform</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-01 11:00</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">NBIS</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">* Nebius Agrees To Acquire Eigen AI, Strengthening Nebius Token Factory As A Frontier Inference Platform &gt;NBIS</div>
-        <div class="ibkr-news-meta">DJ-RTG · 05-01 11:00</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">ADBE</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">* Adobe Completes Semrush Acquisition &gt;ADBE</div>
-        <div class="ibkr-news-meta">DJ-RTG · 04-28 13:01</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">ADBE</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Press Release: Adobe Completes Semrush Acquisition, Strengthening CX Enterprise with Enhanced Brand Visibility Capabilities</div>
-        <div class="ibkr-news-meta">DJ-RTG · 04-28 13:00</div>
-      </div>
-    </div>
-    
-    <div class="ibkr-news-row">
-      <div class="ibkr-news-ticker">ADBE</div>
-      <div class="ibkr-news-content">
-        <div class="ibkr-news-headline">Adobe Completes Semrush Acquisition, Strengthening CX Enterprise with Enhanced Brand Visibility Capabilities</div>
-        <div class="ibkr-news-meta">DJ-RTG · 04-28 13:00</div>
-      </div>
-    </div>
-    
-  </div>
-</section>
 
 
 
@@ -2697,7 +2367,7 @@ Investuotojui: HOOD šiuo metu yra leveraged play į retail trading boom&#39;ą 
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>10:37 (Vilnius)</span>
+  <span>22:51 (Vilnius)</span>
 </footer>
 
 </body>
