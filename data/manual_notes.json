@@ -3,6 +3,24 @@
   "expires_at": "2026-05-17T00:00:00+00:00",
   "notes": [
     {
+      "ticker": "CRYPTO",
+      "headline": "CLARITY Act prėjo Senato Banking Committee 15-9 (gegužės 14)",
+      "kind": "regulatory_event",
+      "released_at": "2026-05-14",
+      "metrics": [
+        {"label": "Balsavimas", "value": "15-9", "change": "bipartisan: 2 Demokratai prisidėjo"},
+        {"label": "Komitetas", "value": "Senate Banking", "change": "kitas - full Senate floor"},
+        {"label": "Deadline pilnam Senatui", "value": "iki rugpjūčio", "change": "praktiškai turi praeiti"},
+        {"label": "COIN reakcija", "value": "+8.0%", "change": "tos pačios sesijos metu"},
+        {"label": "GLXY reakcija", "value": "+6.3%", "change": "tos pačios sesijos metu"},
+        {"label": "Status", "value": "First US crypto law", "change": "jei pereina"},
+        {"label": "House version", "value": "praleido 2025 rudenį", "change": "reikės reconciliation"},
+        {"label": "Pending issue", "value": "conflict-of-interest", "change": "Trump exposure į crypto"}
+      ],
+      "analysis": "CLARITY Act (Digital Asset Market Clarity Act of 2025, H.R.3633) prėjo Senato Banking Committee 15-9 bipartisan balsavimu - Demokratai Ruben Gallego (AZ) ir Angela Alsobrooks (MD) prisidėjo prie visų Respublikonų. Tai vienas svarbesnių crypto reguliacijos žingsnių istorijoje, nes jei pereina pilną Senatą (deadline rugpjūtis) ir bus suderintas su House versija (praleista 2025 rudenį), tai bus PIRMASIS JAV įstatymas, kuris pilnai reguliuoja skaitmeninius aktyvus. Coinbase šokteljo +8% per sesiją, Galaxy Digital +6.3% - rinka jau pradeda kainuoti regulatory clarity premium.\n\nKas svarbu trumpalaikiu kampu: pirma, conflict-of-interest provizija lieka neišspręsta - tai susiję su Trump šeimos crypto verslo įsitraukimu (World Liberty Financial, $TRUMP memecoin) ir gali tapti deal breaker'iu pilname Senate. Antra, House ir Senate versijų reconciliation - dvi versijos turi skirtumų dėl SEC vs CFTC jurisdikcijos ribų, ir tai gali užtęsti iki rudens. Trečia, jei iki rugpjūčio Senate balsavimas neįvyks, bill'as gali būti pristumtas į 2027 metus su Kongreso kalendoriaus suvaržymais. Praktiškai pozicionavimui: COIN ir HOOD yra tiesioginiai beneficiarai (clear jurisdiction = institutional flow), MSTR (Bitcoin treasury) yra antrinis žaidėjas, o crypto miners (RIOT, CLSK, MARA, BMNR Radoslav'o watchlist'e) gauna sektorinį boost'ą per Bitcoin valuation reratio.\n\nIš mano stebėjimo kampo: tai NĖRA tas pats kaip GENIUS Act (stablecoin tik) - CLARITY apima visus skaitmeninius aktyvus, nustato kada token yra security vs commodity, ir aiškiai paskirsto SEC/CFTC jurisdiction'ą. Tai uždarinėja regulatory arbitrage langą, kuris leido offshore exchanges (Binance, Bybit) konkuruoti su US firmom. Po įgyvendinimo, US-listed crypto kompanijos gauna struktūrinį pranašumą prieš overseas competitors - tai panaši dinamika kaip Dodd-Frank po 2008 finansų krizės, kur stambūs JAV bankai gavo regulatory moat'ą.",
+      "long_term": "5-10 metų horizontu CLARITY Act priėmimas yra pagrindinis crypto sektoriaus institucionalizacijos taškas - panašiai kaip ETF approval'as 2024 metais buvo brangiausias single catalyst Bitcoin'ui. Su aiškia jurisdikcija, JAV pensijų fondai ir endowment'ai gali agresyviai allocate'inti į crypto exposure (dabar jie ribojami fiduciary duties dėl reguliacinio neapibrėžtumo) - tai potencialiai $5-10T capital migration per dekadą. Coinbase ir HOOD struktūriškai gauna platform advantage'ą - panašiai kaip Charles Schwab dominavo TradFi retail brokerage'e po Dodd-Frank, US-regulated crypto exchanges dominuos institutional layer'į. Stablecoin gigantai (CIRCLE/USDC, USDT) gauna legitimacy boost, kuris veda į potencialų $10T+ stablecoin rinkos expansion (dabar ~$200B). Bitcoin/Ethereum kaip 'reguliuojami digital asset commodities' tampa portfelio diversifikatoriais, kuriuos turi held'inti net konservatyvūs institutional managers. Crypto mining sektorius (MARA, RIOT, CLSK, BMNR) gauna struktūrinį pranašumą per energy-grid integration ir AI compute pivot, nes JAV reguliacinė atmosfera tampa palanki ne tik trading bet ir mining operations."
+    },
+    {
       "ticker": "MACRO",
       "headline": "Trump-Xi summit Beijing'e (gegužės 13-15) - rinkų pokyčiai",
       "kind": "geopolitical_event",
