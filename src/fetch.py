@@ -551,8 +551,15 @@ def fetch_premarket_movers(top_n: int = 5) -> dict:
     return out
 
 
-def fetch_quotes(symbols: list) -> list:
-    """Batch fetch latest quotes via yfinance. Returns list of dicts."""
+def fetch_quotes(symbols: list, include_extended: bool = False) -> list:
+    """Batch fetch latest quotes via yfinance. Returns list of dicts.
+
+    When include_extended=True, also fetches pre/after-hours prices via
+    1h prepost interval. Adds:
+      - extended_price: most-recent extended-hours print (or regular if none)
+      - extended_change_pct: % vs prior regular session close
+      - session: 'pre' | 'post' | 'regular' | 'closed' indicating current session
+    """
     if not symbols:
         return []
     try:
@@ -562,6 +569,18 @@ def fetch_quotes(symbols: list) -> list:
         print(f"  warn: yfinance batch fetch failed: {e}")
         return []
 
+    # Optional extended-hours snapshot via 1h bars with prepost.
+    ext_data = None
+    if include_extended:
+        try:
+            ext_data = yf.download(symbols, period='2d', interval='1h',
+                                   prepost=True, progress=False,
+                                   group_by='ticker', auto_adjust=False, threads=True)
+        except Exception as e:
+            print(f"  warn: yfinance extended fetch failed: {e}")
+            ext_data = None
+
+    from datetime import datetime as _dt
     out = []
     for sym in symbols:
         try:
@@ -575,21 +594,55 @@ def fetch_quotes(symbols: list) -> list:
             last_close = float(df['Close'].iloc[-1])
             prev_close = float(df['Close'].iloc[-2])
             change_pct = ((last_close - prev_close) / prev_close) * 100
-            out.append({
+            row = {
                 'symbol': sym,
                 'price': last_close,
                 'change_pct': change_pct,
                 'change_abs': last_close - prev_close,
-            })
+            }
+            if include_extended and ext_data is not None:
+                try:
+                    ext_df = ext_data if len(symbols) == 1 else ext_data[sym]
+                    ext_df = ext_df.dropna(subset=['Close'])
+                    if len(ext_df) > 0:
+                        # Last bar's Close = latest traded price (may be pre/post or regular)
+                        ext_price = float(ext_df['Close'].iloc[-1])
+                        ext_ts = ext_df.index[-1]
+                        # Compare to the daily close = baseline
+                        ext_change = ((ext_price - last_close) / last_close) * 100
+                        # Determine session based on US Eastern time of last bar
+                        et_hour = ext_ts.tz_convert('America/New_York').hour if hasattr(ext_ts, 'tz_convert') else ext_ts.hour
+                        et_min = ext_ts.tz_convert('America/New_York').minute if hasattr(ext_ts, 'tz_convert') else 0
+                        et_minutes = et_hour * 60 + et_min
+                        if 4 * 60 <= et_minutes < 9 * 60 + 30:
+                            session = 'pre'
+                        elif 9 * 60 + 30 <= et_minutes < 16 * 60:
+                            session = 'regular'
+                        elif 16 * 60 <= et_minutes < 20 * 60:
+                            session = 'post'
+                        else:
+                            session = 'closed'
+                        row['extended_price'] = ext_price
+                        row['extended_change_pct'] = ext_change
+                        row['session'] = session
+                except (KeyError, IndexError, ValueError):
+                    pass
+            out.append(row)
         except (KeyError, IndexError, ValueError):
             continue
     return out
 
 
-def fetch_watchlist_movers(stocks: list, top_n: int = 5) -> dict:
-    """Fetch quotes for watchlist, return top gainers and losers."""
-    quotes = fetch_quotes(stocks)
-    sorted_q = sorted(quotes, key=lambda x: x['change_pct'], reverse=True)
+def fetch_watchlist_movers(stocks: list, top_n: int = 5, include_extended: bool = False) -> dict:
+    """Fetch quotes for watchlist, return top gainers and losers.
+
+    With include_extended=True, ranks by extended_change_pct when available,
+    falling back to regular change_pct.
+    """
+    quotes = fetch_quotes(stocks, include_extended=include_extended)
+    sort_key = (lambda x: x.get('extended_change_pct', x['change_pct'])) if include_extended \
+               else (lambda x: x['change_pct'])
+    sorted_q = sorted(quotes, key=sort_key, reverse=True)
     return {
         'gainers': sorted_q[:top_n],
         'losers': sorted_q[-top_n:][::-1],

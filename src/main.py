@@ -283,9 +283,9 @@ def main():
                      [])
     print(f"    -> {len(earnings)} companies")
 
-    print("  Fetching watchlist earnings history (recent + upcoming)...")
+    print("  Fetching watchlist earnings history (recent 24h + upcoming 14d)...")
     wl_earnings = _safe('watchlist earnings',
-                        lambda: fetch_watchlist_earnings_history(STOCKS, days_back=2, days_fwd=14),
+                        lambda: fetch_watchlist_earnings_history(STOCKS, days_back=1, days_fwd=14),
                         {'recent': [], 'upcoming': []})
     print(f"    -> {len(wl_earnings['recent'])} recent, {len(wl_earnings['upcoming'])} upcoming")
 
@@ -293,9 +293,9 @@ def main():
     indices = _safe('indices', lambda: fetch_index_snapshot(FUTURES), [])
     print(f"    -> {len(indices)} indices")
 
-    print("  Fetching watchlist movers...")
+    print("  Fetching watchlist movers (with pre/after-hours)...")
     watchlist = _safe('watchlist movers',
-                      lambda: fetch_watchlist_movers(STOCKS, top_n=5),
+                      lambda: fetch_watchlist_movers(STOCKS, top_n=5, include_extended=True),
                       {'gainers': [], 'losers': []})
     print(f"    -> {len(watchlist['gainers'])} gainers, {len(watchlist['losers'])} losers")
 
@@ -303,9 +303,12 @@ def main():
     crypto = _safe('crypto', lambda: fetch_crypto(CRYPTO), [])
     print(f"    -> {len(crypto)} coins")
 
-    print("  Fetching AI sector quotes...")
-    ai_quotes_raw = _safe('AI quotes', lambda: fetch_quotes(AI_TICKERS), [])
-    ai_quotes = sorted(ai_quotes_raw, key=lambda x: abs(x['change_pct']), reverse=True)[:8]
+    print("  Fetching AI sector quotes (with pre/after-hours)...")
+    ai_quotes_raw = _safe('AI quotes', lambda: fetch_quotes(AI_TICKERS, include_extended=True), [])
+    # Sort by extended change when available, else regular - largest absolute move first
+    ai_quotes = sorted(ai_quotes_raw,
+                       key=lambda x: abs(x.get('extended_change_pct', x['change_pct'])),
+                       reverse=True)[:8]
     print(f"    -> {len(ai_quotes)} AI tickers")
 
     print("  Fetching IV metrics (option-selling opportunities)...")

@@ -534,6 +534,23 @@
     margin: 4px 0 2px;
     font-variant-numeric: tabular-nums;
   }
+  .ext-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  .ext-badge.pre { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .ext-badge.post { background: rgba(126,140,216,0.18); color: #7e8cd8; }
+  .ext-change {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+  }
   .ai-change {
     font-size: 11px;
     font-weight: 700;
@@ -1066,9 +1083,12 @@
   <div class="ai-grid">
     {% for a in ai_quotes %}
     <div class="ai-card">
-      <div class="ai-symbol">{{ a.symbol }}</div>
-      <div class="ai-price">{% if a.price >= 1000 %}${{ "{:,.0f}".format(a.price) }}{% else %}${{ "%.2f"|format(a.price) }}{% endif %}</div>
+      <div class="ai-symbol">{{ a.symbol }}{% if a.session == 'pre' %}<span class="ext-badge pre">PRE</span>{% elif a.session == 'post' %}<span class="ext-badge post">AH</span>{% endif %}</div>
+      <div class="ai-price">{% if a.extended_price %}{% if a.extended_price >= 1000 %}${{ "{:,.0f}".format(a.extended_price) }}{% else %}${{ "%.2f"|format(a.extended_price) }}{% endif %}{% else %}{% if a.price >= 1000 %}${{ "{:,.0f}".format(a.price) }}{% else %}${{ "%.2f"|format(a.price) }}{% endif %}{% endif %}</div>
       <div class="ai-change" style="color: {% if a.change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ "%+.2f"|format(a.change_pct) }}%</div>
+      {% if a.extended_change_pct is defined and a.session in ('pre', 'post') %}
+      <div class="ext-change" style="color: {% if a.extended_change_pct >= 0 %}#7ed87e{% else %}#ff7373{% endif %}">{{ a.session|upper }} {{ "%+.2f"|format(a.extended_change_pct) }}%</div>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
@@ -1208,8 +1228,8 @@
       <div class="movers-col-title">📈 Gainers</div>
       {% for m in watchlist.gainers %}
       <div class="mover-row">
-        <span><span class="mover-symbol">{{ m.symbol }}</span> <span class="mover-price">${{ "%.2f"|format(m.price) }}</span></span>
-        <span class="mover-up">{{ "%+.2f"|format(m.change_pct) }}%</span>
+        <span><span class="mover-symbol">{{ m.symbol }}</span>{% if m.session == 'pre' %}<span class="ext-badge pre">PRE</span>{% elif m.session == 'post' %}<span class="ext-badge post">AH</span>{% endif %} <span class="mover-price">${{ "%.2f"|format(m.extended_price if m.extended_price else m.price) }}</span></span>
+        <span class="mover-up">{{ "%+.2f"|format(m.extended_change_pct if m.extended_change_pct is defined and m.session in ('pre', 'post') else m.change_pct) }}%</span>
       </div>
       {% endfor %}
     </div>
@@ -1217,8 +1237,8 @@
       <div class="movers-col-title">📉 Losers</div>
       {% for m in watchlist.losers %}
       <div class="mover-row">
-        <span><span class="mover-symbol">{{ m.symbol }}</span> <span class="mover-price">${{ "%.2f"|format(m.price) }}</span></span>
-        <span class="mover-down">{{ "%+.2f"|format(m.change_pct) }}%</span>
+        <span><span class="mover-symbol">{{ m.symbol }}</span>{% if m.session == 'pre' %}<span class="ext-badge pre">PRE</span>{% elif m.session == 'post' %}<span class="ext-badge post">AH</span>{% endif %} <span class="mover-price">${{ "%.2f"|format(m.extended_price if m.extended_price else m.price) }}</span></span>
+        <span class="mover-down">{{ "%+.2f"|format(m.extended_change_pct if m.extended_change_pct is defined and m.session in ('pre', 'post') else m.change_pct) }}%</span>
       </div>
       {% endfor %}
     </div>
