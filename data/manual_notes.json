@@ -1,7 +1,24 @@
 {
-  "generated_at": "2026-05-13T19:50:00+00:00",
-  "expires_at": "2026-05-15T00:00:00+00:00",
+  "generated_at": "2026-05-14T07:55:00+00:00",
+  "expires_at": "2026-05-17T00:00:00+00:00",
   "notes": [
+    {
+      "ticker": "MACRO",
+      "headline": "Trump-Xi summit Beijing'e (gegužės 13-15) - rinkų pokyčiai",
+      "kind": "geopolitical_event",
+      "released_at": "2026-05-14",
+      "metrics": [
+        {"label": "Pirmas susitikimas", "value": "2h 15min", "change": "gegužės 14 rytas"},
+        {"label": "NVDA market cap", "value": "$5.4T", "change": "all-time high 05-13"},
+        {"label": "NVDA China revenue", "value": "$0", "change": "Q1 inventorius -$4.5B"},
+        {"label": "H200 framework", "value": "~$3.5-4B", "change": "metiniai NVDA China potencialūs"},
+        {"label": "Boeing užsakymas", "value": "iki 500 lėktuvų", "change": "tikimasi paskelbimo"},
+        {"label": "Tariff truce", "value": "iki 11-10", "change": "81% trader'ių spėja extension"},
+        {"label": "Fentanyl tariff", "value": "10%", "change": "buvęs 20%, dabar truce"},
+        {"label": "Taivanas - JAV ginklai", "value": "$14B", "change": "deal'as ant svarstyklių"}
+      ],
+      "analysis": "Trump-Xi summit'as Beijing'e yra šių dienų svarbiausias makro įvykis - Trump atvyko su CEO delegacija (Musk, Cook, Huang) ir tai signalizuoja struktūrinį pokytį, ne kosmetinį diplomatinį susitikimą. Pirmas posėdis truko 2h 15min, Xi atvirai įspėjo dėl Taivano kaip 'svarbiausio klausimo', kuris jei netvarkomas tinkamai - santykius gali nustumti į 'pavojingą zoną'. Tai signalas Vakarams, kad bet kokia eskalacija Taivane (įskaitant $14B JAV ginklų pardavimus) yra red line.\n\nNVDA pusėje vyksta tai, ko investicija į akciją iš dalies laukė ištisus metus. Į rinką nutekėjo, kad summit'as gali įforminti H200 chip eksporto framework'ą - 'presumption of approval for commercial AI research' pakeičianti dabartinę 'presumption of denial'. Tai grąžintų NVDA ~$3.5-4B metinę Kinijos revenue (atminkim, dabar tai yra $0, plius $4.5B inventory charge'as Q1 ir $8B Q2 disappeared). Mainais Kinija mažintų gallium, germanium, antimony, graphite eksporto apribojimus - kritiniai rare earth metalai pusladininkių industrijai. Tai yra didelis quid-pro-quo, kuris jei pasitvirtins formaliai, perversiniai veikia ne tik NVDA, bet ir AMD, ASML, MU - visus AI semiconductor supply chain dalyvius.\n\nMan svarbiausi du elementai investiciniu kampu: pirma, NVDA earnings ateina jau gegužės 20 d. (sekmadienį) - tai reiškia, kad summit'o pasekmės pasimatys earnings call guidance'e. Jei H200 framework formaliai patvirtintas iki gegužės 20, Q2 FY27 guidance gali įtraukti Kinijos revenue add-back'ą - tai būtų $0.50-0.80 EPS šuolis virš dabartinio konsensuso. Antra, Boeing 500-lėktuvų užsakymas (jei pasitvirtins) yra dramatiškas - tai didžiausias single deal aviacijos istorijoj, kuris BA akcijai galėtų reikšti 15-25% revaluation tik dėl backlog'o pailgėjimo. Plius tai signalizuoja, kad fentanyl tarifų truce pratęsimas (dabar 81% rinka spėja) yra fait accompli.\n\nMacro implication'as platesnis: jei summit'as duos konkrečių rezultatų (rare earths, NVDA framework, Boeing), tai yra de-escalation signalas, kuris paspaustų USD žemyn ir paskatintų EM akcijas. BABA ir BIDU jau matomas relief rally - jei reguliacinė atmosfera atsiveria, šie tickeriai gali užbaigti metus su 25-40% upside nuo dabartinių lygių. Tačiau atvirkščias scenarijus (jei Taivano klausimas susprogdina derybas) gali per dieną panaikinti dviejų savaičių AI rally - tai yra binarinė savaitė. Mano pozicijos kampu: NVDA core pozicija išlaikyti iki gegužės 20 earnings (ne pirkti agresyviai virš dabartinio $5.4T mcap), AMD - geresnis asimetrinis play jei H200 framework patvirtinamas (mažesnis valuation premium), BABA spekuliacinė dalis liks - bet tik kaip 3-5% portfelio limit dėl Taivano risk."
+    },
     {
       "ticker": "HOOD",
       "headline": "Robinhood balandžio 2026 m. operating data",
