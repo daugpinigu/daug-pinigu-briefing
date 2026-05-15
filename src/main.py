@@ -386,11 +386,13 @@ def main():
     news_hours = max(int((now - midnight_vilnius).total_seconds() / 3600) + 1, 6)
     print(f"  News window: last {news_hours}h (since 00:00 Vilnius)")
 
-    print("  Fetching market news (today only, quality filtered)...")
-    market_news = _safe('market news',
-                        lambda: fetch_market_news(max_total=6, hours_window=news_hours),
-                        [])
-    print(f"    -> {len(market_news)} market headlines")
+    # QUALITY OVER QUANTITY: drop generic market_news RSS fetch entirely.
+    # It surfaces random unrelated stories (ice cream stocks, Australian
+    # grocery lawsuits, etc) that have nothing to do with Radoslav's
+    # watchlist. Macro/regulatory/geopolitical coverage now comes through
+    # IBKR news (filtered), manual notes (curated), YouTube synthesis,
+    # and the macro events section — not generic news RSS.
+    market_news = []
 
     print("  Fetching mover catalysts (today only)...")
     big_movers = [m['symbol'] for m in (watchlist['gainers'] + watchlist['losers'])
