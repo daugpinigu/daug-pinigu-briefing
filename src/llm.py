@@ -256,17 +256,34 @@ STRAIPSNIO TEKSTAS:
     try:
         resp = _llm_call_with_retry(client, prompt, model, max_tokens=700)
         text = resp.content[0].text.strip() if resp.content else ''
-        m = re.search(r'\{.*\}', text, re.DOTALL)
-        if not m:
+        # Strip markdown code fences if present — some LLM responses wrap JSON
+        # in ```json ... ``` despite the "no explanation" instruction.
+        fence_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
+        if fence_match:
+            json_str = fence_match.group(1)
+        else:
+            m = re.search(r'\{.*\}', text, re.DOTALL)
+            json_str = m.group(0) if m else ''
+        if not json_str:
+            # No JSON found — return raw text as analysis after cleanup
             return {'metrics': [], 'analysis': _cleanup_text(text)}
         try:
-            data = _json.loads(m.group(0))
+            data = _json.loads(json_str)
+            return {
+                'metrics': data.get('metrics', []) or [],
+                'analysis': _cleanup_text(data.get('analysis', '')),
+            }
         except _json.JSONDecodeError:
-            return {'metrics': [], 'analysis': _cleanup_text(text)}
-        return {
-            'metrics': data.get('metrics', []) or [],
-            'analysis': _cleanup_text(data.get('analysis', '')),
-        }
+            # JSON malformed — extract "analysis" field via regex as a last resort
+            # so we never surface raw JSON code-fence text to the user.
+            analysis_match = re.search(r'"analysis"\s*:\s*"([^"]*(?:\\.[^"]*)*)"', json_str, re.DOTALL)
+            if analysis_match:
+                analysis = analysis_match.group(1).replace('\\"', '"').replace('\\n', ' ')
+                return {'metrics': [], 'analysis': _cleanup_text(analysis)}
+            # Final fallback: strip JSON syntax and code fences from raw text
+            cleaned = re.sub(r'```(?:json)?', '', text).strip()
+            cleaned = re.sub(r'^[\{\}\[\]",]+|[\{\}\[\]",]+$', '', cleaned).strip()
+            return {'metrics': [], 'analysis': _cleanup_text(cleaned) if cleaned else ''}
     except Exception as e:
         print(f"  warn: LLM analyze_news failed: {e}")
         return {'metrics': [], 'analysis': ''}
@@ -542,7 +559,33 @@ JOKIO ICONS, jokių brūkšnių (em-dash), tik trumpi "-"."""
         return {}
 
 
+def _format_market_context(market_context) -> str:
+    """Format indices/crypto/futures dict into ground-truth block for LLM prompts.
+
+    Prevents LLM from hallucinating stale levels (e.g. S&P 500 5700 when actual 7500).
+    """
+    if not market_context:
+        return "(nepateikta - nesinaudoti konkrečiomis indeksų reikšmėmis)"
+    lines = []
+    for item in market_context.get('indices', []):
+        name = item.get('name', item.get('symbol', ''))
+        price = item.get('price')
+        chg = item.get('change_pct')
+        if price is not None:
+            line = f"  {name}: {price:.0f}" if price > 100 else f"  {name}: {price:.2f}"
+            if chg is not None:
+                line += f" ({chg:+.2f}%)"
+            lines.append(line)
+    for item in market_context.get('crypto', [])[:3]:
+        sym = item.get('symbol', '')
+        price = item.get('price')
+        if price is not None:
+            lines.append(f"  {sym}: ${price:,.0f}" if price > 100 else f"  {sym}: ${price:.2f}")
+    return '\n'.join(lines) if lines else "(nepateikta)"
+
+
 def synthesize_youtube_insights(videos: list, watchlist: list,
+                                market_context: dict = None,
                                 model: str = DEFAULT_MODEL) -> str:
     """Synthesize multiple YouTube video transcripts into one investor narrative.
 
@@ -603,6 +646,15 @@ VENGTI:
 - "Matau YouTube'e..." / "Vienas analitikas sakė..." / "Kažkas teigia..." - VISKAS turi būti tavo pamąstymai
 - Generic frazių ("rinka neaišku", "viskas priklauso")
 - Brūkšnių (em-dash) - tik trumpi "-"
+
+KRITINĖS ANTI-HALIUCINACIJOS TAISYKLĖS:
+- NEMĖTYTI konkrečių indeksų skaičių (S&P 500, Nasdaq, Dow, VIX) UŽ ŠALTINIŲ ribų. Jei ŠALTINIO transcript'e ar MARKET CONTEXT bloke nėra konkrečios kainos - NEMINĖK skaičiaus.
+- NEPATEIKTI konkrečių akcijų kainų ($X.XX) ar P/E rodiklių, jei jų nėra šaltiniuose.
+- Jei nori paliesti rinkos lygį - naudok DABARTINĮ MARKET CONTEXT bloką kaip vienintelę kainų tiesos šaltinį.
+- Jei abejoji - rašyk apie tendenciją ("istoriniai aukštumos", "nauji rekordai") be specifinio skaičiaus.
+
+DABARTINIS MARKET CONTEXT (vienintelė tiesa kainoms):
+{_format_market_context(market_context)}
 
 ŠALTINIAI:
 {context_block}

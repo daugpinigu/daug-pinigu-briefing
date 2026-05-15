@@ -506,12 +506,15 @@ def main():
             commented = sum(1 for e in high_impact_with_actual if e.get('llm_analysis'))
             print(f"    -> {commented}/{len(high_impact_with_actual[:4])} events with commentary")
 
-        # YouTube synthesis: combine all video transcripts into one narrative
+        # YouTube synthesis: combine all video transcripts into one narrative.
+        # Pass live market context to prevent stale-data hallucination (e.g.
+        # LLM citing S&P 500 5700 when actual is 7500).
         yt_synthesis = ''
         if yt_videos:
+            market_ctx = {'indices': indices, 'crypto': crypto}
             print(f"  LLM synthesizing {len(yt_videos)} YouTube videos into investor narrative...")
             yt_synthesis = _safe('YouTube synthesis',
-                                  lambda: synthesize_youtube_insights(yt_videos, STOCKS), '')
+                                  lambda: synthesize_youtube_insights(yt_videos, STOCKS, market_ctx), '')
             print(f"    -> {len(yt_synthesis)} chars of synthesis")
 
         if reddit_posts:
