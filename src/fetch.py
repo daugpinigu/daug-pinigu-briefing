@@ -2029,12 +2029,13 @@ def _fmt_money(v: float) -> str:
     return f"+${v:.0f}"
 
 
-def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4) -> list:
+def fetch_mover_catalysts(mover_symbols: list, max_per: int = 1, max_total: int = 4,
+                          hours_window: int = 24) -> list:
     """For top movers, search news that explains the move. Filtered for catalysts."""
     import concurrent.futures
     from datetime import datetime as dt, timezone, timedelta
 
-    cutoff = dt.now(timezone.utc) - timedelta(hours=24)
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
 
     def one(sym):
         try:

@@ -380,21 +380,31 @@ def main():
                     [])
     print(f"    -> {len(insider)} watchlist insider buys")
 
-    print("  Fetching market news (quality filtered)...")
-    market_news = _safe('market news', lambda: fetch_market_news(max_total=6), [])
+    # News filtering: only TODAY's news (since midnight Vilnius).
+    # Per Radoslav request - yesterday's news gone, only fresh items each day.
+    midnight_vilnius = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    news_hours = max(int((now - midnight_vilnius).total_seconds() / 3600) + 1, 6)
+    print(f"  News window: last {news_hours}h (since 00:00 Vilnius)")
+
+    print("  Fetching market news (today only, quality filtered)...")
+    market_news = _safe('market news',
+                        lambda: fetch_market_news(max_total=6, hours_window=news_hours),
+                        [])
     print(f"    -> {len(market_news)} market headlines")
 
-    print("  Fetching mover catalysts...")
+    print("  Fetching mover catalysts (today only)...")
     big_movers = [m['symbol'] for m in (watchlist['gainers'] + watchlist['losers'])
                   if abs(m['change_pct']) >= 5.0]
     mover_news = _safe('mover catalysts',
-                       lambda: fetch_mover_catalysts(big_movers, max_per=1, max_total=4),
+                       lambda: fetch_mover_catalysts(big_movers, max_per=1, max_total=4,
+                                                     hours_window=news_hours),
                        [])
     print(f"    -> {len(mover_news)} mover catalysts (from {len(big_movers)} big movers)")
 
-    print("  Fetching watchlist catalysts (M&A, FDA, lawsuits, buybacks across all 50 tickers)...")
+    print("  Fetching watchlist catalysts (today only - M&A, FDA, lawsuits, buybacks)...")
     wl_catalysts = _safe('watchlist catalysts',
-                         lambda: fetch_watchlist_catalysts(STOCKS, max_total=12, hours_window=48),  # 2 dienos
+                         lambda: fetch_watchlist_catalysts(STOCKS, max_total=12,
+                                                            hours_window=news_hours),
                          [])
     print(f"    -> {len(wl_catalysts)} watchlist catalyst items")
 
