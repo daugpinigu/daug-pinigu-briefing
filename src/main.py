@@ -1,7 +1,7 @@
 """Daily briefing orchestrator. Run once per day."""
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import pytz
 
@@ -380,11 +380,24 @@ def main():
                     [])
     print(f"    -> {len(insider)} watchlist insider buys")
 
-    # News filtering: only TODAY's news (since midnight Vilnius).
-    # Per Radoslav request - yesterday's news gone, only fresh items each day.
+    # News filtering: TODAY's news + weekend catch-up on Mondays.
+    # Per Radoslav: yesterday's news gone, only fresh items each day - BUT
+    # Monday morning must cover Friday US close through weekend (otherwise
+    # weekend developments like geopolitical summits, weekend earnings, or
+    # Sunday futures action would all be filtered out).
     midnight_vilnius = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    news_hours = max(int((now - midnight_vilnius).total_seconds() / 3600) + 1, 6)
-    print(f"  News window: last {news_hours}h (since 00:00 Vilnius)")
+    weekday = now.weekday()  # 0=Monday, 4=Friday, 5=Saturday, 6=Sunday
+    if weekday == 0:  # Monday: stretch back to Friday's Vilnius midnight = 3 days
+        cutoff_dt = midnight_vilnius - timedelta(days=3)
+        print(f"  Monday detected - weekend catch-up window enabled")
+    elif weekday == 5:  # Saturday (shouldn't run scheduled, but manual)
+        cutoff_dt = midnight_vilnius - timedelta(days=1)
+    elif weekday == 6:  # Sunday (shouldn't run scheduled, but manual)
+        cutoff_dt = midnight_vilnius - timedelta(days=2)
+    else:  # Tue-Fri: just since today's Vilnius midnight
+        cutoff_dt = midnight_vilnius
+    news_hours = max(int((now - cutoff_dt).total_seconds() / 3600) + 1, 6)
+    print(f"  News window: last {news_hours}h (since {cutoff_dt.strftime('%a %m-%d %H:%M')} Vilnius)")
 
     # QUALITY OVER QUANTITY: drop generic market_news RSS fetch entirely.
     # It surfaces random unrelated stories (ice cream stocks, Australian
