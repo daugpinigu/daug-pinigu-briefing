@@ -639,6 +639,21 @@
     align-items: center;
     gap: 12px;
   }
+  .insider-row.insider-sell { border-left-color: #ff7373; }
+  .insider-row.insider-sell .insider-ticker { background: rgba(255,115,115,0.15); color: #ff7373; }
+  .insider-value.sell { color: #ff7373; }
+  .tx-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 1px 5px;
+    margin-right: 4px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .tx-tag.buy { background: rgba(126,216,126,0.2); color: #7ed87e; }
+  .tx-tag.sell { background: rgba(255,115,115,0.2); color: #ff7373; }
   .insider-row.recent-week {
     border-left: 3px solid #f4cc6b;
     background: rgba(244,204,107,0.06);
@@ -1334,19 +1349,19 @@
 {% if insider %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title" style="color:#7ed87e">Watchlist Insider Buys</div>
+    <div class="section-title" style="color:#7ed87e">Watchlist Insider Activity</div>
     <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ insider|length }}</span>
   </div>
   <div class="insider-list">
     {% for x in insider %}
-    <div class="insider-row watchlist-hit{% if x.recent_week %} recent-week{% endif %}">
+    <div class="insider-row watchlist-hit insider-{{ x.tx_type or 'buy' }}{% if x.recent_week %} recent-week{% endif %}">
       <div class="insider-row-main">
         <div class="insider-ticker">{{ x.ticker }}</div>
         <div class="insider-info">
-          <div class="insider-name">{{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
-          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} buys · viso {{ x.value_str }} · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+          <div class="insider-name">{% if x.tx_type == 'sell' %}<span class="tx-tag sell">SELL</span>{% else %}<span class="tx-tag buy">BUY</span>{% endif %} {{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
+          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} {{ 'sells' if x.tx_type == 'sell' else 'buys' }} · viso {{ x.value_str }} · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
         </div>
-        <div class="insider-value">{{ x.value_str }}</div>
+        <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
       </div>
       {% if x.buys and x.buys|length > 1 %}
       <div class="insider-breakdown">

@@ -1884,7 +1884,12 @@ def _parse_money(s: str) -> float:
 
 
 def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
-    """Fetch all insider transactions for one ticker via OpenInsider per-ticker page."""
+    """Fetch all insider transactions for one ticker via OpenInsider per-ticker page.
+
+    Includes BOTH purchases (P) and sales (S). tx_type is normalized to 'buy'
+    or 'sell' for downstream filtering/rendering. Hard cutoff at 2025-01-01
+    so anything pre-2025 is excluded regardless of the days parameter.
+    """
     from datetime import datetime as dt, timedelta
     url = f"http://openinsider.com/screener?s={ticker}"
     try:
@@ -1901,6 +1906,10 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
     # 0: flag, 1: filing, 2: trade, 3: ticker, 4: insider, 5: title,
     # 6: tx_type, 7: price, 8: qty, 9: shares_owned, 10: %, 11: value
     cutoff = dt.now() - timedelta(days=days)
+    # Hard floor: never include anything before 2025-01-01 even if days is larger.
+    hard_floor = dt(2025, 1, 1)
+    if cutoff < hard_floor:
+        cutoff = hard_floor
     hits = []
     for row in table.find_all('tr')[1:]:
         cells = [c.get_text(strip=True) for c in row.find_all('td')]
@@ -1912,22 +1921,37 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
             continue
         if trade_dt < cutoff:
             continue
-        if 'P - Purchase' not in cells[6]:
-            continue
+        tx_raw = cells[6]
+        if 'P - Purchase' in tx_raw:
+            tx_type = 'buy'
+        elif 'S - Sale' in tx_raw:
+            tx_type = 'sell'
+        else:
+            continue  # skip awards, gifts, option exercises etc.
         title = cells[5]
         if not INSIDER_KEY_ROLES.search(title):
             continue
-        value = _parse_money(cells[11])
+        raw_value = _parse_money(cells[11])
+        # Sales are reported as negative in OpenInsider (e.g. "-$55,688,750").
+        # Use absolute value for filtering + storage so threshold logic and
+        # sorting work consistently across buys and sells.
+        value = abs(raw_value)
         if value < min_value:
             continue
+        # Normalize the value_str display: drop the leading "-" on sells so it
+        # reads as "$55.7M" with the SELL tag conveying direction.
+        value_str = cells[11].replace('-$', '$').replace('+$', '+$')
+        if tx_type == 'sell':
+            value_str = value_str.replace('+', '').strip()
         hits.append({
             'ticker': ticker,
             'insider': cells[4][:30],
             'title': title[:25],
+            'tx_type': tx_type,
             'price': cells[7],
-            'qty': cells[8],
+            'qty': cells[8].lstrip('-'),  # drop minus sign on qty for sells
             'value': value,
-            'value_str': cells[11],
+            'value_str': value_str,
             'filing_date': cells[1][:10],
             'trade_date': cells[2],
         })
@@ -1936,11 +1960,14 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
 
 def fetch_insider_purchases(watchlist: list, days: int = 365,
                             min_value: float = 10_000, max_results: int = 15) -> list:
-    """Fetch C-suite insider PURCHASES for each watchlist ticker (parallel).
+    """Fetch C-suite insider transactions (BUYS + SELLS) for each watchlist ticker.
 
-    Aggregates repeat buys by same insider+ticker into one entry to surface
-    distinct signals (instead of letting one CEO's weekly buys fill all slots).
-    Sorts by total value, then recency.
+    Aggregates repeat transactions by same insider+ticker+tx_type into one entry
+    so we surface distinct signals instead of letting one CEO's weekly trades
+    fill all slots. Sorts: recent-week first, then by total value DESC.
+
+    Hard cutoff at 2025-01-01 (see _fetch_ticker_insider) — anything earlier
+    is excluded regardless of `days` parameter.
     """
     import concurrent.futures
     watchlist_set = set(watchlist or [])
@@ -1957,11 +1984,13 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             except Exception:
                 continue
 
-    # Aggregate by (ticker, insider) — same person buying repeatedly = 1 entry.
-    # Preserve individual transactions in `buys` list so template can render the breakdown.
+    # Aggregate by (ticker, insider, tx_type) — same person buying repeatedly = 1 entry,
+    # same person selling repeatedly = SEPARATE entry. We do not net buys against sells
+    # because the signal differs (a CEO who bought $1M then sold $1M is not a wash —
+    # it's two distinct actions with separate context).
     grouped = {}
     for h in all_hits:
-        key = (h['ticker'], h['insider'])
+        key = (h['ticker'], h['insider'], h['tx_type'])
         single = {
             'trade_date': h['trade_date'],
             'qty': h['qty'],
@@ -1974,6 +2003,7 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
                 'ticker': h['ticker'],
                 'insider': h['insider'],
                 'title': h['title'],
+                'tx_type': h['tx_type'],
                 'price': h['price'],
                 'qty': h['qty'],
                 'value': h['value'],
@@ -1997,7 +2027,7 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             # Reformat aggregated value
             g['value_str'] = _fmt_money(g['value'])
 
-    # Sort buys within each group by date DESC
+    # Sort transactions within each group by date DESC
     for g in grouped.values():
         g['buys'].sort(key=lambda b: b['trade_date'], reverse=True)
 
