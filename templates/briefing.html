@@ -629,114 +629,132 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .insider-list { display: flex; flex-direction: column; gap: 6px; }
-  .insider-row {
-    background: rgba(126,216,126,0.04);
-    border-left: 3px solid #7ed87e;
+  .insider-list { display: flex; flex-direction: column; gap: 4px; }
+  .insider-group {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 6px;
-    padding: 10px 14px;
+    padding: 6px 8px;
+  }
+  .insider-group-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
   }
-  .insider-row.insider-sell { border-left-color: #ff7373; }
-  .insider-row.insider-sell .insider-ticker { background: rgba(255,115,115,0.15); color: #ff7373; }
-  .insider-value.sell { color: #ff7373; }
+  .insider-group-ticker {
+    font-size: 13px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .insider-group-summary {
+    font-size: 10px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .insider-group-summary .gs-buy { color: #7ed87e; }
+  .insider-group-summary .gs-sell { color: #ff7373; }
+  .insider-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 4px 4px;
+    font-size: 11.5px;
+    border-radius: 4px;
+  }
+  .insider-row.recent-week {
+    background: rgba(244,204,107,0.07);
+  }
   .tx-tag {
     display: inline-block;
     font-size: 9px;
     font-weight: 800;
-    padding: 1px 5px;
-    margin-right: 4px;
+    padding: 2px 5px;
     border-radius: 3px;
     letter-spacing: 0.5px;
-    vertical-align: middle;
+    text-align: center;
+    width: 36px;
   }
   .tx-tag.buy { background: rgba(126,216,126,0.2); color: #7ed87e; }
   .tx-tag.sell { background: rgba(255,115,115,0.2); color: #ff7373; }
-  .insider-row.recent-week {
-    border-left: 3px solid #f4cc6b;
-    background: rgba(244,204,107,0.06);
-  }
-  .insider-row-main {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .insider-breakdown {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px dashed rgba(255,255,255,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .insider-buy-row {
-    display: grid;
-    grid-template-columns: 92px 1fr 1fr auto;
-    gap: 8px;
-    font-size: 11.5px;
-    color: #c8cfdc;
-    font-variant-numeric: tabular-nums;
-    padding: 2px 0 2px 8px;
-  }
-  .ib-date { color: #8a92a3; }
-  .ib-qty { color: #c8cfdc; }
-  .ib-price { color: #8a92a3; }
-  .ib-value { color: #7ed87e; font-weight: 600; text-align: right; }
-  .insider-fresh {
-    font-size: 9px;
-    font-weight: 700;
-    padding: 2px 6px;
-    margin-left: 6px;
-    border-radius: 3px;
-    background: rgba(244,204,107,0.2);
-    color: #f4cc6b;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    vertical-align: middle;
-  }
-  .insider-row.watchlist-hit {
-    background: linear-gradient(90deg, rgba(244,204,107,0.12) 0%, rgba(126,216,126,0.04) 100%);
-    border-left: 3px solid #f4cc6b;
-  }
-  .insider-ticker {
-    font-size: 14px;
-    font-weight: 800;
-    color: #7ed87e;
-    background: rgba(126,216,126,0.12);
-    padding: 4px 10px;
-    border-radius: 4px;
-    min-width: 60px;
-    text-align: center;
-  }
-  .watchlist-hit .insider-ticker {
-    color: #f4cc6b;
-    background: rgba(244,204,107,0.15);
-  }
-  .insider-info { flex: 1; min-width: 0; }
+  .insider-info { min-width: 0; }
   .insider-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: #e6e8ee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .insider-title {
     color: #8a92a3;
-    font-size: 11px;
-    margin-left: 6px;
+    font-size: 10px;
+    margin-left: 4px;
+    font-weight: 400;
   }
   .insider-meta {
-    font-size: 11px;
+    font-size: 10.5px;
     color: #6c7588;
-    margin-top: 2px;
+    margin-top: 1px;
     font-variant-numeric: tabular-nums;
   }
   .insider-value {
-    font-size: 14px;
+    font-size: 12.5px;
     font-weight: 800;
     color: #7ed87e;
     font-variant-numeric: tabular-nums;
+    text-align: right;
   }
+  .insider-value.sell { color: #ff7373; }
+  .insider-fresh {
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 2px;
+    background: rgba(244,204,107,0.2);
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .insider-breakdown {
+    margin: 2px 0 4px 52px;
+    padding-left: 8px;
+    border-left: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .insider-buy-row {
+    display: grid;
+    grid-template-columns: 32px 78px 1fr auto;
+    gap: 6px;
+    font-size: 10.5px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+    padding: 1px 0;
+    align-items: center;
+  }
+  .ib-tag {
+    font-size: 8px;
+    font-weight: 800;
+    padding: 1px 3px;
+    border-radius: 2px;
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
+  .ib-tag.buy { background: rgba(126,216,126,0.15); color: #7ed87e; }
+  .ib-tag.sell { background: rgba(255,115,115,0.15); color: #ff7373; }
+  .ib-date { color: #8a92a3; }
+  .ib-qty { color: #c8cfdc; }
+  .ib-value { font-weight: 600; text-align: right; }
+  .ib-value.buy { color: #7ed87e; }
+  .ib-value.sell { color: #ff7373; }
 
   .news-list { display: flex; flex-direction: column; gap: 10px; }
   .news-row {
@@ -1353,13 +1371,25 @@
     <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ insider|length }}</span>
   </div>
   <div class="insider-list">
-    {% for x in insider %}
-    <div class="insider-row watchlist-hit insider-{{ x.tx_type or 'buy' }}{% if x.recent_week %} recent-week{% endif %}">
-      <div class="insider-row-main">
-        <div class="insider-ticker">{{ x.ticker }}</div>
+    {% for ticker, rows in insider|groupby('ticker') %}
+    {% set rows = rows|list %}
+    {% set buy_count = rows|selectattr('tx_type','equalto','buy')|list|length %}
+    {% set sell_count = rows|selectattr('tx_type','equalto','sell')|list|length %}
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">{{ ticker }}</div>
+        <div class="insider-group-summary">
+          {% if buy_count %}<span class="gs-buy">{{ buy_count }} buy{% if buy_count > 1 %}s{% endif %}</span>{% endif %}
+          {% if buy_count and sell_count %} · {% endif %}
+          {% if sell_count %}<span class="gs-sell">{{ sell_count }} sell{% if sell_count > 1 %}s{% endif %}</span>{% endif %}
+        </div>
+      </div>
+      {% for x in rows %}
+      <div class="insider-row{% if x.recent_week %} recent-week{% endif %}">
+        <span class="tx-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
         <div class="insider-info">
-          <div class="insider-name">{% if x.tx_type == 'sell' %}<span class="tx-tag sell">SELL</span>{% else %}<span class="tx-tag buy">BUY</span>{% endif %} {{ x.insider }} <span class="insider-title">{{ x.title }}</span>{% if x.recent_week %} <span class="insider-fresh">šią savaitę</span>{% endif %}</div>
-          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} {{ 'sells' if x.tx_type == 'sell' else 'buys' }} · viso {{ x.value_str }} · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+          <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}</div>
+          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
         </div>
         <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
       </div>
@@ -1367,14 +1397,15 @@
       <div class="insider-breakdown">
         {% for b in x.buys %}
         <div class="insider-buy-row">
+          <span class="ib-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
           <span class="ib-date">{{ b.trade_date }}</span>
-          <span class="ib-qty">{{ b.qty }} sh</span>
-          <span class="ib-price">@ {{ b.price }}</span>
-          <span class="ib-value">{{ b.value_str }}</span>
+          <span class="ib-qty">{{ b.qty }} sh @ {{ b.price }}</span>
+          <span class="ib-value {{ x.tx_type or 'buy' }}">{{ b.value_str }}</span>
         </div>
         {% endfor %}
       </div>
       {% endif %}
+      {% endfor %}
     </div>
     {% endfor %}
   </div>

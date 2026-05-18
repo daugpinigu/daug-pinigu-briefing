@@ -2043,9 +2043,25 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             g['recent_week'] = False
 
     aggregated = list(grouped.values())
-    # Sort: this-week buys first, then by total value DESC.
-    aggregated.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
-    return aggregated[:max_results]
+    # Balance buys vs sells: big sells (Lisa Su $55M, Bezos $5B) will always
+    # dominate by value, crowding out smaller but signal-rich BUYS (e.g. SOFI
+    # CEO Anthony Noto). Split into two pools, take top N of each independently,
+    # then merge so both directions are represented.
+    buys = [x for x in aggregated if x.get('tx_type') == 'buy']
+    sells = [x for x in aggregated if x.get('tx_type') == 'sell']
+    buys.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
+    sells.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
+    half = max(max_results // 2, 1)
+    selected = buys[:max_results - min(len(sells), half)] + sells[:half]
+    # Final ordering: group by ticker (alphabetical), buys before sells inside
+    # each ticker, then recent_week first, then value DESC.
+    selected.sort(key=lambda x: (
+        x['ticker'],
+        0 if x.get('tx_type') == 'buy' else 1,
+        not x.get('recent_week'),
+        -x['value'],
+    ))
+    return selected
 
 
 def _fmt_money(v: float) -> str:

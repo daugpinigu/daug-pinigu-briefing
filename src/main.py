@@ -374,11 +374,11 @@ def main():
         tx_count = sum(1 for v in yt_videos if v.get('transcript'))
         print(f"    -> {len(yt_videos)} kept ({tx_count} with transcript)")
 
-    print("  Fetching insider purchases (watchlist, past 12mo, aggregated by insider)...")
+    print("  Fetching insider activity (watchlist, since 2025-01-01, aggregated by insider)...")
     insider = _safe('insider',
-                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=15),
+                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=24),
                     [])
-    print(f"    -> {len(insider)} watchlist insider buys")
+    print(f"    -> {len(insider)} watchlist insider entries")
 
     # News filtering: TODAY's news + weekend catch-up on Mondays.
     # Per Radoslav: yesterday's news gone, only fresh items each day - BUT
