@@ -141,6 +141,54 @@ def _build_placeholder_values(indices: list, crypto: list) -> dict:
     return out
 
 
+FORBIDDEN_META_PATTERNS = [
+    # AI meta-references / apologies that must never reach the published brief.
+    # If any of these match, _check_no_meta strips the manual note and logs loud.
+    r'\batsipra(?:šau|šom|šome)\b',
+    r'\bankstesn[eė] klaid',
+    r'\bmano klaid',
+    r'\bAI klaid',
+    r'\b(?:asistent|modelis)\b',
+    r'\bpataisym',
+    r'\bpatikslin',
+    r'\bperdarom?u?\b',
+    r'\bkaip min[eė]jau\b',
+    r'\bkaip raš[ai]?u anksč',
+    r'\b(?:kontekstas|patikslinimas)\s*[-:—]\s*atsipra',
+    r"\bne ['\"][^'\"]+['\"]\s*-\s*(?:active|tikra)",  # "ne 'X' - active" hidden correction
+]
+
+
+def _check_no_meta(notes: list) -> list:
+    """Programmatic safety net for the no-meta-in-published rule.
+
+    Scans each manual note's text fields for AI-meta phrases. If any forbidden
+    pattern matches, the note is REMOVED from the published set and a loud
+    warning is printed - better to ship a brief without that note than to ship
+    a note that says 'atsiprašau už ankstesnę klaidą' to paying members.
+
+    Memory rule alone wasn't enough (kept slipping through). This is the code
+    backstop per the 'Sisteminės klaidos - kode, ne atminty' rule.
+    """
+    import re
+    compiled = [re.compile(p, re.I) for p in FORBIDDEN_META_PATTERNS]
+    clean = []
+    for n in notes:
+        haystack = ' '.join(str(n.get(f, '')) for f in ('headline', 'analysis', 'long_term'))
+        for m in n.get('metrics', []):
+            haystack += ' ' + ' '.join(str(m.get(f, '')) for f in ('label', 'value', 'change'))
+        matched = None
+        for pat in compiled:
+            if pat.search(haystack):
+                matched = pat.pattern
+                break
+        if matched:
+            print(f"  Manual notes BLOCKED ({n.get('ticker','?')}): meta-text matched /{matched}/ - removed from publish")
+            continue
+        clean.append(n)
+    return clean
+
+
 def _substitute_placeholders(notes: list, values: dict) -> tuple:
     """Walk manual_notes and replace {{placeholder}} tokens with live values.
 
@@ -454,6 +502,15 @@ def main():
         print(f"  Manual notes: substituted live values for {', '.join(_ph_log['filled'])}")
     if _ph_log['missing']:
         print(f"  Manual notes WARN: unfilled placeholders {', '.join(_ph_log['missing'])}")
+
+    # Programmatic backstop for the no-meta-in-published rule. Any note that
+    # mentions "atsiprašau", "ankstesnė klaida", "patikslinimas" etc. is dropped
+    # so it cannot reach paying Discord members. Memory rule alone wasn't
+    # enough (kept slipping through), so this is the systemic fix.
+    _pre_count = len(manual_notes)
+    manual_notes = _check_no_meta(manual_notes)
+    if len(manual_notes) < _pre_count:
+        print(f"  Manual notes: dropped {_pre_count - len(manual_notes)} note(s) for AI-meta content")
 
     # YouTube synthesis: pull recent videos from finance channels, fetch transcripts,
     # synthesize into "personal thoughts" prose (no source attribution shown).

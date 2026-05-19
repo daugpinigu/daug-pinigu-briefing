@@ -627,7 +627,7 @@ Jei viskas teisinga: {{"discrepancies":[],"date_issues":[]}}
 
     try:
         resp = _llm_call_with_retry(client, prompt, model, max_tokens=800)
-        text = resp.strip()
+        text = resp.content[0].text.strip() if resp.content else ''
         # Strip markdown code fences if present
         fence = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
         if fence:
