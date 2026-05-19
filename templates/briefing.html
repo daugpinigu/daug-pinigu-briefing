@@ -42,6 +42,25 @@
     color: #8a92a3;
     letter-spacing: 0.3px;
   }
+  .verification-bar {
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(126,216,126,0.05);
+    border-left: 2px solid rgba(126,216,126,0.4);
+    border-radius: 3px;
+    font-size: 10.5px;
+    color: #8a92a3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .vb-sep { color: #4a5260; }
+  .vb-date { color: #c8cfdc; font-weight: 600; }
+  .vb-fetched { color: #8a92a3; }
+  .vb-filled { color: #7ed87e; }
+  .vb-critic-ok { color: #7ed87e; }
+  .vb-critic-warn { color: #f4cc6b; font-weight: 600; }
 
   .market-snapshot {
     display: grid;
@@ -1133,6 +1152,24 @@
 <header>
   <h1>DIENOS BRIEFING</h1>
   <div class="date-line">{{ date_long }} · daug_pinigu daily</div>
+  {% if verification %}
+  <div class="verification-bar">
+    <span class="vb-date">📅 {{ today_iso }}</span>
+    <span class="vb-sep">·</span>
+    <span class="vb-fetched">Live data {{ verification.live_data_fetched_at }} Vilnius</span>
+    {% if verification.filled_placeholders %}
+    <span class="vb-sep">·</span>
+    <span class="vb-filled">✓ {{ verification.filled_placeholders|length }} live values: {{ verification.filled_placeholders|join(', ') }}</span>
+    {% endif %}
+    {% if verification.critique and (verification.critique.discrepancies or verification.critique.date_issues) %}
+    <span class="vb-sep">·</span>
+    <span class="vb-critic-warn">⚠ {{ verification.critique.discrepancies|length }} price + {{ verification.critique.date_issues|length }} date issues flagged</span>
+    {% elif verification.critique %}
+    <span class="vb-sep">·</span>
+    <span class="vb-critic-ok">✓ critic clean</span>
+    {% endif %}
+  </div>
+  {% endif %}
 </header>
 
 {% if indices %}

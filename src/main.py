@@ -20,6 +20,7 @@ from llm import (
     extract_earnings_details, analyze_earnings_card,
     analyze_reddit_thread, analyze_macro_event,
     synthesize_youtube_insights, research_past_event_with_web,
+    critique_manual_notes,
 )
 from render import render_html, html_to_png
 from send import send_photo
@@ -91,6 +92,98 @@ def _load_manual_notes() -> list:
                 pass
         out.append(n)
     return out
+
+
+def _build_placeholder_values(indices: list, crypto: list) -> dict:
+    """Build {placeholder_name: formatted_value} from live market data.
+
+    Layer 1 of the manual-notes anti-stale-data system. Pipeline pulls live
+    futures + crypto, this builder maps them onto short names like 'wti',
+    'brent', 'gold', 'btc' that manual_notes.json can reference via
+    {{wti}} / {{brent}} placeholders. Substituting at runtime means I
+    can't bake a stale "WTI $80" into a note - the system fills the
+    actual live price every run.
+    """
+    from watchlist import PLACEHOLDER_SYMBOLS, PLACEHOLDER_CRYPTO
+    sym_to_index = {i['symbol']: i for i in (indices or [])}
+    # Crypto items use 'symbol' field like 'BTC', 'ETH' - normalize to lower.
+    sym_to_crypto = {(c.get('symbol') or '').lower(): c for c in (crypto or [])}
+    out = {}
+    for name, sym in PLACEHOLDER_SYMBOLS.items():
+        item = sym_to_index.get(sym)
+        if not item or item.get('price') is None:
+            continue
+        price = item['price']
+        # VIX/DXY render as plain numbers, others as $-prefixed.
+        if name in ('vix', 'dxy'):
+            out[name] = f"{price:.2f}"
+        elif price >= 1000:
+            out[name] = f"${price:,.2f}"
+        else:
+            out[name] = f"${price:.2f}"
+        # Also expose change_pct as {name}_pct for headline use.
+        cp = item.get('change_pct')
+        if cp is not None:
+            out[f"{name}_pct"] = f"{cp:+.2f}%"
+    for name, _coin_id in PLACEHOLDER_CRYPTO.items():
+        # Lookup by lowercase symbol (e.g. 'btc') rather than coin_id.
+        item = sym_to_crypto.get(name)
+        if not item or item.get('price') is None:
+            continue
+        price = item['price']
+        if price >= 1000:
+            out[name] = f"${price:,.0f}"
+        else:
+            out[name] = f"${price:,.2f}"
+        cp = item.get('change_pct')
+        if cp is not None:
+            out[f"{name}_pct"] = f"{cp:+.2f}%"
+    return out
+
+
+def _substitute_placeholders(notes: list, values: dict) -> tuple:
+    """Walk manual_notes and replace {{placeholder}} tokens with live values.
+
+    Applies to: headline, analysis, long_term text fields + each metric's
+    label/value/change. Returns (updated_notes, substitution_log) so the
+    pipeline can log what was filled in and what was missing.
+    """
+    import re
+    log = {'filled': [], 'missing': []}
+    pattern = re.compile(r'\{\{(\w+)\}\}')
+
+    def sub_one(text):
+        if not isinstance(text, str):
+            return text
+
+        def replace(m):
+            key = m.group(1).lower()
+            if key in values:
+                log['filled'].append(key)
+                return values[key]
+            log['missing'].append(key)
+            return m.group(0)  # leave token intact - signals an unfilled var
+        return pattern.sub(replace, text)
+
+    out = []
+    for n in notes:
+        new_n = dict(n)
+        for field in ('headline', 'analysis', 'long_term'):
+            if field in new_n:
+                new_n[field] = sub_one(new_n[field])
+        new_metrics = []
+        for m in new_n.get('metrics', []):
+            new_m = dict(m)
+            for f in ('label', 'value', 'change'):
+                if f in new_m:
+                    new_m[f] = sub_one(new_m[f])
+            new_metrics.append(new_m)
+        new_n['metrics'] = new_metrics
+        out.append(new_n)
+    # Dedup logs
+    log['filled'] = sorted(set(log['filled']))
+    log['missing'] = sorted(set(log['missing']))
+    return out, log
 
 
 def _load_ibkr_news() -> list:
@@ -350,6 +443,18 @@ def main():
     manual_notes = _load_manual_notes()
     print(f"  Loaded {len(manual_notes)} manual notes from data/manual_notes.json")
 
+    # Layer 1 of anti-stale-data: substitute {{wti}}, {{brent}}, {{gold}},
+    # {{vix}}, {{btc}}, etc. placeholders in manual_notes with LIVE prices.
+    # Manual notes should never hard-code prices that drift - the substitution
+    # engine fills them at run time from the same fetch_index_snapshot data
+    # the dashboard uses, guaranteeing alignment.
+    placeholder_values = _build_placeholder_values(indices, crypto)
+    manual_notes, _ph_log = _substitute_placeholders(manual_notes, placeholder_values)
+    if _ph_log['filled']:
+        print(f"  Manual notes: substituted live values for {', '.join(_ph_log['filled'])}")
+    if _ph_log['missing']:
+        print(f"  Manual notes WARN: unfilled placeholders {', '.join(_ph_log['missing'])}")
+
     # YouTube synthesis: pull recent videos from finance channels, fetch transcripts,
     # synthesize into "personal thoughts" prose (no source attribution shown).
     print("  Fetching YouTube videos (last 48h, finance channels)...")
@@ -581,8 +686,35 @@ def main():
     )[:8]
     earnings_top = earnings[:10]
 
+    # Layer 2 of anti-stale-data: LLM critic compares manual_notes claims
+    # against live market_context + today's date. Logs discrepancies fail-loud.
+    # We don't BLOCK on high severity (yet) - first run is observability only,
+    # so I can see what the critic catches without breaking the brief delivery.
+    critique_result = {'discrepancies': [], 'date_issues': [], 'severity': 'ok'}
+    if manual_notes and llm_is_enabled():
+        print("  LLM critic: checking manual_notes for stale prices / date drift...")
+        critique_ctx = {'indices': indices, 'crypto': crypto}
+        today_lt = f"{now.year}-{now.month:02d}-{now.day:02d} ({format_date_lt(now)})"
+        critique_result = _safe('manual notes critic',
+                                lambda: critique_manual_notes(manual_notes, critique_ctx,
+                                                              today_lt),
+                                {'discrepancies': [], 'date_issues': [], 'severity': 'ok'})
+        d_count = len(critique_result.get('discrepancies', []))
+        date_count = len(critique_result.get('date_issues', []))
+        print(f"    -> {d_count} price discrepancies, {date_count} date issues, severity={critique_result.get('severity')}")
+        for d in critique_result.get('discrepancies', []):
+            print(f"       PRICE: '{d.get('claim','?')}' vs live '{d.get('live','?')}' ({d.get('severity','?')})")
+        for d in critique_result.get('date_issues', []):
+            print(f"       DATE:  '{d.get('claim','?')}' vs actual '{d.get('actual','?')}' ({d.get('severity','?')})")
+
     context = {
         'date_long': format_date_lt(now),
+        'today_iso': now.strftime('%Y-%m-%d'),
+        'verification': {
+            'filled_placeholders': _ph_log.get('filled', []),
+            'critique': critique_result,
+            'live_data_fetched_at': now.strftime('%H:%M'),
+        },
         'macro_events': macro_sorted,
         'earnings': earnings_top,
         'watchlist': watchlist,

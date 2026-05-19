@@ -18,16 +18,43 @@ CRYPTO = [
     ('bittensor', 'TAO', 'Bittensor'),
 ]
 
-# Futures of interest (yfinance syntax)
+# Futures of interest (yfinance syntax). Order matters for display.
+# All these are also available as ground-truth substitutions in manual_notes
+# via the placeholder mechanism (e.g. {{wti}}, {{brent}}, {{gold}}, {{vix}}).
 FUTURES = [
     ('ES=F', 'S&P 500'),
     ('NQ=F', 'Nasdaq 100'),
     ('YM=F', 'Dow'),
     ('RTY=F', 'Russell 2k'),
     ('^VIX', 'VIX'),
-    ('CL=F', 'Crude Oil'),
+    ('CL=F', 'WTI Crude'),
+    ('BZ=F', 'Brent Crude'),
     ('GC=F', 'Gold'),
+    ('SI=F', 'Silver'),
+    ('DX-Y.NYB', 'DXY'),
 ]
+
+# Map placeholder name -> yfinance symbol for live-data substitution in
+# manual_notes. Pipeline replaces {{name}} with the live spot price after
+# fetching indices/crypto. Keep names short and lowercase.
+PLACEHOLDER_SYMBOLS = {
+    'sp500': 'ES=F',
+    'nasdaq': 'NQ=F',
+    'dow': 'YM=F',
+    'russell': 'RTY=F',
+    'vix': '^VIX',
+    'wti': 'CL=F',
+    'brent': 'BZ=F',
+    'gold': 'GC=F',
+    'silver': 'SI=F',
+    'dxy': 'DX-Y.NYB',
+}
+
+PLACEHOLDER_CRYPTO = {
+    'btc': 'bitcoin',
+    'eth': 'ethereum',
+    'sol': 'solana',
+}
 
 # AI sector core - dedicated section + news tracking
 AI_TICKERS = [

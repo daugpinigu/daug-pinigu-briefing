@@ -559,6 +559,100 @@ JOKIO ICONS, jokių brūkšnių (em-dash), tik trumpi "-"."""
         return {}
 
 
+def critique_manual_notes(notes: list, market_context: dict,
+                          today_str: str,
+                          model: str = HAIKU_MODEL) -> dict:
+    """Layer 2 of anti-stale-data: LLM critic compares manual_notes text to
+    LIVE market context + today's date and flags discrepancies.
+
+    Returns {'discrepancies': [...], 'date_issues': [...], 'severity': 'ok'/'warn'/'block'}.
+    Catches numbers, dates, or claims in the notes that conflict with reality:
+      - 'WTI $80' when live WTI is $103 (price mismatch)
+      - 'S&P 5700' when live S&P 7400 (stale index level)
+      - 'today gegužės 13' when actually 19 (date drift in pasted note)
+      - 'BTC fell to $50k' when live BTC $77k (mid-thesis number mismatch)
+
+    Uses Haiku for speed (sub-2s typically). Failure modes: if LLM call fails,
+    returns severity='ok' (don't block on tooling errors), but logs the failure.
+    """
+    if not _ANTHROPIC_AVAILABLE or not notes:
+        return {'discrepancies': [], 'date_issues': [], 'severity': 'ok'}
+    client = _get_client()
+    if not client:
+        return {'discrepancies': [], 'date_issues': [], 'severity': 'ok'}
+
+    # Compress notes to text-only payload (no metadata)
+    note_payload = []
+    for n in notes:
+        chunks = [f"### Note: {n.get('ticker','?')} - {n.get('headline','')}"]
+        chunks.append(f"Released: {n.get('released_at','?')}")
+        for m in n.get('metrics', []):
+            chunks.append(f"  metric: {m.get('label','')} = {m.get('value','')} ({m.get('change','')})")
+        if n.get('analysis'):
+            chunks.append(f"  analysis: {n['analysis'][:1500]}")
+        if n.get('long_term'):
+            chunks.append(f"  long_term: {n['long_term'][:800]}")
+        note_payload.append('\n'.join(chunks))
+
+    ctx_block = _format_market_context(market_context)
+
+    prompt = f"""Tu esi fact-checker'is dienos investicinio brief'o. Tavo užduotis: rasti TIK konkrečius skaičius ar datas manual_notes tekste, kurios prieštarauja LIVE ground-truth.
+
+ŠIANDIENA YRA: {today_str}
+
+LIVE MARKET GROUND TRUTH (gauta iš realių finansų feed'ų prieš ~1min):
+{ctx_block}
+
+MANUAL NOTES TEKSTAS:
+{chr(10).join(note_payload)}
+
+UŽDUOTIS:
+1. Patikrink kiekvieną konkretų skaičių su $ ar % manual_notes. Jei skaičius prieštarauja live ground-truth (>2% nuokrypis), užfiksuok kaip discrepancy.
+2. Patikrink datas. Jei manual_note teigia "šiandien gegužės 13" o iš tikrųjų {today_str}, užfiksuok kaip date_issue.
+3. IGNORUOK: istoriniai skaičiai aiškiai prefixuoti su datą (pvz. "kovo mėn $120"), forward target'ai ("base case $300 per 3y"), konsensus prognozės ("whisper $48-50B"), expressions su "anksčiau", "praėjusią savaitę", "prieš mėnesį".
+4. FOKUSUOK į current-state pretenzijas: "WTI dabar $X", "BTC laikosi prie $X", "VIX šokteljo iki X", "šiandien Y%", "live X".
+
+Atsakymas STRICT JSON formatu (nieko daugiau):
+{{
+  "discrepancies": [
+    {{"claim": "WTI $80", "live": "$103.25", "severity": "high"}}
+  ],
+  "date_issues": [
+    {{"claim": "šiandien gegužės 13", "actual": "gegužės 19", "severity": "medium"}}
+  ]
+}}
+
+Jei viskas teisinga: {{"discrepancies":[],"date_issues":[]}}
+"""
+
+    try:
+        resp = _llm_call_with_retry(client, prompt, model, max_tokens=800)
+        text = resp.strip()
+        # Strip markdown code fences if present
+        fence = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
+        if fence:
+            text = fence.group(1)
+        import json as _json
+        result = _json.loads(text)
+        discrepancies = result.get('discrepancies', []) or []
+        date_issues = result.get('date_issues', []) or []
+        severity = 'ok'
+        for d in discrepancies + date_issues:
+            if d.get('severity') == 'high':
+                severity = 'block'
+                break
+            elif d.get('severity') == 'medium':
+                severity = 'warn'
+        return {
+            'discrepancies': discrepancies,
+            'date_issues': date_issues,
+            'severity': severity,
+        }
+    except Exception as e:
+        print(f"  warn: critique_manual_notes failed: {e}")
+        return {'discrepancies': [], 'date_issues': [], 'severity': 'ok'}
+
+
 def _format_market_context(market_context) -> str:
     """Format indices/crypto/futures dict into ground-truth block for LLM prompts.
 
