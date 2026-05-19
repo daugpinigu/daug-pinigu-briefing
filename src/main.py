@@ -8,7 +8,7 @@ import pytz
 from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
-    fetch_market_news, fetch_mover_catalysts, fetch_quotes,
+    fetch_market_news, fetch_geopolitics_news, fetch_mover_catalysts, fetch_quotes,
     fetch_insider_purchases, fetch_reddit_discussions,
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
@@ -402,10 +402,19 @@ def main():
     # QUALITY OVER QUANTITY: drop generic market_news RSS fetch entirely.
     # It surfaces random unrelated stories (ice cream stocks, Australian
     # grocery lawsuits, etc) that have nothing to do with Radoslav's
-    # watchlist. Macro/regulatory/geopolitical coverage now comes through
-    # IBKR news (filtered), manual notes (curated), YouTube synthesis,
-    # and the macro events section — not generic news RSS.
+    # watchlist. BUT geopolitics/macro broad-impact news (Iran-US, OPEC,
+    # Fed, Strait of Hormuz, war escalation) are mandatory even without
+    # a watchlist ticker - those come from fetch_geopolitics_news with
+    # a strict keyword gate.
     market_news = []
+    # Geopolitics ALWAYS pulls 48h window: war/OPEC/Fed events often break
+    # overnight/weekend and the impact persists across days even if the
+    # tight "today only" filter would have dropped them.
+    print("  Fetching geopolitics + macro broad-impact news (48h, strict keyword gate)...")
+    geopol_news = _safe('geopolitics news',
+                        lambda: fetch_geopolitics_news(max_total=4, hours_window=48),
+                        [])
+    print(f"    -> {len(geopol_news)} geopolitics items")
 
     print("  Fetching mover catalysts (today only)...")
     big_movers = [m['symbol'] for m in (watchlist['gainers'] + watchlist['losers'])
@@ -423,12 +432,23 @@ def main():
                          [])
     print(f"    -> {len(wl_catalysts)} watchlist catalyst items")
 
-    # Merge: watchlist catalysts > mover catalysts > market news.
+    # Merge: watchlist catalysts > mover catalysts > geopolitics.
     # Watchlist catalysts surface M&A/FDA on specific tickers regardless of price move.
-    news = wl_catalysts + mover_news + [n for n in market_news if not any(
-        n['title'].lower()[:50] == m['title'].lower()[:50]
-        for m in (wl_catalysts + mover_news)
-    )]
+    # Geopolitics tied to MACRO ticker (no specific stock) - keyword-gated so
+    # only war/Iran/OPEC/Fed broad-impact items get through.
+    seen_titles = set()
+    def _add_unique(out, items):
+        for n in items:
+            k = n['title'].lower()[:60]
+            if k in seen_titles:
+                continue
+            seen_titles.add(k)
+            out.append(n)
+        return out
+    news = []
+    _add_unique(news, wl_catalysts)
+    _add_unique(news, mover_news)
+    _add_unique(news, geopol_news)
     news = _dedup_news_by_ticker(news, STOCKS)
     news = news[:12]
 

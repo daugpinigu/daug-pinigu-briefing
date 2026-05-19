@@ -1818,6 +1818,97 @@ def enrich_news_with_summaries(news_items: list, max_workers: int = 6) -> list:
     return news_items
 
 
+GEOPOL_REQUIRED_KEYWORDS = [
+    # Wars / military
+    'iran', 'israel', 'gaza', 'lebanon', 'hezbollah', 'houthi',
+    'russia', 'ukraine', 'putin', 'kremlin', 'moscow',
+    'north korea', 'kim jong', 'taiwan',
+    'missile', 'airstrike', 'air strike', 'military strike',
+    'drone strike', 'war ', ' war,', ' war.', ' war:',
+    # Trade / sanctions / tariffs
+    'tariff', 'sanction', 'export control', 'export ban',
+    'trade war', 'section 301', 'section 232',
+    # Oil / energy chokepoints
+    'opec', 'opec+', 'crude oil', 'brent crude', 'wti crude',
+    'strait of hormuz', 'suez canal', 'red sea shipping',
+    'oil price', 'gasoline price',
+    # Diplomacy / summits with named leaders
+    'trump-xi', 'trump xi', 'xi jinping',
+    'putin trump', 'trump putin',
+    # Fed / macro (high signal)
+    'fomc', 'fed cut', 'fed hike', 'fed pause',
+    'powell', 'jerome powell',
+    'cpi report', 'ppi report', 'pce inflation',
+    'jobs report', 'nfp', 'unemployment rate',
+    # Regulatory
+    'clarity act', 'genius act', 'stablecoin bill',
+    'executive order',
+]
+
+
+def fetch_geopolitics_news(max_total: int = 4, hours_window: int = 48) -> list:
+    """Fetch geopolitics + macro headlines that move markets even without a
+    watchlist ticker. Iran-US conflict, OPEC, Strait of Hormuz, Fed pivots,
+    war escalation - all hit oil/gold/defense/VIX/USD broadly.
+
+    Uses the same RSS feeds as fetch_market_news but filters STRICTLY: keep only
+    headlines that contain at least one keyword from GEOPOL_REQUIRED_KEYWORDS.
+    This avoids the Magnum Ice Cream / Coles grocery noise that triggered the
+    "drop fetch_market_news entirely" memory rule, while still surfacing the
+    war/Iran/oil/Fed signal that's mandatory per Radoslav.
+    """
+    from datetime import datetime as dt, timezone, timedelta
+    feeds = [
+        ('CNBC Top', 'https://www.cnbc.com/id/100003114/device/rss/rss.html'),
+        ('CNBC World', 'https://www.cnbc.com/id/100727362/device/rss/rss.html'),
+        ('Reuters World', 'https://feeds.reuters.com/Reuters/worldNews'),
+        ('Yahoo Finance', 'https://finance.yahoo.com/news/rssindex'),
+        ('MarketWatch', 'https://feeds.marketwatch.com/marketwatch/topstories/'),
+    ]
+    cutoff = dt.now(timezone.utc) - timedelta(hours=hours_window)
+    all_items = []
+    for label, url in feeds:
+        all_items.extend(_fetch_rss_feed(url, label))
+
+    recent = []
+    for item in all_items:
+        if item['pub_dt'] and item['pub_dt'].tzinfo and item['pub_dt'] < cutoff:
+            continue
+        title_l = (item.get('title') or '').lower()
+        # STRICT keyword gate: title must contain at least one geopol keyword.
+        if not any(kw in title_l for kw in GEOPOL_REQUIRED_KEYWORDS):
+            continue
+        recent.append(item)
+
+    # Dedup
+    seen = set()
+    deduped = []
+    for n in recent:
+        k = re.sub(r'\W+', '', n['title'].lower())[:60]
+        if k in seen:
+            continue
+        seen.add(k)
+        deduped.append(n)
+
+    # Score with bonus for geopol keywords (already keyword-gated, so this is
+    # mostly about prioritizing the strongest signals: war, OPEC, Fed)
+    HIGH_PRIORITY = ['strait of hormuz', 'fomc', 'fed cut', 'fed hike', 'opec',
+                     'sanction', 'tariff', 'missile', 'airstrike', 'war',
+                     'iran', 'israel', 'russia']
+    scored = []
+    for n in deduped:
+        s = _score_headline(n['title'], n['publisher'])
+        title_l = n['title'].lower()
+        for kw in HIGH_PRIORITY:
+            if kw in title_l:
+                s += 3
+        scored.append((s, n))
+
+    scored.sort(key=lambda x: (x[0], x[1]['pub_dt'] or dt.min.replace(tzinfo=timezone.utc)),
+                reverse=True)
+    return [{'ticker': 'MACRO', 'is_geopolitics': True, **n} for _, n in scored[:max_total]]
+
+
 def fetch_market_news(max_total: int = 6, hours_window: int = 24) -> list:
     """Fetch quality market news from CNBC, MarketWatch, Yahoo. Filtered and scored."""
     from datetime import datetime as dt, timezone, timedelta
