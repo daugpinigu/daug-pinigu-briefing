@@ -538,7 +538,7 @@ def main():
 
     print("  Fetching insider activity (watchlist, since 2025-01-01, aggregated by insider)...")
     insider = _safe('insider',
-                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=24),
+                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=30),
                     [])
     print(f"    -> {len(insider)} watchlist insider entries")
     if insider:

@@ -2154,27 +2154,23 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             g['_within_30d'] = False
 
     aggregated = list(grouped.values())
-    # Filter to "still relevant" window: latest transaction within 30 days.
-    # Stale 2025 sells from Bezos/Huang are real but obsolete signal - they
-    # don't reflect what's happening NOW. Keep BUYS more forgiving (60 days)
-    # because insider buys are rare and a 45-day-old CEO buy is still useful.
-    relevant_buys_cutoff = (_dt.now() - _td(days=60)).date()
-
-    def is_relevant(x):
+    # NO time-window filtering: per Radoslav, old info stays visible,
+    # only new info gets added. Big insider trades like Musk's +$1B TSLA
+    # buy (2025-09-12) or Bezos's $5.65B AMZN sells (2025-07-23) remain
+    # relevant signal even months later. Mark stale ones (>90d) with a
+    # visual badge so the reader knows it's historical context, not "today".
+    stale_cutoff_date = (_dt.now() - _td(days=90)).date()
+    for x in aggregated:
         try:
             latest = _dt.strptime(x['trade_date'], '%Y-%m-%d').date()
+            x['is_stale'] = latest < stale_cutoff_date
         except ValueError:
-            return False
-        if x['tx_type'] == 'buy':
-            return latest >= relevant_buys_cutoff
-        return latest >= relevance_cutoff_date
-
-    aggregated = [x for x in aggregated if is_relevant(x)]
+            x['is_stale'] = False
 
     # Balance buys vs sells: split into pools, take top N of each by VALUE
-    # so big recent sells (Lisa Su $163M aggregated over 4 sandoriai) are
-    # never crowded out by smaller recent sells (GRAB $300K). Recency is
-    # now just a visual badge, not a sort key — value dominates.
+    # so big sells (Lisa Su $163M, Bezos $5.65B) are never crowded out by
+    # smaller recent sells (GRAB $300K). Recency is now just a visual badge,
+    # not a sort key — value dominates.
     buys = sorted([x for x in aggregated if x['tx_type'] == 'buy'],
                   key=lambda x: -x['value'])
     sells = sorted([x for x in aggregated if x['tx_type'] == 'sell'],

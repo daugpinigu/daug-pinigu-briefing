@@ -748,6 +748,18 @@
     letter-spacing: 0.5px;
     vertical-align: middle;
   }
+  .insider-stale {
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 2px;
+    background: rgba(140,150,170,0.18);
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
   .insider-breakdown {
     margin: 2px 0 4px 52px;
     padding-left: 8px;
@@ -1448,7 +1460,7 @@
       <div class="insider-row{% if x.recent_week %} recent-week{% endif %}">
         <span class="tx-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
         <div class="insider-info">
-          <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}</div>
+          <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}{% if x.is_stale %}<span class="insider-stale">istor.</span>{% endif %}</div>
           <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
           {% if x.shares_owned_str %}
           <div class="insider-holdings">turi {{ x.shares_owned_str }} sh{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %}{% if x.holdings_value_str %} · vertė {{ x.holdings_value_str }}{% endif %}</div>
