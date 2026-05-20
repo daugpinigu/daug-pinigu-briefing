@@ -781,6 +781,8 @@
   .ib-value { font-weight: 600; text-align: right; }
   .ib-value.buy { color: #7ed87e; }
   .ib-value.sell { color: #ff7373; }
+  .insider-buy-more { color: #6c7588; font-style: italic; }
+  .ib-more { font-size: 10px; color: #8a92a3; }
 
   .news-list { display: flex; flex-direction: column; gap: 10px; }
   .news-row {
@@ -1450,6 +1452,13 @@
           <span class="ib-value {{ x.tx_type or 'buy' }}">{{ b.value_str }}</span>
         </div>
         {% endfor %}
+        {% if x.buys_hidden and x.buys_hidden > 0 %}
+        <div class="insider-buy-row insider-buy-more">
+          <span></span>
+          <span class="ib-more">+ dar {{ x.buys_hidden }} sandori{% if x.buys_hidden == 1 %}s{% else %}ai{% endif %} (mažesni)</span>
+          <span></span><span></span>
+        </div>
+        {% endif %}
       </div>
       {% endif %}
       {% endfor %}

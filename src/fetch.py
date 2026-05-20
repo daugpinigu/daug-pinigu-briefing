@@ -2136,36 +2136,76 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
     for g in grouped.values():
         g['buys'].sort(key=lambda b: b['trade_date'], reverse=True)
 
-    # Flag aggregations where the latest buy is within past 7 days — these
-    # are "this week" signals worth surfacing prominently.
-    from datetime import datetime as _dt, timedelta as _td
-    week_cutoff = _dt.now() - _td(days=7)
+    # Flag aggregations where the latest trade is within past 7 days as a
+    # visual "šią savaitę" badge. Use date-level comparison (not datetime)
+    # to avoid the boundary case where today-7d crosses an hour line and
+    # drops a same-day-7-days-ago aggregate (Lisa Su 2026-05-13 vs 2026-05-20
+    # 12:13 = False because of the time component).
+    from datetime import datetime as _dt, timedelta as _td, date as _date
+    week_cutoff_date = (_dt.now() - _td(days=7)).date()
+    relevance_cutoff_date = (_dt.now() - _td(days=30)).date()
     for g in grouped.values():
         try:
-            latest = _dt.strptime(g['trade_date'], '%Y-%m-%d')
-            g['recent_week'] = latest >= week_cutoff
+            latest = _dt.strptime(g['trade_date'], '%Y-%m-%d').date()
+            g['recent_week'] = latest >= week_cutoff_date
+            g['_within_30d'] = latest >= relevance_cutoff_date
         except ValueError:
             g['recent_week'] = False
+            g['_within_30d'] = False
 
     aggregated = list(grouped.values())
-    # Balance buys vs sells: big sells (Lisa Su $55M, Bezos $5B) will always
-    # dominate by value, crowding out smaller but signal-rich BUYS (e.g. SOFI
-    # CEO Anthony Noto). Split into two pools, take top N of each independently,
-    # then merge so both directions are represented.
-    buys = [x for x in aggregated if x.get('tx_type') == 'buy']
-    sells = [x for x in aggregated if x.get('tx_type') == 'sell']
-    buys.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
-    sells.sort(key=lambda x: (not x.get('recent_week'), -x['value']))
-    half = max(max_results // 2, 1)
-    selected = buys[:max_results - min(len(sells), half)] + sells[:half]
+    # Filter to "still relevant" window: latest transaction within 30 days.
+    # Stale 2025 sells from Bezos/Huang are real but obsolete signal - they
+    # don't reflect what's happening NOW. Keep BUYS more forgiving (60 days)
+    # because insider buys are rare and a 45-day-old CEO buy is still useful.
+    relevant_buys_cutoff = (_dt.now() - _td(days=60)).date()
+
+    def is_relevant(x):
+        try:
+            latest = _dt.strptime(x['trade_date'], '%Y-%m-%d').date()
+        except ValueError:
+            return False
+        if x['tx_type'] == 'buy':
+            return latest >= relevant_buys_cutoff
+        return latest >= relevance_cutoff_date
+
+    aggregated = [x for x in aggregated if is_relevant(x)]
+
+    # Balance buys vs sells: split into pools, take top N of each by VALUE
+    # so big recent sells (Lisa Su $163M aggregated over 4 sandoriai) are
+    # never crowded out by smaller recent sells (GRAB $300K). Recency is
+    # now just a visual badge, not a sort key — value dominates.
+    buys = sorted([x for x in aggregated if x['tx_type'] == 'buy'],
+                  key=lambda x: -x['value'])
+    sells = sorted([x for x in aggregated if x['tx_type'] == 'sell'],
+                   key=lambda x: -x['value'])
+
+    # Allocate: prefer 1/3 buys + 2/3 sells (buys are rare on watchlist).
+    # If one pool is short, the other absorbs the extra slots.
+    buy_quota = max(max_results // 3, 4)
+    sell_quota = max_results - buy_quota
+    buy_take = min(len(buys), buy_quota)
+    sell_take = min(len(sells), sell_quota + (buy_quota - buy_take))
+    selected = buys[:buy_take] + sells[:sell_take]
+
     # Final ordering: group by ticker (alphabetical), buys before sells inside
-    # each ticker, then recent_week first, then value DESC.
+    # each ticker, then value DESC.
     selected.sort(key=lambda x: (
         x['ticker'],
-        0 if x.get('tx_type') == 'buy' else 1,
-        not x.get('recent_week'),
+        0 if x['tx_type'] == 'buy' else 1,
         -x['value'],
     ))
+
+    # Cap breakdown to top 5 sandoriai per aggregation (largest by value)
+    # so the visual doesn't get drowned by 30+ rows of weekly RDDT/META
+    # 10b5-1 dribbles. The aggregate header still shows the full count.
+    for x in selected:
+        if x.get('buys') and len(x['buys']) > 5:
+            full_buys = x['buys']
+            x['buys'] = sorted(full_buys, key=lambda b: -b.get('value', 0))[:5]
+            x['buys_hidden'] = len(full_buys) - 5
+        else:
+            x['buys_hidden'] = 0
     return selected
 
 
