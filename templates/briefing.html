@@ -676,6 +676,36 @@
   }
   .insider-group-summary .gs-buy { color: #7ed87e; }
   .insider-group-summary .gs-sell { color: #ff7373; }
+  .insider-alignment {
+    font-size: 10px;
+    color: #8a92a3;
+    padding: 4px 0 6px 0;
+    margin-bottom: 4px;
+    border-bottom: 1px dashed rgba(255,255,255,0.05);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .ia-label { color: #6c7588; }
+  .ia-pct { color: #c8cfdc; font-weight: 600; }
+  .ia-sep { color: #4a5161; margin: 0 2px; }
+  .ia-net { font-weight: 700; }
+  .ia-net.ia-buying { color: #7ed87e; }
+  .ia-net.ia-selling { color: #ff7373; }
+  .ia-net.ia-neutral { color: #c8cfdc; }
+  .ia-badge {
+    font-size: 8.5px;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    margin-left: 2px;
+  }
+  .ia-badge.ia-buying { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ia-badge.ia-selling { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ia-badge.ia-neutral { background: rgba(200,207,220,0.12); color: #c8cfdc; }
   .insider-row {
     display: grid;
     grid-template-columns: 44px 1fr auto;
@@ -1452,6 +1482,7 @@
     {% set rows = rows|list %}
     {% set buy_count = rows|selectattr('tx_type','equalto','buy')|list|length %}
     {% set sell_count = rows|selectattr('tx_type','equalto','sell')|list|length %}
+    {% set ov = rows[0].company_overview if rows[0].company_overview else {} %}
     <div class="insider-group">
       <div class="insider-group-header">
         <div class="insider-group-ticker">{{ ticker }}</div>
@@ -1461,6 +1492,19 @@
           {% if sell_count %}<span class="gs-sell">{{ sell_count }} sell{% if sell_count > 1 %}s{% endif %}</span>{% endif %}
         </div>
       </div>
+      {% if ov and (ov.insider_pct_str or ov.alignment != 'none') %}
+      <div class="insider-alignment">
+        {% if ov.insider_pct_str %}<span class="ia-label">visi insider'iai:</span> <span class="ia-pct">{{ ov.insider_pct_str }} kompanijos</span>{% endif %}
+        {% if ov.alignment != 'none' %}
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-{{ ov.alignment }}">{{ ov.net_6mo_str }}</span>
+        <span class="ia-badge ia-{{ ov.alignment }}">
+          {% if ov.alignment == 'buying' %}PERKA{% elif ov.alignment == 'selling' %}PARDUODA{% else %}NEUTR{% endif %}
+        </span>
+        {% endif %}
+      </div>
+      {% endif %}
       {% for x in rows %}
       <div class="insider-row{% if x.recent_week %} recent-week{% endif %}">
         <span class="tx-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>

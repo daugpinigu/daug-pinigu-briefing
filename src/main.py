@@ -9,7 +9,8 @@ from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
     fetch_market_news, fetch_geopolitics_news, fetch_mover_catalysts, fetch_quotes,
-    fetch_insider_purchases, enrich_insider_with_holdings, fetch_reddit_discussions,
+    fetch_insider_purchases, enrich_insider_with_holdings,
+    fetch_insider_company_overview, fetch_reddit_discussions,
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
     fetch_earnings_transcript, fetch_watchlist_catalysts,
@@ -546,6 +547,17 @@ def main():
         insider = _safe('insider holdings', lambda: enrich_insider_with_holdings(insider), insider)
         enriched = sum(1 for x in insider if x.get('holdings_value_str'))
         print(f"    -> {enriched}/{len(insider)} entries enriched with holdings")
+        # Per-ticker company-level insider alignment: total insider % + net 6mo
+        # direction. Attach to every row so the template can show a per-group
+        # header summarizing whether leadership is collectively buying or
+        # selling (= alignment signal Radoslav wants).
+        print("  Fetching per-ticker insider alignment overview (6mo net + total insider %)...")
+        unique_tickers = sorted({x['ticker'] for x in insider})
+        overview = _safe('insider overview',
+                         lambda: fetch_insider_company_overview(unique_tickers), {})
+        for x in insider:
+            x['company_overview'] = overview.get(x['ticker'], {})
+        print(f"    -> overview for {len(overview)} tickers")
 
     # News filtering: TODAY's news + weekend catch-up on Mondays.
     # Per Radoslav: yesterday's news gone, only fresh items each day - BUT

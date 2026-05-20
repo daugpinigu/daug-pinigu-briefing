@@ -2325,6 +2325,78 @@ def enrich_insider_with_holdings(entries: list) -> list:
     return entries
 
 
+def fetch_insider_company_overview(tickers: list) -> dict:
+    """For each ticker, return aggregate insider alignment signal:
+      - insider_pct: total % of company held by all insiders combined
+      - net_6mo_shares: net shares purchased (-sold) over last 6 months
+      - buys_6mo / sells_6mo: gross figures
+      - alignment: 'buying' / 'selling' / 'neutral' based on net direction
+
+    Per Radoslav: brief should show how aligned insider intentions are with
+    the company. Per-row direct holdings only tell part of the story; this
+    aggregate level shows whether the leadership as a whole is voting with
+    their wallets (buying) or unloading (selling) over a meaningful window.
+    """
+    import concurrent.futures
+    out = {}
+
+    def one(sym):
+        try:
+            t = yf.Ticker(sym)
+            info = t.info or {}
+            ip = t.insider_purchases
+            insider_pct = info.get('heldPercentInsiders', 0) or 0
+            buy_sh = sell_sh = net_sh = 0
+            if ip is not None and not ip.empty:
+                try:
+                    buy_sh = float(ip.iloc[0, 1]) if len(ip) > 0 else 0
+                except (TypeError, ValueError):
+                    buy_sh = 0
+                try:
+                    sell_sh = float(ip.iloc[1, 1]) if len(ip) > 1 else 0
+                except (TypeError, ValueError):
+                    sell_sh = 0
+                try:
+                    net_sh = float(ip.iloc[2, 1]) if len(ip) > 2 else 0
+                except (TypeError, ValueError):
+                    net_sh = 0
+            return sym, insider_pct, buy_sh, sell_sh, net_sh
+        except Exception:
+            return sym, 0, 0, 0, 0
+
+    def fmt_sh(n):
+        n_abs = abs(n)
+        if n_abs >= 1_000_000:
+            return f"{n_abs/1_000_000:.2f}M"
+        if n_abs >= 1_000:
+            return f"{n_abs/1_000:.0f}K"
+        return f"{int(n_abs):,}"
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+        for sym, ipct, buy_sh, sell_sh, net_sh in ex.map(one, tickers):
+            volume = buy_sh + sell_sh
+            if volume > 0:
+                net_pct = net_sh / volume
+                if net_pct > 0.05:
+                    alignment = 'buying'
+                elif net_pct < -0.05:
+                    alignment = 'selling'
+                else:
+                    alignment = 'neutral'
+            else:
+                alignment = 'none'
+            out[sym] = {
+                'insider_pct': ipct * 100,
+                'insider_pct_str': f"{ipct*100:.2f}%" if ipct > 0 else '',
+                'buys_6mo_str': fmt_sh(buy_sh),
+                'sells_6mo_str': fmt_sh(sell_sh),
+                'net_6mo_str': f"{'+' if net_sh >= 0 else '-'}{fmt_sh(net_sh)} sh",
+                'net_6mo_raw': net_sh,
+                'alignment': alignment,
+            }
+    return out
+
+
 def _fmt_money_unsigned(v: float) -> str:
     """Format float to '$X', '$X.XM', '$X.XB' WITHOUT + sign (for holdings)."""
     if v >= 1_000_000_000:
