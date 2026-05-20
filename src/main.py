@@ -9,7 +9,7 @@ from fetch import (
     fetch_macro_events, fetch_earnings, fetch_watchlist_movers,
     fetch_crypto, fetch_index_snapshot, fetch_iv_metrics,
     fetch_market_news, fetch_geopolitics_news, fetch_mover_catalysts, fetch_quotes,
-    fetch_insider_purchases, fetch_reddit_discussions,
+    fetch_insider_purchases, enrich_insider_with_holdings, fetch_reddit_discussions,
     enrich_news_with_summaries, fetch_watchlist_earnings_history,
     fetch_article_summary, fetch_reddit_comments,
     fetch_earnings_transcript, fetch_watchlist_catalysts,
@@ -541,6 +541,11 @@ def main():
                     lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=24),
                     [])
     print(f"    -> {len(insider)} watchlist insider entries")
+    if insider:
+        print("  Enriching insider entries with holdings context (shares × price, % of company)...")
+        insider = _safe('insider holdings', lambda: enrich_insider_with_holdings(insider), insider)
+        enriched = sum(1 for x in insider if x.get('holdings_value_str'))
+        print(f"    -> {enriched}/{len(insider)} entries enriched with holdings")
 
     # News filtering: TODAY's news + weekend catch-up on Mondays.
     # Per Radoslav: yesterday's news gone, only fresh items each day - BUT

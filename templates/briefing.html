@@ -721,6 +721,13 @@
     margin-top: 1px;
     font-variant-numeric: tabular-nums;
   }
+  .insider-holdings {
+    font-size: 10px;
+    color: #8a92a3;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+    font-style: italic;
+  }
   .insider-value {
     font-size: 12.5px;
     font-weight: 800;
@@ -1427,6 +1434,9 @@
         <div class="insider-info">
           <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}</div>
           <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+          {% if x.shares_owned_str %}
+          <div class="insider-holdings">turi {{ x.shares_owned_str }} sh{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %}{% if x.holdings_value_str %} · vertė {{ x.holdings_value_str }}{% endif %}</div>
+          {% endif %}
         </div>
         <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
       </div>

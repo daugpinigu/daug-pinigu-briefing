@@ -1995,7 +1995,7 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
 
     # Per-ticker page columns (no company column since we know the ticker):
     # 0: flag, 1: filing, 2: trade, 3: ticker, 4: insider, 5: title,
-    # 6: tx_type, 7: price, 8: qty, 9: shares_owned, 10: %, 11: value
+    # 6: tx_type, 7: price, 8: qty, 9: shares_owned (post-tx), 10: %, 11: value
     cutoff = dt.now() - timedelta(days=days)
     # Hard floor: never include anything before 2025-01-01 even if days is larger.
     hard_floor = dt(2025, 1, 1)
@@ -2034,6 +2034,14 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
         value_str = cells[11].replace('-$', '$').replace('+$', '+$')
         if tx_type == 'sell':
             value_str = value_str.replace('+', '').strip()
+        # shares_owned is post-transaction holdings (col 9). For sells this
+        # is the remaining stake; for buys it's the new total. Some rows
+        # have "" (e.g. options exercises later filed) - default to 0.
+        shares_owned_raw = (cells[9] or '').replace(',', '').strip()
+        try:
+            shares_owned = int(shares_owned_raw)
+        except ValueError:
+            shares_owned = 0
         hits.append({
             'ticker': ticker,
             'insider': cells[4][:30],
@@ -2043,6 +2051,7 @@ def _fetch_ticker_insider(ticker: str, days: int, min_value: float) -> list:
             'qty': cells[8].lstrip('-'),  # drop minus sign on qty for sells
             'value': value,
             'value_str': value_str,
+            'shares_owned': shares_owned,
             'filing_date': cells[1][:10],
             'trade_date': cells[2],
         })
@@ -2101,6 +2110,7 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
                 'value_str': h['value_str'],
                 'trade_date': h['trade_date'],
                 'filing_date': h['filing_date'],
+                'shares_owned': h.get('shares_owned', 0),
                 'buys_count': 1,
                 'buys': [single],
             }
@@ -2109,12 +2119,16 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
             g['value'] += h['value']
             g['buys_count'] += 1
             g['buys'].append(single)
-            # Keep most recent trade_date as the "latest" pointer
+            # Keep most recent trade_date as the "latest" pointer, and use
+            # that row's shares_owned as the current stake (OpenInsider reports
+            # post-transaction holdings, so the most-recent filing has the
+            # current count).
             if h['trade_date'] > g['trade_date']:
                 g['trade_date'] = h['trade_date']
                 g['filing_date'] = h['filing_date']
                 g['price'] = h['price']
                 g['qty'] = h['qty']
+                g['shares_owned'] = h.get('shares_owned', g['shares_owned'])
             # Reformat aggregated value
             g['value_str'] = _fmt_money(g['value'])
 
@@ -2153,6 +2167,84 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
         -x['value'],
     ))
     return selected
+
+
+def enrich_insider_with_holdings(entries: list) -> list:
+    """Add current holdings context to each insider entry:
+      - holdings_value_str: '$X.XM' = shares_owned × current price
+      - pct_company_str: '0.42%' = shares_owned / shares_outstanding × 100
+      - current_price: float (used for the value calculation)
+
+    Batched per-ticker yfinance call to fetch current price + shares outstanding.
+    """
+    import concurrent.futures
+    tickers = sorted({e['ticker'] for e in entries if e.get('ticker')})
+    if not tickers:
+        return entries
+
+    def fetch_one(sym):
+        try:
+            t = yf.Ticker(sym)
+            fi = getattr(t, 'fast_info', None)
+            price = None
+            shares_out = None
+            if fi is not None:
+                price = getattr(fi, 'last_price', None) or getattr(fi, 'lastPrice', None)
+                shares_out = getattr(fi, 'shares', None)
+            if not price or not shares_out:
+                info = t.info or {}
+                price = price or info.get('currentPrice') or info.get('regularMarketPrice')
+                shares_out = shares_out or info.get('sharesOutstanding')
+            return sym, float(price or 0), int(shares_out or 0)
+        except Exception:
+            return sym, 0.0, 0
+
+    cache = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+        for sym, price, shares_out in ex.map(fetch_one, tickers):
+            cache[sym] = (price, shares_out)
+
+    for e in entries:
+        price, shares_out = cache.get(e['ticker'], (0.0, 0))
+        shares_owned = e.get('shares_owned', 0) or 0
+        e['current_price'] = price
+        if shares_owned > 0 and price > 0:
+            val = shares_owned * price
+            e['holdings_value_str'] = _fmt_money_unsigned(val)
+        else:
+            e['holdings_value_str'] = ''
+        if shares_owned > 0 and shares_out > 0:
+            pct = shares_owned / shares_out * 100
+            # Format: tiny stakes get more precision, big stakes get less.
+            if pct < 0.01:
+                e['pct_company_str'] = '<0.01%'
+            elif pct < 1:
+                e['pct_company_str'] = f"{pct:.2f}%"
+            else:
+                e['pct_company_str'] = f"{pct:.1f}%"
+        else:
+            e['pct_company_str'] = ''
+        # Human-readable share count for display: 1,234,567 -> "1.23M"
+        if shares_owned >= 1_000_000:
+            e['shares_owned_str'] = f"{shares_owned/1_000_000:.2f}M"
+        elif shares_owned >= 1_000:
+            e['shares_owned_str'] = f"{shares_owned/1_000:.1f}K"
+        elif shares_owned > 0:
+            e['shares_owned_str'] = f"{shares_owned:,}"
+        else:
+            e['shares_owned_str'] = ''
+    return entries
+
+
+def _fmt_money_unsigned(v: float) -> str:
+    """Format float to '$X', '$X.XM', '$X.XB' WITHOUT + sign (for holdings)."""
+    if v >= 1_000_000_000:
+        return f"${v/1_000_000_000:.2f}B"
+    if v >= 1_000_000:
+        return f"${v/1_000_000:.2f}M"
+    if v >= 1_000:
+        return f"${v/1_000:.0f}K"
+    return f"${v:.0f}"
 
 
 def _fmt_money(v: float) -> str:
