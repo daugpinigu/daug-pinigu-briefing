@@ -2295,16 +2295,22 @@ def enrich_insider_with_holdings(entries: list) -> list:
             e['holdings_value_str'] = _fmt_money_unsigned(holdings_val)
         else:
             e['holdings_value_str'] = ''
-        # % of company: skip entirely if holdings are clearly incomplete
-        # (showing "<0.01%" for a co-founder is misleading).
+        # % of company: only show if the direct stake is >= 1% — at that
+        # threshold the insider is a meaningful holder where Form 4 direct
+        # holdings represent the bulk of their economic interest (founders,
+        # 10% holders: Bezos 8.2%, Musk 13.6%, Cohen GME 8.6%, ENPH 1.4%).
+        #
+        # For C-suite at large caps (Lisa Su 0.23%, Pichai 0.03%, Anthony
+        # Noto 0.93%), Form 4 misses massive unvested RSU/PSU/options grants
+        # that often DOUBLE the displayed shares. Showing "0.23% kompanijos"
+        # implies that's their total stake — misleading. Suppress the % and
+        # let the reader rely on direct-share count + caveat instead.
         if shares_owned > 0 and shares_out > 0 and not partial:
             pct = shares_owned / shares_out * 100
-            if pct < 0.01:
-                e['pct_company_str'] = '<0.01%'
-            elif pct < 1:
-                e['pct_company_str'] = f"{pct:.2f}%"
-            else:
+            if pct >= 1:
                 e['pct_company_str'] = f"{pct:.1f}%"
+            else:
+                e['pct_company_str'] = ''
         else:
             e['pct_company_str'] = ''
         # Human-readable share count: 1,234,567 -> "1.23M"
