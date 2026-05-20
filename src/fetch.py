@@ -2277,14 +2277,28 @@ def enrich_insider_with_holdings(entries: list) -> list:
         price, shares_out = cache.get(e['ticker'], (0.0, 0))
         shares_owned = e.get('shares_owned', 0) or 0
         e['current_price'] = price
-        if shares_owned > 0 and price > 0:
-            val = shares_owned * price
-            e['holdings_value_str'] = _fmt_money_unsigned(val)
+        holdings_val = shares_owned * price if (shares_owned > 0 and price > 0) else 0
+        tx_val = e.get('value', 0) or 0
+        # OpenInsider's "shares_owned" column on Form 4 captures only
+        # DIRECT common-stock holdings AFTER the transaction. It misses
+        # Class B founder shares (Tenev HOOD, Beck RKLB, Musk TSLA), RSUs,
+        # trusts, LLC-held shares, and unexercised options. For founders
+        # this dramatically undercounts the real stake.
+        # Heuristic: if remaining direct holdings value is < the transaction
+        # value, the count is clearly incomplete (you can't sell $100M of
+        # stock and have $0.5M left if those were your only shares).
+        # In that case, label the holdings as "direct only" to flag that
+        # Class B / RSU / trust positions are excluded.
+        partial = (tx_val > 0 and holdings_val > 0 and holdings_val < tx_val * 0.6)
+        e['holdings_partial'] = partial
+        if holdings_val > 0:
+            e['holdings_value_str'] = _fmt_money_unsigned(holdings_val)
         else:
             e['holdings_value_str'] = ''
-        if shares_owned > 0 and shares_out > 0:
+        # % of company: skip entirely if holdings are clearly incomplete
+        # (showing "<0.01%" for a co-founder is misleading).
+        if shares_owned > 0 and shares_out > 0 and not partial:
             pct = shares_owned / shares_out * 100
-            # Format: tiny stakes get more precision, big stakes get less.
             if pct < 0.01:
                 e['pct_company_str'] = '<0.01%'
             elif pct < 1:
@@ -2293,7 +2307,7 @@ def enrich_insider_with_holdings(entries: list) -> list:
                 e['pct_company_str'] = f"{pct:.1f}%"
         else:
             e['pct_company_str'] = ''
-        # Human-readable share count for display: 1,234,567 -> "1.23M"
+        # Human-readable share count: 1,234,567 -> "1.23M"
         if shares_owned >= 1_000_000:
             e['shares_owned_str'] = f"{shares_owned/1_000_000:.2f}M"
         elif shares_owned >= 1_000:

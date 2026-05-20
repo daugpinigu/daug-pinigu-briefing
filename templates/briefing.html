@@ -728,6 +728,11 @@
     font-variant-numeric: tabular-nums;
     font-style: italic;
   }
+  .hp-note {
+    color: #6c7588;
+    font-size: 9px;
+    margin-left: 4px;
+  }
   .insider-value {
     font-size: 12.5px;
     font-weight: 800;
@@ -1463,7 +1468,7 @@
           <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}{% if x.is_stale %}<span class="insider-stale">istor.</span>{% endif %}</div>
           <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
           {% if x.shares_owned_str %}
-          <div class="insider-holdings">turi {{ x.shares_owned_str }} sh{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %}{% if x.holdings_value_str %} · vertė {{ x.holdings_value_str }}{% endif %}</div>
+          <div class="insider-holdings">{% if x.holdings_partial %}direct: {{ x.shares_owned_str }} sh{% if x.holdings_value_str %} (~{{ x.holdings_value_str }}){% endif %} <span class="hp-note">+ Class B / RSU / trust neapskaityti</span>{% else %}turi {{ x.shares_owned_str }} sh{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %}{% if x.holdings_value_str %} · vertė {{ x.holdings_value_str }}{% endif %}{% endif %}</div>
           {% endif %}
         </div>
         <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
