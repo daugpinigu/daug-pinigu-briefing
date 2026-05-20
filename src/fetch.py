@@ -2295,22 +2295,21 @@ def enrich_insider_with_holdings(entries: list) -> list:
             e['holdings_value_str'] = _fmt_money_unsigned(holdings_val)
         else:
             e['holdings_value_str'] = ''
-        # % of company: only show if the direct stake is >= 1% — at that
-        # threshold the insider is a meaningful holder where Form 4 direct
-        # holdings represent the bulk of their economic interest (founders,
-        # 10% holders: Bezos 8.2%, Musk 13.6%, Cohen GME 8.6%, ENPH 1.4%).
-        #
-        # For C-suite at large caps (Lisa Su 0.23%, Pichai 0.03%, Anthony
-        # Noto 0.93%), Form 4 misses massive unvested RSU/PSU/options grants
-        # that often DOUBLE the displayed shares. Showing "0.23% kompanijos"
-        # implies that's their total stake — misleading. Suppress the % and
-        # let the reader rely on direct-share count + caveat instead.
+        # % of company: show for ALL entries with valid data. Format depends
+        # on size — tiny stakes get more precision so "0.02%" vs "1.4%" reads
+        # naturally. The "(be RSU/opcijų/PSU)" caveat in the template warns
+        # the reader that this is direct-only (Form 4) and excludes unvested
+        # equity comp - so the % is honest about what it represents.
         if shares_owned > 0 and shares_out > 0 and not partial:
             pct = shares_owned / shares_out * 100
-            if pct >= 1:
-                e['pct_company_str'] = f"{pct:.1f}%"
+            if pct < 0.01:
+                e['pct_company_str'] = '<0.01%'
+            elif pct < 0.1:
+                e['pct_company_str'] = f"{pct:.3f}%"
+            elif pct < 1:
+                e['pct_company_str'] = f"{pct:.2f}%"
             else:
-                e['pct_company_str'] = ''
+                e['pct_company_str'] = f"{pct:.1f}%"
         else:
             e['pct_company_str'] = ''
         # Human-readable share count: 1,234,567 -> "1.23M"
