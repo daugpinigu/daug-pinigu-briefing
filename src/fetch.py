@@ -2295,21 +2295,27 @@ def enrich_insider_with_holdings(entries: list) -> list:
             e['holdings_value_str'] = _fmt_money_unsigned(holdings_val)
         else:
             e['holdings_value_str'] = ''
-        # % of company: show for ALL entries with valid data. Format depends
-        # on size — tiny stakes get more precision so "0.02%" vs "1.4%" reads
-        # naturally. The "(be RSU/opcijų/PSU)" caveat in the template warns
-        # the reader that this is direct-only (Form 4) and excludes unvested
-        # equity comp - so the % is honest about what it represents.
+        # % of company: ONLY show if stake >= 1%. DO NOT REVERT.
+        # Radoslav guidance (2x explicit, memory `feedback_form4_direct_only.md`):
+        # Form 4 "shares_owned" captures DIRECT common stock only - misses
+        # unvested RSU/PSU grants, options, Class B, trusts. For C-suite at
+        # major tech (Lisa Su 0.23%, Pichai 0.03%, Anthony Noto 0.93%),
+        # showing the direct-only % UNDERCOUNTS real economic stake 2-100x.
+        # The "(be RSU/opcijų/PSU)" caveat is NOT enough - readers anchor
+        # on the number, not the disclaimer. Showing 0.23% for Lisa Su is
+        # actively misleading even with the caveat.
+        # Only show % for >=1% stakes (Bezos 8.2%, Musk 13.6%, Cohen GME 8.6%,
+        # ENPH Kothandaraman 1.4%) - at that scale, direct holdings represent
+        # the majority of real economic interest and the % is informative.
+        # Previous regression: commit 0667a0f restored % for all entries
+        # citing "data going missing" - DO NOT do that again. Missing %
+        # is correct, not a bug.
         if shares_owned > 0 and shares_out > 0 and not partial:
             pct = shares_owned / shares_out * 100
-            if pct < 0.01:
-                e['pct_company_str'] = '<0.01%'
-            elif pct < 0.1:
-                e['pct_company_str'] = f"{pct:.3f}%"
-            elif pct < 1:
-                e['pct_company_str'] = f"{pct:.2f}%"
-            else:
+            if pct >= 1:
                 e['pct_company_str'] = f"{pct:.1f}%"
+            else:
+                e['pct_company_str'] = ''
         else:
             e['pct_company_str'] = ''
         # Human-readable share count: 1,234,567 -> "1.23M"
