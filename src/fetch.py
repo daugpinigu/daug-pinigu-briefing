@@ -2196,16 +2196,49 @@ def fetch_insider_purchases(watchlist: list, days: int = 365,
         -x['value'],
     ))
 
-    # Cap breakdown to top 5 sandoriai per aggregation (largest by value)
-    # so the visual doesn't get drowned by 30+ rows of weekly RDDT/META
-    # 10b5-1 dribbles. The aggregate header still shows the full count.
+    # Show only the 3 MOST RECENT transactions individually. Everything older
+    # gets compacted into a single summary line:
+    #   "Nuo 2025-08-15 iki 2026-02-18 Bosworth pardavė 245K sh už $32.5M"
+    # This keeps the visual short for high-frequency 10b5-1 sellers (Olivan
+    # META 40 sandoriai, Huffman RDDT 33) while preserving the time-range +
+    # cumulative qty + total value signal.
     for x in selected:
-        if x.get('buys') and len(x['buys']) > 5:
-            full_buys = x['buys']
-            x['buys'] = sorted(full_buys, key=lambda b: -b.get('value', 0))[:5]
-            x['buys_hidden'] = len(full_buys) - 5
+        all_buys = x.get('buys') or []
+        # Re-sort by date DESC to identify "most recent N"
+        all_buys.sort(key=lambda b: b.get('trade_date', ''), reverse=True)
+        if len(all_buys) > 3:
+            recent = all_buys[:3]
+            older = all_buys[3:]
+            # Compute summary stats for older bucket
+            from_date = min(b['trade_date'] for b in older)
+            to_date = max(b['trade_date'] for b in older)
+            total_value = sum(b.get('value', 0) for b in older)
+            # Total qty: best-effort parsing of qty strings like "12,345"
+            total_qty = 0
+            for b in older:
+                q = (b.get('qty') or '').replace(',', '').replace('+', '').lstrip('-')
+                try:
+                    total_qty += int(q)
+                except ValueError:
+                    pass
+            if total_qty >= 1_000_000:
+                qty_str = f"{total_qty/1_000_000:.2f}M sh"
+            elif total_qty >= 1_000:
+                qty_str = f"{total_qty/1_000:.0f}K sh"
+            else:
+                qty_str = f"{total_qty:,} sh"
+            x['buys'] = recent
+            x['older_summary'] = {
+                'count': len(older),
+                'from': from_date,
+                'to': to_date,
+                'qty_str': qty_str,
+                'value_str': _fmt_money_unsigned(total_value),
+                'value_total': total_value,
+            }
         else:
-            x['buys_hidden'] = 0
+            x['older_summary'] = None
+        x['buys_hidden'] = max(0, len(all_buys) - 3)
     return selected
 
 

@@ -783,6 +783,15 @@
   .ib-value.sell { color: #ff7373; }
   .insider-buy-more { color: #6c7588; font-style: italic; }
   .ib-more { font-size: 10px; color: #8a92a3; }
+  .insider-older-summary {
+    font-size: 10.5px;
+    color: #8a92a3;
+    font-style: italic;
+    padding: 4px 0 2px 8px;
+    margin-top: 2px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+    font-variant-numeric: tabular-nums;
+  }
 
   .news-list { display: flex; flex-direction: column; gap: 10px; }
   .news-row {
@@ -1442,7 +1451,7 @@
         </div>
         <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
       </div>
-      {% if x.buys and x.buys|length > 1 %}
+      {% if (x.buys and x.buys|length > 1) or x.older_summary %}
       <div class="insider-breakdown">
         {% for b in x.buys %}
         <div class="insider-buy-row">
@@ -1452,11 +1461,9 @@
           <span class="ib-value {{ x.tx_type or 'buy' }}">{{ b.value_str }}</span>
         </div>
         {% endfor %}
-        {% if x.buys_hidden and x.buys_hidden > 0 %}
-        <div class="insider-buy-row insider-buy-more">
-          <span></span>
-          <span class="ib-more">+ dar {{ x.buys_hidden }} sandori{% if x.buys_hidden == 1 %}s{% else %}ai{% endif %} (mažesni)</span>
-          <span></span><span></span>
+        {% if x.older_summary %}
+        <div class="insider-older-summary">
+          Nuo {{ x.older_summary.from }} iki {{ x.older_summary.to }} {{ x.insider }} {{ 'pardavė' if x.tx_type == 'sell' else 'nupirko' }} {{ x.older_summary.qty_str }} už {{ x.older_summary.value_str }} ({{ x.older_summary.count }} sandori{% if x.older_summary.count == 1 %}s{% else %}ai{% endif %})
         </div>
         {% endif %}
       </div>
