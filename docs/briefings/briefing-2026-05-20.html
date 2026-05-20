@@ -783,15 +783,20 @@
   .ib-value.sell { color: #ff7373; }
   .insider-buy-more { color: #6c7588; font-style: italic; }
   .ib-more { font-size: 10px; color: #8a92a3; }
-  .insider-older-summary {
-    font-size: 10.5px;
-    color: #8a92a3;
-    font-style: italic;
-    padding: 4px 0 2px 8px;
-    margin-top: 2px;
-    border-top: 1px dashed rgba(255,255,255,0.06);
-    font-variant-numeric: tabular-nums;
+  .insider-older-row {
+    margin-top: 3px;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    opacity: 0.85;
   }
+  .ib-tag-sum {
+    background: rgba(255,255,255,0.06) !important;
+    color: #8a92a3 !important;
+    letter-spacing: 0 !important;
+    font-weight: 700;
+  }
+  .ib-tag-sum.sell { color: #c47a7a !important; background: rgba(255,115,115,0.08) !important; }
+  .ib-tag-sum.buy { color: #7eb87e !important; background: rgba(126,216,126,0.08) !important; }
 
   .news-list { display: flex; flex-direction: column; gap: 10px; }
   .news-row {
@@ -1174,14 +1179,14 @@
   <div class="verification-bar">
     <span class="vb-date">📅 2026-05-20</span>
     <span class="vb-sep">·</span>
-    <span class="vb-fetched">Live data 12:22 Vilnius</span>
+    <span class="vb-fetched">Live data 12:32 Vilnius</span>
     
     <span class="vb-sep">·</span>
     <span class="vb-filled">✓ 12 live values: brent, brent_pct, btc, btc_pct, dxy, dxy_pct, gold, gold_pct, vix, vix_pct, wti, wti_pct</span>
     
     
     <span class="vb-sep">·</span>
-    <span class="vb-critic-warn">⚠ 0 price + 1 date issues flagged</span>
+    <span class="vb-critic-warn">⚠ 4 price + 1 date issues flagged</span>
     
   </div>
   
@@ -1192,61 +1197,61 @@
   
   <div class="snap-item">
     <div class="snap-label">S&amp;P 500</div>
-    <div class="snap-price">7,396</div>
-    <div class="snap-change" style="color: #7ed87e">+0.24%</div>
+    <div class="snap-price">7,394</div>
+    <div class="snap-change" style="color: #7ed87e">+0.22%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Nasdaq 100</div>
-    <div class="snap-price">29,084</div>
-    <div class="snap-change" style="color: #7ed87e">+0.55%</div>
+    <div class="snap-price">29,078</div>
+    <div class="snap-change" style="color: #7ed87e">+0.53%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Dow</div>
-    <div class="snap-price">49,483</div>
-    <div class="snap-change" style="color: #7ed87e">+0.05%</div>
+    <div class="snap-price">49,478</div>
+    <div class="snap-change" style="color: #7ed87e">+0.04%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Russell 2k</div>
-    <div class="snap-price">2,760</div>
-    <div class="snap-change" style="color: #7ed87e">+0.25%</div>
+    <div class="snap-price">2,759</div>
+    <div class="snap-change" style="color: #7ed87e">+0.23%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">VIX</div>
-    <div class="snap-price">18.01</div>
-    <div class="snap-change" style="color: #ff7373">-0.28%</div>
+    <div class="snap-price">18.04</div>
+    <div class="snap-change" style="color: #ff7373">-0.11%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">WTI Crude</div>
-    <div class="snap-price">102.34</div>
-    <div class="snap-change" style="color: #ff7373">-5.04%</div>
+    <div class="snap-price">102.51</div>
+    <div class="snap-change" style="color: #ff7373">-4.88%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Brent Crude</div>
-    <div class="snap-price">109.19</div>
-    <div class="snap-change" style="color: #ff7373">-1.88%</div>
+    <div class="snap-price">109.36</div>
+    <div class="snap-change" style="color: #ff7373">-1.73%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Gold</div>
-    <div class="snap-price">4,484</div>
-    <div class="snap-change" style="color: #ff7373">-0.50%</div>
+    <div class="snap-price">4,485</div>
+    <div class="snap-change" style="color: #ff7373">-0.48%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">Silver</div>
-    <div class="snap-price">75.48</div>
-    <div class="snap-change" style="color: #7ed87e">+0.87%</div>
+    <div class="snap-price">75.60</div>
+    <div class="snap-change" style="color: #7ed87e">+1.03%</div>
   </div>
   
   <div class="snap-item">
     <div class="snap-label">DXY</div>
-    <div class="snap-price">99.40</div>
+    <div class="snap-price">99.41</div>
     <div class="snap-change" style="color: #7ed87e">+0.11%</div>
   </div>
   
@@ -1263,73 +1268,73 @@
     
     <div class="ai-card">
       <div class="ai-symbol">MU<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$725.44</div>
+      <div class="ai-price">$726.17</div>
       <div class="ai-change" style="color: #7ed87e">+2.52%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +3.82%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +3.93%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">NBIS<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$203.17</div>
+      <div class="ai-price">$203.90</div>
       <div class="ai-change" style="color: #ff7373">-1.07%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +2.75%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +3.12%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">ASML<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$1,493</div>
+      <div class="ai-price">$1,495</div>
       <div class="ai-change" style="color: #ff7373">-0.88%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +2.31%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +2.46%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AMD<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$421.50</div>
+      <div class="ai-price">$422.00</div>
       <div class="ai-change" style="color: #ff7373">-1.65%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +1.80%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +1.92%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">CRWV<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$101.60</div>
+      <div class="ai-price">$101.63</div>
       <div class="ai-change" style="color: #ff7373">-3.82%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +1.79%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +1.82%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">NVDA<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$223.62</div>
+      <div class="ai-price">$223.90</div>
       <div class="ai-change" style="color: #ff7373">-0.77%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +1.37%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +1.49%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">AVGO<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$415.00</div>
+      <div class="ai-price">$415.14</div>
       <div class="ai-change" style="color: #ff7373">-2.29%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +0.96%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +0.99%</div>
       
     </div>
     
     <div class="ai-card">
       <div class="ai-symbol">TSM<span class="ext-badge pre">PRE</span></div>
-      <div class="ai-price">$395.29</div>
+      <div class="ai-price">$395.89</div>
       <div class="ai-change" style="color: #ff7373">-0.84%</div>
       
-      <div class="ext-change" style="color: #7ed87e">PRE +0.68%</div>
+      <div class="ext-change" style="color: #7ed87e">PRE +0.84%</div>
       
     </div>
     
@@ -1427,28 +1432,28 @@
       <div class="movers-col-title">📈 Gainers</div>
       
       <div class="mover-row">
+        <span><span class="mover-symbol">MU</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$726.67</span></span>
+        <span class="mover-up">+4.00%</span>
+      </div>
+      
+      <div class="mover-row">
         <span><span class="mover-symbol">OSS</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$16.00</span></span>
         <span class="mover-up">+3.83%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">MU</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$725.44</span></span>
-        <span class="mover-up">+3.82%</span>
-      </div>
-      
-      <div class="mover-row">
         <span><span class="mover-symbol">BMNU</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$1.47</span></span>
-        <span class="mover-up">+3.49%</span>
+        <span class="mover-up">+3.52%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">IREN</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$49.20</span></span>
-        <span class="mover-up">+3.06%</span>
+        <span><span class="mover-symbol">NBIS</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$203.90</span></span>
+        <span class="mover-up">+3.12%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">NBIS</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$203.17</span></span>
-        <span class="mover-up">+2.75%</span>
+        <span><span class="mover-symbol">IREN</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$49.21</span></span>
+        <span class="mover-up">+3.08%</span>
       </div>
       
     </div>
@@ -1456,28 +1461,28 @@
       <div class="movers-col-title">📉 Losers</div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">DUOL</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$112.08</span></span>
-        <span class="mover-down">-1.77%</span>
+        <span><span class="mover-symbol">FIG</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$22.90</span></span>
+        <span class="mover-down">-1.59%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">FIG</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$22.94</span></span>
-        <span class="mover-down">-1.42%</span>
-      </div>
-      
-      <div class="mover-row">
-        <span><span class="mover-symbol">RKLB</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$126.02</span></span>
-        <span class="mover-down">-1.01%</span>
-      </div>
-      
-      <div class="mover-row">
-        <span><span class="mover-symbol">ADBE</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$252.89</span></span>
+        <span><span class="mover-symbol">ADBE</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$252.91</span></span>
         <span class="mover-down">-0.82%</span>
       </div>
       
       <div class="mover-row">
-        <span><span class="mover-symbol">ADBE</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$253.50</span></span>
-        <span class="mover-down">-0.58%</span>
+        <span><span class="mover-symbol">PLTR</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$134.50</span></span>
+        <span class="mover-down">-0.56%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">NFLX</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$88.90</span></span>
+        <span class="mover-down">-0.48%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">RKLB</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$126.70</span></span>
+        <span class="mover-down">-0.48%</span>
       </div>
       
     </div>
@@ -1495,36 +1500,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$77,341</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.63%</div>
+      <div class="crypto-price">$77,440</div>
+      <div class="crypto-change" style="color: #7ed87e">+0.97%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
-      <div class="crypto-price">$2,128</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.21%</div>
+      <div class="crypto-price">$2,130</div>
+      <div class="crypto-change" style="color: #7ed87e">+0.77%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$84.84</div>
-      <div class="crypto-change" style="color: #ff7373">-0.21%</div>
+      <div class="crypto-price">$84.95</div>
+      <div class="crypto-change" style="color: #7ed87e">+0.50%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
-      <div class="crypto-price">$9.58</div>
-      <div class="crypto-change" style="color: #ff7373">-1.00%</div>
+      <div class="crypto-price">$9.59</div>
+      <div class="crypto-change" style="color: #ff7373">-0.02%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$261.44</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.21%</div>
+      <div class="crypto-price">$262.42</div>
+      <div class="crypto-change" style="color: #7ed87e">+1.24%</div>
     </div>
     
   </div>
@@ -1676,31 +1681,12 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-08-21 iki 2025-12-11 Su Lisa T pardavė 350K sh už $63.79M (2 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 2</span>
+          <span class="ib-date">2025-08-21 → 2025-12-11</span>
+          <span class="ib-qty">350K sh viso</span>
+          <span class="ib-value sell">$63.79M</span>
         </div>
-        
-        <div class="insider-buy-row">
-          <span class="ib-tag sell">SELL</span>
-          <span class="ib-date">2026-02-11</span>
-          <span class="ib-qty">125,000 sh @ $214.36</span>
-          <span class="ib-value sell">$26,794,875</span>
-        </div>
-        
-        <div class="insider-buy-row">
-          <span class="ib-tag sell">SELL</span>
-          <span class="ib-date">2025-12-11</span>
-          <span class="ib-qty">125,000 sh @ $215.14</span>
-          <span class="ib-value sell">$26,891,905</span>
-        </div>
-        
-        <div class="insider-buy-row">
-          <span class="ib-tag sell">SELL</span>
-          <span class="ib-date">2025-08-21</span>
-          <span class="ib-qty">225,000 sh @ $163.97</span>
-          <span class="ib-value sell">$36,893,351</span>
-        </div>
-        
         
       </div>
       
@@ -1721,6 +1707,13 @@
         
         <div class="insider-buy-row">
           <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">6,000 sh @ $433.79</span>
+          <span class="ib-value sell">$2,602,740</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
           <span class="ib-date">2026-04-24</span>
           <span class="ib-qty">31,320 sh @ $350.00</span>
           <span class="ib-value sell">$10,962,000</span>
@@ -1734,8 +1727,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-14 iki 2026-04-06 Papermaster Mark D pardavė 179K sh už $27.16M (12 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 12</span>
+          <span class="ib-date">2025-02-14 → 2026-04-06</span>
+          <span class="ib-qty">179K sh viso</span>
+          <span class="ib-value sell">$27.16M</span>
         </div>
         
       </div>
@@ -1772,6 +1768,13 @@
         
         <div class="insider-buy-row">
           <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">3,742 sh @ $262.59</span>
+          <span class="ib-value sell">$982,602</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
           <span class="ib-date">2026-05-01</span>
           <span class="ib-qty">28,500 sh @ $274.67</span>
           <span class="ib-value sell">$7,828,150</span>
@@ -1785,8 +1788,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-12 iki 2026-04-01 Herrington Douglas J pardavė 136K sh už $30.41M (24 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 24</span>
+          <span class="ib-date">2025-02-12 → 2026-04-01</span>
+          <span class="ib-qty">136K sh viso</span>
+          <span class="ib-value sell">$30.41M</span>
         </div>
         
       </div>
@@ -1828,8 +1834,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-21 iki 2025-11-21 Jassy Andrew R pardavė 80K sh už $17.30M (4 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 4</span>
+          <span class="ib-date">2025-02-21 → 2025-11-21</span>
+          <span class="ib-qty">80K sh viso</span>
+          <span class="ib-value sell">$17.30M</span>
         </div>
         
       </div>
@@ -1851,21 +1860,31 @@
         
         <div class="insider-buy-row">
           <span class="ib-tag sell">SELL</span>
-          <span class="ib-date">2025-05-21</span>
-          <span class="ib-qty">20,923 sh @ $201.30</span>
-          <span class="ib-value sell">$4,211,791</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">11,475 sh @ $262.66</span>
+          <span class="ib-value sell">$3,013,973</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-23</span>
+          <span class="ib-qty">17,751 sh @ $205.22</span>
+          <span class="ib-value sell">$3,642,842</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-11-21</span>
+          <span class="ib-qty">17,768 sh @ $216.90</span>
+          <span class="ib-value sell">$3,853,946</span>
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-21 iki 2025-08-21 Garman Matthew S pardavė 54K sh už $11.52M (3 sandoriai)
-        </div>
-        
-        
-        <div class="insider-buy-row insider-buy-more">
-          <span></span>
-          <span class="ib-more">+ dar 1 sandoris (mažesni)</span>
-          <span></span><span></span>
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 3</span>
+          <span class="ib-date">2025-02-21 → 2025-08-21</span>
+          <span class="ib-qty">54K sh viso</span>
+          <span class="ib-value sell">$11.52M</span>
         </div>
         
       </div>
@@ -1922,8 +1941,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2026-02-04 iki 2026-05-04 Venturo Brian M pardavė 7.01M sh už $679.99M (15 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 15</span>
+          <span class="ib-date">2026-02-04 → 2026-05-04</span>
+          <span class="ib-qty">7.01M sh viso</span>
+          <span class="ib-value sell">$679.99M</span>
         </div>
         
       </div>
@@ -1965,8 +1987,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2026-02-11 iki 2026-04-21 Intrator Michael N pardavė 1.53M sh už $147.99M (9 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 9</span>
+          <span class="ib-date">2026-02-11 → 2026-04-21</span>
+          <span class="ib-qty">1.53M sh viso</span>
+          <span class="ib-value sell">$147.99M</span>
         </div>
         
       </div>
@@ -2008,8 +2033,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2026-02-09 iki 2026-04-20 McBee Brannin pardavė 2.01M sh už $176.44M (20 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 20</span>
+          <span class="ib-date">2026-02-09 → 2026-04-20</span>
+          <span class="ib-qty">2.01M sh viso</span>
+          <span class="ib-value sell">$176.44M</span>
         </div>
         
       </div>
@@ -2066,8 +2094,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-18 iki 2025-10-01 Glance Natalie pardavė 32K sh už $12.09M (9 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 9</span>
+          <span class="ib-date">2025-02-18 → 2025-10-01</span>
+          <span class="ib-qty">32K sh viso</span>
+          <span class="ib-value sell">$12.09M</span>
         </div>
         
       </div>
@@ -2124,8 +2155,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-04 iki 2026-04-06 Okupe Oluyemi pardavė 522K sh už $25.46M (24 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 24</span>
+          <span class="ib-date">2025-02-04 → 2026-04-06</span>
+          <span class="ib-qty">522K sh viso</span>
+          <span class="ib-value sell">$25.46M</span>
         </div>
         
       </div>
@@ -2182,8 +2216,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-27 iki 2026-03-05 Pinner Jeffrey Tsvi pardavė 105K sh už $9.70M (18 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 18</span>
+          <span class="ib-date">2025-01-27 → 2026-03-05</span>
+          <span class="ib-qty">105K sh viso</span>
+          <span class="ib-value sell">$9.70M</span>
         </div>
         
       </div>
@@ -2220,6 +2257,13 @@
         
         <div class="insider-buy-row">
           <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">11,322 sh @ $609.83</span>
+          <span class="ib-value sell">$6,904,533</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
           <span class="ib-date">2026-02-27</span>
           <span class="ib-qty">56,571 sh @ $644.70</span>
           <span class="ib-value sell">$36,471,144</span>
@@ -2233,8 +2277,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-08-15 iki 2026-02-20 Li Susan J pardavė 57K sh už $39.90M (4 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 4</span>
+          <span class="ib-date">2025-08-15 → 2026-02-20</span>
+          <span class="ib-qty">57K sh viso</span>
+          <span class="ib-value sell">$39.90M</span>
         </div>
         
       </div>
@@ -2276,10 +2323,12 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-08-15 iki 2025-11-15 Bosworth Andrew pardavė 22K sh už $16.10M (2 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 2</span>
+          <span class="ib-date">2025-08-15 → 2025-11-15</span>
+          <span class="ib-qty">22K sh viso</span>
+          <span class="ib-value sell">$16.10M</span>
         </div>
-        
         
       </div>
       
@@ -2320,8 +2369,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-08-04 iki 2026-04-27 Olivan Javier pardavė 39K sh už $25.72M (37 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 37</span>
+          <span class="ib-date">2025-08-04 → 2026-04-27</span>
+          <span class="ib-qty">39K sh viso</span>
+          <span class="ib-value sell">$25.72M</span>
         </div>
         
       </div>
@@ -2378,8 +2430,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-02-14 iki 2025-10-27 Mehrotra Sanjay pardavė 165K sh už $28.74M (11 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 11</span>
+          <span class="ib-date">2025-02-14 → 2025-10-27</span>
+          <span class="ib-qty">165K sh viso</span>
+          <span class="ib-value sell">$28.74M</span>
         </div>
         
       </div>
@@ -2436,8 +2491,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2026-03-31 iki 2026-03-31 Korolenko Andrey pardavė 27K sh už $2.66M (1 sandoris)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 1</span>
+          <span class="ib-date">2026-03-31 → 2026-03-31</span>
+          <span class="ib-qty">27K sh viso</span>
+          <span class="ib-value sell">$2.66M</span>
         </div>
         
       </div>
@@ -2494,8 +2552,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-30 iki 2025-05-06 Sarandos Theodore A pardavė 201K sh už $197.19M (2 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 2</span>
+          <span class="ib-date">2025-01-30 → 2025-05-06</span>
+          <span class="ib-qty">201K sh viso</span>
+          <span class="ib-value sell">$197.19M</span>
         </div>
         
       </div>
@@ -2537,8 +2598,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-30 iki 2025-11-04 Peters Gregory K pardavė 146K sh už $145.64M (9 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 9</span>
+          <span class="ib-date">2025-01-30 → 2025-11-04</span>
+          <span class="ib-qty">146K sh viso</span>
+          <span class="ib-value sell">$145.64M</span>
         </div>
         
       </div>
@@ -2580,8 +2644,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-30 iki 2026-02-27 Neumann Spencer Adam pardavė 103K sh už $45.55M (17 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 17</span>
+          <span class="ib-date">2025-01-30 → 2026-02-27</span>
+          <span class="ib-qty">103K sh viso</span>
+          <span class="ib-value sell">$45.55M</span>
         </div>
         
       </div>
@@ -2618,9 +2685,9 @@
         
         <div class="insider-buy-row">
           <span class="ib-tag sell">SELL</span>
-          <span class="ib-date">2025-02-18</span>
-          <span class="ib-qty">124,408 sh @ $187.72</span>
-          <span class="ib-value sell">$23,354,237</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">18,000 sh @ $157.15</span>
+          <span class="ib-value sell">$2,828,744</span>
         </div>
         
         <div class="insider-buy-row">
@@ -2638,8 +2705,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-15 iki 2026-03-31 Huffman Steve Ladd pardavė 1.14M sh už $175.30M (30 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 30</span>
+          <span class="ib-date">2025-01-15 → 2026-03-31</span>
+          <span class="ib-qty">1.14M sh viso</span>
+          <span class="ib-value sell">$175.30M</span>
         </div>
         
       </div>
@@ -2696,10 +2766,12 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2026-03-02 iki 2026-03-02 Noto Anthony nupirko 56K sh už $1.00M (1 sandoris)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum buy">Σ 1</span>
+          <span class="ib-date">2026-03-02 → 2026-03-02</span>
+          <span class="ib-qty">56K sh viso</span>
+          <span class="ib-value buy">$1.00M</span>
         </div>
-        
         
       </div>
       
@@ -2755,8 +2827,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-06 iki 2025-09-08 Taneja Vaibhav pardavė 56K sh už $18.28M (12 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 12</span>
+          <span class="ib-date">2025-01-06 → 2025-09-08</span>
+          <span class="ib-qty">56K sh viso</span>
+          <span class="ib-value sell">$18.28M</span>
         </div>
         
       </div>
@@ -2811,8 +2886,11 @@
         </div>
         
         
-        <div class="insider-older-summary">
-          Nuo 2025-01-08 iki 2026-01-13 Yuan Eric S. pardavė 1.47M sh už $120.64M (13 sandoriai)
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 13</span>
+          <span class="ib-date">2025-01-08 → 2026-01-13</span>
+          <span class="ib-qty">1.47M sh viso</span>
+          <span class="ib-value sell">$120.64M</span>
         </div>
         
       </div>
@@ -2840,47 +2918,45 @@
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">Atleidžiami darbuotojai</div>
-            <div class="nm-value">~8,000</div>
-            <div class="nm-note">~10% visos darbo jėgos</div>
+            <div class="nm-label">Atleidžiamų darb.</div>
+            <div class="nm-value">~8 000</div>
+            <div class="nm-note">~10% iš 78 000 darbuotojų</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Perkėlimas į AI</div>
-            <div class="nm-value">&gt;7,000</div>
-            <div class="nm-note">darbuotojai perkeliami į AI</div>
+            <div class="nm-label">Perkelta į AI</div>
+            <div class="nm-value">&gt;7 000</div>
+            <div class="nm-note">darbuotojų perkelta į AI projektus</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Bendra darbo jėga</div>
-            <div class="nm-value">78,000</div>
-            <div class="nm-note">prieš atleidimus</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">Atlyginimo išmoka</div>
+            <div class="nm-label">Išeitinė - bazė</div>
             <div class="nm-value">16 sav.</div>
-            <div class="nm-note">+ 2 sav. už kiekvienus metus</div>
+            <div class="nm-note">bazinio atlyginimo išeitinė</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Sveikatos draudimas</div>
+            <div class="nm-label">Išeitinė - stažas</div>
+            <div class="nm-value">+2 sav./m.</div>
+            <div class="nm-note">papildomai už kiekvienus metus</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Sveikatos draud.</div>
             <div class="nm-value">18 mėn.</div>
-            <div class="nm-note">ankstesnio 3x daugiau</div>
+            <div class="nm-note">3x daugiau nei anksčiau</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">META atleidžia apie 8,000 darbuotojų - tai struktūrinis, ne finansinio spaudimo žingsnis: lygiagrečiai daugiau nei 7,000 darbuotojų perkeliama į AI iniciatyvas, o vadovų sluoksniai karpomi siekiant platesnės organizacijos. Tai rodo, kad Zuckerbergas tęsia 2023-2024 metų &#34;efektyvumo metų&#34; logiką - mažiau hierarchijos, greičiau judančios komandos. Išmokų paketas (16 savaičių bazinio atlyginimo plius papildomos savaitės už stažą, 18 mėnesių sveikatos draudimas) yra vienas dosnesnių rinkoje lyginant su Amazon ir Block atveju, kas mažina reputacinę riziką. Investuotojui svarbu: atleidimų mastas pats savaime neturėtų tapti katalizatoriumi aukštyn, nes META jau prekykauja aukštu vertinimu po stiprių Q1 earnings - greičiau tai yra maržos palaikymo signalas ilgesniam laikotarpiui. Jei AI perkėlimas duos apčiuopiamą produktyvumo efektą per 2-3 ketvirčius, operating margin gali dar augti, tačiau kol kas tai tik vadybinis sprendimas be tiesioginio poveikio artimiausio ketvirčio revenue.</div>
+        <div class="news-analysis">META atleidžia apie 8 000 darbuotojų - tai struktūrinis valdymo sluoksnio plonėjimas, ne krizinis žingsnis: vadybininkų eilės kerpamos tikslingai, siekiant greitesnių sprendimų. Lygiagretus &gt;7 000 darbuotojų perkėlimas į AI iniciatyvas rodo, kad kapitalo perskirstymas vyksta viduje - išlaidų bazė iš dalies išlieka, tik keičiasi kryptis. Investuotojui tai reiškia, kad artimiausių ketvirčių earnings gali rodyti mažesnį personalo išlaidų augimą, tačiau AI investicijų grąžos laukimo laikotarpis ilgėja. META akcija jau krito -1.26% šią dieną - manau reakcija santūri, nes rinka šiuos planus žinojo apie mėnesį. Vertinimo kampas: jei valdymo efektyvumas pagerės ir margins augs Q3-Q4, dabartinis lygis gali pasirodyti patrauklus, tačiau reikia sekti, ar AI segmento revenue augimas patvirtins perkėlimo logiką.</div>
         
         <div class="news-meta">Business Insider · 05-20 03:19 · <a href="https://www.businessinsider.com/layoff-meta-severance-details-cobra-jobs-2026-5" target="_blank" class="news-link">visas straipsnis</a></div>
         
         <div class="news-extra-links">
           
           <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFB1cUpuUW00ZXRGNDlhODJIVDZsT25aZGVPQzM5S1ZUdWhpWV8xRngyczlVTVlqWTFsM3UxSmNzblpiRzlXbTdJZ2EwR3FWMXNOWEVCay1iY0I3U0I4VkZtUDVfRDlGSFdw?oc=5" target="_blank" class="news-extra-link">+ CTech: Meta layoffs begin worldwide amid sweeping AI-driven restructuring</a>
-          
-          <a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxNejBac0xoRlMycU1OLVljcWFlbllDcFdXc1Z3ODMwbTdqUHYwUkZyR0NVU0RRMC1JWVVBNlY1MG8waXk1ckZGQlJnMEwwQ1VUQWdKV0tTMUNBeFNaanZPNlFMTTh6WER0Mm1ZWks3OGFSb2hCRXpra05rTjVTWVE2TFZ3ZU5zZ29oVWNDcWZYV0l1c3c0bnRYd1hVdi1YZXVJZVg3Q2pfZ0U2NkdUdThfUG9sdVdxRWFfUENSTXV2QVc3RHM?oc=5" target="_blank" class="news-extra-link">+ People Matters Media: Meta begins 8,000 layoffs today as 7,000 employees are moved into AI teams</a>
           
           <a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxNRHpLRUtYM0h0TUVudTdfMXFuQ3ZqV2FaYTRlR0FXdUNfbV80QzZUd0xEcmc3Mjloamo2ZUFYQ3dRem4zWUk5VDhEek1rWkFkWnB0NXZPSVVCT1MwRGNtX05hY014ZTJ6emlKUWppTkUxNzR5dERTWW9uNUYyZ3lnTzdwUGxEUTU4b0hrTmx3?oc=5" target="_blank" class="news-extra-link">+ The San Francisco Standard: Meta employees brace for layoffs as company focuses on AI</a>
           
@@ -2892,14 +2968,44 @@
     <div class="news-row has-summary">
       <div class="news-ticker">TSLA</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://www.msn.com/en-us/money/companies/tsla-stock-rises-overnight-elon-musk-drops-quiet-period-hint-amid-tesla-spacex-merger-buzz/ar-AA23Dg7h?ocid=finance-verthp-feeds" target="_blank">TSLA stock rises overnight: Elon Musk drops &#39;quiet period&#39; hint amid Tesla-SpaceX merger buzz</a></div>
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-cullen-frost-bankers-inc-acquires-5813-shares-of-tesla-inc-tsla-2026-05-20/" target="_blank">Cullen Frost Bankers Inc. Acquires 5,813 Shares of Tesla, Inc. $TSLA</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Institucijų dalis</div>
+            <div class="nm-value">66.20%</div>
+            <div class="nm-note">TSLA akcijų portfeliuose</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Cullen Frost pozicija</div>
+            <div class="nm-value">$31.3M</div>
+            <div class="nm-note">69,513 akcijų, +9.1% Q4</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Analitikų tikslinė kaina</div>
+            <div class="nm-value">$395.20</div>
+            <div class="nm-note">Hold konsensusas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">UBS tikslinė kaina</div>
+            <div class="nm-value">$364.00</div>
+            <div class="nm-note">Neutral, pakelta nuo $352</div>
+          </div>
+          
+        </div>
         
         
-        <div class="news-analysis">Straipsnyje nėra konkrečių finansinių duomenų - tik spekuliacijos apie galimą Tesla ir SpaceX jungimąsi bei Musko užuominas apie &#34;tyliąjį laikotarpį&#34;. Toks signalas gali reikšti artėjantį oficialų pranešimą, tačiau kol nėra patvirtintų skaičių - vertinimo pagrindo nėra. SpaceX yra privati įmonė, todėl bet koks susijungimas keltų rimtų klausimų dėl TSLA akcijų vertinimo - SpaceX vertė ir struktūra investuotojams būtų nauja rizika, ne tik premium. Manau, šiame etape reakcija yra grynai spekuliatyvi ir be earnings ar guidance duomenų nėra pagrindo keisti pozicijos.</div>
+        <div class="news-analysis">Tai institucinio pirkimo suvestinė, ne earnings - todėl kiekybinis signalas silpnas. Cullen Frost papildomai pirko 5,813 akcijų Q4, tačiau pozicijos dydis $31M yra mažas jų portfelio kontekste ir reikšmingo įsitikinimo nerodo. Svarbesnis signalas - 66.20% institucijų nuosavybė rodo, kad TSLA toliau lieka stambaus kapitalo dalyje, nepaisant pastarųjų metų svyravimų. Analitikų konsensusas Hold su $395.20 tiksline kaina signalizuoja, kad rinka mato ribotą aukštyn potencialą dabartiniame lygyje - UBS pakėlė tikslą iki $364, bet išlaikė neutral, o tai rodo atsargumą dėl augimo tempo ir pelningumo. Investuotojui šie duomenys nedaro atvejo pirkti ar parduoti - tai fono triukšmas, vertingiau sekti artėjantį earnings ir delivery skaičius.</div>
         
-        <div class="news-meta">MSN · 05-20 06:34 · <a href="https://www.msn.com/en-us/money/companies/tsla-stock-rises-overnight-elon-musk-drops-quiet-period-hint-amid-tesla-spacex-merger-buzz/ar-AA23Dg7h?ocid=finance-verthp-feeds" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">MarketBeat · 05-20 08:20 · <a href="https://www.marketbeat.com/instant-alerts/filing-cullen-frost-bankers-inc-acquires-5813-shares-of-tesla-inc-tsla-2026-05-20/" target="_blank" class="news-link">visas straipsnis</a></div>
         
         <div class="news-extra-links">
+          
+          <a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNWjdEc1FZU0hVR0JSSHFBUXBHd0ptUzNlc3dFQ3M4Mlh6dDVUb2lZLVI4Zl9CcE54c3MxVmxUdVZpZmxvalI0QWVPaFNTTnRGeE9CelZmZ2ctTDJiVVlDbXozcTRVZ2I0QnMxREZWa1h6REpwc0xzWmd6S1NNSnBMX1Z3aXo3RUdvQThFczgtaEpfLV9UNW1wdjVycU9OMUhBRmdQalZZNFZlek9CVWZaNlotclNhNmhEbGJkbDJlQQ?oc=5" target="_blank" class="news-extra-link">+ Stocktwits: TSLA Stock Rises Overnight: Elon Musk Drops ‘Quiet Period’ Hint Amid Tesla-Space</a>
           
           <a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxOX28zRXpOMmNUM2ttUXc2NzVKa0U2US1BOTAzMEpydDFtQUFRdk9EekJ5SFJmZnExdE5oYXBkRlM5ZEswNDZIeVJQemNHVkcwN25FUV85YUp2UklwRjFxOHpGSHl1LTVQNmdHLS1JM3oyOHZmcHpFME52MjVlMVhRSmtiOVpwU2pvV0lPOW4tblBSMHRWTkRCdjh0ZUhYSkRCRmJyVkZJR1pFMXpjWTJQSEFB?oc=5" target="_blank" class="news-extra-link">+ Stocktwits: TSLA Stock Slips Overnight: Gene Munster Sees Over 50% Odds Of Tesla-SpaceX AI P</a>
           
@@ -2916,7 +3022,7 @@
         <div class="news-title"><a href="https://campaignbrief.com/iren-acquires-awaken-as-founder-chris-parker-joins-to-lead-global-brand-strategy/" target="_blank">IREN acquires Awaken as founder Chris Parker joins to lead global brand strategy</a></div>
         
         
-        <div class="news-analysis">Ši naujiena - strateginis žingsnis, ne finansinis renginys: IREN įsigyja savo išorinį rinkodaros partnerį Awaken ir jo komandą perkelia į vidų. Sandorio finansinės sąlygos nenurodytos, todėl tiesioginio poveikio earnings ar revenue skaičiuoti neįmanoma. Tai daugiau veiklos efektyvumo sprendimas - vietoj išorinių sutarčių kaštų įmonė formuoja vidinį rinkodaros padalinį prieš plečiantis į Europą ir APAC. Investuotojui šis žingsnis pats savaime nėra catalyst, tačiau signalizuoja, kad IREN rimtai žiūri į prekės ženklo kūrimą augančioje AI Cloud erdvėje. Sekti verta kitų ketvirčių guidance dėl rinkodaros sąnaudų - internalizavimas gali sumažinti arba perskirstyti išlaidas, bet efektas bus matomas tik EBITDA dinamikoje.</div>
+        <div class="news-analysis">Šis žingsnis - rinkodaros agentūros „Awaken</div>
         
         <div class="news-meta">Campaign Brief · 05-20 01:31 · <a href="https://campaignbrief.com/iren-acquires-awaken-as-founder-chris-parker-joins-to-lead-global-brand-strategy/" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2929,7 +3035,7 @@
         <div class="news-title"><a href="https://www.insidermonkey.com/blog/uk-cma-opens-probe-into-microsoft-msft-software-practices-1765409/?amp=1" target="_blank">UK CMA Opens Probe Into Microsoft (MSFT) Software Practices</a></div>
         
         
-        <div class="news-analysis">UK CMA pradėjo tyrimą dėl MSFT programinės įrangos praktikų - tiriamas produktų susiejimas, suderinamumo apribojimai ir integruoti dirbtinio intelekto įrankiai. Tai ne pirmas CMA susidūrimas su MSFT: ankstesnis debesijos rinkos tyrimas baigėsi MSFT nenaudai - reguliatorius konstatavo monopolistinę licencijavimo praktiką. MSFT jau reagavo iš anksto - kovo mėnesį sumažino „Azure</div>
+        <div class="news-analysis">UK Konkurencijos ir rinkų tarnyba (CMA) tiria „Microsoft</div>
         
         <div class="news-meta">Insider Monkey · 05-20 07:31 · <a href="https://www.insidermonkey.com/blog/uk-cma-opens-probe-into-microsoft-msft-software-practices-1765409/?amp=1" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2946,37 +3052,37 @@
           <div class="nm-cell">
             <div class="nm-label">Alphinity pozicija</div>
             <div class="nm-value">1.5M akcijų</div>
-            <div class="nm-note">+105.7% per Q4</div>
+            <div class="nm-note">+105.7% Q4</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Portfelio dalis</div>
             <div class="nm-value">4.1%</div>
-            <div class="nm-note">9-as pagal dydį</div>
+            <div class="nm-note">9-tas pagal dydį</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Pozicijos vertė</div>
             <div class="nm-value">$406.5M</div>
-            <div class="nm-note">Alphinity SEC filing</div>
+            <div class="nm-note">Alphinity holdings</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Institucinė nuosavybė</div>
             <div class="nm-value">67.73%</div>
-            <div class="nm-note">hedge funds + asset mgrs</div>
+            <div class="nm-note">viso kapitalo</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Dividendas</div>
             <div class="nm-value">$0.27</div>
-            <div class="nm-note">pakeltas nuo $0.26</div>
+            <div class="nm-note">pakelta iš $0.26</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Alphinity pozicijos padvigubinimas per vieną ketvirtį rodo tvirtą institucinį įsitikinimą, bet pats savaime tai nėra kainų catalyst - tai retrospektyvūs SEC duomenys, dažnai kelių mėnesių senumo. 67.73% institucinė nuosavybė reiškia, kad AAPL jau yra daugelio portfelių branduolys, todėl didesnė papildoma paklausa iš šio šaltinio yra ribota. Dividendo padidinimas nuo $0.26 iki $0.27 yra simbolinis - vos 3.8% augimas, kuris nekeičia pajamingumo vaizdo reikšmingai tokiai kapitalizacijai. Manau, kad tikrasis klausimas investuotojui dabar yra services segmento augimo tempas ir AI monetizacija - o šie duomenys apie tai nieko nesako. Vertinimo kampas aktualus: jei AAPL artėja prie 52 savaičių aukštumos be naujo earnings catalyst, premium gali būti sunkiau pateisinti tik institucinių pirkimų fonu.</div>
+        <div class="news-analysis">Alphinity daugiau nei padvigubino AAPL poziciją - tai ne smulkus portfelio koregavimas, o aiški institucinio investuotojo apetito ženklas. Tačiau reikia konteksto: 1.5M akcijų iš 15B+ akcijų visumos yra simbolinis kiekis, tad šis žingsnis nerodo kainų katalizatoriaus artimiausiu laikotarpiu. Institucijų rankose jau 67.73% - rinka gerai padengta, papildoma paklausa iš šios pusės ribota. Dividendo didinimas iš $0.26 iki $0.27 signalizuoja vadovybės pasitikėjimą pinigų srautais, bet 0.01 USD pakėlimas yra daugiau simbolinis žingsnis nei realus pajamingumą didinantis veiksnys. Manau AAPL šiuo metu labiausiai priklauso nuo earnings guidance kokybės ir Services segmento augimo tempo - institucinių pirkimų statistika pati savaime sprendimo nepakeičia.</div>
         
         <div class="news-meta">MarketBeat · 05-20 07:15 · <a href="https://www.marketbeat.com/instant-alerts/filing-apple-inc-aapl-shares-acquired-by-alphinity-investment-management-pty-ltd-2026-05-20/" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2999,37 +3105,37 @@
           <div class="nm-cell">
             <div class="nm-label">Vanguard pozicija</div>
             <div class="nm-value">47.4M akcijų</div>
-            <div class="nm-note">$3.31B vertė, +13.4% Q4</div>
+            <div class="nm-note">$3.31B vertė, +13.4% QoQ</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Baillie Gifford</div>
-            <div class="nm-value">$581M</div>
-            <div class="nm-note">12.1M akcijų, +176.1% QoQ</div>
+            <div class="nm-value">12.1M akcijų</div>
+            <div class="nm-note">+176.1% Q3, $581M vertė</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Analitikų tikslas</div>
+            <div class="nm-label">Analitikų tikslinė</div>
             <div class="nm-value">$97.19</div>
-            <div class="nm-note">vidutinis konsensuso tikslas</div>
+            <div class="nm-note">vidutinė, Moderate Buy konsensas</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Craig Hallum tikslas</div>
             <div class="nm-value">$98.00</div>
-            <div class="nm-note">pakelta iki Buy, gegužė 2025</div>
+            <div class="nm-note">pakeltas į Buy, gegužė 2025</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Abacus pozicija</div>
             <div class="nm-value">4,270 akcijų</div>
-            <div class="nm-note">~$298K, nauja Q4 pozicija</div>
+            <div class="nm-note">~$298K, nauja pozicija Q4</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Naujienoje nėra earnings skaičių - tai institucinės nuosavybės srautas, bet kontekstas svarbus: kai Vanguard didina poziciją +13.4% iki 47M akcijų ir Baillie Gifford beveik trigubina savo dalį, tai rodo struktūrinį pasitikėjimą ilgalaikiu augimo scenarijumi, o ne trumpalaikę spekuliaciją. Institucijų 71.78% dalis reiškia mažesnį laisvai apyvartoje esančių akcijų kiekį - bet kokie teigiami catalyst gali sukelti ryškesnį kainų judėjimą aukštyn. Analitikų konsensusas Moderate Buy su $97.19 taikiniu rodo ~30-40% potencialą nuo dabartinių kainų, tačiau RKLB vis dar nuostolingas - investuotojai stato ant revenue augimo tempo, o ne dabartinio pelningumo. Manau, kad šie srautai patys savaime nėra signalas pirkti, bet patvirtina, kad stambus kapitalas nekelia pozicijų prieš ateinančius ketvirčius - tai sumažina staigaus pardavimo riziką.</div>
+        <div class="news-analysis">Ši naujiena pati savaime yra mažareikšmė - $298K pozicija RKLB mastu yra simbolinis skaičius. Svarbiau tai, ką rodo platesnė institucinė nuosavybės struktūra: Vanguard padidino poziciją iki $3.31B, Baillie Gifford beveik trigubai padidino dalį per vieną ketvirtį - tai rodo, kad stambūs investuotojai aktyviai kaupia pozicijas, o ne tik išlaiko esamas. 71.78% institucijų nuosavybė rodo aukštą akcijos brandą ir mažesnę manipuliavimo riziką. Analitikų konsensas $97.19 tikslinės kainos lygyje suteikia orientyrą, tačiau reikia sekti, ar artimiausias earnings patvirtins augimo tempo tęstinumą - tik tada tikslinės kainos revizija aukštyn atrodys pagrįsta. Investuotojui tai signalizuoja institucinį palaikymą, bet ne momentinį katalizatorių.</div>
         
         <div class="news-meta">MarketBeat · 05-20 07:04 · <a href="https://www.marketbeat.com/instant-alerts/filing-4270-shares-in-rocket-lab-corporation-rklb-bought-by-abacus-wealth-partners-llc-2026-05-20/" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -3042,7 +3148,7 @@
         <div class="news-title"><a href="https://fernandovasconcelos.com/p/Z6eD99n.html" target="_blank">Should You Buy Broadcom Stock After The Stock Split Announcement? | AVGO Stock Analysis Chance The Rapper (lNzKT4zE1n)</a></div>
         
         
-        <div class="news-analysis">Straipsnio turinys nepasiekiamas - puslapis grąžino 404 klaidą, todėl jokie konkretūs AVGO duomenys, skaičiai ar analizė nepateikti. Akcijų skaidymo (stock split) kontekstas iš antraštės nepatvirtinamas jokiais faktais. Kol nebus prieinamas originalus šaltinis su konkrečiais earnings, guidance ar vertinimo duomenimis, AVGO pozicijos vertinti negaliu.</div>
+        <div class="news-analysis">Straipsnio turinys nepasiekiamas - puslapis grąžina 404 klaidą, todėl konkretių AVGO duomenų nėra. Akcijų skaidymo (stock split) paskelbimas savaime nekeičia įmonės vertės ar fundamentalių rodiklių - tai tik techninis veiksmas, mažinantis vienos akcijos kainą ir didinantis apyvartą. Manau, sprendimas pirkti AVGO turėtų remtis artėjančiais earnings rezultatais, AI infrastruktūros exposure dydžiu ir esamų metų revenue bei EBITDA dinamika - ne vien skaidymo faktu. Jei turi prieigą prie pilno straipsnio ar naujausių AVGO finansinių duomenų, galiu atlikti gilesnę analizę.</div>
         
         <div class="news-meta">fernandovasconcelos.com · 05-20 04:55 · <a href="https://fernandovasconcelos.com/p/Z6eD99n.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -3055,7 +3161,7 @@
         <div class="news-title"><a href="https://www.cnbc.com/2026/05/20/putin-xi-gas-pipeline-power-of-siberia-iran-war-.html" target="_blank">Putin-Xi talks revive stalled Russian gas pipeline as Iran war rattles energy markets</a></div>
         
         
-        <div class="news-analysis">„Power of Siberia 2</div>
+        <div class="news-analysis">Putin-Xi susitikimas Pekine atgaivina „Power of Siberia 2</div>
         
         <div class="news-meta">CNBC Top · 05-20 08:15 · <a href="https://www.cnbc.com/2026/05/20/putin-xi-gas-pipeline-power-of-siberia-iran-war-.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -3086,38 +3192,38 @@
   <div class="manual-note">
     <div class="manual-note-header">
       <div class="manual-note-ticker">IRAN-US</div>
-      <div class="manual-note-headline">Iran-US karas (vyksta 11 sav.) - Trump postpones strike, WTI $102.34 / Brent $109.19, Hormuz vis dar uždarytas</div>
+      <div class="manual-note-headline">Iran-US karas (vyksta 11 sav.) - Trump postpones strike, WTI $102.51 / Brent $109.36, Hormuz vis dar uždarytas</div>
     </div>
     
     <div class="manual-note-metrics">
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">WTI šiandien (live)</div>
-        <div class="manual-note-metric-value">$102.34</div>
-        <div class="manual-note-metric-change">-5.04%</div>
+        <div class="manual-note-metric-value">$102.51</div>
+        <div class="manual-note-metric-change">-4.88%</div>
       </div>
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Brent šiandien (live)</div>
-        <div class="manual-note-metric-value">$109.19</div>
-        <div class="manual-note-metric-change">-1.88%</div>
+        <div class="manual-note-metric-value">$109.36</div>
+        <div class="manual-note-metric-change">-1.73%</div>
       </div>
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Gold (live)</div>
-        <div class="manual-note-metric-value">$4,483.70</div>
-        <div class="manual-note-metric-change">-0.50% - safe haven flows</div>
+        <div class="manual-note-metric-value">$4,484.60</div>
+        <div class="manual-note-metric-change">-0.48% - safe haven flows</div>
       </div>
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">VIX (live)</div>
-        <div class="manual-note-metric-value">18.01</div>
-        <div class="manual-note-metric-change">-0.28%</div>
+        <div class="manual-note-metric-value">18.04</div>
+        <div class="manual-note-metric-change">-0.11%</div>
       </div>
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">DXY (live)</div>
-        <div class="manual-note-metric-value">99.40</div>
+        <div class="manual-note-metric-value">99.41</div>
         <div class="manual-note-metric-change">+0.11% - USD strength dynamics</div>
       </div>
       
@@ -3162,11 +3268,11 @@
     
     <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>Iran-US karas vyksta NUO VASARIO 28 D. 2026, kai JAV ir Izraelis pradėjo koordinuotus oro smūgius prieš Iran. Kovo 4 Iran paskelbė Strait of Hormuz UŽDARYMĄ - IRGC (Revolutionary Guard) minuoja vandens kelią, board&#39;ina ir atakuoja pro jį einančius laivus. Hormuz - 20% pasaulio naftos eksporto chokepoint. Brent kovo mėn šokteljo iki $120+.
 
-DABARTINĖ SITUACIJA: WTI prekiaujama prie $102.34 (-5.04%), Brent $109.19 (-1.88%). Aukso live kaina $4,483.70 (-0.50%) - safe-haven flows tęsiasi. VIX 18.01 (-0.28%). USD index 99.40 (+0.11%). Vakar (gegužės 18) Trump paskelbė, kad atidedama planuota Iran ataka &#39;at request of Persian Gulf allies&#39; - tai sukėlė oil intraday dip. Bet Hormuz vis dar EFEKTYVIAI uždarytas, ir UBS prognozuoja, kad globalūs naftos inventarai iki gegužės pabaigos pasieks all-time lows.
+DABARTINĖ SITUACIJA: WTI prekiaujama prie $102.51 (-4.88%), Brent $109.36 (-1.73%). Aukso live kaina $4,484.60 (-0.48%) - safe-haven flows tęsiasi. VIX 18.04 (-0.11%). USD index 99.41 (+0.11%). Vakar (gegužės 18) Trump paskelbė, kad atidedama planuota Iran ataka &#39;at request of Persian Gulf allies&#39; - tai sukėlė oil intraday dip. Bet Hormuz vis dar EFEKTYVIAI uždarytas, ir UBS prognozuoja, kad globalūs naftos inventarai iki gegužės pabaigos pasieks all-time lows.
 
 ESKALACIJOS RIZIKA: Wall Street analyst&#39;ai dabar atvirai svarsto $150/bbl prie tęsiamo karo, ir $200/bbl prie Gulf exports halt scenarijaus. Trump &#39;no deadline&#39; pareiškimas, kad bus puolimas &#39;jei acceptable deal isn&#39;t reached&#39; yra open-ended grėsmės scenarijus.
 
-INVESTICINIS POVEIKIS šiandien per mano watchlist&#39;ą: (1) GLD pozicija (mano watchlist) - per pastaras 11 sav. nuo karo pradžios gold rallied ~25-35%, dabartinė live kaina $4,483.70 reflektuoja safe-haven flow&#39;us; Trump postpone gali sukelti -2-3% pull-back, bet struktūriškai laikymas, ne pirkimas - jau toli nuo entry; (2) BE - Bloom Energy alternative fuel cells - energy security tailwind; (3) NVDA earnings rytojaus PM - oil shock&#39;as plius geopolitika reiškia, kad makro sentiment&#39;as bus risk-off, multiple compression rizika gerai pakelta net jei skaičiai bus beat; (4) MSTR/CLSK/BMNR - BTC live $77,341 (+0.63%), jei Hormuz tęsis ir Fed nepatraukia rate cut&#39;ų - bearish risk asset&#39;ams.
+INVESTICINIS POVEIKIS šiandien per mano watchlist&#39;ą: (1) GLD pozicija (mano watchlist) - per pastaras 11 sav. nuo karo pradžios gold rallied ~25-35%, dabartinė live kaina $4,484.60 reflektuoja safe-haven flow&#39;us; Trump postpone gali sukelti -2-3% pull-back, bet struktūriškai laikymas, ne pirkimas - jau toli nuo entry; (2) BE - Bloom Energy alternative fuel cells - energy security tailwind; (3) NVDA earnings rytojaus PM - oil shock&#39;as plius geopolitika reiškia, kad makro sentiment&#39;as bus risk-off, multiple compression rizika gerai pakelta net jei skaičiai bus beat; (4) MSTR/CLSK/BMNR - BTC live $77,440 (+0.97%), jei Hormuz tęsis ir Fed nepatraukia rate cut&#39;ų - bearish risk asset&#39;ams.
 
 Portfolio strategija: karas active JAU 11 SAVAIČIŲ, todėl šios pozicijos turi būti integruotos. Klausimas dabar - laikyti, ar didinti, ar mažinti. Mano answer: laikyti GLD, neeskaluoti leveraged BTC, NVDA earnings reduce size prieš rytojaus call, oil exposure (XOM/CVX jei turi) - laikyti kaip pure-play war optionality.</div>
     
@@ -3178,7 +3284,7 @@ Portfolio strategija: karas active JAU 11 SAVAIČIŲ, todėl šios pozicijos tur
   <div class="manual-note">
     <div class="manual-note-header">
       <div class="manual-note-ticker">NVDA</div>
-      <div class="manual-note-headline">NVDA Q1 FY27 earnings RYTOJAUS (gegužės 20 PM) - critical catalyst plius $102.34 oil headwind</div>
+      <div class="manual-note-headline">NVDA Q1 FY27 earnings RYTOJAUS (gegužės 20 PM) - critical catalyst plius $102.51 oil headwind</div>
     </div>
     
     <div class="manual-note-metrics">
@@ -3221,14 +3327,14 @@ Portfolio strategija: karas active JAU 11 SAVAIČIŲ, todėl šios pozicijos tur
       
       <div class="manual-note-metric">
         <div class="manual-note-metric-label">Makro context (live)</div>
-        <div class="manual-note-metric-value">WTI $102.34, VIX 18.01</div>
+        <div class="manual-note-metric-value">WTI $102.51, VIX 18.04</div>
         <div class="manual-note-metric-change">Iran karas + Hormuz uždarytas = AI sektorius spaudžiamas geopolitikos</div>
       </div>
       
     </div>
     
     
-    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>NVDA earnings rytojaus po close&#39;o - savaitės most dominant catalyst&#39;as. Kontekstas: Iran-US karas vyksta 11 sav., WTI $102.34 (-5.04%), VIX 18.01 (-0.28%) - multiple compression rizika realią net su gerais skaičiais. Konsensusas tikisi $0.92 non-GAAP EPS prie $42.5B revenue (+58% YoY), bet whisper&#39;as virš $44B - rinka pre-cain&#39;a beat&#39;ą. Trys forward guidance elementai kritiški: (1) Q2 FY27 revenue guidance - whisper $48-50B, jei miss&#39;as iki $46B = -10%+ reakcija; (2) Kinijos H200 revenue add-back - bus oficialiai kalbama apie šios savaitės deal&#39;ą, jei Huang patvirtins kad Beijing&#39;as faktiškai blokuoja pirkimą = ~$0.50-0.80 EPS hit FY27; (3) Sovereign AI capex deal&#39;ai (Saudi, UAE, EU) - Iran krizė gali pristabdyti Saudi execution&#39;ą.
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>NVDA earnings rytojaus po close&#39;o - savaitės most dominant catalyst&#39;as. Kontekstas: Iran-US karas vyksta 11 sav., WTI $102.51 (-4.88%), VIX 18.04 (-0.11%) - multiple compression rizika realią net su gerais skaičiais. Konsensusas tikisi $0.92 non-GAAP EPS prie $42.5B revenue (+58% YoY), bet whisper&#39;as virš $44B - rinka pre-cain&#39;a beat&#39;ą. Trys forward guidance elementai kritiški: (1) Q2 FY27 revenue guidance - whisper $48-50B, jei miss&#39;as iki $46B = -10%+ reakcija; (2) Kinijos H200 revenue add-back - bus oficialiai kalbama apie šios savaitės deal&#39;ą, jei Huang patvirtins kad Beijing&#39;as faktiškai blokuoja pirkimą = ~$0.50-0.80 EPS hit FY27; (3) Sovereign AI capex deal&#39;ai (Saudi, UAE, EU) - Iran krizė gali pristabdyti Saudi execution&#39;ą.
 
 Makro headwind&#39;as: CNBC vakar pažymėjo &#39;Iran war piling pressure on AI boom companies&#39; - sentiment&#39;as gali sukelti -5-10% drop kaip &#39;sell the news&#39; net su gerais skaičiais. Strategija: long position size mažinti prieš earnings, naudoti straddle option strategy (50/50 padalintas tarp ATM call&#39;o ir put&#39;o, IV ~75-80%, breakeven prie ~8-9% move).</div>
     
@@ -3245,7 +3351,7 @@ Makro headwind&#39;as: CNBC vakar pažymėjo &#39;Iran war piling pressure on AI
   <div class="section-header">
     <div class="section-title" style="color:#f4cc6b">Pamąstymai iš rinkų · 48h</div>
   </div>
-  <div class="yt-synthesis">Šią savaitę dėmesys krypsta į vieną tašką - NVDA earnings, kurie artėja ir kuriuos rinka laiko savotišku barometru visam AI investicijų ciklui. Prieš rezultatus matau du dominuojančius klausimus: pirma, ar data center revenue ir toliau auga tokiu tempu, kuris pateisina dabartines vertinimo prognozes, ir antra - ar gross margin išlaikys stabilumą, nes tiekimo grandinės suvaržymai (Blackwell architektūros komponentai) gali spausti pelningumą net ir esant stipriai paklausai. Manau, kad šio quarter'io guidance bus svarbesnis už faktinį beat ar miss - rinka jau žino, kad NVDA uždirba, klausimas yra koks augimo tempas laukia toliau. Nasdaq 100 šiandien ties 29 084 punktais, VIX 18 lygyje - tai nėra panikuojanti rinka, bet ir ne euforija, kas suteikia šansą ateinantiems rezultatams arba teigiamai, arba neigiamai nustebinti. Stebėdamas platesnius puslaidininkių sektoriaus signalus, matau tam tikrą įtampą tarp NVDA ir atminties segmento. MU ir SNDK pozicionuojasi AI infrastruktūros temoje, tačiau atminties rinka istoriškai yra cikliška ir kainų spaudimas joje gali pasireikšti greičiau nei GPU segmente. Buvę ciklai rodė, kad kai atminties komponentų kainos pradeda kristi, tai nereiškia demand trūkumo - tai dažnai reiškia perprodukcijos fazę, kuri smogė investuotojams, tikėjusiems, kad AI paklausa viską absorbuos. Nesakau, kad taip bus dabar, tačiau manau, kad MU ir SNDK pozicijai svarbu sekti ne tik revenue augimą, bet ir inventoriaus lygius bei kainų dinamiką ateinančius du ketvirčius. Makro aplinka šiuo metu siunčia mišrius signalus. Auksas ties 4 484 doleriais - tai istorinių aukštumų zona, kuri signalizuoja, kad dalis investuotojų vis dar ieško apsaugos nuo infliacijos ar geopolitinės rizikos. WTI nafta ties 102 doleriais, nors šiandien krito daugiau nei 5% - toks judėjimas vertas dėmesio, nes greitas naftos kainų kritimas gali reikšti rinkos lūkesčius dėl lėtesnio globalaus augimo, o tai netiesiogiai liečia ir IT kapitalinių išlaidų apetitą. Fed šiuo metu neskuba keisti palūkanų - CMG FedWatch rodo, kad artimiausių posėdžių metu pokyčių tikimybė yra nedidelė. Aukštos palūkanos ilgiau - tai spaudimas ilgosios trukmės augimo akcijoms, ypač tiems, kurių vertinimas remiasi tolimos ateities pelno lūkesčiais. Vis dėlto matau vieną kontroversiškesnę tezę, kurią manau verta apsvarstyti: ar dabartinis AI investicijų ciklas yra burbulas, ar struktūrinis bangavimas? Argumentas prieš burbulo naratyvą yra tas, kad šį kartą kapitalinės išlaidos ateina iš didelių, pelningų kompanijų - META, GOOGL, MSFT, AMZN - kurios jau generuoja reikšmingą grąžą iš AI produktų ir todėl gali sau leisti ilgalaikius investicijų ciklus be skolų finansavimo. Tai struktūriškai skiriasi nuo 2000-ųjų dot-com eros, kai daug investicijų ėjo į kompanijas be aiškaus pelno modelio. Tačiau rizika yra kitokia - net jei fundamentalai tvirti, vertinimo išsitempimas pats savaime kuria trapumą, jei bet kuris iš šių hyperscaler'ių sumažintų capex guidance. GOOGL ir META artėja prie savo earnings - jų komentarai apie AI infrastruktūros išlaidas bus ne mažiau svarbūs nei NVDA skaičiai. Galiausiai kelios specifinės kompanijos watchlist'e, kurias stebiu šiame kontekste. PLTR - AI platformos tezė išlieka, bet vertinimas jau atspindi daug optimizmo, todėl bet koks guidance miss gali smogti neproporcingai stipriai. RDDT kaip duomenų platformos catalyst vis dar aktualus, nors augimo tempas nuo IPO fazės normalizuojasi. BE - energetikos infrastruktūros poreikis AI duomenų centrams yra realus ilgalaikis trend'as, ir šios kompanijos exposure į šį temą yra tiesioginis, tačiau reikia stebėti, ar jų backlog'as faktiškai konvertuojasi į revenue. Visose trijose matau bendrą temą: AI infrastruktūros banga yra reali, bet skirtingų kompanijų gebėjimas iš jos uždirbti skiriasi dramatiškai, ir 2025-ųjų antroji pusė parodys, kuriose iš jų augimo tempas buvo pervertintas.</div>
+  <div class="yt-synthesis">Artėjant NVDA earnings (Q1 FY2027), tai turbūt svarbiausi šio sezono rezultatai - ne tik dėl pačios kompanijos, bet dėl to, ką jie pasako apie visą AI infrastruktūros ciklą. Rinka šiuo metu tikisi revenue apie $43-45 mlrd. ir gross margin išlaikymo virš 70%. Klausimas, kuris man labiausiai rūpi - ar Blackwell tiekimo grandinė jau normalizavosi pakankamai, kad data center revenue augimas nesulėtėtų. Jei guidance bus konservatyvus arba gross margin kris žemiau 70% - manau tai bus reikšmingas signalas, kad kainų spaudimas tiekimo grandinėje dar nesibaigė. Tuo pačiu reikia sekti, ar Kinijos export kontrolės nepaliko pastebimos skylės revenue struktūroje. Stebiu ir platesnį atminties ciklo klausimą - MU ir SNDK kontekste tai aktualu. Yra argumentų, kad atminties rinka šiuo metu patiria tam tikrą perkaitimo riziką: HBM (high bandwidth memory) paklausa auga dėl AI, tačiau tradicinis NAND segmentas vis dar silpnas. Jei NVDA earnings patvirtins, kad duomenų centrų išlaidos išlieka didelės, tai turėtų palaikyti MU. Tačiau matau prieštaravimą - kai kurie analitikai teigia, kad atminties ciklo pikas jau artėja, o atsargų perteklius gali sugrįžti 2026 m. pradžioje. Investuotojui tai reiškia: MU pozicija šiandien - tai lažybos dėl AI capex tęstinumo, ne dėl ciklinio atsigavimo. Makro fone šiandien yra keista ramybė - VIX 18, S&P 500 ties 7394, Nasdaq 100 ties 29078. Techniškai - istoriniai aukštumai arba labai arti jų. Tačiau WTI nafta ties $103 (-4.88% per dieną) ir auksas ties $4485 siunčia priešingus signalus. Naftos kritimas tokiu mastu per vieną dieną paprastai reiškia arba paklausos baimę (recesijos lūkesčiai), arba geopolitinę situacijos atšilimą. Auksas ties $4485 išlieka aukštai - tai rodo, kad "safe haven" paklausa niekur nedingo. DXY ties 99.41 - doleris silpnas istoriniame kontekste, ir tai paprastai yra palankus fonas tarptautinėms kompanijoms kaip GOOGL, MSFT, AAPL, kurių didelė dalis revenue ateina iš užsienio. Manau šis dolerio silpnumas dar nėra pilnai įkainotas rinkoje. Geopolitinis kampas irgi keičiasi greičiau, nei rinka reaguoja. Tarifų situacija su Kinija - techniškai paliaubos, bet eksporto kontrolės NVDA, AMD ir ASML atžvilgiu niekur neišnyko. BIDU ir BABA - čia matau įdomią prieštarą: kai kurie argumentuoja, kad Kinijos AI investicijos vyksta nepaisant apribojimų ir lokalūs čipai (Huawei Ascend) palaipsniui pakeičia NVDA. Tai reikštų, kad BIDU exposure prie DeepSeek tipo modelių gali būti vertinamas iš naujo - ne kaip grėsmė, o kaip atskiras augimo katalizatorius. Tačiau geopolitinė rizika išlieka - bet koks eskalacinės retorikos protrūkis gali momentaliai paveikti šias akcijas. AI temos plitimas į farmacijos sektorių - tai ne trumpalaikė mada. Vaistų atradimo pagreitis naudojant AI modelius realiai keičia klinikinius bandymus: kai kurios fazės, kurios anksčiau trukdavo 5-7 metus, spaudžiamos iki 2-3 metų. Tai ilgalaikis struktūrinis pokytis, kuris paveiks ne tik didžiuosius farmacijos žaidėjus, bet ir cloud infrastruktūrą - MSFT, AMZN, GOOGL, kurie tiekia skaičiavimo galią. Investuotojui verta sekti, kurios big tech kompanijos su farmacijos sektoriumi sudaro strategines partnerystes - tai gali tapti reikšmingu revenue diversifikacijos šaltiniu per 3-5 metus. PLTR man išlieka vienas įdomiausių AI temos žaidėjų - ne dėl vartotojų rinkos, o dėl vyriausybinių ir gynybos kontraktų, kurie pagal pobūdį yra ilgalaikiai ir mažiau cikliški. Tačiau vertinimas lieka aukštas, o bet koks earnings miss ar guidance mažinimas būtų skausmingai nubaustas. RDDT ir HOOD - tai daugiau spekuliatyvi pusė, kur augimo tempas svarbiau už pelningumą. HOOD paskutinis earnings rodė revenue augimą, tačiau crypto trading volumes svyravimas gali padaryti rezultatus nenuspėjamus - BTC ties $77,440 šiandien nėra nei rekordiniuose aukštumuose, nei griūtyje, kas HOOD atžvilgiu reiškia neutralų foną artėjančiam ketvirčiui.</div>
 </section>
 
 
@@ -3264,7 +3370,7 @@ Makro headwind&#39;as: CNBC vakar pažymėjo &#39;Iran war piling pressure on AI
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>12:22 (Vilnius)</span>
+  <span>12:32 (Vilnius)</span>
 </footer>
 
 </body>
