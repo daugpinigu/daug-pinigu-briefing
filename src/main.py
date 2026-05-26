@@ -723,12 +723,52 @@ def main():
         # YouTube synthesis: combine all video transcripts into one narrative.
         # Pass live market context to prevent stale-data hallucination (e.g.
         # LLM citing S&P 500 5700 when actual is 7500).
+        # ALSO pass insider signals and manual notes as enrichment context -
+        # when GH Actions can't fetch transcripts (YouTube blocks datacenter
+        # IPs), the synthesis falls back to titles+descriptions which is thin.
+        # Insider data + manual notes give the LLM substance (e.g., "SOFI CEO
+        # Anthony Noto buying $2M" is a signal that transforms a generic SOFI
+        # narrative into a contrarian take).
         yt_synthesis = ''
         if yt_videos:
             market_ctx = {'indices': indices, 'crypto': crypto}
-            print(f"  LLM synthesizing {len(yt_videos)} YouTube videos into investor narrative...")
+            # Build enrichment context from insider + manual_notes for the LLM
+            insider_context = []
+            for x in insider:
+                tag = 'PERKA' if x['tx_type'] == 'buy' else 'PARDUODA'
+                ov = x.get('company_overview', {})
+                align = ov.get('alignment', '')
+                insider_context.append(
+                    f"  {x['ticker']} {x['insider']} ({x['title']}) {tag} {x['value_str']}"
+                    f" · insider'iai {ov.get('insider_pct_str', '?')} kompanijos"
+                    f" · 6mo net: {ov.get('alignment', '?').upper()}"
+                )
+            notes_context = []
+            for n in manual_notes:
+                notes_context.append(f"  {n.get('ticker','?')}: {n.get('headline','')}")
+            enrichment = ''
+            if insider_context:
+                enrichment += '\n\nINSIDER ACTIVITY (papildomas kontekstas - kas perka/parduoda):\n'
+                enrichment += '\n'.join(insider_context[:20])
+            if notes_context:
+                enrichment += '\n\nMANUAL NOTES (šios dienos akcentai):\n'
+                enrichment += '\n'.join(notes_context)
+            # Inject enrichment into videos as a pseudo-video for the LLM
+            if enrichment:
+                yt_videos_enriched = list(yt_videos) + [{
+                    'title': 'Papildomas kontekstas: insider activity + dienos akcentai',
+                    'description': enrichment,
+                    'transcript': '',
+                    'video_id': '_enrichment_',
+                    'published_dt': '',
+                }]
+            else:
+                yt_videos_enriched = yt_videos
+            tx_count = sum(1 for v in yt_videos if v.get('transcript') and len(v['transcript']) > 200)
+            print(f"  LLM synthesizing {len(yt_videos)} YouTube videos ({tx_count} with transcripts)"
+                  f" + enrichment context into investor narrative...")
             yt_synthesis = _safe('YouTube synthesis',
-                                  lambda: synthesize_youtube_insights(yt_videos, STOCKS, market_ctx), '')
+                                  lambda: synthesize_youtube_insights(yt_videos_enriched, STOCKS, market_ctx), '')
             print(f"    -> {len(yt_synthesis)} chars of synthesis")
 
         if reddit_posts:

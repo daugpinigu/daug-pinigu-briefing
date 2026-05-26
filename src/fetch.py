@@ -2564,13 +2564,12 @@ def fetch_youtube_transcript(video_id: str, max_chars: int = 8000) -> str:
     except ImportError:
         return ''
     api = YouTubeTranscriptApi()
-    # Try English first (cleaner for LLM), then any other language
+    last_err = None
     for langs in (['en', 'en-US', 'en-GB'], ['de', 'lt', 'fr', 'es', 'pl', 'ru'], None):
         try:
             if langs:
                 t = api.fetch(video_id, languages=langs)
             else:
-                # List all available, pick first
                 tr_list = api.list(video_id)
                 first = next(iter(tr_list), None)
                 if first is None:
@@ -2585,8 +2584,11 @@ def fetch_youtube_transcript(video_id: str, max_chars: int = 8000) -> str:
                 half = max_chars // 2
                 text = text[:half] + ' [...] ' + text[-half:]
             return text
-        except Exception:
+        except Exception as e:
+            last_err = e
             continue
+    if last_err:
+        print(f"  warn: YT transcript {video_id} all attempts failed: {type(last_err).__name__}: {str(last_err)[:120]}")
     return ''
 
 
