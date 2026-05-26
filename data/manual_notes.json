@@ -1,45 +1,41 @@
 {
-  "generated_at": "2026-05-19T07:50:00+00:00",
-  "expires_at": "2026-05-21T00:00:00+00:00",
-  "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{nasdaq}} {{btc}} {{eth}} {{sol}} for LIVE prices. Pipeline fills at runtime. Never hardcode current prices.",
+  "generated_at": "2026-05-26T10:20:00+00:00",
+  "expires_at": "2026-05-28T00:00:00+00:00",
+  "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{nasdaq}} {{btc}} {{eth}} {{sol}} for LIVE prices.",
   "notes": [
     {
-      "ticker": "IRAN-US",
-      "headline": "Iran-US karas (vyksta 11 sav.) - Trump postpones strike, WTI {{wti}} / Brent {{brent}}, Hormuz vis dar uždarytas",
-      "kind": "geopolitics_event",
-      "released_at": "2026-05-19",
+      "ticker": "NVDA",
+      "headline": "NVDA Q1 FY27: $81.6B revenue (+85% YoY), EPS $1.87 beat, Q2 guidance $91B, dividend 25x",
+      "kind": "earnings_result",
+      "released_at": "2026-05-20",
       "metrics": [
-        {"label": "WTI šiandien (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
-        {"label": "Brent šiandien (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Gold (live)", "value": "{{gold}}", "change": "{{gold_pct}} - safe haven flows"},
-        {"label": "VIX (live)", "value": "{{vix}}", "change": "{{vix_pct}}"},
-        {"label": "DXY (live)", "value": "{{dxy}}", "change": "{{dxy_pct}} - USD strength dynamics"},
-        {"label": "Brent peak (kovas 2026)", "value": "$120+", "change": "po Strait of Hormuz uždarymo kovo 4"},
-        {"label": "Strait of Hormuz", "value": "UŽDARYTAS", "change": "Iran paskelbė 2026-03-04, IRGC mines + ship attacks"},
-        {"label": "Karo pradžia", "value": "2026-02-28", "change": "US+Israel coordinated airstrikes prieš Iran"},
-        {"label": "Karas vyksta", "value": "11 savaičių", "change": "active conflict, ne lokalus escalation'as"},
-        {"label": "Trump 'attack tomorrow'", "value": "ATIDĖTAS", "change": "Persian Gulf leaders paprašė gegužės 18"},
-        {"label": "Wall St scenarijai", "value": "$150-200/bbl", "change": "jei karas eskaluoja, Gulf exports halt"}
+        {"label": "Revenue Q1", "value": "$81.62B", "change": "+85% YoY (vs $44.06B prieš metus)"},
+        {"label": "EPS non-GAAP", "value": "$1.87", "change": "beat $1.76 konsensuso +6.25%"},
+        {"label": "Data Center rev", "value": "$75B", "change": "+92% YoY - AI demand parabolic"},
+        {"label": "Free cash flow", "value": "$49B", "change": "rekordinis vieno ketvirčio FCF"},
+        {"label": "Q2 FY27 guidance", "value": "$91B", "change": "stipriai virš Street lūkesčių"},
+        {"label": "Dividendas", "value": "25x padidinimas", "change": "signal confidence ilgalaikiu"}
       ],
-      "analysis": "Iran-US karas vyksta NUO VASARIO 28 D. 2026, kai JAV ir Izraelis pradėjo koordinuotus oro smūgius prieš Iran. Kovo 4 Iran paskelbė Strait of Hormuz UŽDARYMĄ - IRGC (Revolutionary Guard) minuoja vandens kelią, board'ina ir atakuoja pro jį einančius laivus. Hormuz - 20% pasaulio naftos eksporto chokepoint. Brent kovo mėn šokteljo iki $120+.\n\nDABARTINĖ SITUACIJA: WTI prekiaujama prie {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Aukso live kaina {{gold}} ({{gold_pct}}) - safe-haven flows tęsiasi. VIX {{vix}} ({{vix_pct}}). USD index {{dxy}} ({{dxy_pct}}). Vakar (gegužės 18) Trump paskelbė, kad atidedama planuota Iran ataka 'at request of Persian Gulf allies' - tai sukėlė oil intraday dip. Bet Hormuz vis dar EFEKTYVIAI uždarytas, ir UBS prognozuoja, kad globalūs naftos inventarai iki gegužės pabaigos pasieks all-time lows.\n\nESKALACIJOS RIZIKA: Wall Street analyst'ai dabar atvirai svarsto $150/bbl prie tęsiamo karo, ir $200/bbl prie Gulf exports halt scenarijaus. Trump 'no deadline' pareiškimas, kad bus puolimas 'jei acceptable deal isn't reached' yra open-ended grėsmės scenarijus.\n\nINVESTICINIS POVEIKIS šiandien per mano watchlist'ą: (1) GLD pozicija (mano watchlist) - per pastaras 11 sav. nuo karo pradžios gold rallied ~25-35%, dabartinė live kaina {{gold}} reflektuoja safe-haven flow'us; Trump postpone gali sukelti -2-3% pull-back, bet struktūriškai laikymas, ne pirkimas - jau toli nuo entry; (2) BE - Bloom Energy alternative fuel cells - energy security tailwind; (3) NVDA earnings rytojaus PM - oil shock'as plius geopolitika reiškia, kad makro sentiment'as bus risk-off, multiple compression rizika gerai pakelta net jei skaičiai bus beat; (4) MSTR/CLSK/BMNR - BTC live {{btc}} ({{btc_pct}}), jei Hormuz tęsis ir Fed nepatraukia rate cut'ų - bearish risk asset'ams.\n\nPortfolio strategija: karas active JAU 11 SAVAIČIŲ, todėl šios pozicijos turi būti integruotos. Klausimas dabar - laikyti, ar didinti, ar mažinti. Mano answer: laikyti GLD, neeskaluoti leveraged BTC, NVDA earnings reduce size prieš rytojaus call, oil exposure (XOM/CVX jei turi) - laikyti kaip pure-play war optionality.",
-      "long_term": "Šis Iran-US karas yra fundamental'us 5-10 metų horizonto įvykis. US Middle East strategijoje tai pereinamasis momentas nuo 'engagement' link 'containment+strike' - ateityje konfliktai su Iran-affiliated grupėmis (Hezbollah, Hamas, Houthi) eskaluos labiau, ir energy security tampa national security TAM #1 prioritetas. Strait of Hormuz uždarymas užkonservavo struktūrinę energy supply rizikos premium'ą - net jei karas baigtųsi šiandien, rinka 5-10 metų horizonte kainos chronic supply disruption riziką. Tai padarys LNG export'erius (CHK, RRC), alternative fuel cell'us (BE), nuclear (CCJ, NXE), gold storage'ą (GLD), defense (LMT, RTX, NOC) struktūriškai bid'inius. Kinijos vaidmuo - per pastaras 11 sav. China padidino naftos pirkimus iš Iran 40%, paklusdamas embargo per shadow fleet tanker'ius, dar struktūrizuoja JAV-Kinijos confrontation'ą per energy lens. BABA/BIDU exposure paradoxally bullish - domestic Chinese economy izoliuota nuo US-led sankcijų, toleruoja aukštesnes oil kainas (Russia deals)."
+      "analysis": "NVDA Q1 FY27 earnings gegužės 20 d. buvo blowout visomis metrikom. Revenue $81.62B - tai +85% YoY nuo $44.06B prieš metus, ir stipriai virš konsensuso. Data Center segmentas dominuoja su $75B revenue (+92% YoY), rodantis, kad AI infrastruktūros demand'as tęsiasi nesulaikom tempu. Jensen Huang earning call'e pasakė 'demand has gone parabolic' ir atribučino tai 'Agentic AI has arrived' - nuoroda, kad kitą demand'o bangą stumia ne tik training, bet agent'inis AI inference'as.\n\nQ2 FY27 guidance $91B stipriai viršija Street lūkesčius - tai signalizuoja, kad Blackwell ramp'as veikia ir kompanija mato orderbook'ą toliau į priekį. Dividendas padidintas 25x - neįprastas žingsnis growth kompanijai, rodantis, kad management'as jaučiasi komfortabiliai su cash flow sustainability.\n\nFree cash flow $49B per vieną ketvirtį - tai beveik $200B annualized FCF run rate. Tai padaro NVDA viena iš didžiausių cash generatorių istorijoje ir atveria durys buyback'ams, M&A, ir dar agresyvesnėms R&D investicijoms į post-Blackwell architektūras (Rubin, Vera Rubin).\n\nInvesticinė implikacija: NVDA parodė, kad augimo istorija toli nuo pabaigos. Bet kainos reakcija po earnings (kaip visada) priklauso nuo to, kiek rinka jau pre-price'ino. Stebėti ar post-earnings momentum'as tęsiasi ar 'sell the news' dinamika suveikia.",
+      "long_term": "NVDA Q1 FY27 rezultatai sustiprina ilgalaikę tezę: $81.6B revenue + $91B Q2 guidance rodo ~$350B+ annualized run rate. Tai patvirtina NVDA kaip $5-10T market cap kandidatą 3-5 metų horizonte, jei AI capex ciklas tęsiasi. Tačiau du rizikos faktoriai stebėjimui: (1) Customer concentration - top 4 hyperscalers vis dar ~50%+ revenue, ir bet kurio iš jų capex rationalizavimas būtų juntamas; (2) Kinijos rinka - H200 deal'as patvirtintas bet Beijing'as praktiškai blokuoja, todėl $3-4B annualized Kinijos revenue add-back lieka uncertain. Struktūriškai bull'ish 3-5y horizontu."
     },
     {
-      "ticker": "NVDA",
-      "headline": "NVDA Q1 FY27 earnings RYTOJAUS (gegužės 20 PM) - critical catalyst plius {{wti}} oil headwind",
-      "kind": "earnings_preview",
-      "released_at": "2026-05-19",
+      "ticker": "IRAN-US",
+      "headline": "Iran-US: paliaubos nuo balandžio 8, peace talks intensyvėja, WTI nukrito iki {{wti}} nuo $100+",
+      "kind": "geopolitics_event",
+      "released_at": "2026-05-26",
       "metrics": [
-        {"label": "Earnings call", "value": "RYTOJAUS PM", "change": "gegužės 20 d. po close'o"},
-        {"label": "Konsensusas EPS", "value": "$0.92 non-GAAP", "change": "+45% YoY"},
-        {"label": "Konsensusas revenue", "value": "$42.5B", "change": "+58% YoY"},
-        {"label": "China revenue add-back", "value": "$3.5-4B annualized", "change": "H200 deal su Beijing pushback rizika"},
-        {"label": "Whisper guidance Q2", "value": "$48-50B", "change": "miss < $46B = -10%+ reakcija"},
-        {"label": "DC kontribucija", "value": "~88% revenue", "change": "Blackwell ramp-up nuo Q3 FY26"},
-        {"label": "Makro context (live)", "value": "WTI {{wti}}, VIX {{vix}}", "change": "Iran karas + Hormuz uždarytas = AI sektorius spaudžiamas geopolitikos"}
+        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}} - nukrito nuo $100+ ant peace talks optimizmo"},
+        {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
+        {"label": "Gold (live)", "value": "{{gold}}", "change": "{{gold_pct}} - safe haven flow mažėja"},
+        {"label": "Ceasefire", "value": "2026-04-08", "change": "galioja, bet fragile - Hormuz dar nevisiškai atviras"},
+        {"label": "Strait of Hormuz", "value": "Dalinis atidarymas", "change": "ship traffic vis dar gerokai žemiau pre-war lygio"},
+        {"label": "Trump pareiškimas", "value": "'deal largely negotiated'", "change": "gegužės 23 - bet Iran sako 'not imminent'"},
+        {"label": "Derybų framework", "value": "2 mėn ceasefire ext", "change": "US lifts blockade, Iran reopens Hormuz - draft"},
+        {"label": "Kliūtys", "value": "Nuclear + maritime control", "change": "Iran nori išlaikyti Hormuz kontrolę"}
       ],
-      "analysis": "NVDA earnings rytojaus po close'o - savaitės most dominant catalyst'as. Kontekstas: Iran-US karas vyksta 11 sav., WTI {{wti}} ({{wti_pct}}), VIX {{vix}} ({{vix_pct}}) - multiple compression rizika realią net su gerais skaičiais. Konsensusas tikisi $0.92 non-GAAP EPS prie $42.5B revenue (+58% YoY), bet whisper'as virš $44B - rinka pre-cain'a beat'ą. Trys forward guidance elementai kritiški: (1) Q2 FY27 revenue guidance - whisper $48-50B, jei miss'as iki $46B = -10%+ reakcija; (2) Kinijos H200 revenue add-back - bus oficialiai kalbama apie šios savaitės deal'ą, jei Huang patvirtins kad Beijing'as faktiškai blokuoja pirkimą = ~$0.50-0.80 EPS hit FY27; (3) Sovereign AI capex deal'ai (Saudi, UAE, EU) - Iran krizė gali pristabdyti Saudi execution'ą.\n\nMakro headwind'as: CNBC vakar pažymėjo 'Iran war piling pressure on AI boom companies' - sentiment'as gali sukelti -5-10% drop kaip 'sell the news' net su gerais skaičiais. Strategija: long position size mažinti prieš earnings, naudoti straddle option strategy (50/50 padalintas tarp ATM call'o ir put'o, IV ~75-80%, breakeven prie ~8-9% move).",
-      "long_term": "Ilgalaikis NVDA tezė nesikeičia - $5-10T monoply premium AI infrastructure'oje per Blackwell, Rubin, ir Vera Rubin generations, contolling 90%+ data center AI accelerator market 3-5y. Net jei rytoj earnings sukels -10%, structural'i tezė reikalauja per ateinančius 2y matyti: (1) Customer concentrationo mažinimas - top 4 hyperscalers (MSFT, AMZN, GOOGL, META) dabar ~50%+ revenue; (2) China secular share loss - 20-25% TAM faktiškai nepasiekiamas; (3) Sovereign AI ramp konversija į revenue. Base case 3-5y target $300-350 (vs current price) prie 30x FY28 EPS $11. Bull case $450 jei sovereign'ai ir Rubin keep momentum'ą."
+      "analysis": "Iran-US situacija per savaitę pagerėjo - po vasario 28 d. karo pradžios ir kovo 4 Strait of Hormuz uždarymo, balandžio 8 d. pasiektos paliaubos (ceasefire). Tačiau Hormuz laivininkystė vis dar gerokai žemiau pre-war lygio. Praeitą savaitę Trump pareiškė, kad deal'as 'largely negotiated' ir bus paskelbtas 'soon', o WTI nukrito nuo $100+ iki dabartinių {{wti}} ({{wti_pct}}) - tai ~8-10% kritimas per savaitę ant peace talks optimizmo.\n\nDerybų framework'as apima 2 mėnesių ceasefire pratęsimą, per kurį JAV nuimtų blokadą, o Iran atidarytų Strait of Hormuz. Tačiau du pagrindiniai kliuviniai lieka neišspręsti: Iran branduolinė programa ir Iran reikalavimas išlaikyti maritime traffic kontrolę per Hormuz - šie klausimai gali užstrigti mėnesiam.\n\nInvesticiniu kampu šiandien: oil kaina {{wti}} reflektuoja dalini peace premium'o mažėjimą. Jei deal'as realiai pasiektų - Brent galėtų kristi iki $80 iki metų pabaigos (IEA scenarijus). Jei derybos žlungia - grįžtame prie $120+ Brent. GLD ({{gold}}) koreaguojasi žemyn ant risk-on sentiment'o. Energy sektorius praeitą savaitę rallied +7%, bet jei peace deal pasitvirtins - XOM/CVX tipo pozicijos patirs 'peace selloff'.\n\nS&P 500 pasiekė rekordą 7,473 praeitą penktadienį - 8-ta savaitė paeiliui augimo. BTC {{btc}} ({{btc_pct}}) lieka konsolidacijos zonoje prie $74.5-78.3K.",
+      "long_term": "Iran-US peace talks yra struktūriškai svarbus inflection point 5-10 metų horizontu. Jei deal'as pasiekiamas ir Hormuz pilnai atidaromas - tai reiškia: (1) Oil supply normalizuojasi - $80-90 Brent target prieš $100-120 dabartinis, tai bearish energy sector long-term; (2) Energy security premium'as mažėja - alternative energy (BE, nuclear CCJ/NXE) praranda urgency tailwind'ą; (3) GLD safe-haven demand mažėja - gold gali konsoliduotis; (4) Risk-on environment'as stiprėja - AI/growth stocks (NVDA, PLTR, CRWV) gauna papildomą tailwind'ą. Tačiau jei derybos žlunga ir karas atsinaujina - visos šios tezės invertuojasi. Net jei peace deal pasiekiamas, struktūrinė Hormuz rizikos premija išliks 3-5 metų horizonte - rinka prisimins 2026 m. ir diskonto faktorius jūriniam transportui per Hormuz išliks padidėjęs."
     }
   ]
 }
