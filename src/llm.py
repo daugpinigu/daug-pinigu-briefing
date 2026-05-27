@@ -720,32 +720,36 @@ def synthesize_youtube_insights(videos: list, watchlist: list,
 
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: Tu peržiūrėjai kelis investicinius video šaltinius per pastarąsias 48h. Dabar rašyk kaip ASMENINIUS PAMĄSTYMUS - tarsi tai būtų tavo paties įžvalgos po medžiagos peržiūros. Tikslas: 4-6 pastraipos, ~600-900 žodžių, vientisas naratyvas.
+UŽDUOTIS: Tu esi investuotojas kuris seka rinkas kasdien. Tavo tikslas - parašyti ASMENINIUS PAMĄSTYMUS kurie yra VERTINGI ir NON-OBVIOUS. Ne generic "rinka auga, AI boom tęsiasi" - tai visi žino. Tavo vertė yra konkrečiuose insight'uose, prieštarose, ir insider signal'uose kuriuos kiti praleidžia.
+
+Tikslas: 4-6 pastraipos, ~600-900 žodžių, vientisas naratyvas.
+
+AUKŠČIAUSIO PRIORITETO SIGNALAI (būtinai panaudoti jei yra):
+- INSIDER PIRKIMAI - kai CEO/CFO perka SAVO kompanijos akcijas UŽ SAVO PINIGUS, tai stipresnis signalas nei bet kokia analitiko nuomonė. Jei matai insider buy - TAI TURI BŪTI vienas iš pagrindinių pamąstymų paragrafų. Insider sell'ai irgi svarbūs bet mažiau informatyvūs (gali būti planuoti 10b5-1).
+- PRIEŠTAROS tarp consensus narrative ir insider veiksmų. Pvz., jei akcija nukrito 50% ir consensus yra bearish, BET CEO perka savo pinigais - tai CONTRARIAN signalas kuris yra vertingesnis nei consensus pakartojimas.
+- Earnings SURPRISES - ne tik beat/miss, bet KAS pasikeitė guidance, KAS pasakė earnings call'e.
 
 PRIVALOMOS TAISYKLĖS:
 1. NEMINĖTI video pavadinimų, kūrėjų vardų, kanalų - rašyti pirmu asmeniu ("matau", "manau", "stebėdamas rinkas").
 2. NEDUOTI nuorodų į šaltinius.
-3. Sutelkti dėmesį į PRIORITETUS:
-   - Watchlist kompanijos: {watchlist_str}
-   - Makro: Fed, palūkanos, CPI/PPI/PCE, infliacija, recession signalai
-   - Geopolitika ir US politika veikianti rinkas (tarifai, Kinija, Iranas, karai)
-   - Sektoriniai trendai (semis, AI, crypto, energy)
-4. Synthesizuoti per visus šaltinius - jei keli kūrėjai liečia tą pačią temą, surask konsensusą ir prieštaras.
-5. Pateik VALUE - kiekvienas paragrafas turi turėti "ką tai reiškia investuotojui" elementą.
-6. Pradėk paragrafais kaip natūralus pasakojimas, ne sausi bullet'ai. Bet leiskite konkretiems skaičiams ir tezėms (ne tik abstrakcijos).
+3. NIEKADA nekartoti consensus narrative kuris jau yra "priced in". Jei akcija nukrito 50% ir visi kalba bearish - NEKARTOK to. Ieškok priešingo argumento arba insider signal'o.
+4. Kiekvienas paragrafas PRIVALO turėti bent vieną KONKREČIĄ tezę su argumentu (ne "reikia sekti" / "situacija neaiški").
+5. Jei insider'iai PERKA kompaniją kurios consensus yra bearish - tai LEAD STORY, ne footnote.
+6. Synthesizuoti per visus šaltinius - jei keli šaltiniai liečia tą pačią temą, surask prieštaras ir non-obvious kampą.
 7. Lietuvių kalba pagal style guide. Galima vartoti finansų anglicizmus (capex, guidance, beat/miss, dovish/hawkish, etc.).
-8. Jeigu kuriame šaltinyje yra prieštaringa nuomonė kitiems - akcentuok įdomias įžvalgas ir kontrargumentus, ne konsensus thinking.
+8. Brūkšniai - tik trumpi "-", jokių em-dash.
 
-VENGTI:
-- "Matau YouTube'e..." / "Vienas analitikas sakė..." / "Kažkas teigia..." - VISKAS turi būti tavo pamąstymai
-- Generic frazių ("rinka neaišku", "viskas priklauso")
-- Brūkšnių (em-dash) - tik trumpi "-"
+WATCHLIST kompanijos: {watchlist_str}
 
-KRITINĖS ANTI-HALIUCINACIJOS TAISYKLĖS:
-- NEMĖTYTI konkrečių indeksų skaičių (S&P 500, Nasdaq, Dow, VIX) UŽ ŠALTINIŲ ribų. Jei ŠALTINIO transcript'e ar MARKET CONTEXT bloke nėra konkrečios kainos - NEMINĖK skaičiaus.
-- NEPATEIKTI konkrečių akcijų kainų ($X.XX) ar P/E rodiklių, jei jų nėra šaltiniuose.
-- Jei nori paliesti rinkos lygį - naudok DABARTINĮ MARKET CONTEXT bloką kaip vienintelę kainų tiesos šaltinį.
-- Jei abejoji - rašyk apie tendenciją ("istoriniai aukštumos", "nauji rekordai") be specifinio skaičiaus.
+VENGTI (KRITIŠKAI SVARBU):
+- "Rinka neaišku" / "viskas priklauso" / "reikia sekti" - tai NULINĖ vertė skaitytojui
+- Generic recaps kuriuos galima rasti bet kuriame news site: "S&P 500 pasiekė rekordą", "AI boom tęsiasi", "Fed holds rates" - tai visi žino
+- Consensus narrative pakartojimas: jei visi sako bearish apie X - NERAŠYK to, nebent turi contrarian argumentą
+- Vienodai padėtos "ramiai laikyk" tipo rekomendacijos kiekvienai akcijai - diferenciuok
+
+ANTI-HALIUCINACIJOS:
+- Konkrečius skaičius (indeksai, kainos) imk TIK iš MARKET CONTEXT bloko arba ŠALTINIŲ.
+- Jei nori paliesti rinkos lygį be tikslaus skaičiaus - naudok tendencijas ("istoriniai aukštumai") be konkrečių numerių.
 
 DABARTINIS MARKET CONTEXT (vienintelė tiesa kainoms):
 {_format_market_context(market_context)}
@@ -753,7 +757,7 @@ DABARTINIS MARKET CONTEXT (vienintelė tiesa kainoms):
 ŠALTINIAI:
 {context_block}
 
-Tavo pamąstymai (4-6 paragrafai, vientisas tekstas):"""
+Tavo pamąstymai (4-6 paragrafai, pradėk nuo STIPRIAUSIO non-obvious insight'o, ne nuo generic market recap):"""
 
     try:
         resp = _llm_call_with_retry(client, prompt, model, max_tokens=2000)

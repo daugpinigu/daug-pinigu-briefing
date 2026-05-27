@@ -235,6 +235,35 @@ def _substitute_placeholders(notes: list, values: dict) -> tuple:
     return out, log
 
 
+def _load_whatsapp_channel() -> list:
+    """Load WhatsApp channel messages from data/whatsapp_channel.json.
+
+    Scraped locally by scripts/wa_refresh.py from CaktusJxck and other
+    followed channels. Returns list of {text, time, channel} dicts.
+    Empty if file missing or older than 24h.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    path = Path(__file__).resolve().parent.parent / 'data' / 'whatsapp_channel.json'
+    if not path.exists():
+        return []
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return []
+    try:
+        gen = _dt.fromisoformat(data.get('generated_at', '').replace('Z', '+00:00'))
+        age_h = (_dt.now(_tz.utc) - gen).total_seconds() / 3600
+        if age_h > 24:
+            print(f"  warn: whatsapp_channel.json is {age_h:.1f}h old (stale)")
+            return []
+    except Exception:
+        pass
+    msgs = data.get('messages', [])
+    # Filter to messages with meaningful text (skip empty/time-only)
+    return [m for m in msgs if m.get('text', '').strip() and len(m['text'].strip()) > 10]
+
+
 def _load_ibkr_news() -> list:
     """Load IBKR-sourced news from data/ibkr_news.json.
 
@@ -485,6 +514,8 @@ def main():
     # Refreshed locally by scripts/iv_refresh.py (twice daily via launchd).
     ibkr_news = _load_ibkr_news()
     print(f"  Loaded {len(ibkr_news)} IBKR headlines from data/ibkr_news.json")
+    wa_messages = _load_whatsapp_channel()
+    print(f"  Loaded {len(wa_messages)} WhatsApp channel messages from data/whatsapp_channel.json")
 
     # Manual notes - explicit content Radoslav (or I) want in the next briefing,
     # injected via data/manual_notes.json with auto-expiry. Outlives single
@@ -730,7 +761,21 @@ def main():
         # Anthony Noto buying $2M" is a signal that transforms a generic SOFI
         # narrative into a contrarian take).
         yt_synthesis = ''
-        if yt_videos:
+        # Check for custom (pre-approved) synthesis text. Per workflow rule
+        # (memory: feedback_synthesis_approval), synthesis text must be shown
+        # to Radoslav for approval before publishing. If a custom file exists
+        # and is fresh (<48h), use it directly instead of LLM generation.
+        custom_path = Path(__file__).resolve().parent.parent / 'data' / 'custom_synthesis.txt'
+        if custom_path.exists():
+            from datetime import datetime as _cdt, timezone as _ctz, timedelta as _ctd
+            age_h = (_cdt.now(_ctz.utc) - _cdt.fromtimestamp(
+                custom_path.stat().st_mtime, tz=_ctz.utc)).total_seconds() / 3600
+            if age_h <= 48:
+                yt_synthesis = custom_path.read_text().strip()
+                print(f"  Using pre-approved custom synthesis ({len(yt_synthesis)} chars, {age_h:.1f}h old)")
+            else:
+                print(f"  Custom synthesis expired ({age_h:.1f}h old), using LLM generation")
+        if not yt_synthesis and yt_videos:
             market_ctx = {'indices': indices, 'crypto': crypto}
             # Build enrichment context from insider + manual_notes for the LLM
             insider_context = []
@@ -753,6 +798,10 @@ def main():
             if notes_context:
                 enrichment += '\n\nMANUAL NOTES (šios dienos akcentai):\n'
                 enrichment += '\n'.join(notes_context)
+            if wa_messages:
+                enrichment += '\n\nWHATSAPP CHANNEL NEWS (CaktusJxck - real-time market headlines):\n'
+                for wm in wa_messages[:25]:
+                    enrichment += f"  [{wm.get('time','')}] {wm['text'][:200]}\n"
             # Inject enrichment into videos as a pseudo-video for the LLM
             if enrichment:
                 yt_videos_enriched = list(yt_videos) + [{
