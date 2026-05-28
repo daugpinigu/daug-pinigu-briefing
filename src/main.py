@@ -771,8 +771,17 @@ def main():
             age_h = (_cdt.now(_ctz.utc) - _cdt.fromtimestamp(
                 custom_path.stat().st_mtime, tz=_ctz.utc)).total_seconds() / 3600
             if age_h <= 48:
-                yt_synthesis = custom_path.read_text().strip()
+                raw_synth = custom_path.read_text().strip()
+                # Substitute {{wti}} {{brent}} {{btc}} etc. with live prices so
+                # the approved text never ships stale numbers. Same engine as
+                # manual_notes. Per memory rule: prices must be live, never
+                # hardcoded in approved synthesis text.
+                _synth_note = [{'headline': raw_synth, 'metrics': [], 'analysis': '', 'long_term': ''}]
+                _synth_out, _synth_log = _substitute_placeholders(_synth_note, placeholder_values)
+                yt_synthesis = _synth_out[0]['headline']
                 print(f"  Using pre-approved custom synthesis ({len(yt_synthesis)} chars, {age_h:.1f}h old)")
+                if _synth_log['filled']:
+                    print(f"    -> live prices filled: {', '.join(_synth_log['filled'])}")
             else:
                 print(f"  Custom synthesis expired ({age_h:.1f}h old), using LLM generation")
         if not yt_synthesis and yt_videos:

@@ -22,18 +22,19 @@
     },
     {
       "ticker": "IRAN-US",
-      "headline": "Iran peace talks: Trump 'orderly and constructive' bet 'don't rush', WTI {{wti}} / Brent ~$99",
+      "headline": "Iran-US naktinis US smūgis prie Hormuz, bet nafta krenta - WTI {{wti}} / Brent {{brent}}",
       "kind": "geopolitics_event",
       "released_at": "2026-05-27",
       "metrics": [
         {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
-        {"label": "Brent", "value": "~$99", "change": "+4% antradienį po mixed signals"},
-        {"label": "Trump", "value": "'orderly and constructive'", "change": "bet instruktavo 'don't rush into deal'"},
-        {"label": "Kliūtys", "value": "uranium stockpile + Hormuz tolls", "change": "pagrindiniai neišspręsti klausimai"},
-        {"label": "Hormuz statusas", "value": "vis dar uždarytas", "change": "ship traffic gerokai žemiau pre-war"},
-        {"label": "S&P 500 close", "value": "7,519", "change": "+0.61% naujas rekordas"}
+        {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
+        {"label": "Naktinis US smūgis", "value": "CENTCOM self-defense", "change": "prie Hormuz, 4 Irano navy karininkai žuvo"},
+        {"label": "Iran reakcija", "value": "'leave no hostility unanswered'", "change": "grasina atsaku, ceasefire rizika"},
+        {"label": "Hormuz įsipareigojimas", "value": "pre-war per mėnesį", "change": "Irano valstybinė TV - de-eskalacijos signalas"},
+        {"label": "Kliūtys", "value": "uranium + Hormuz tolls", "change": "Bessent: maximum pressure išlieka"},
+        {"label": "S&P 500 (live)", "value": "{{sp500}}", "change": "{{sp500_pct}}"}
       ],
-      "analysis": "Iran-US derybos tęsiasi su mixed signals. Trump pareiškė kad derybos eina 'orderly and constructive manner' bet instruktavo pareigūnus 'not to rush into a deal'. Pagrindiniai kliuviniai: Iran branduolinis arsenalas (enriched uranium stockpile) ir Tehran reikalavimas kontroliuoti Hormuz maritime traffic. Brent pašoko +4% antradienį po Trump komentarų, WTI prekiaujama prie {{wti}}. Hormuz vis dar efektyviai uždarytas - net po balandžio 8 d. paliaubų ship traffic gerokai žemiau pre-war lygio.\n\nInvesticiniu kampu: oil volatilumas tęsis kol deal nepassirašytas. Jei deal pasiekiamas ir Hormuz atidaromas - Brent tikėtinas $80 iki metų pabaigos. Jei derybos žlunga - grįžtame prie $110+. S&P 500 uždarė naują rekordą 7,519 (+0.61%) - devintas record close, rinka kainuoja peace premium."
+      "analysis": "Iran-US situacija per naktį eskalavo - JAV smogė Iranui (CENTCOM 'self-defense strikes' prie Hormuz, taikiniai raketų aikštelės + minas statantys laivai, žuvo 4 Irano navy karininkai). Tai įvyko kai Irano delegacija keliavo į Katarą deryboms. Iran pagrasino 'leave no act of hostility unanswered'. Paradoksas: nafta NEKILO - WTI {{wti}} ({{wti_pct}}), Brent {{brent}} - nes Irano valstybinė TV pareiškė įsipareigojimą atstatyti Hormuz srautą iki pre-war lygio per mėnesį. Rinka perskaitė de-eskalacijos kryptį kaip stipresnį signalą nei patį smūgį.\n\nInvesticiniu kampu: oil volatilumas tęsis kol deal nepasirašytas. Hormuz tolls klausimas (Iran nori mokesčių sistemos laivams, JAV atmeta) yra realus deal-breaker rizikos taškas. Jei deal pasiekiamas - Brent tikėtinas $80 iki metų pabaigos. Jei Iran atsako į smūgį - grįžtame prie $110+. S&P 500 prie {{sp500}}, rinka kainoja peace kryptį bet jautri eskalacijos headline'ams."
     }
   ]
 }
