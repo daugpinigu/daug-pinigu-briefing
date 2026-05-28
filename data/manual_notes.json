@@ -21,6 +21,23 @@
       "long_term": "Memory cikliškumo klausimas lieka atviras. AI HBM demand šiandien realus, bet istoriškai kiekvienas 'this time is different' memory cikle baigdavosi oversupply. 3-5 metų supply agreements su fixed pricing YRA struktūrinis pokytis palyginus su spot-driven praeityje, bet Samsung $1.5B Vietnam plant + SK Hynix expansion rodo kad supply atsigaus per 18-24 mėn. Investuotojui MU yra semi-cyclical play su AI premium - geriau nei grynai ciklinis, bet ne NVDA-tipo monopolija."
     },
     {
+      "ticker": "META",
+      "headline": "Meta paleido mokamas Instagram/Facebook/WhatsApp prenumeratas + Meta One AI tiers, akcija +3.74%",
+      "kind": "product_launch",
+      "released_at": "2026-05-27",
+      "metrics": [
+        {"label": "Instagram/Facebook Plus", "value": "$3.99/mėn", "change": "profile customization, super reactions, story insights"},
+        {"label": "WhatsApp Plus", "value": "$2.99/mėn", "change": "papildomos funkcijos"},
+        {"label": "Meta One AI tiers", "value": "$7.99 / $19.99/mėn", "change": "testavimas nuo kito mėn. - Singapūras, Gvatemala, Bolivija"},
+        {"label": "Verslo/kūrėjų planai", "value": "$14.99 / $49.99/mėn", "change": "Meta One Essential / Advanced"},
+        {"label": "Akcijos reakcija", "value": "+3.74% -> $635.26", "change": "market cap $1.61T"},
+        {"label": "Valuation", "value": "P/E 23.09", "change": "forward P/E 18.21"},
+        {"label": "Meta Verified", "value": "nekeičiamas", "change": "prenumeratos jo nepakeičia"}
+      ],
+      "analysis": "Meta paskelbė globalų prenumeratų paleidimą - Instagram Plus ir Facebook Plus po $3.99/mėn, WhatsApp Plus $2.99/mėn (profile customization, super reactions, story insights), plius AI tiers Meta One Plus $7.99 ir Meta One Premium $19.99 (testavimas nuo kito mėnesio Singapūre, Gvatemaloje, Bolivijoje), ir verslo/kūrėjų planai $14.99-$49.99. Akcija +3.74% iki $635, market cap $1.61T.\n\nKodėl rinka reagavo teigiamai: tai pirmas konkretus signalas, kad Meta monetizuos AI ne vien per reklamą. Didžiausias investorių nerimas dėl Meta buvo didžiulis AI capex be aiškaus ROI - skirtingai nuo Microsoft ar Google, Meta neturi recurring cloud pajamų, kurios pateisintų infrastruktūros išlaidas. Prenumeratos duoda naują recurring revenue kryptį.\n\nBet būkim sąžiningi dėl masto: $160B+ reklamos verslui šios prenumeratos artimiausiu metu yra statistinis triukšmas. Vartotojai retai moka už nemokamų soc. tinklų papildomas funkcijas - Meta Verified adopcija buvo kukli. AI tiers, kurie galėtų būti įdomesni, testuojami tik 3 mažose rinkose. Tad +3.74% yra labiau naratyvo palengvėjimas (Zuckerberg pagaliau adresuoja capex-ROI klausimą) nei fundamentalus pokytis. Tai realus optionality ir teisinga kryptis, bet ne game-changer šiandienos skaičiuose.",
+      "long_term": "Esmė ne pačios prenumeratos pajamos, o ką jos signalizuoja: Meta pradeda kurti recurring revenue sluoksnį virš reklamos. Jei AI tiers (Meta One) gaus trakciją po testavimo 3 rinkose, tai galėtų tapti tikru antruoju monetizacijos varikliu ir pateisinti AI capex. Bet tai 'jei' - kol kas tik testas. Investuotojui META lieka reklamos verslas su AI optionality; prenumeratos prideda dar vieną mažą optionality sluoksnį, dar ne pajamų istoriją."
+    },
+    {
       "ticker": "IRAN-US",
       "headline": "Iran-US naktinis US smūgis prie Hormuz, bet nafta krenta - WTI {{wti}} / Brent {{brent}}",
       "kind": "geopolitics_event",
