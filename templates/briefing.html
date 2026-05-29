@@ -1471,79 +1471,6 @@
 </section>
 {% endif %}
 
-{% if insider %}
-<section class="section">
-  <div class="section-header">
-    <div class="section-title" style="color:#7ed87e">Watchlist Insider Activity</div>
-    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ insider|length }}</span>
-  </div>
-  <div class="insider-list">
-    {% for ticker, rows in insider|groupby('ticker') %}
-    {% set rows = rows|list %}
-    {% set buy_count = rows|selectattr('tx_type','equalto','buy')|list|length %}
-    {% set sell_count = rows|selectattr('tx_type','equalto','sell')|list|length %}
-    {% set ov = rows[0].company_overview if rows[0].company_overview else {} %}
-    <div class="insider-group">
-      <div class="insider-group-header">
-        <div class="insider-group-ticker">{{ ticker }}</div>
-        <div class="insider-group-summary">
-          {% if buy_count %}<span class="gs-buy">{{ buy_count }} buy{% if buy_count > 1 %}s{% endif %}</span>{% endif %}
-          {% if buy_count and sell_count %} · {% endif %}
-          {% if sell_count %}<span class="gs-sell">{{ sell_count }} sell{% if sell_count > 1 %}s{% endif %}</span>{% endif %}
-        </div>
-      </div>
-      {% if ov and (ov.insider_pct_str or ov.alignment != 'none') %}
-      <div class="insider-alignment">
-        {% if ov.insider_pct_str %}<span class="ia-label">visi insider'iai:</span> <span class="ia-pct">{{ ov.insider_pct_str }} kompanijos</span>{% endif %}
-        {% if ov.alignment != 'none' %}
-        <span class="ia-sep">·</span>
-        <span class="ia-label">6 mėn netto:</span>
-        <span class="ia-net ia-{{ ov.alignment }}">{{ ov.net_6mo_str }}</span>
-        <span class="ia-badge ia-{{ ov.alignment }}">
-          {% if ov.alignment == 'buying' %}PERKA{% elif ov.alignment == 'selling' %}PARDUODA{% else %}NEUTR{% endif %}
-        </span>
-        {% endif %}
-      </div>
-      {% endif %}
-      {% for x in rows %}
-      <div class="insider-row{% if x.recent_week %} recent-week{% endif %}">
-        <span class="tx-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
-        <div class="insider-info">
-          <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}{% if x.is_stale %}<span class="insider-stale">istor.</span>{% endif %}</div>
-          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
-          {% if x.shares_owned_str %}
-          <div class="insider-holdings">{% if x.holdings_partial %}direct: {{ x.shares_owned_str }} sh{% if x.holdings_value_str %} (~{{ x.holdings_value_str }}){% endif %} <span class="hp-note">+ Class B / RSU / trust neapskaityti</span>{% else %}direct: {{ x.shares_owned_str }} sh{% if x.holdings_value_str %} · {{ x.holdings_value_str }}{% endif %}{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %} <span class="hp-note">(be RSU/opcijų/PSU)</span>{% endif %}</div>
-          {% endif %}
-        </div>
-        <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
-      </div>
-      {% if (x.buys and x.buys|length > 1) or x.older_summary %}
-      <div class="insider-breakdown">
-        {% for b in x.buys %}
-        <div class="insider-buy-row">
-          <span class="ib-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
-          <span class="ib-date">{{ b.trade_date }}</span>
-          <span class="ib-qty">{{ b.qty }} sh @ {{ b.price }}</span>
-          <span class="ib-value {{ x.tx_type or 'buy' }}">{{ b.value_str }}</span>
-        </div>
-        {% endfor %}
-        {% if x.older_summary %}
-        <div class="insider-buy-row insider-older-row">
-          <span class="ib-tag ib-tag-sum {{ x.tx_type or 'buy' }}">Σ {{ x.older_summary.count }}</span>
-          <span class="ib-date">{{ x.older_summary.from }} → {{ x.older_summary.to }}</span>
-          <span class="ib-qty">{{ x.older_summary.qty_str }} viso</span>
-          <span class="ib-value {{ x.tx_type or 'buy' }}">{{ x.older_summary.value_str }}</span>
-        </div>
-        {% endif %}
-      </div>
-      {% endif %}
-      {% endfor %}
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-
 {% if news %}
 <section class="section">
   <div class="section-header">
@@ -1701,6 +1628,79 @@
   <div class="takeaway-label">Key Takeaway</div>
   <div class="takeaway-text">{{ takeaway }}</div>
 </div>
+{% endif %}
+
+{% if insider %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Watchlist Insider Activity</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">{{ insider|length }}</span>
+  </div>
+  <div class="insider-list">
+    {% for ticker, rows in insider|groupby('ticker') %}
+    {% set rows = rows|list %}
+    {% set buy_count = rows|selectattr('tx_type','equalto','buy')|list|length %}
+    {% set sell_count = rows|selectattr('tx_type','equalto','sell')|list|length %}
+    {% set ov = rows[0].company_overview if rows[0].company_overview else {} %}
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">{{ ticker }}</div>
+        <div class="insider-group-summary">
+          {% if buy_count %}<span class="gs-buy">{{ buy_count }} buy{% if buy_count > 1 %}s{% endif %}</span>{% endif %}
+          {% if buy_count and sell_count %} · {% endif %}
+          {% if sell_count %}<span class="gs-sell">{{ sell_count }} sell{% if sell_count > 1 %}s{% endif %}</span>{% endif %}
+        </div>
+      </div>
+      {% if ov and (ov.insider_pct_str or ov.alignment != 'none') %}
+      <div class="insider-alignment">
+        {% if ov.insider_pct_str %}<span class="ia-label">visi insider'iai:</span> <span class="ia-pct">{{ ov.insider_pct_str }} kompanijos</span>{% endif %}
+        {% if ov.alignment != 'none' %}
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-{{ ov.alignment }}">{{ ov.net_6mo_str }}</span>
+        <span class="ia-badge ia-{{ ov.alignment }}">
+          {% if ov.alignment == 'buying' %}PERKA{% elif ov.alignment == 'selling' %}PARDUODA{% else %}NEUTR{% endif %}
+        </span>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% for x in rows %}
+      <div class="insider-row{% if x.recent_week %} recent-week{% endif %}">
+        <span class="tx-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
+        <div class="insider-info">
+          <div class="insider-name">{{ x.insider }}<span class="insider-title">{{ x.title }}</span>{% if x.recent_week %}<span class="insider-fresh">šią sav.</span>{% endif %}{% if x.is_stale %}<span class="insider-stale">istor.</span>{% endif %}</div>
+          <div class="insider-meta">{% if x.buys_count and x.buys_count > 1 %}{{ x.buys_count }} sandoriai · paskutinis {{ x.trade_date }}{% else %}{{ x.qty }} sh @ {{ x.price }} · {{ x.trade_date }}{% endif %}</div>
+          {% if x.shares_owned_str %}
+          <div class="insider-holdings">{% if x.holdings_partial %}direct: {{ x.shares_owned_str }} sh{% if x.holdings_value_str %} (~{{ x.holdings_value_str }}){% endif %} <span class="hp-note">+ Class B / RSU / trust neapskaityti</span>{% else %}direct: {{ x.shares_owned_str }} sh{% if x.holdings_value_str %} · {{ x.holdings_value_str }}{% endif %}{% if x.pct_company_str %} · {{ x.pct_company_str }} kompanijos{% endif %} <span class="hp-note">(be RSU/opcijų/PSU)</span>{% endif %}</div>
+          {% endif %}
+        </div>
+        <div class="insider-value{% if x.tx_type == 'sell' %} sell{% endif %}">{{ x.value_str }}</div>
+      </div>
+      {% if (x.buys and x.buys|length > 1) or x.older_summary %}
+      <div class="insider-breakdown">
+        {% for b in x.buys %}
+        <div class="insider-buy-row">
+          <span class="ib-tag {{ x.tx_type or 'buy' }}">{{ 'SELL' if x.tx_type == 'sell' else 'BUY' }}</span>
+          <span class="ib-date">{{ b.trade_date }}</span>
+          <span class="ib-qty">{{ b.qty }} sh @ {{ b.price }}</span>
+          <span class="ib-value {{ x.tx_type or 'buy' }}">{{ b.value_str }}</span>
+        </div>
+        {% endfor %}
+        {% if x.older_summary %}
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum {{ x.tx_type or 'buy' }}">Σ {{ x.older_summary.count }}</span>
+          <span class="ib-date">{{ x.older_summary.from }} → {{ x.older_summary.to }}</span>
+          <span class="ib-qty">{{ x.older_summary.qty_str }} viso</span>
+          <span class="ib-value {{ x.tx_type or 'buy' }}">{{ x.older_summary.value_str }}</span>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
 {% endif %}
 
 <footer>
