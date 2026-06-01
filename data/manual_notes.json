@@ -1,97 +1,83 @@
 {
-  "generated_at": "2026-05-29T07:00:00+00:00",
-  "expires_at": "2026-05-31T00:00:00+00:00",
-  "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{nasdaq}} {{btc}} {{eth}} {{sol}} for LIVE prices.",
+  "generated_at": "2026-06-01T07:00:00+00:00",
+  "expires_at": "2026-06-03T00:00:00+00:00",
+  "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "MACRO",
-      "headline": "Rekordai + 3.8% PCE infliacija: rinka aukštumose, bet Fed karpymų lūkesčiai sutraukė iki ~1",
-      "kind": "macro_event",
-      "released_at": "2026-05-28",
+      "ticker": "DELL",
+      "headline": "Dell +32.76% iki $420.91 - geriausia diena: Q1 revenue $43.8B (vs $35.77B), AI server +757% YoY, FY27 guide pakelta",
+      "kind": "earnings",
+      "released_at": "2026-05-29",
       "metrics": [
-        {"label": "PCE infliacija", "value": "3.8% YoY", "change": "nuo 3.5%, aukščiausia per ~3 metus"},
-        {"label": "Core PCE", "value": "3.3% YoY", "change": "sticky services, virš Fed 2% tikslo"},
-        {"label": "S&P 500 (live)", "value": "{{sp500}}", "change": "{{sp500_pct}} - naujas rekordas"},
-        {"label": "Nasdaq Composite", "value": "naujas rekordas", "change": "+0.91%"},
-        {"label": "Dow Jones", "value": "naujas rekordas", "change": "+0.05%"},
-        {"label": "Fed lūkesčiai", "value": "~1 karpymas 2026", "change": "buvo 2; ~50% tikimybė HIKE iki metų pab."}
+        {"label": "Kaina", "value": "$420.91", "change": "+32.76% (best day ever)"},
+        {"label": "Q1 revenue", "value": "$43.8B", "change": "vs $35.77B consensus (+88% YoY)"},
+        {"label": "Adjusted EPS", "value": "$4.86", "change": "vs $2.96 consensus (+214% YoY)"},
+        {"label": "AI orders Q1", "value": "$24.4B", "change": "per ketvirtį"},
+        {"label": "AI server revenue", "value": "$16.1B", "change": "+757% YoY"},
+        {"label": "FY27 EPS guide", "value": "$17.90", "change": "buvo $12.90 (didelis kėlimas)"},
+        {"label": "FY27 revenue guide", "value": "$165B - $169B", "change": "AI server iki $60B"},
+        {"label": "AI backlog", "value": "$51.3B", "change": "rekordas"}
       ],
-      "analysis": "Klasikinis vėlyvo ciklo paveikslas. S&P 500 ir Nasdaq užsidarė naujose istorinėse aukštumose, bet tuo pačiu metu PCE infliacija šoktelėjo iki 3.8% per metus - aukščiausia per beveik 3 metus, ir kylanti (core PCE 3.3%, sticky services). Pasekmė: rinkos lūkesčiai dėl Fed karpymų sutraukė nuo dviejų 2026-iems iki maždaug vieno, o futures kainoja ~50% tikimybę, kad Fed gali net KELTI palūkanas iki metų pabaigos. Vis tiek akcijos aukštumose - visą kilimą daro vienas variklis, AI naratyvas.\n\nKą tai reiškia investuotojui: disconnect'as tarp rekordų ir blogėjančios infliacijos yra pagrindinis dėmesio taškas. Tai nėra signalas parduoti - momentum realus, kovoti su juo brangu. Bet rizika kaupiasi: jei infliacija lieka 3.8%+ ir Fed nebekarpo, pirmiausia skaudės pozicijoms be cash flow - leveraged AI plays, crypto proxy (MSTR, CLSK, BMNR), brangiai vertinamoms growth be pelno. Cash-generuojančios kompanijos atlaiko. Dalis infliacijos ateina iš naftos (Hormuz), tad Irano de-eskalacija vėliau galėtų padėti - bet sticky services tai neišspręs greitai."
+      "analysis": "Dell pristatė vienus stipriausių earnings'ų šiame cikle. Q1 revenue $43.8B (vs $35.77B consensus), adjusted EPS $4.86 (vs $2.96), AI orders $24.4B per ketvirtį, AI server revenue $16.1B (+757% YoY). FY27 guidance pakelta nuo $12.90 iki $17.90 EPS, AI server expectations iki $60B, total revenue $165-169B, AI-related backlog $51.3B. Akcija +32.76% iki $420.91 - geriausia diena istorijoje.\n\nKą tai reiškia investuotojui: tai TIKRA AI capex validacija, ne naratyvas - realios pajamos, ne tik guidance hype'as. Dell yra Tier 1 server OEM, ir kai jie booking $24B AI per ketvirtį, tai signalas visai infrastruktūros grandinei: MU (HBM, DRAM), AVGO (networking + custom ASIC), NVDA (GPU), TSM (silicon) gauna iš tos pačios capex bangos. Bet atsargiai - +33% per dieną reiškia, kad lengvi pinigai paimti; nuo čia DELL turi vykdyti $60B AI server prognozę. Įėjimo kaina prasta po tokio šuolio - geriau laukti pullback'o nei chase'inti.",
+      "long_term": "Jei DELL realizuoja $60B FY27 AI server numerį, tai struktūrinis pokytis - DELL pereina iš tradicinio PC/laptop vendor'o į AI infrastructure leader'į, panašiai kaip Cisco 2000-aisiais. Bet skirtumas - Cisco pateko į oversupply ciklą. AI server margin'ai vis dar žemesni nei NVDA, ir 'commodity hardware' rizika realiai egzistuoja, jei capex augimas sulėtės."
+    },
+    {
+      "ticker": "NVDA",
+      "headline": "NVDA Computex'e: Vera CPU AI agentams (Anthropic/OpenAI/SpaceX) + RTX Spark PC procesorius prieš Intel/AMD",
+      "kind": "product_launch",
+      "released_at": "2026-06-01",
+      "metrics": [
+        {"label": "Kaina", "value": "$211.14", "change": "-1.45% (premarket buvo +2%)"},
+        {"label": "Market cap", "value": "$5,109.59B", "change": "P/E 32.33"},
+        {"label": "Vera CPU", "value": "AI agentams", "change": "Anthropic, OpenAI, SpaceX įsipareigojo"},
+        {"label": "Vera production", "value": "Q3 2026", "change": "full ramp"},
+        {"label": "RTX Spark PC chip", "value": "vs Intel/AMD", "change": "8 PC brendai įsipareigojo rudens launch'ui"}
+      ],
+      "analysis": "NVDA padarė kitą strateginį judesį Computex'e - pristatė Vera CPU AI agentams (Anthropic, OpenAI, SpaceX jau įsipareigojo, full production Q3) ir RTX Spark PC procesorių, taikomą tiesiogiai į Intel/AMD Windows laptop rinką (8 PC brendai įsipareigojo rudens launch'ui). Esmė: NVDA plečiasi iš pure GPU į CPU teritoriją (AI agentų ekonomikai) ir į vartotojų PC.\n\nKą tai reiškia investuotojui: rinka reakcija santūri - premarket +2%, dabar -1.45%. Jau price'inta, nes NVDA kiekvienais ketvirtais paskelbia naują tier'į produktų ir kiekvienas ekspansijos žingsnis tampa baseline lūkesčiu. Geriausia istorija čia ne short-term akcijos move, o tai, kad NVDA įžengia į Intel/AMD core teritoriją - jei RTX Spark pavyks, tai potencialiai 20%+ adresuojamos rinkos plėtra per kelis metus. Bet Intel/AMD nesiruošia stoviai - bus konkurencinė kova, ne lengvas užkariavimas."
     },
     {
       "ticker": "SOFI",
-      "headline": "SoFi +4.95%: paleido SoFiUSD - pirmą JAV nacionalinio banko stablecoin'ą banko aplikacijoje, 15M narių",
+      "headline": "SoFi tęsia ralį +7% penktadienį po SoFiUSD launch'o; Trump šeima Q1 2026 pirko SOFI/HOOD/MSTR/MARA/COIN/SQ",
       "kind": "product_launch",
-      "released_at": "2026-05-28",
+      "released_at": "2026-05-29",
       "metrics": [
-        {"label": "Kaina", "value": "$16.97", "change": "+4.95% (savaitė +8.16%)"},
-        {"label": "YTD", "value": "-35.18%", "change": "52sav. $12.86 - $32.73"},
-        {"label": "SoFiUSD", "value": "15M narių", "change": "ant Ethereum + Solana"},
+        {"label": "Friday move", "value": "+7%", "change": "po SoFiUSD launch'o"},
+        {"label": "SoFiUSD", "value": "15M narių", "change": "Ethereum + Solana, first US bank stablecoin"},
         {"label": "Q1 revenue", "value": "$1.10B", "change": "virš $1.05B consensus"},
-        {"label": "Diluted EPS", "value": "$0.12", "change": "padvigubėjo YoY"},
-        {"label": "Roadmap", "value": "tokenized deposits", "change": "+ cross-border payments, exchange listings"}
+        {"label": "EPS YoY", "value": "padvigubėjo", "change": "diluted $0.12"},
+        {"label": "Trump family Q1 2026", "value": "pirko SOFI", "change": "+ MARA, COIN, MSTR, HOOD, SQ"}
       ],
-      "analysis": "SoFi paleido SoFiUSD - pirmą JAV nacionalinio banko (SoFi Bank, N.A.) išleistą stablecoin'ą, natyviai integruotą reguliuojamoje banko aplikacijoje. ~15M narių dabar gali pirkti, laikyti, konvertuoti ir mokėti SoFiUSD per Ethereum ir Solana, su planais dėti tokenized deposits, cross-border payments ir exchange listings. Plius Q1 revenue $1.10B (virš $1.05B consensus), EPS $0.12 - padvigubėjo YoY. Akcija +4.95%.\n\nKą tai reiškia investuotojui: tai NE naratyvas, o konkretus produktas su 15M user baze - būtent toks unit economics pokytis, kuris keičia tezę, ir sutampa su tuo, kad CEO Noto pats pirko per LEAPS. Bet atsargiai - stablecoin rinka konkurencinga (USDC, USDT dominuoja), o 'pirmas banko išleistas' nereiškia masinės adopcijos. Vertė priklausys nuo realaus naudojimo, ne launch headline'o. YTD vis dar -35%, tad rinka kol kas nekainoja sėkmės - tai ir yra asimetrija, jei produktas suveiks.",
-      "long_term": "SoFiUSD yra struktūrinis žingsnis - banko išleistas, reguliuojamas stablecoin su tokenized deposits roadmap'u gali tapti realiu mokėjimų sluoksniu, ne tik kripto spekuliacija. Jei SoFi paverčia 15M narių į stablecoin naudotojus, tai nauja žemos-cost deposit ir fee bazė. 'Jei' lieka atviras - bet kombinacija (CEO insider pirkimas + konkretus produktas + žema valuation) yra retas alignment."
+      "analysis": "Fintech tezė tęsiasi. SoFi +7% penktadienį po SoFiUSD launch'o (pirmas U.S. national bank stablecoin, 15M narių ant ETH + SOL), plius stipri Q1 revenue $1.10B (virš $1.05B consensus) ir EPS padvigubėjimas. Tai validuoja produkto-driven tezę - ne naratyvas, o konkretus produktas su user baze.\n\nAtskirai įdomus signalas: Trump šeimos Q1 2026 disclosure rodo, kad jų trustai pirko MARA, COIN, MSTR, HOOD, SOFI ir SQ - politinis alignment su watchlist'u. Tai dvigubas peilis: validacija (panaši tezė kaip mano) plius politinė rizika (administracijos pokytis ar conflict-of-interest skandalas - šios pozicijos jautrios). Po stiprios savaitės entry kainos prastesnės nei prieš savaitę - geriau pridėti pozicijas pullback'e nei chase'inti pirmadienio pre-market."
     },
     {
       "ticker": "HOOD",
-      "headline": "Robinhood +11.29%: paleido Trump Accounts app (su BNY Mellon) - valstybės subsidijuojamas klientų kanalas",
+      "headline": "Robinhood +10% penktadienį (+20%+ per 2 sesijas) po Trump Accounts launch'o - oficialiai 530A, Robinhood paskirtas initial trustee",
       "kind": "product_launch",
-      "released_at": "2026-05-28",
+      "released_at": "2026-05-29",
       "metrics": [
-        {"label": "Kaina", "value": "$84.84", "change": "+11.29% (savaitė +12%)"},
-        {"label": "3 metai", "value": "+862%", "change": "YTD -24.99%, 52sav. $62.92 - $153.86"},
-        {"label": "Trump Accounts", "value": "$1,000 Treasury seed", "change": "2025-2028 gimusiems vaikams"},
-        {"label": "Įnašai", "value": "iki $5,000/metus", "change": "šeima/draugai/darbdaviai, default index fund"},
-        {"label": "Oficialus startas", "value": "liepos 4", "change": "app jau App/Google Store"},
-        {"label": "AI agentai", "value": "trades + kortelė", "change": "3% cashback"}
+        {"label": "Friday move", "value": "+10%", "change": "kumuliatyviai +20%+ per 2 sesijas"},
+        {"label": "Trump Accounts", "value": "oficialiai 530A", "change": "Robinhood paskirtas initial trustee"},
+        {"label": "Eligibility", "value": "2025-2028 gimę", "change": "$1,000 Treasury seed, iki $5K/m. įnašų"},
+        {"label": "Official start", "value": "liepos 4, 2026", "change": "app jau Apple/Google Store"},
+        {"label": "Trump family Q1 2026", "value": "pirko HOOD", "change": "+ kt. crypto/fintech pozicijos"}
       ],
-      "analysis": "Robinhood +11.29% - du katalizatoriai. Pagrindinis: paleido Trump Accounts aplikaciją (sukurta kartu su BNY Mellon) - tax-advantaged investicines sąskaitas JAV vaikams, kur 2025-2028 gimę gauna $1,000 Treasury startinį įnašą, o šeima gali dėti iki $5,000/metus į default low-cost index fund. Oficialus startas liepos 4. Antras: leis AI agentams vykdyti akcijų sandorius ir kortelės pirkimus su 3% cashback.\n\nKą tai reiškia investuotojui: Trump Accounts esmė nėra trumpalaikės pajamos, o valstybės subsidijuojamas klientų pritraukimo kanalas - milijonai vaikų patenka ant Robinhood platformos, klasikinis ilgalaikis lifetime value žaidimas. Bet atsargiai - įnašai prasideda tik liepą, near-term revenue nulis, ir tai low-cost index fund sąskaitos su žema marža. +11% yra momentum plius naratyvas, ne dabartinės pajamos. HOOD +862% per 3 metus - momentum mašina, bet brangi; čia statai ant ateities, ne ant dabartinių skaičių."
-    },
-    {
-      "ticker": "SNOW",
-      "headline": "Snowflake +36.48% - geriausia diena istorijoje: FY guide $5.84B + $6B AWS AI deal",
-      "kind": "earnings",
-      "released_at": "2026-05-28",
-      "metrics": [
-        {"label": "Kaina", "value": "$239.20", "change": "+36.48% - geriausia diena istorijoje"},
-        {"label": "Market cap", "value": "$82.91B", "change": "52sav. $118.30 - $280.67"},
-        {"label": "FY product revenue", "value": "$5.84B", "change": "prognozė pakelta"},
-        {"label": "AWS įsipareigojimas", "value": "$6B / 5 metai", "change": "AI infrastruktūra"}
-      ],
-      "analysis": "Snowflake +36.48% (geriausia diena istorijoje) po stiprių Q1 FY27 rezultatų - pakėlė FY product revenue prognozę iki $5.84B ir paskelbė $6B 5-erių metų įsipareigojimą AWS infrastruktūrai. Tai atgaivino AI trade ir patempė visą tech sektorių į rekordus.\n\nKą tai reiškia investuotojui: tas pats capex klausimas kaip su Meta - $6B AWS įsipareigojimas yra išlaidos, ne pajamos. Kol AI revenue auga greičiau nei capex, rinka tai apdovanoja; kai šitas santykis apsivers, tie patys skaičiai atrodys grėsmingai. +36% per dieną yra euforijos signalas, ne ramaus re-rating - toks judėjimas dažnai reiškia, kad pozicija jau perkaitusi trumpuoju laikotarpiu. Ilgalaikė istorija (data + AI) reali, bet įėjimo kaina po tokio šuolio - prasta rizikos/grąžos pusiausvyra."
-    },
-    {
-      "ticker": "META",
-      "headline": "Meta paleido mokamas Instagram/Facebook/WhatsApp prenumeratas + Meta One AI tiers, akcija +3.74%",
-      "kind": "product_launch",
-      "released_at": "2026-05-27",
-      "metrics": [
-        {"label": "Instagram/Facebook Plus", "value": "$3.99/mėn", "change": "profile customization, super reactions, story insights"},
-        {"label": "WhatsApp Plus", "value": "$2.99/mėn", "change": "papildomos funkcijos"},
-        {"label": "Meta One AI tiers", "value": "$7.99 / $19.99/mėn", "change": "testavimas nuo kito mėn. - Singapūras, Gvatemala, Bolivija"},
-        {"label": "Verslo/kūrėjų planai", "value": "$14.99 / $49.99/mėn", "change": "Meta One Essential / Advanced"},
-        {"label": "Akcijos reakcija", "value": "+3.74% -> $635.26", "change": "market cap $1.61T"},
-        {"label": "Valuation", "value": "P/E 23.09", "change": "forward P/E 18.21"}
-      ],
-      "analysis": "Meta paskelbė globalų prenumeratų paleidimą - Instagram Plus ir Facebook Plus po $3.99/mėn, WhatsApp Plus $2.99/mėn, plius AI tiers Meta One Plus $7.99 ir Meta One Premium $19.99 (testavimas nuo kito mėnesio Singapūre, Gvatemaloje, Bolivijoje), ir verslo/kūrėjų planai $14.99-$49.99. Akcija +3.74% iki $635, market cap $1.61T.\n\nKą tai reiškia investuotojui: tai pirmas konkretus signalas, kad Meta monetizuos AI ne vien per reklamą - adresuoja #1 investorių nerimą dėl AI capex be ROI (skirtingai nuo Microsoft ar Google, Meta neturi recurring cloud pajamų). Bet būkim sąžiningi dėl masto: $160B+ reklamos verslui šios prenumeratos artimiausiu metu yra statistinis triukšmas, o vartotojai retai moka už nemokamų soc. tinklų papildomas funkcijas (Meta Verified adopcija buvo kukli). AI tiers testuojami tik 3 mažose rinkose. Tad +3.74% yra labiau naratyvo palengvėjimas nei fundamentalus pokytis - realus optionality, ne game-changer šiandienos skaičiuose.",
-      "long_term": "Esmė ne pačios prenumeratos pajamos, o ką jos signalizuoja: Meta pradeda kurti recurring revenue sluoksnį virš reklamos. Jei AI tiers (Meta One) gaus trakciją po testavimo, tai galėtų tapti antruoju monetizacijos varikliu ir pateisinti AI capex. Bet tai 'jei' - kol kas tik testas. Investuotojui META lieka reklamos verslas su AI optionality."
+      "analysis": "HOOD tęsia ralį - +10% penktadienį, +20%+ per dvi sesijas, po Trump Accounts launch'o. Detalės jau pasirašytos: oficialus pavadinimas 530A accounts, Robinhood paskirtas initial trustee, eligibility 2025-2028 gimusiems vaikams, $1,000 Treasury seed, iki $5K per metus įnašų, oficialus startas liepos 4. Tai valstybės subsidijuojamas klientų pritraukimo kanalas.\n\nKą tai reiškia investuotojui: trustee statusas yra svarbus - tai ne tik 'app sukurtas su BNY Mellon', tai vaidmuo, kuris generuoja recurring fee streams ir suteikia HOOD struktūrinį ilgalaikį pranašumą prieš konkurentus (SCHW, IBKR). Bet +20% per 2 sesijas reiškia short-term overextended, ir near-term revenue iš Trump Accounts vis dar nulis (įnašai prasideda liepos 4). Plius politinė rizika - Trump šeimos Q1 2026 disclosure rodo HOOD tarp jų pozicijų, kas validuoja tezę bet ir prideda conflict-of-interest riziką."
     },
     {
       "ticker": "IRAN-US",
-      "headline": "Iran-US: 60 dienų ceasefire framework be Hormuz tolls, bet smūgiai tęsiasi - WTI {{wti}} / Brent {{brent}}",
+      "headline": "Iran-US savaitgalis eskalavo - JAV smogė po Irano US drone pašovimo, Trump siunčia pakeitimus į draft deal'ą",
       "kind": "geopolitics_event",
-      "released_at": "2026-05-28",
+      "released_at": "2026-05-31",
       "metrics": [
         {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
         {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Framework", "value": "60 dienų ceasefire", "change": "Hormuz atminuojamas + atidaromas"},
-        {"label": "Tolls", "value": "BE tolls", "change": "deal-breaker klausimas iš framework'o dingo"},
-        {"label": "Mainai", "value": "Iran parduoda naftą", "change": "JAV nuima blokadą + sanctions waivers"},
-        {"label": "Eskalacija", "value": "smūgis prie Bandar Abbas", "change": "JAV pataikė Irano dronų centrą; klaidingas 'peace' reportas"}
+        {"label": "Friday close", "value": "WTI ~$88", "change": "6-savaičių žemuma"},
+        {"label": "Iran veiksmas", "value": "numušė US droną", "change": "savaitgalį"},
+        {"label": "JAV atsakas", "value": "smūgis radarams/drone sites", "change": "'self-defense' strikes"},
+        {"label": "Trump deal pakeitimai", "value": "tougher nuclear + Hormuz", "change": "draft grąžintas su pataisymais"},
+        {"label": "Monday futures", "value": "Dow/S&P/NDX +0.2-0.3%", "change": "nepaisant Iran eskalacijos"}
       ],
-      "analysis": "Irano fronte de-eskalacijos kryptis stiprėja. 60 dienų ceasefire framework dabar eksplicitiškai sako: Hormuz atminuojamas ir atidaromas BE tolls, Iran laisvai parduoda naftą, JAV nuima blokadą ir išduoda dalį sanctions waivers. Tolls klausimas, kuris atrodė deal-breaker, iš framework'o dingo - tai svarbus teigiamas poslinkis. Bet vis dar buvo JAV smūgis į Irano dronų valdymo centrą prie Bandar Abbas, ir pasirodė klaidingas 'peace deal' reportas, trumpam pajudinęs naftą.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} laikosi prie $90-94 - rinka kainoja peace kryptį, bet jautri eskalacijos headline'ams. Jei Hormuz realiai atsidaro per 60 dienų, nafta turėtų lengvėti link $80, kas vėliau padėtų ir PCE infliacijai (dalis jos ateina iš naftos/dyzelino). Jei framework subyra ar Iran atsako į smūgį - grįžtame prie $110+. Tai 60 dienų istorija su realiu de-eskalacijos pagreičiu, bet dar ne pasirašytas deal."
+      "analysis": "Iran fronte savaitgalis pakeitė toną. Penktadienį uždarėme prie 6-savaičių naftos žemumų (~$88 WTI), bet per savaitgalį JAV smogė Irano radarų ir dronų aikštelėms ('self-defense' po to, kai Iran numušė amerikiečių droną). Trump siuntė pakeitimus į draft deal'ą - reikalauja griežtesnės kalbos dėl branduolinių klausimų ir Hormuz. Nafta atšoko +3-4% off lows.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Praeitos savaitės 'peace narrative' buvo per stiprus - deal'as dar nepasirašytas, ir kai Trump reikalauja griežtinti, eskalacijos rizika grįžta į stalą. Jei nafta laikosi $90+ ir grįžta į $100+ zoną - PCE 3.8% problema tampa dar didesnė, ir Fed karpymų lūkesčiai dar labiau spaudžiami. Pirmadienio futures vis tiek šiek tiek aukščiau, kas rodo, kad rinka kainoja 'eskalacija kaip negotiation tactic', ne kaip realų deal kollapsą - bet šitas perskaitymas brangsta su kiekviena papildoma eskalacijos diena."
     }
   ]
 }

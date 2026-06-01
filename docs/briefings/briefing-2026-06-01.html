@@ -1,0 +1,4118 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: #0a0e1a; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+    background: #0a0e1a;
+    color: #e6e8ee;
+    max-width: 1080px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 44px 32px;
+  }
+  @media (max-width: 720px) {
+    body { padding: 20px 16px; }
+    h1 { font-size: 28px !important; }
+    .market-snapshot { grid-template-columns: repeat(3, 1fr) !important; }
+    .ai-grid { grid-template-columns: repeat(4, 1fr) !important; }
+    .iv-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .crypto-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .earnings-grid, .movers-grid { grid-template-columns: 1fr !important; }
+    .event-numbers { gap: 8px !important; }
+  }
+  header {
+    border-bottom: 2px solid rgba(244,204,107,0.2);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .date-line {
+    font-size: 17px;
+    color: #8a92a3;
+    letter-spacing: 0.3px;
+  }
+  .verification-bar {
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(126,216,126,0.05);
+    border-left: 2px solid rgba(126,216,126,0.4);
+    border-radius: 3px;
+    font-size: 10.5px;
+    color: #8a92a3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .vb-sep { color: #4a5260; }
+  .vb-date { color: #c8cfdc; font-weight: 600; }
+  .vb-fetched { color: #8a92a3; }
+  .vb-filled { color: #7ed87e; }
+  .vb-critic-ok { color: #7ed87e; }
+  .vb-critic-warn { color: #f4cc6b; font-weight: 600; }
+
+  .market-snapshot {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 14px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+  }
+  .snap-item { text-align: center; padding: 4px 0; }
+  .snap-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+  .snap-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .snap-change {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .section { margin-bottom: 28px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .section-count {
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .events-list { display: flex; flex-direction: column; gap: 10px; }
+  .event-row {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #4ec9d6;
+    border-radius: 6px;
+    padding: 12px 16px;
+  }
+  .event-row.high-impact {
+    background: rgba(244,204,107,0.08);
+    border-left-color: #f4cc6b;
+  }
+  .event-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .event-time {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f4cc6b;
+    min-width: 56px;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-country {
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    padding: 3px 9px;
+    border-radius: 4px;
+    color: #c8cfdc;
+    min-width: 34px;
+    text-align: center;
+  }
+  .event-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e6e8ee;
+    flex: 1;
+  }
+  .event-numbers {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .event-num {
+    text-align: center;
+  }
+  .event-num-label {
+    font-size: 9px;
+    color: #6c7588;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+  }
+  .event-num-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8cfdc;
+  }
+  .event-num-value.beat { color: #7ed87e; }
+  .event-num-value.miss { color: #ff7373; }
+  .event-num-value.inline { color: #f4cc6b; }
+  .event-num-value.muted { color: #6c7588; font-weight: 500; }
+  .event-desc {
+    font-size: 12px;
+    color: #8a92a3;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+    line-height: 1.4;
+  }
+  .event-analysis {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(244,204,107,0.06);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.55;
+  }
+  .event-analysis::before {
+    content: 'Ką tai reiškia · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .earnings-cards { display: flex; flex-direction: column; gap: 14px; }
+  .earnings-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid #7ed87e;
+  }
+  .earnings-card.miss { border-left-color: #ff7373; }
+  .ec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .ec-symbol {
+    font-size: 22px;
+    font-weight: 900;
+    color: #e6e8ee;
+    letter-spacing: 0.3px;
+  }
+  .ec-verdict {
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+  }
+  .ec-verdict.beat { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ec-verdict.miss { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ec-date {
+    margin-left: auto;
+    font-size: 12px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-transcript-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(78,201,214,0.15);
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .ec-numbers {
+    display: flex;
+    align-items: end;
+    gap: 14px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .ec-metric { flex: 1; }
+  .ec-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .ec-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-value.beat-val { color: #7ed87e; }
+  .ec-value.miss-val { color: #ff7373; }
+  .ec-vs {
+    font-size: 13px;
+    color: #6c7588;
+    padding-bottom: 4px;
+  }
+  .ec-extracted {
+    background: rgba(255,255,255,0.025);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .ec-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(126,216,126,0.12);
+  }
+  .ec-mc { text-align: center; padding: 4px; }
+  .ec-mc-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .ec-mc-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .ec-mc-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-row {
+    font-size: 13px;
+    margin: 4px 0;
+    color: #c8cfdc;
+  }
+  .ec-row-label {
+    color: #8a92a3;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .ec-row-val {
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+  }
+  .ec-vs-inline {
+    color: #8a92a3;
+    font-size: 12px;
+  }
+  .ec-yoy {
+    color: #4ec9d6;
+    font-size: 12px;
+  }
+  .ec-quote {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(78,201,214,0.08);
+    border-left: 2px solid #4ec9d6;
+    font-size: 12px;
+    color: #c8cfdc;
+    font-style: italic;
+  }
+  .ec-quotes-block {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(78,201,214,0.06);
+    border-radius: 6px;
+    border: 1px solid rgba(78,201,214,0.18);
+  }
+  .ec-quotes-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #4ec9d6;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+  }
+  .ec-quotes-block .ec-quote {
+    background: transparent;
+    border-left: 2px solid #4ec9d6;
+    margin-top: 0;
+    margin-bottom: 4px;
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+  .ec-analysis {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+    border-radius: 4px;
+  }
+  .ec-analysis::before {
+    content: 'Sum up · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .ec-short-term, .ec-long-term {
+    font-size: 13px;
+    color: #d8dde8;
+    line-height: 1.55;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+  .ec-short-term {
+    background: linear-gradient(135deg, rgba(244,204,107,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #f4cc6b;
+  }
+  .ec-long-term {
+    background: linear-gradient(135deg, rgba(126,216,126,0.06) 0%, rgba(78,201,214,0.04) 100%);
+    border-left: 2px solid #7ed87e;
+  }
+  .horizon-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    margin-right: 8px;
+    border-radius: 3px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .horizon-tag.short { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .horizon-tag.long { background: rgba(126,216,126,0.18); color: #7ed87e; }
+
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+  .upcoming-card {
+    background: rgba(244,204,107,0.05);
+    border-top: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .up-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f4cc6b;
+  }
+  .up-date {
+    font-size: 11px;
+    color: #c8cfdc;
+    margin: 4px 0 2px;
+  }
+  .up-days {
+    font-size: 10px;
+    color: #8a92a3;
+  }
+  .up-est {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .earnings-row {
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid #7ed87e;
+  }
+  .earnings-symbol {
+    font-size: 15px;
+    font-weight: 800;
+    color: #7ed87e;
+    min-width: 52px;
+  }
+  .earnings-info { flex: 1; min-width: 0; }
+  .earnings-company {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6e8ee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .earnings-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    margin-top: 2px;
+  }
+  .earnings-time {
+    background: rgba(126,216,126,0.15);
+    color: #7ed87e;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+
+  .movers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .movers-col-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #c8cfdc;
+  }
+  .mover-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 5px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .mover-symbol { font-weight: 700; color: #e6e8ee; min-width: 56px; }
+  .mover-price { color: #8a92a3; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .mover-up { color: #7ed87e; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mover-down { color: #ff7373; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .crypto-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    border-top: 3px solid #d4a85e;
+  }
+  .crypto-symbol {
+    font-size: 16px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .crypto-name {
+    font-size: 10px;
+    color: #8a92a3;
+    margin: 2px 0 8px;
+  }
+  .crypto-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e6e8ee;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 3px;
+  }
+  .crypto-change {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+  .ai-card {
+    background: rgba(192,132,252,0.06);
+    border-top: 3px solid #c084fc;
+    border-radius: 6px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .ai-symbol {
+    font-size: 13px;
+    font-weight: 800;
+    color: #c084fc;
+    letter-spacing: 0.3px;
+  }
+  .ai-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e6e8ee;
+    margin: 4px 0 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ext-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 3px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+  .ext-badge.pre { background: rgba(244,204,107,0.18); color: #f4cc6b; }
+  .ext-badge.post { background: rgba(126,140,216,0.18); color: #7e8cd8; }
+  .ext-change {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+  }
+  .ai-change {
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .iv-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .iv-row {
+    background: rgba(244,143,177,0.06);
+    border-left: 3px solid #f48fb1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .iv-symbol {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    min-width: 50px;
+  }
+  .iv-meta {
+    font-size: 10px;
+    color: #8a92a3;
+    flex: 1;
+  }
+  .iv-src {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #f48fb1;
+    background: rgba(244,143,177,0.18);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 4px;
+    letter-spacing: 0.6px;
+    vertical-align: middle;
+  }
+  .iv-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: #f48fb1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .insider-list { display: flex; flex-direction: column; gap: 4px; }
+  .insider-group {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+  .insider-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+  }
+  .insider-group-ticker {
+    font-size: 13px;
+    font-weight: 800;
+    color: #f4cc6b;
+    letter-spacing: 0.5px;
+  }
+  .insider-group-summary {
+    font-size: 10px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+  }
+  .insider-group-summary .gs-buy { color: #7ed87e; }
+  .insider-group-summary .gs-sell { color: #ff7373; }
+  .insider-alignment {
+    font-size: 10px;
+    color: #8a92a3;
+    padding: 4px 0 6px 0;
+    margin-bottom: 4px;
+    border-bottom: 1px dashed rgba(255,255,255,0.05);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .ia-label { color: #6c7588; }
+  .ia-pct { color: #c8cfdc; font-weight: 600; }
+  .ia-sep { color: #4a5161; margin: 0 2px; }
+  .ia-net { font-weight: 700; }
+  .ia-net.ia-buying { color: #7ed87e; }
+  .ia-net.ia-selling { color: #ff7373; }
+  .ia-net.ia-neutral { color: #c8cfdc; }
+  .ia-badge {
+    font-size: 8.5px;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    margin-left: 2px;
+  }
+  .ia-badge.ia-buying { background: rgba(126,216,126,0.18); color: #7ed87e; }
+  .ia-badge.ia-selling { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ia-badge.ia-neutral { background: rgba(200,207,220,0.12); color: #c8cfdc; }
+  .insider-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 4px 4px;
+    font-size: 11.5px;
+    border-radius: 4px;
+  }
+  .insider-row.recent-week {
+    background: rgba(244,204,107,0.07);
+  }
+  .tx-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    width: 36px;
+  }
+  .tx-tag.buy { background: rgba(126,216,126,0.2); color: #7ed87e; }
+  .tx-tag.sell { background: rgba(255,115,115,0.2); color: #ff7373; }
+  .insider-info { min-width: 0; }
+  .insider-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e6e8ee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .insider-title {
+    color: #8a92a3;
+    font-size: 10px;
+    margin-left: 4px;
+    font-weight: 400;
+  }
+  .insider-meta {
+    font-size: 10.5px;
+    color: #6c7588;
+    margin-top: 1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .insider-holdings {
+    font-size: 10px;
+    color: #8a92a3;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+    font-style: italic;
+  }
+  .hp-note {
+    color: #6c7588;
+    font-size: 9px;
+    margin-left: 4px;
+  }
+  .insider-value {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #7ed87e;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+  .insider-value.sell { color: #ff7373; }
+  .insider-fresh {
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 2px;
+    background: rgba(244,204,107,0.2);
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .insider-stale {
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1px 4px;
+    margin-left: 4px;
+    border-radius: 2px;
+    background: rgba(140,150,170,0.18);
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+  }
+  .insider-breakdown {
+    margin: 2px 0 4px 52px;
+    padding-left: 8px;
+    border-left: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .insider-buy-row {
+    display: grid;
+    grid-template-columns: 32px 78px 1fr auto;
+    gap: 6px;
+    font-size: 10.5px;
+    color: #8a92a3;
+    font-variant-numeric: tabular-nums;
+    padding: 1px 0;
+    align-items: center;
+  }
+  .ib-tag {
+    font-size: 8px;
+    font-weight: 800;
+    padding: 1px 3px;
+    border-radius: 2px;
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
+  .ib-tag.buy { background: rgba(126,216,126,0.15); color: #7ed87e; }
+  .ib-tag.sell { background: rgba(255,115,115,0.15); color: #ff7373; }
+  .ib-date { color: #8a92a3; }
+  .ib-qty { color: #c8cfdc; }
+  .ib-value { font-weight: 600; text-align: right; }
+  .ib-value.buy { color: #7ed87e; }
+  .ib-value.sell { color: #ff7373; }
+  .insider-buy-more { color: #6c7588; font-style: italic; }
+  .ib-more { font-size: 10px; color: #8a92a3; }
+  .insider-older-row {
+    margin-top: 3px;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    opacity: 0.85;
+  }
+  .ib-tag-sum {
+    background: rgba(255,255,255,0.06) !important;
+    color: #8a92a3 !important;
+    letter-spacing: 0 !important;
+    font-weight: 700;
+  }
+  .ib-tag-sum.sell { color: #c47a7a !important; background: rgba(255,115,115,0.08) !important; }
+  .ib-tag-sum.buy { color: #7eb87e !important; background: rgba(126,216,126,0.08) !important; }
+
+  .news-list { display: flex; flex-direction: column; gap: 10px; }
+  .news-row {
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .news-row.has-summary {
+    background: rgba(255,255,255,0.045);
+  }
+  .news-ticker {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4ec9d6;
+    background: rgba(78,201,214,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .news-ticker-blank {
+    color: #6c7588;
+    background: rgba(108,117,136,0.1);
+  }
+  .news-content { flex: 1; min-width: 0; }
+  .news-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .news-title a {
+    color: #e6e8ee;
+    text-decoration: none;
+  }
+  .news-title a:hover { color: #f4cc6b; }
+  .news-summary {
+    font-size: 12.5px;
+    color: #b4bccf;
+    line-height: 1.55;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.06);
+  }
+  .news-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid rgba(244,204,107,0.12);
+  }
+  .nm-cell {
+    text-align: center;
+    padding: 4px;
+  }
+  .nm-label {
+    font-size: 10px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .nm-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #f4cc6b;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.15;
+  }
+  .nm-note {
+    font-size: 10px;
+    color: #c8cfdc;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .news-analysis {
+    font-size: 13.5px;
+    color: #e0e3eb;
+    line-height: 1.6;
+    margin-top: 12px;
+    padding: 0;
+  }
+  .news-analysis::before {
+    content: 'Sum up · ';
+    font-size: 10px;
+    font-weight: 700;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-right: 4px;
+  }
+  .news-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 6px;
+  }
+  .news-link {
+    color: #4ec9d6;
+    text-decoration: none;
+  }
+  .news-link:hover { text-decoration: underline; }
+  .news-extra-links {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .news-extra-link {
+    font-size: 11.5px;
+    color: #8fb3d4;
+    text-decoration: none;
+    line-height: 1.4;
+  }
+  .news-extra-link:hover { color: #f4cc6b; text-decoration: underline; }
+
+  .reddit-list { display: flex; flex-direction: column; gap: 8px; }
+  .reddit-row {
+    background: rgba(255,138,76,0.04);
+    border-left: 3px solid #ff8a4c;
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .reddit-sub {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ff8a4c;
+    background: rgba(255,138,76,0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 90px;
+    text-align: center;
+  }
+  .reddit-content { flex: 1; min-width: 0; }
+  .reddit-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6e8ee;
+    line-height: 1.35;
+  }
+  .reddit-meta {
+    font-size: 11px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ibkr-news-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .yt-synthesis {
+    background: linear-gradient(135deg, rgba(244,204,107,0.08), rgba(126,216,126,0.05));
+    border-left: 3px solid #f4cc6b;
+    border-radius: 6px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+  }
+  .yt-synthesis p { margin-bottom: 12px; }
+  .yt-synthesis p:last-child { margin-bottom: 0; }
+  .yt-synthesis strong { color: #f4cc6b; font-weight: 600; }
+
+  .manual-note {
+    background: linear-gradient(135deg, rgba(126,216,126,0.10), rgba(244,204,107,0.04));
+    border-left: 4px solid #7ed87e;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+  }
+  .manual-note-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .manual-note-ticker {
+    background: #7ed87e;
+    color: #0a0e1a;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .manual-note-headline {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e6e8ee;
+  }
+  .manual-note-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .manual-note-metric {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+  .manual-note-metric-label {
+    font-size: 11px;
+    color: #8a92a3;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .manual-note-metric-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f4cc6b;
+    margin-top: 2px;
+  }
+  .manual-note-metric-change {
+    font-size: 11px;
+    color: #b8c0d0;
+    margin-top: 2px;
+  }
+  .manual-note-analysis {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+  }
+  .manual-note-long {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #d8dde7;
+    white-space: pre-wrap;
+    background: rgba(126,216,126,0.06);
+    border-left: 3px solid #7ed87e;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
+  .ibkr-news-row {
+    display: flex;
+    gap: 10px;
+    padding: 8px 10px;
+    background: rgba(244,143,177,0.04);
+    border: 1px solid rgba(244,143,177,0.12);
+    border-radius: 6px;
+  }
+  .ibkr-news-ticker {
+    font-weight: 800;
+    font-size: 11px;
+    color: #f48fb1;
+    background: rgba(244,143,177,0.15);
+    padding: 3px 7px;
+    border-radius: 3px;
+    height: fit-content;
+    letter-spacing: 0.5px;
+  }
+  .ibkr-news-content { flex: 1; min-width: 0; }
+  .ibkr-news-headline {
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.4;
+  }
+  .ibkr-news-meta {
+    font-size: 10.5px;
+    color: #6c7588;
+    margin-top: 3px;
+    font-variant-numeric: tabular-nums;
+  }
+  .x-list { display: flex; flex-direction: column; gap: 8px; }
+  .x-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgba(29,155,240,0.04);
+    border: 1px solid rgba(29,155,240,0.15);
+    border-radius: 8px;
+  }
+  .x-ticker {
+    font-weight: 800;
+    font-size: 11px;
+    color: #1d9bf0;
+    background: rgba(29,155,240,0.12);
+    padding: 4px 8px;
+    border-radius: 4px;
+    height: fit-content;
+    letter-spacing: 0.5px;
+  }
+  .x-content { flex: 1; min-width: 0; }
+  .x-header {
+    font-size: 11px;
+    color: #8a92a3;
+    margin-bottom: 4px;
+  }
+  .x-author { color: #e6e8ee; font-weight: 600; }
+  .x-handle { color: #8a92a3; margin-left: 4px; }
+  .x-time { color: #6c7588; margin-left: 4px; }
+  .x-text {
+    font-size: 13px;
+    color: #e0e3eb;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+  .x-text a { color: #e0e3eb; text-decoration: none; }
+  .x-text a:hover { color: #1d9bf0; }
+  .x-meta {
+    font-size: 10.5px;
+    color: #6c7588;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .reddit-title a { color: #e6e8ee; text-decoration: none; }
+  .reddit-title a:hover { color: #ff8a4c; }
+  .reddit-analysis {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(255,138,76,0.06);
+    border-left: 2px solid #ff8a4c;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #d8dde8;
+    line-height: 1.5;
+  }
+  .reddit-analysis::before {
+    content: 'Sum up · ';
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #ff8a4c;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .key-takeaway {
+    margin-top: 16px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, rgba(244,204,107,0.12) 0%, rgba(232,156,91,0.06) 100%);
+    border: 1px solid rgba(244,204,107,0.25);
+    border-radius: 10px;
+  }
+  .takeaway-label {
+    font-size: 11px;
+    color: #f4cc6b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .takeaway-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f4f5f9;
+    line-height: 1.4;
+  }
+  footer {
+    margin-top: 24px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    color: #6c7588;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DIENOS BRIEFING</h1>
+  <div class="date-line">2026 m. birželio 1 d., pirmadienis · daug_pinigu daily</div>
+  
+  <div class="verification-bar">
+    <span class="vb-date">📅 2026-06-01</span>
+    <span class="vb-sep">·</span>
+    <span class="vb-fetched">Live data 16:22 Vilnius</span>
+    
+    <span class="vb-sep">·</span>
+    <span class="vb-filled">✓ 4 live values: brent, brent_pct, wti, wti_pct</span>
+    
+    
+    <span class="vb-sep">·</span>
+    <span class="vb-critic-warn">⚠ 1 price + 2 date issues flagged</span>
+    
+  </div>
+  
+</header>
+
+
+<div class="market-snapshot">
+  
+  <div class="snap-item">
+    <div class="snap-label">S&amp;P 500</div>
+    <div class="snap-price">7,587</div>
+    <div class="snap-change" style="color: #ff7373">-0.12%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Nasdaq 100</div>
+    <div class="snap-price">30,355</div>
+    <div class="snap-change" style="color: #ff7373">-0.17%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Dow</div>
+    <div class="snap-price">51,065</div>
+    <div class="snap-change" style="color: #ff7373">-0.02%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Russell 2k</div>
+    <div class="snap-price">2,907</div>
+    <div class="snap-change" style="color: #ff7373">-0.59%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">VIX</div>
+    <div class="snap-price">15.84</div>
+    <div class="snap-change" style="color: #7ed87e">+3.39%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">WTI Crude</div>
+    <div class="snap-price">91.10</div>
+    <div class="snap-change" style="color: #7ed87e">+4.28%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Brent Crude</div>
+    <div class="snap-price">94.49</div>
+    <div class="snap-change" style="color: #7ed87e">+2.65%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Gold</div>
+    <div class="snap-price">4,512</div>
+    <div class="snap-change" style="color: #ff7373">-1.06%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">Silver</div>
+    <div class="snap-price">75.42</div>
+    <div class="snap-change" style="color: #ff7373">-0.27%</div>
+  </div>
+  
+  <div class="snap-item">
+    <div class="snap-label">DXY</div>
+    <div class="snap-price">99.18</div>
+    <div class="snap-change" style="color: #7ed87e">+0.28%</div>
+  </div>
+  
+</div>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#c084fc">AI Sektorius</div>
+    <span class="section-count" style="background:rgba(192,132,252,0.15);color:#c084fc">8</span>
+  </div>
+  <div class="ai-grid">
+    
+    <div class="ai-card">
+      <div class="ai-symbol">NBIS<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$242.47</div>
+      <div class="ai-change" style="color: #7ed87e">+2.10%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +4.92%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">AMD<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$494.83</div>
+      <div class="ai-change" style="color: #ff7373">-0.38%</div>
+      
+      <div class="ext-change" style="color: #ff7373">PRE -4.12%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">CRWV<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$114.00</div>
+      <div class="ai-change" style="color: #7ed87e">+2.50%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +4.08%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MU<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$1,001</div>
+      <div class="ai-change" style="color: #7ed87e">+5.14%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +3.13%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">MSFT<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$461.93</div>
+      <div class="ai-change" style="color: #7ed87e">+5.45%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +2.60%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">PLTR<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$160.27</div>
+      <div class="ai-change" style="color: #7ed87e">+9.21%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +2.38%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">NVDA<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$215.65</div>
+      <div class="ai-change" style="color: #ff7373">-1.45%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +2.13%</div>
+      
+    </div>
+    
+    <div class="ai-card">
+      <div class="ai-symbol">ZM<span class="ext-badge pre">PRE</span></div>
+      <div class="ai-price">$103.39</div>
+      <div class="ai-change" style="color: #7ed87e">+1.12%</div>
+      
+      <div class="ext-change" style="color: #7ed87e">PRE +1.77%</div>
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Makro Events</div>
+    <span class="section-count">2</span>
+  </div>
+  <div class="events-list">
+    
+    <div class="event-row high-impact">
+      <div class="event-top">
+        <div class="event-time">17:00</div>
+        <div class="event-country">US</div>
+        <div class="event-name">ISM Manufacturing PMI</div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value ">53.3</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">52.7</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Pramonės aktyvumas - &gt;50 = ekspansija, &lt;50 = kontrakcija</div>
+      
+      
+    </div>
+    
+    <div class="event-row ">
+      <div class="event-top">
+        <div class="event-time">17:00</div>
+        <div class="event-country">US</div>
+        <div class="event-name">ISM Manufacturing Prices</div>
+        <div class="event-numbers">
+          <div class="event-num">
+            <div class="event-num-label">Actual</div>
+            <div class="event-num-value muted">-</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Expect</div>
+            <div class="event-num-value ">85.3</div>
+          </div>
+          <div class="event-num">
+            <div class="event-num-label">Prior</div>
+            <div class="event-num-value ">84.6</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-desc">Pramonės aktyvumas - &gt;50 = ekspansija, &lt;50 = kontrakcija</div>
+      
+      
+    </div>
+    
+  </div>
+</section>
+
+
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Upcoming Earnings (14d)</div>
+    <span class="section-count" style="background:rgba(244,204,107,0.15);color:#f4cc6b">3</span>
+  </div>
+  <div class="upcoming-grid">
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">AVGO</div>
+      <div class="up-date">Wed Jun 03</div>
+      <div class="up-days">in 2d</div>
+      <div class="up-est">EPS est $2.40</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">GME</div>
+      <div class="up-date">Tue Jun 09</div>
+      <div class="up-days">in 8d</div>
+      <div class="up-est">EPS est $0.04</div>
+    </div>
+    
+    <div class="upcoming-card">
+      <div class="up-symbol">ADBE</div>
+      <div class="up-date">Thu Jun 11</div>
+      <div class="up-days">in 10d</div>
+      <div class="up-est">EPS est $5.83</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Tavo Watchlist - Top Movers</div>
+  </div>
+  <div class="movers-grid">
+    <div>
+      <div class="movers-col-title">📈 Gainers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">ADBE</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$274.99</span></span>
+        <span class="mover-up">+6.09%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">NBIS</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$242.30</span></span>
+        <span class="mover-up">+4.85%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">FIG</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$26.64</span></span>
+        <span class="mover-up">+4.47%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CRWV</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$114.00</span></span>
+        <span class="mover-up">+4.08%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">ZETA</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$23.65</span></span>
+        <span class="mover-up">+3.32%</span>
+      </div>
+      
+    </div>
+    <div>
+      <div class="movers-col-title">📉 Losers</div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">CONL</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$6.83</span></span>
+        <span class="mover-down">-8.93%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">BMNU</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$1.40</span></span>
+        <span class="mover-down">-6.68%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">MSTR</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$150.19</span></span>
+        <span class="mover-down">-5.59%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">RKLB</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$136.63</span></span>
+        <span class="mover-down">-4.77%</span>
+      </div>
+      
+      <div class="mover-row">
+        <span><span class="mover-symbol">HOOD</span><span class="ext-badge pre">PRE</span> <span class="mover-price">$90.08</span></span>
+        <span class="mover-down">-4.47%</span>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Crypto · 24h</div>
+  </div>
+  <div class="crypto-grid">
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">BTC</div>
+      <div class="crypto-name">Bitcoin</div>
+      <div class="crypto-price">$71,875</div>
+      <div class="crypto-change" style="color: #ff7373">-2.72%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">ETH</div>
+      <div class="crypto-name">Ethereum</div>
+      <div class="crypto-price">$1,977</div>
+      <div class="crypto-change" style="color: #ff7373">-2.25%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">SOL</div>
+      <div class="crypto-name">Solana</div>
+      <div class="crypto-price">$80.41</div>
+      <div class="crypto-change" style="color: #ff7373">-3.03%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">LINK</div>
+      <div class="crypto-name">Chainlink</div>
+      <div class="crypto-price">$8.95</div>
+      <div class="crypto-change" style="color: #ff7373">-2.96%</div>
+    </div>
+    
+    <div class="crypto-card">
+      <div class="crypto-symbol">TAO</div>
+      <div class="crypto-name">Bittensor</div>
+      <div class="crypto-price">$248.14</div>
+      <div class="crypto-change" style="color: #ff7373">-3.78%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">Top IV - Premium Selling</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">8</span>
+  </div>
+  <div class="iv-grid">
+    
+    <div class="iv-row">
+      <div class="iv-symbol">VLN</div>
+      <div class="iv-meta">$3.53 · 46d</div>
+      <div class="iv-value">183.9%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BMNU</div>
+      <div class="iv-meta">$1.50 · 46d</div>
+      <div class="iv-value">148.8%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">CONL</div>
+      <div class="iv-meta">$7.50 · 46d</div>
+      <div class="iv-value">138.1%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">NBIS</div>
+      <div class="iv-meta">$231.09 · 25d</div>
+      <div class="iv-value">117.5%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">MU</div>
+      <div class="iv-meta">$971.00 · 25d</div>
+      <div class="iv-value">113.9%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">IREN</div>
+      <div class="iv-meta">$63.54 · 25d</div>
+      <div class="iv-value">112.2%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">BE</div>
+      <div class="iv-meta">$285.00 · 25d</div>
+      <div class="iv-value">112.0%</div>
+    </div>
+    
+    <div class="iv-row">
+      <div class="iv-symbol">RKLB</div>
+      <div class="iv-meta">$143.48 · 25d</div>
+      <div class="iv-value">108.1%</div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#e6e8ee">Naujienos</div>
+    <span class="section-count" style="background:rgba(230,232,238,0.1);color:#e6e8ee">11</span>
+  </div>
+  <div class="news-list">
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">NVO</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.stocktitan.net/sec-filings/NVO/6-k-novo-nordisk-a-s-current-report-foreign-issuer-dc4b089eca9e.html" target="_blank">Novo Nordisk (NVO) details DKK 4.7B progress on 12-month buyback</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Iš viso išpirkta</div>
+            <div class="nm-value">DKK 4.71B</div>
+            <div class="nm-note">nuo 2026-02-04</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Išpirktų akcijų sk.</div>
+            <div class="nm-value">17,889,179</div>
+            <div class="nm-note">B klasės akcijos</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Vidutinė kaina</div>
+            <div class="nm-value">DKK 263.47</div>
+            <div class="nm-note">už vieną B akciją</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Bendra programa</div>
+            <div class="nm-value">DKK 15B</div>
+            <div class="nm-note">12 mėn. limitas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Iždas (treasury)</div>
+            <div class="nm-value">35,074,480 akcijų</div>
+            <div class="nm-note">0.8% visų akcijų</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Likę išpirkti</div>
+            <div class="nm-value">DKK ~10.3B</div>
+            <div class="nm-note">iš DKK 15B programos</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">NVO akcijų išpirkimo programa juda nuosekliai - per beveik 4 mėnesius panaudota DKK 4.71B iš DKK 15B limito, tai reiškia, kad likusi suma yra gerokai didesnė nei jau išleista. Vidutinė DKK 263.47 išpirkimo kaina rodo, kad bendrovė perka esant dabartiniams žemiems lygiams - tai svarus signalas, kad vadovybė laiko kainą patrauklia. 0.8% iždo pozicija kol kas nedidelė, tačiau jei programa bus vykdoma tolygiai, per likusius mėnesius akcijų skaičius rinkoje gali sumažėti apčiuopiamai, o tai mechaniškai gerina EPS. Investuotojui tai reiškia, kad nuolatinis pirkimas atviros rinkos sąlygomis veikia kaip kainų palaikymo veiksnys - ypač jei makro ar GLP-1 konkurencijos spaudimas ir toliau laikys akciją žemiau istorinių aukštumų.</div>
+        
+        <div class="news-meta">Stock Titan · 06-01 11:53 · <a href="https://www.stocktitan.net/sec-filings/NVO/6-k-novo-nordisk-a-s-current-report-foreign-issuer-dc4b089eca9e.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">RKLB</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-national-pension-service-acquires-new-shares-in-rocket-lab-corporation-rklb-2026-06-01/" target="_blank">National Pension Service Acquires New Shares in Rocket Lab Corporation $RKLB</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">NPS įsigyta akcijų</div>
+            <div class="nm-value">643 174 vnt.</div>
+            <div class="nm-note">Q4 naujas paketas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">NPS pozicijos vertė</div>
+            <div class="nm-value">$44.9M</div>
+            <div class="nm-note">0.12% įmonės akcijų</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Vidinis pardavimas</div>
+            <div class="nm-value">$49.3M</div>
+            <div class="nm-note">per pastaruosius 3 mėn.</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Institucijų dalis</div>
+            <div class="nm-value">71.78%</div>
+            <div class="nm-note">viso akcijų paketo</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Vidutinis tikslas</div>
+            <div class="nm-value">$97.19</div>
+            <div class="nm-note">analitikų konsensusas</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">TD Cowen tikslas</div>
+            <div class="nm-value">$120.00</div>
+            <div class="nm-note">pakeltas nuo $90.00</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Korėjos nacionalinio pensijų fondo įėjimas su $44.9M pozicija - tai ne spekuliatyvus, o konservatyvus ilgalaikis kapitalas, kuris paprastai tikrina likvidumą ir fundamentalus prieš pirkdamas. Institucijų dalis jau 71.78%, o analitikai - TD Cowen, Deutsche Bank, New Street Research - kelia tikslines kainas iki $120, tai yra maždaug 25% aukščiau dabartinio konsensuso vidurkio $97.19. Tačiau vidiniai pardavimai per 3 mėnesius siekia $49.3M - nors ir susiję su iš anksto sudarytais 10b5-1 planais, toks pardavimų mastas reikalauja dėmesio, nes vadovybė realizuoja akcijas aktyviai augančios kainos fone. Manau, institucinio kapitalo antplūdis ir keletas kainų tikslų kėlimų suformuoja trumpalaikę paklausos paramą, tačiau pozicijos dydis ir rizikos valdymas priklauso nuo to, ar artėjantys earnings patvirtins augimo tempą - ypač kosmoso paslaugų revenue segmente.</div>
+        
+        <div class="news-meta">MarketBeat · 06-01 09:52 · <a href="https://www.marketbeat.com/instant-alerts/filing-national-pension-service-acquires-new-shares-in-rocket-lab-corporation-rklb-2026-06-01/" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">ZM</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-geode-capital-management-llc-acquires-152862-shares-of-zoom-communications-inc-zm-2026-06-01/" target="_blank">Geode Capital Management LLC Acquires 152,862 Shares of Zoom Communications, Inc. $ZM</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">Geode pozicija</div>
+            <div class="nm-value">5.14M akcijų</div>
+            <div class="nm-note">+152,862 akcijų (+3.1%)</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Geode vertė</div>
+            <div class="nm-value">$445.3M</div>
+            <div class="nm-note">1.74% ZM akcijų</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Institucijų dalis</div>
+            <div class="nm-value">66.54%</div>
+            <div class="nm-note">institucinė nuosavybė</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS (pask. earnings)</div>
+            <div class="nm-value">$1.55</div>
+            <div class="nm-note">vs $1.42 est - beat</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue (pask. earnings)</div>
+            <div class="nm-value">$1.24B</div>
+            <div class="nm-note">viršijo lūkesčius</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">CEO akcijų pardavimas</div>
+            <div class="nm-value">-69,923 akcijų</div>
+            <div class="nm-note">$81.22/akc., -65.52% pozicijos</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Geode kaip indeksinis fondas paprastai kaupia akcijas mechaniškai, todėl šis pirkimas pats savaime nėra stiprus signifikantus signalas - svarbiau tai, kad institucijų bendras lygis siekia 66.54%, rodantis stabilią institucinę bazę. Tačiau akis kliūva prie CEO Eric Yuan pardavimo - atsisakyta 65.52% asmeninės pozicijos už $5.68M, kai akcija kainavo apie $81, o analitikų konsensuso tikslas $108.15. Toks didelis vadovo pardavimas žemiau tikslinės kainos bent kelia klausimų apie vidaus požiūrį į artimiausio laikotarpio perspektyvą. Paskutiniai earnings buvo tvirti - EPS beat $0.13, revenue virš lūkesčių - tad fundamentalus momentas palankus, bet ZM augimo tempas AI konkurencijos kontekste lieka pagrindinė rizika. Manau, institucijų kaupimas ir stiprus beat teikia pagrindą laikyti poziciją, tačiau CEO pardavimas tokiu mastu riboja konvikciją didinti.</div>
+        
+        <div class="news-meta">MarketBeat · 06-01 07:58 · <a href="https://www.marketbeat.com/instant-alerts/filing-geode-capital-management-llc-acquires-152862-shares-of-zoom-communications-inc-zm-2026-06-01/" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">TSLA</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-1772-shares-in-tesla-inc-tsla-acquired-by-resolute-capital-llc-2026-06-01/" target="_blank">1,772 Shares in Tesla, Inc. $TSLA Acquired by Resolute Capital LLC</a></div>
+        
+        
+        <div class="news-analysis">Resolute Capital pozicija - 1 772 akcijos už $797 000 - pati savaime nereikšminga, tačiau straipsnis atskleidžia platesnį institucinį kontekstą: Norges Bank Q4 įėjo su $17.1B, Holocene Advisors padidino poziciją 132.2%. Revenue miss nerodo augimo pagreičio, o Hold reitingas su $395.20 kainos tikslo vidurkiu reiškia, kad analitikai neįkainoja nei robotaksi, nei autonominių transporto priemonių potencialo - arba tiesiog netiki terminu. Wedbush $600 tikslas ir JPMorgan skepticizmas kartu rodo, kad vertinimas labai priklauso nuo to, kiek tikima Tesla kaip technologijų įmone, o ne tik elektromobilių gamintoja. Institucinė nuosavybė 66.2% rodo, kad didelė dalis laisvai plūduriuojančių akcijų jau yra „sunkiose rankose</div>
+        
+        <div class="news-meta">MarketBeat · 06-01 10:30 · <a href="https://www.marketbeat.com/instant-alerts/filing-1772-shares-in-tesla-inc-tsla-acquired-by-resolute-capital-llc-2026-06-01/" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">HIMS</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://stocktwits.com/news-articles/markets/equity/hims-stock-eight-new-partners-health-ecosystem/cZgS9VJRetS" target="_blank">HIMS Stock Eyes Breakout Week: Eight New Partners Fuel Push To Build An All-In-One Health Platform</a></div>
+        
+        
+        <div class="news-analysis">Straipsnyje konkrečių finansinių skaičių nėra - tik antraštė apie aštuonis naujus partnerius ir strateginį tikslą tapti visapusiška sveikatos platforma. Aštuonių partnerių pridėjimas gali plėsti revenue bazę ilguoju laikotarpiu, tačiau be detalių apie sutarčių vertę ar numatomą revenue įtaką sunku vertinti faktinį svorį. HIMS akcija šiuo metu prekiaujama su aukštu augimu paremtu vertinimu, todėl partnerystės žinios gali palaikyti sentiment&#39;ą trumpuoju laikotarpiu, bet catalyst&#39;u taps tik tada, kai atsispindės guidance arba Q2 earnings rezultatuose. Manau verta palaukti konkretesnių duomenų prieš vertinant, ar šios partnerystės keičia fundamentalų vaizdą.</div>
+        
+        <div class="news-meta">Stocktwits · 06-01 09:13 · <a href="https://stocktwits.com/news-articles/markets/equity/hims-stock-eight-new-partners-health-ecosystem/cZgS9VJRetS" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">PYPL</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.marketbeat.com/instant-alerts/filing-easterly-investment-partners-llc-purchases-88151-shares-of-paypal-holdings-inc-pypl-2026-06-01/" target="_blank">Easterly Investment Partners LLC Purchases 88,151 Shares of PayPal Holdings, Inc. $PYPL</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS faktinis</div>
+            <div class="nm-value">$1.34</div>
+            <div class="nm-note">vs $1.27 est - beat</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue</div>
+            <div class="nm-value">$8.35B</div>
+            <div class="nm-note">+7.2% YoY</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Rinkos vertė</div>
+            <div class="nm-value">$39.47B</div>
+            <div class="nm-note">dabartinė kapitalizacija</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">P/E</div>
+            <div class="nm-value">8.40x</div>
+            <div class="nm-note">PEG 1.12x</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Akcijos kaina</div>
+            <div class="nm-value">$44.75</div>
+            <div class="nm-note">52s aukštas $79.50</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Dividendas</div>
+            <div class="nm-value">$0.14</div>
+            <div class="nm-note">ketvirtinis, vienai akcijai</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Easterly pozicijos didinimas 705% yra daugiau signalinis nei fundamentaliai keičiantis faktas - absoliuti suma $5.9M per maža, kad judintų kainą. Įdomesnis kontekstas: PYPL P/E 8.40x su +7.2% revenue augimu YoY yra istoriškai žemas vertinimas, tačiau analitikų konsensusas &#34;Hold&#34; ir vidutinis kainos tikslas $55.85 rodo, kad rinka dar neįtiki tvariu augimo greitėjimu. Akcija šiuo metu $44.75 - beveik 44% žemiau 52 savaičių aukšto $79.50, kas kelia klausimą: ar tai vertės spąstai, ar tikrai neįkainota akcija. Manau, kad EPS beat ir stabilus revenue augimas suteikia pagrindą, bet be aiškaus catalyst - guidance gerinimo ar pelningumo šuolio - katalizatoriaus trūksta greito atsigavimo scenarijui. Investuotojui verta sekti artimiausius earnings dėl gross margin dinamikos ir aktyvių sąskaitų augimo - tai du rodikliai, kurie galėtų pakeisti analitikų atsargų nuostatą.</div>
+        
+        <div class="news-meta">MarketBeat · 06-01 08:32 · <a href="https://www.marketbeat.com/instant-alerts/filing-easterly-investment-partners-llc-purchases-88151-shares-of-paypal-holdings-inc-pypl-2026-06-01/" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">UNH</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://unhwildcats.com/news/2026/5/29/general-unh-athletics-partners-with-scoremore-to-launch-gocatstravel-com" target="_blank">UNH Athletics Partners with ScoreMore to Launch GoCatsTravel.com</a></div>
+        
+        
+        <div class="news-analysis">Ši naujiena nesusijusi su UnitedHealth Group (UNH) akcija - straipsnis apie Naujojo Hampšyro universiteto atletikos departamento partnerystę su kelionių platforma. Tikėtina, kad paieška grąžino klaidingą rezultatą dėl sutampančio „UNH</div>
+        
+        <div class="news-meta">University of New Hampshire Athletics · 05-29 15:27 · <a href="https://unhwildcats.com/news/2026/5/29/general-unh-athletics-partners-with-scoremore-to-launch-gocatstravel-com" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+        <div class="news-extra-links">
+          
+          <a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxNeVh0WFN6TXVzUmhmdTNvWGdpOXJxdmFLUml1V09vZi1zSHZTMDduOUhZUXdWc2h1d3U5QnJUZDl4aHJqZXplcndqZnlIYmlvb0x0eVdSaHFEN1FrcENkV0s3N3BYM0g2NndDUmtJeVZnZnlOcDh6NXJXLVB0ZE1UVjZYLXBXRUt1WXAxQ1FMY1YwbmVpMWhkaV8wb2swaGs2VFVKekkySHVyT2hKYzNrcnJ2X3UwZEE?oc=5" target="_blank" class="news-extra-link">+ TradingKey: UnitedHealth Beats Q1 2026 and Raises Guidance - Is UNH Stock a Buy After Jumpin</a>
+          
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">ADBE</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/news/nvidia-enters-windows-laptop-market-taking-on-intel-and-amd-042523139.html" target="_blank">Nvidia Unveils New AI Chip for PCs, Taking On Intel and AMD</a></div>
+        
+        
+        <div class="news-analysis">Straipsnis apie „Nvidia</div>
+        
+        <div class="news-meta">Bloomberg · 06-01 11:09 · <a href="https://finance.yahoo.com/news/nvidia-enters-windows-laptop-market-taking-on-intel-and-amd-042523139.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">ZETA</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/zeta-global-zeta-soars-25-055534344.html" target="_blank">Zeta Global (ZETA) Soars 25% as CEO ‘Highly Optimistic’</a></div>
+        
+        
+        <div class="news-analysis">Akcija šuoliavo +24.9% iki $22.89 po CEO David Steinberg televizijos interviu, kuriame teigė, kad AI platforma „Athena</div>
+        
+        <div class="news-meta">Insider Monkey · 05-30 05:55 · <a href="https://finance.yahoo.com/markets/stocks/articles/zeta-global-zeta-soars-25-055534344.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">HOOD</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://stocktwits.com/news-articles/markets/equity/hood-stock-clocks-best-month-in-2026-growth-story-intact-despite-crypto-weakness-says-analyst/cZ0g166Reus" target="_blank">HOOD Stock Clocks Best Month In 2026: Growth Story Intact Despite Crypto Weakness, Says Analyst</a></div>
+        
+        <div class="news-metrics">
+          
+          <div class="nm-cell">
+            <div class="nm-label">HOOD gegužės augimas</div>
+            <div class="nm-value">+4.93%</div>
+            <div class="nm-note">geriausias mėnuo 2026 m.</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Revenue CAGR (10m.)</div>
+            <div class="nm-value">+13%</div>
+            <div class="nm-note">Morningstar 10 m. prognozė</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Op. pelno CAGR (10m.)</div>
+            <div class="nm-value">+14.2%</div>
+            <div class="nm-note">Morningstar prognozė</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">EPS CAGR (10m.)</div>
+            <div class="nm-value">+17.3%</div>
+            <div class="nm-note">Morningstar prognozė</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Mizuho kainų tikslas</div>
+            <div class="nm-value">$115</div>
+            <div class="nm-note">pakeltas nuo $110</div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="news-analysis">Morningstar palaiko ilgalaikį augimo scenarijų - 10 metų EPS CAGR +17.3% ir revenue CAGR +13% yra solidūs skaičiai, tačiau pati Morningstar pripažįsta, kad akcija šiuo metu prekiaujama brangiau nei jų tikroji vertė. Tai reiškia, kad catalyst jau iš dalies įskaičiuotas į kainą - pirkti dabar reiškia mokėti premium už augimą, kuris dar tik prognozuojamas. Mizuho tikslo kėlimas iki $115 signalizuoja, kad analitikai pasitiki indėlių augimo dinamika ir naujais segmentais - kredito kortele bei prognozių rinkos projektu. Kriptovaliutų silpnumas kelia klausimą, kokia HOOD revenue dalis priklauso nuo kriptovaliutų prekybos aktyvumo - jei ši dalis reikšminga, bet kurį ketvirtį sumažėjęs BTC aktyvumas gali duoti miss. Manau šiuo metu įdomiau stebėti nei pirkti: jei akcija grįžtų arčiau Morningstar tikrosios vertės - būtų aiškesnis rizikos ir grąžos santykis.</div>
+        
+        <div class="news-meta">Stocktwits · 06-01 06:24 · <a href="https://stocktwits.com/news-articles/markets/equity/hood-stock-clocks-best-month-in-2026-growth-story-intact-despite-crypto-weakness-says-analyst/cZ0g166Reus" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
+      <div class="news-ticker">MACRO</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.cnbc.com/2026/06/01/us-iran-war-missiles-kuwait.html" target="_blank">U.S. intercepted Iranian missiles targeting American forces in Kuwait, Central Command says</a></div>
+        
+        
+        <div class="news-analysis">Iranas paleido dvi balistines raketas prieš JAV pajėgas Kuveite - abiejų raketų peršvietimas sėkmingas, aukų nėra. Tai ne pirmasis toks incidentas, o vis silpnėjančio paliaubų režimo dalis - CENTCOM formuluotė &#39;threadbare ceasefire&#39; rodo, kad situacija nestabili. Rinkoms svarbu: eskalacijos rizika Persijos įlankos regione tiesiogiai veikia naftos tiekimo maršrutus ir gynybos sektoriaus lūkesčius. Manau artimiausiu metu verta stebėti naftos ateities sandorių kainų judėjimą ir gynybos įmonių - Raytheon, Lockheed - akcijų reakciją pre-market. Jei incidentai kartosis, geopolitinė rizikos premija energetikos sektoriuje gali augti.</div>
+        
+        <div class="news-meta">CNBC Top · 06-01 13:21 · <a href="https://www.cnbc.com/2026/06/01/us-iran-war-missiles-kuwait.html" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+        <div class="news-extra-links">
+          
+          <a href="https://www.cnbc.com/2026/06/01/oil-prices-wti-brent-crude-israel-lebanon-hezbollah-iran-trump-us.html" target="_blank" class="news-extra-link">+ CNBC Top: Oil prices climb over 3% as U.S.-Iran talks at impasse, Israel expands Lebanon o</a>
+          
+          <a href="https://www.cnbc.com/2026/05/31/still-no-deal-to-end-us-iran-war-trump-says-hes-not-in-a-hurry.html" target="_blank" class="news-extra-link">+ CNBC Top: U.S. and Iran still without deal to end war after Trump says he&#39;s not in a &#39;hurr</a>
+          
+          <a href="https://www.cnbc.com/2026/06/01/iran-war-trump-hits-out-at-critics-says-tehran-really-wants-a-deal.html" target="_blank" class="news-extra-link">+ CNBC Top: Trump hits out at ‘chirping’ critics as U.S. and Iran launch fresh wave of strik</a>
+          
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Šios dienos akcentai</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">4</span>
+  </div>
+  
+  <div class="manual-note">
+    <div class="manual-note-header">
+      <div class="manual-note-ticker">DELL</div>
+      <div class="manual-note-headline">Dell +32.76% iki $420.91 - geriausia diena: Q1 revenue $43.8B (vs $35.77B), AI server +757% YoY, FY27 guide pakelta</div>
+    </div>
+    
+    <div class="manual-note-metrics">
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Kaina</div>
+        <div class="manual-note-metric-value">$420.91</div>
+        <div class="manual-note-metric-change">+32.76% (best day ever)</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Q1 revenue</div>
+        <div class="manual-note-metric-value">$43.8B</div>
+        <div class="manual-note-metric-change">vs $35.77B consensus (+88% YoY)</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Adjusted EPS</div>
+        <div class="manual-note-metric-value">$4.86</div>
+        <div class="manual-note-metric-change">vs $2.96 consensus (+214% YoY)</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">AI orders Q1</div>
+        <div class="manual-note-metric-value">$24.4B</div>
+        <div class="manual-note-metric-change">per ketvirtį</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">AI server revenue</div>
+        <div class="manual-note-metric-value">$16.1B</div>
+        <div class="manual-note-metric-change">+757% YoY</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">FY27 EPS guide</div>
+        <div class="manual-note-metric-value">$17.90</div>
+        <div class="manual-note-metric-change">buvo $12.90 (didelis kėlimas)</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">FY27 revenue guide</div>
+        <div class="manual-note-metric-value">$165B - $169B</div>
+        <div class="manual-note-metric-change">AI server iki $60B</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">AI backlog</div>
+        <div class="manual-note-metric-value">$51.3B</div>
+        <div class="manual-note-metric-change">rekordas</div>
+      </div>
+      
+    </div>
+    
+    
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>Dell pristatė vienus stipriausių earnings&#39;ų šiame cikle. Q1 revenue $43.8B (vs $35.77B consensus), adjusted EPS $4.86 (vs $2.96), AI orders $24.4B per ketvirtį, AI server revenue $16.1B (+757% YoY). FY27 guidance pakelta nuo $12.90 iki $17.90 EPS, AI server expectations iki $60B, total revenue $165-169B, AI-related backlog $51.3B. Akcija +32.76% iki $420.91 - geriausia diena istorijoje.
+
+Ką tai reiškia investuotojui: tai TIKRA AI capex validacija, ne naratyvas - realios pajamos, ne tik guidance hype&#39;as. Dell yra Tier 1 server OEM, ir kai jie booking $24B AI per ketvirtį, tai signalas visai infrastruktūros grandinei: MU (HBM, DRAM), AVGO (networking + custom ASIC), NVDA (GPU), TSM (silicon) gauna iš tos pačios capex bangos. Bet atsargiai - +33% per dieną reiškia, kad lengvi pinigai paimti; nuo čia DELL turi vykdyti $60B AI server prognozę. Įėjimo kaina prasta po tokio šuolio - geriau laukti pullback&#39;o nei chase&#39;inti.</div>
+    
+    
+    <div class="manual-note-long"><span class="horizon-tag long">Ilgalaikis 3-5+ m</span>Jei DELL realizuoja $60B FY27 AI server numerį, tai struktūrinis pokytis - DELL pereina iš tradicinio PC/laptop vendor&#39;o į AI infrastructure leader&#39;į, panašiai kaip Cisco 2000-aisiais. Bet skirtumas - Cisco pateko į oversupply ciklą. AI server margin&#39;ai vis dar žemesni nei NVDA, ir &#39;commodity hardware&#39; rizika realiai egzistuoja, jei capex augimas sulėtės.</div>
+    
+  </div>
+  
+  <div class="manual-note">
+    <div class="manual-note-header">
+      <div class="manual-note-ticker">NVDA</div>
+      <div class="manual-note-headline">NVDA Computex&#39;e: Vera CPU AI agentams (Anthropic/OpenAI/SpaceX) + RTX Spark PC procesorius prieš Intel/AMD</div>
+    </div>
+    
+    <div class="manual-note-metrics">
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Kaina</div>
+        <div class="manual-note-metric-value">$211.14</div>
+        <div class="manual-note-metric-change">-1.45% (premarket buvo +2%)</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Market cap</div>
+        <div class="manual-note-metric-value">$5,109.59B</div>
+        <div class="manual-note-metric-change">P/E 32.33</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Vera CPU</div>
+        <div class="manual-note-metric-value">AI agentams</div>
+        <div class="manual-note-metric-change">Anthropic, OpenAI, SpaceX įsipareigojo</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Vera production</div>
+        <div class="manual-note-metric-value">Q3 2026</div>
+        <div class="manual-note-metric-change">full ramp</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">RTX Spark PC chip</div>
+        <div class="manual-note-metric-value">vs Intel/AMD</div>
+        <div class="manual-note-metric-change">8 PC brendai įsipareigojo rudens launch&#39;ui</div>
+      </div>
+      
+    </div>
+    
+    
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>NVDA padarė kitą strateginį judesį Computex&#39;e - pristatė Vera CPU AI agentams (Anthropic, OpenAI, SpaceX jau įsipareigojo, full production Q3) ir RTX Spark PC procesorių, taikomą tiesiogiai į Intel/AMD Windows laptop rinką (8 PC brendai įsipareigojo rudens launch&#39;ui). Esmė: NVDA plečiasi iš pure GPU į CPU teritoriją (AI agentų ekonomikai) ir į vartotojų PC.
+
+Ką tai reiškia investuotojui: rinka reakcija santūri - premarket +2%, dabar -1.45%. Jau price&#39;inta, nes NVDA kiekvienais ketvirtais paskelbia naują tier&#39;į produktų ir kiekvienas ekspansijos žingsnis tampa baseline lūkesčiu. Geriausia istorija čia ne short-term akcijos move, o tai, kad NVDA įžengia į Intel/AMD core teritoriją - jei RTX Spark pavyks, tai potencialiai 20%+ adresuojamos rinkos plėtra per kelis metus. Bet Intel/AMD nesiruošia stoviai - bus konkurencinė kova, ne lengvas užkariavimas.</div>
+    
+    
+  </div>
+  
+  <div class="manual-note">
+    <div class="manual-note-header">
+      <div class="manual-note-ticker">SOFI</div>
+      <div class="manual-note-headline">SoFi tęsia ralį +7% penktadienį po SoFiUSD launch&#39;o; Trump šeima Q1 2026 pirko SOFI/HOOD/MSTR/MARA/COIN/SQ</div>
+    </div>
+    
+    <div class="manual-note-metrics">
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Friday move</div>
+        <div class="manual-note-metric-value">+7%</div>
+        <div class="manual-note-metric-change">po SoFiUSD launch&#39;o</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">SoFiUSD</div>
+        <div class="manual-note-metric-value">15M narių</div>
+        <div class="manual-note-metric-change">Ethereum + Solana, first US bank stablecoin</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Q1 revenue</div>
+        <div class="manual-note-metric-value">$1.10B</div>
+        <div class="manual-note-metric-change">virš $1.05B consensus</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">EPS YoY</div>
+        <div class="manual-note-metric-value">padvigubėjo</div>
+        <div class="manual-note-metric-change">diluted $0.12</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Trump family Q1 2026</div>
+        <div class="manual-note-metric-value">pirko SOFI</div>
+        <div class="manual-note-metric-change">+ MARA, COIN, MSTR, HOOD, SQ</div>
+      </div>
+      
+    </div>
+    
+    
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>Fintech tezė tęsiasi. SoFi +7% penktadienį po SoFiUSD launch&#39;o (pirmas U.S. national bank stablecoin, 15M narių ant ETH + SOL), plius stipri Q1 revenue $1.10B (virš $1.05B consensus) ir EPS padvigubėjimas. Tai validuoja produkto-driven tezę - ne naratyvas, o konkretus produktas su user baze.
+
+Atskirai įdomus signalas: Trump šeimos Q1 2026 disclosure rodo, kad jų trustai pirko MARA, COIN, MSTR, HOOD, SOFI ir SQ - politinis alignment su watchlist&#39;u. Tai dvigubas peilis: validacija (panaši tezė kaip mano) plius politinė rizika (administracijos pokytis ar conflict-of-interest skandalas - šios pozicijos jautrios). Po stiprios savaitės entry kainos prastesnės nei prieš savaitę - geriau pridėti pozicijas pullback&#39;e nei chase&#39;inti pirmadienio pre-market.</div>
+    
+    
+  </div>
+  
+  <div class="manual-note">
+    <div class="manual-note-header">
+      <div class="manual-note-ticker">HOOD</div>
+      <div class="manual-note-headline">Robinhood +10% penktadienį (+20%+ per 2 sesijas) po Trump Accounts launch&#39;o - oficialiai 530A, Robinhood paskirtas initial trustee</div>
+    </div>
+    
+    <div class="manual-note-metrics">
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Friday move</div>
+        <div class="manual-note-metric-value">+10%</div>
+        <div class="manual-note-metric-change">kumuliatyviai +20%+ per 2 sesijas</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Trump Accounts</div>
+        <div class="manual-note-metric-value">oficialiai 530A</div>
+        <div class="manual-note-metric-change">Robinhood paskirtas initial trustee</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Eligibility</div>
+        <div class="manual-note-metric-value">2025-2028 gimę</div>
+        <div class="manual-note-metric-change">$1,000 Treasury seed, iki $5K/m. įnašų</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Official start</div>
+        <div class="manual-note-metric-value">liepos 4, 2026</div>
+        <div class="manual-note-metric-change">app jau Apple/Google Store</div>
+      </div>
+      
+      <div class="manual-note-metric">
+        <div class="manual-note-metric-label">Trump family Q1 2026</div>
+        <div class="manual-note-metric-value">pirko HOOD</div>
+        <div class="manual-note-metric-change">+ kt. crypto/fintech pozicijos</div>
+      </div>
+      
+    </div>
+    
+    
+    <div class="manual-note-analysis"><span class="horizon-tag short">Trumpalaikis 3-12 mėn</span>HOOD tęsia ralį - +10% penktadienį, +20%+ per dvi sesijas, po Trump Accounts launch&#39;o. Detalės jau pasirašytos: oficialus pavadinimas 530A accounts, Robinhood paskirtas initial trustee, eligibility 2025-2028 gimusiems vaikams, $1,000 Treasury seed, iki $5K per metus įnašų, oficialus startas liepos 4. Tai valstybės subsidijuojamas klientų pritraukimo kanalas.
+
+Ką tai reiškia investuotojui: trustee statusas yra svarbus - tai ne tik &#39;app sukurtas su BNY Mellon&#39;, tai vaidmuo, kuris generuoja recurring fee streams ir suteikia HOOD struktūrinį ilgalaikį pranašumą prieš konkurentus (SCHW, IBKR). Bet +20% per 2 sesijas reiškia short-term overextended, ir near-term revenue iš Trump Accounts vis dar nulis (įnašai prasideda liepos 4). Plius politinė rizika - Trump šeimos Q1 2026 disclosure rodo HOOD tarp jų pozicijų, kas validuoja tezę bet ir prideda conflict-of-interest riziką.</div>
+    
+    
+  </div>
+  
+</section>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Pamąstymai iš rinkų · 48h</div>
+  </div>
+  <div class="yt-synthesis">Penktadienis ir savaitgalis pateikė kelis svarbius signalus. Pradėsiu nuo to, kas mano akimis yra TIKRA AI trade validacija, ne naratyvas - Dell pristatė vienus stipriausių earnings'ų šiame cikle. Q1 revenue $43.8B (vs $35.77B consensus), adjusted EPS $4.86 (vs $2.96), AI orders $24.4B per ketvirtį, AI server revenue $16.1B (+757% YoY). FY27 guidance pakelta nuo $12.90 iki $17.90 EPS, AI server expectations iki $60B, total revenue $165-169B, AI-related backlog $51.3B. Akcija +32.76% iki $420.91 (best day ever). Šitie skaičiai nėra naratyvas, tai realios pajamos. Dell yra Tier 1 server OEM, ir kai jie booking $24B AI per ketvirtį - tai ne tik DELL signalas, tai visos infrastruktūros grandinės signalas: MU (HBM, DRAM), AVGO (networking + custom ASIC), NVDA (GPU), TSM (silicon) gauna iš tos pačios capex bangos. Bet atsargiai - +33% per dieną reiškia, kad lengvi pinigai paimti; nuo čia DELL turi vykdyti $60B AI server prognozę, o tai bus realus testas.
+
+NVDA padarė kitą strateginį judesį Computex'e - pristatė Vera CPU AI agentams (Anthropic, OpenAI, SpaceX jau įsipareigojo, full production Q3) ir RTX Spark PC procesorių, taikomą tiesiogiai į Intel/AMD Windows laptop rinką (8 PC brendai įsipareigojo rudens launch'ui). Esmė: NVDA plečiasi į CPU teritoriją AI agentų ekonomikai ir į vartotojų PC. Rinka reakcija santūri - premarket +2%, dabar -1.45%. Jau price'inta, nes NVDA kiekvienais ketvirtais paskelbia naują tier'į produktų. Geriausia istorija čia ne short-term akcijos move, o tai, kad NVDA įžengia į Intel/AMD core teritoriją.
+
+Iran fronte savaitgalis pakeitė toną. Penktadienį uždarėme prie 6-savaičių naftos žemumų (~$88 WTI), bet per savaitgalį JAV smogė Irano radarų ir dronų aikštelėms ('self-defense' po to, kai Iran numušė amerikiečių droną), o Trump siuntė pakeitimus į draft deal'ą - reikalauja griežtesnės kalbos dėl branduolinių klausimų ir Hormuz. Nafta atšoko - WTI $91.10 (+4.28%), Brent $94.49 (+2.65%). Tai priminimas, kad praeitos savaitės 'peace narrative' buvo per stiprus - deal'as dar nepasirašytas, ir kai Trump reikalauja griežtinti, eskalacijos rizika grįžta. Jei nafta laikosi $90+ ir grįžta į $100+ - PCE 3.8% problema tampa dar didesnė, ir Fed karpymų lūkesčiai dar labiau spaudžiami.
+
+Fintech tezė tęsiasi - SoFi +7% penktadienį po SoFiUSD launch'o, HOOD +10% penktadienį (+20%+ per dvi sesijas) po Trump Accounts (oficialiai 530A accounts, Robinhood paskirtas initial trustee). Atskirai įdomus signalas: Trump šeimos Q1 2026 disclosure rodo, kad jų trustai pirko MARA, COIN, MSTR, HOOD, SOFI, SQ - politinis alignment su mano watchlist'u. Tai dvigubas peilis - validacija (panaši tezė kaip mano) plius politinė rizika (administracijos pokytis ar conflict-of-interest skandalas - šios pozicijos jautrios). +20% per dvi sesijas reiškia short-term overextended, tad entry kainos prastesnės nei savaitę atgal.
+
+Bendras paveikslas: gegužė buvo stipri (Nasdaq +8%, S&P +5%, 9 savaitės iš eilės kilimo - statistiškai retas streak). Disconnect'o klausimas lieka atviras - DELL validuoja AI capex, bet PCE 3.8% nedingo, Iran gali eskaluoti, ir 9 weeks of gains rinka istoriškai gauna paus'ę. Aš nedaryčiau agresyvių naujų pozicijų šiose lygiuose - laukčiau pullback'o ar konsolidacijos. Cash-generuojančios kompanijos atlaiko, leveraged plays (MSTR, CLSK, BMNR) reikalauja mažesnės pozicijos. BTC $71,875 (-2.72%) - gegužė baigė nuostoliuose, ir tai signalizuoja, kad likvidumas nėra toks stiprus kaip akcijų rinka rodo.</div>
+</section>
+
+
+
+
+
+
+
+
+
+<div class="key-takeaway">
+  <div class="takeaway-label">Key Takeaway</div>
+  <div class="takeaway-text">ISM Manufacturing PMI (17:00) - didžiausias šios dienos event&#39;as.</div>
+</div>
+
+
+
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#7ed87e">Watchlist Insider Activity</div>
+    <span class="section-count" style="background:rgba(126,216,126,0.15);color:#7ed87e">30</span>
+  </div>
+  <div class="insider-list">
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">AMD</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+           · 
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.41% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+263K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Guido Philip<span class="insider-title">EVP, Chief Commercial Off</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">2 sandoriai · paskutinis 2025-05-20</div>
+          
+          <div class="insider-holdings">direct: 42.3K sh · $21.84M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$1.50M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-05-20</span>
+          <span class="ib-qty">+8,800 sh @ $113.56</span>
+          <span class="ib-value buy">+$999,328</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-02-07</span>
+          <span class="ib-qty">+4,645 sh @ $107.56</span>
+          <span class="ib-value buy">+$499,616</span>
+        </div>
+        
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Su Lisa T<span class="insider-title">Chair, Pres, CEO</span></div>
+          <div class="insider-meta">5 sandoriai · paskutinis 2026-05-13</div>
+          
+          <div class="insider-holdings">direct: 3.77M sh · $1.94B <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$163.16M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-13</span>
+          <span class="ib-qty">125,000 sh @ $445.51</span>
+          <span class="ib-value sell">$55,688,359</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-03-12</span>
+          <span class="ib-qty">85,000 sh @ $198.77</span>
+          <span class="ib-value sell">$16,895,157</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-11</span>
+          <span class="ib-qty">125,000 sh @ $214.36</span>
+          <span class="ib-value sell">$26,794,875</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 2</span>
+          <span class="ib-date">2025-08-21 → 2025-12-11</span>
+          <span class="ib-qty">350K sh viso</span>
+          <span class="ib-value sell">$63.79M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">AMZN</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">8.90% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+1.27M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Bezos Jeffrey P<span class="insider-title">Exec Chair</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">7 sandoriai · paskutinis 2025-07-23</div>
+          
+          <div class="insider-holdings">direct: 883.78M sh · $239.19B · 8.2% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$5.65B</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-07-23</span>
+          <span class="ib-qty">4,154,098 sh @ $229.72</span>
+          <span class="ib-value sell">$954,275,370</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-07-21</span>
+          <span class="ib-qty">6,612,707 sh @ $228.34</span>
+          <span class="ib-value sell">$1,509,959,637</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-07-15</span>
+          <span class="ib-qty">733,195 sh @ $227.02</span>
+          <span class="ib-value sell">$166,449,709</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 4</span>
+          <span class="ib-date">2025-06-27 → 2025-07-11</span>
+          <span class="ib-qty">13.50M sh viso</span>
+          <span class="ib-value sell">$3.02B</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">AVGO</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">1.95% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-selling">-493K sh</span>
+        <span class="ia-badge ia-selling">
+          PARDUODA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Tan Hock E<span class="insider-title">Pres, CEO</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">9 sandoriai · paskutinis 2026-01-06</div>
+          
+          <div class="insider-holdings">direct: 908.5K sh · $405.88M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$286.10M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-01-06</span>
+          <span class="ib-qty">70,000 sh @ $347.30</span>
+          <span class="ib-value sell">$24,310,684</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-12-23</span>
+          <span class="ib-qty">100,000 sh @ $345.65</span>
+          <span class="ib-value sell">$34,564,807</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-12-18</span>
+          <span class="ib-qty">130,000 sh @ $326.02</span>
+          <span class="ib-value sell">$42,382,600</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 6</span>
+          <span class="ib-date">2025-06-12 → 2025-09-23</span>
+          <span class="ib-qty">594K sh viso</span>
+          <span class="ib-value sell">$184.84M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">CRWV</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">3 sells</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">18.69% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-selling">-18.77M sh</span>
+        <span class="ia-badge ia-selling">
+          PARDUODA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row recent-week">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Venturo Brian M<span class="insider-title">Chief Strategy Officer</span><span class="insider-fresh">šią sav.</span></div>
+          <div class="insider-meta">18 sandoriai · paskutinis 2026-05-27</div>
+          
+          <div class="insider-holdings">direct: 416.9K sh (~$45.67M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$723.84M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-27</span>
+          <span class="ib-qty">76,924 sh @ $102.33</span>
+          <span class="ib-value sell">$7,871,924</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-20</span>
+          <span class="ib-qty">82,811 sh @ $101.00</span>
+          <span class="ib-value sell">$8,363,967</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-18</span>
+          <span class="ib-qty">375,000 sh @ $101.24</span>
+          <span class="ib-value sell">$37,966,423</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 15</span>
+          <span class="ib-date">2026-03-18 → 2026-05-13</span>
+          <span class="ib-qty">6.69M sh viso</span>
+          <span class="ib-value sell">$669.64M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row recent-week">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Intrator Michael N<span class="insider-title">CEO, Pres, 10%</span><span class="insider-fresh">šią sav.</span></div>
+          <div class="insider-meta">13 sandoriai · paskutinis 2026-05-26</div>
+          
+          <div class="insider-holdings">direct: 4.08M sh · $446.53M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$301.01M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-26</span>
+          <span class="ib-qty">307,693 sh @ $106.74</span>
+          <span class="ib-value sell">$32,843,315</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-20</span>
+          <span class="ib-qty">13,129 sh @ $99.82</span>
+          <span class="ib-value sell">$1,310,537</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-19</span>
+          <span class="ib-qty">307,693 sh @ $98.33</span>
+          <span class="ib-value sell">$30,255,742</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 10</span>
+          <span class="ib-date">2026-03-11 → 2026-05-12</span>
+          <span class="ib-qty">2.29M sh viso</span>
+          <span class="ib-value sell">$236.60M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">McBee Brannin<span class="insider-title">Chief Development Officer</span></div>
+          <div class="insider-meta">17 sandoriai · paskutinis 2026-05-20</div>
+          
+          <div class="insider-holdings">direct: 373.9K sh (~$40.95M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$152.24M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-20</span>
+          <span class="ib-qty">3,683 sh @ $99.82</span>
+          <span class="ib-value sell">$367,637</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-27</span>
+          <span class="ib-qty">45,850 sh @ $109.03</span>
+          <span class="ib-value sell">$4,998,934</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-27</span>
+          <span class="ib-qty">287,500 sh @ $109.03</span>
+          <span class="ib-value sell">$31,346,733</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 14</span>
+          <span class="ib-date">2026-03-09 → 2026-04-20</span>
+          <span class="ib-qty">1.24M sh viso</span>
+          <span class="ib-value sell">$115.53M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">ENPH</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">3.05% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-selling">-113K sh</span>
+        <span class="ia-badge ia-selling">
+          PARDUODA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row recent-week">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Kothandaraman Badrinarayanan<span class="insider-title">Pres, CEO</span><span class="insider-fresh">šią sav.</span></div>
+          <div class="insider-meta">6 sandoriai · paskutinis 2026-05-26</div>
+          
+          <div class="insider-holdings">direct: 1.75M sh · $119.67M · 1.3% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$1.40M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-05-26</span>
+          <span class="ib-qty">+5,000 sh @ $67.50</span>
+          <span class="ib-value buy">+$337,482</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-02-05</span>
+          <span class="ib-qty">+5,000 sh @ $51.98</span>
+          <span class="ib-value buy">+$259,884</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-11-10</span>
+          <span class="ib-qty">+5,000 sh @ $30.69</span>
+          <span class="ib-value buy">+$153,439</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum buy">Σ 3</span>
+          <span class="ib-date">2025-04-25 → 2025-10-31</span>
+          <span class="ib-qty">19K sh viso</span>
+          <span class="ib-value buy">$649K</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">FIG</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">1.88% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+6.71M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Field Dylan<span class="insider-title">Pres, CEO, 10%</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">6 sandoriai · paskutinis 2026-02-26</div>
+          
+        </div>
+        <div class="insider-value sell">+$233.93M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-26</span>
+          <span class="ib-qty">486,930 sh @ $30.79</span>
+          <span class="ib-value sell">$14,990,905</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-01-14</span>
+          <span class="ib-qty">312,500 sh @ $32.63</span>
+          <span class="ib-value sell">$10,197,757</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-12-15</span>
+          <span class="ib-qty">312,500 sh @ $34.66</span>
+          <span class="ib-value sell">$10,832,051</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 3</span>
+          <span class="ib-date">2025-08-01 → 2025-11-24</span>
+          <span class="ib-qty">5.69M sh viso</span>
+          <span class="ib-value sell">$197.91M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">GME</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">8.83% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+1.04M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Cohen Ryan<span class="insider-title">Pres, CEO, COB</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">2 sandoriai · paskutinis 2026-01-20</div>
+          
+          <div class="insider-holdings">direct: 38.35M sh · $812.21M · 8.5% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$32.13M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-01-20</span>
+          <span class="ib-qty">+1,000,000 sh @ $21.36</span>
+          <span class="ib-value buy">+$21,359,200</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-04-03</span>
+          <span class="ib-qty">+500,000 sh @ $21.55</span>
+          <span class="ib-value buy">+$10,775,000</span>
+        </div>
+        
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">GOOGL</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">1.18% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+539K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Pichai Sundar<span class="insider-title">CEO</span></div>
+          <div class="insider-meta">23 sandoriai · paskutinis 2026-03-04</div>
+          
+          <div class="insider-holdings">direct: 3.28M sh · $1.25B <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$179.05M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-03-04</span>
+          <span class="ib-qty">32,500 sh @ $303.38</span>
+          <span class="ib-value sell">$9,859,694</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-18</span>
+          <span class="ib-qty">32,500 sh @ $303.92</span>
+          <span class="ib-value sell">$9,877,262</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-04</span>
+          <span class="ib-qty">32,500 sh @ $335.18</span>
+          <span class="ib-value sell">$10,893,259</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 20</span>
+          <span class="ib-date">2025-04-02 → 2026-01-21</span>
+          <span class="ib-qty">650K sh viso</span>
+          <span class="ib-value sell">$148.42M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">HIMS</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">5.43% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+4.04M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Dudum Andrew<span class="insider-title">CEO, 10%</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">13 sandoriai · paskutinis 2025-10-16</div>
+          
+          <div class="insider-holdings">direct: 6.24M sh · $163.15M · 2.7% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$122.10M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-10-16</span>
+          <span class="ib-qty">175,661 sh @ $62.79</span>
+          <span class="ib-value sell">$11,029,999</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-09-17</span>
+          <span class="ib-qty">65,110 sh @ $50.57</span>
+          <span class="ib-value sell">$3,292,906</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-09-16</span>
+          <span class="ib-qty">175,661 sh @ $53.42</span>
+          <span class="ib-value sell">$9,384,625</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 10</span>
+          <span class="ib-date">2025-02-18 → 2025-08-18</span>
+          <span class="ib-qty">2.03M sh viso</span>
+          <span class="ib-value sell">$98.39M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">HOOD</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">2 sells</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.71% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+426K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Tenev Vladimir<span class="insider-title">CEO</span></div>
+          <div class="insider-meta">8 sandoriai · paskutinis 2026-04-06</div>
+          
+          <div class="insider-holdings">direct: 6.9K sh (~$651K) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$732.91M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-06</span>
+          <span class="ib-qty">375,000 sh @ $69.83</span>
+          <span class="ib-value sell">$26,187,704</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-01-05</span>
+          <span class="ib-qty">375,000 sh @ $121.63</span>
+          <span class="ib-value sell">$45,609,760</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-10-01</span>
+          <span class="ib-qty">750,000 sh @ $139.73</span>
+          <span class="ib-value sell">$104,799,314</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 5</span>
+          <span class="ib-date">2025-04-01 → 2025-09-15</span>
+          <span class="ib-qty">5.53M sh viso</span>
+          <span class="ib-value sell">$556.32M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Warnick Jason<span class="insider-title">Former Chief Financial Of</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">9 sandoriai · paskutinis 2026-02-09</div>
+          
+          <div class="insider-holdings">direct: 402.4K sh (~$37.94M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$122.06M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-09</span>
+          <span class="ib-qty">125,000 sh @ $85.09</span>
+          <span class="ib-value sell">$10,636,025</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-11-11</span>
+          <span class="ib-qty">300,000 sh @ $132.81</span>
+          <span class="ib-value sell">$39,842,135</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-08-15</span>
+          <span class="ib-qty">100,000 sh @ $110.93</span>
+          <span class="ib-value sell">$11,092,900</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 6</span>
+          <span class="ib-date">2025-02-14 → 2025-06-30</span>
+          <span class="ib-qty">775K sh viso</span>
+          <span class="ib-value sell">$60.49M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">MSFT</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.08% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-selling">-23K sh</span>
+        <span class="ia-badge ia-selling">
+          PARDUODA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Smith Bradford L<span class="insider-title">Vice Chair, Pres</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">+3,842 sh @ $377.47 · 2025-04-23</div>
+          
+          <div class="insider-holdings">direct: 451.6K sh · $203.33M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$1,450,221</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">MSTR</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">2 buys</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.21% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+22K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Le Phong<span class="insider-title">Pres, CEO</span></div>
+          <div class="insider-meta">5 sandoriai · paskutinis 2026-03-19</div>
+          
+          <div class="insider-holdings">direct: 37.5K sh · $5.97M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$1.65M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-03-19</span>
+          <span class="ib-qty">+2,509 sh @ $99.62</span>
+          <span class="ib-value buy">+$249,947</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-08-26</span>
+          <span class="ib-qty">+119 sh @ $95.03</span>
+          <span class="ib-value buy">+$11,309</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-07-29</span>
+          <span class="ib-qty">+5,500 sh @ $90.00</span>
+          <span class="ib-value buy">+$495,000</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum buy">Σ 2</span>
+          <span class="ib-date">2025-03-20 → 2025-06-05</span>
+          <span class="ib-qty">10K sh viso</span>
+          <span class="ib-value buy">$892K</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Kang Andrew<span class="insider-title">EVP, CFO</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">3 sandoriai · paskutinis 2025-07-29</div>
+          
+          <div class="insider-holdings">direct: 31.0K sh · $4.93M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$571K</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-07-29</span>
+          <span class="ib-qty">+2,800 sh @ $90.00</span>
+          <span class="ib-value buy">+$252,000</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-06-05</span>
+          <span class="ib-qty">+2,250 sh @ $85.00</span>
+          <span class="ib-value buy">+$191,250</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2025-03-20</span>
+          <span class="ib-qty">+1,500 sh @ $85.00</span>
+          <span class="ib-value buy">+$127,500</span>
+        </div>
+        
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">NBIS</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">3.74% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-selling">-170K sh</span>
+        <span class="ia-badge ia-selling">
+          PARDUODA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Korolenko Andrey<span class="insider-title">Chief Infrastructure Offi</span></div>
+          <div class="insider-meta">4 sandoriai · paskutinis 2026-05-13</div>
+          
+          <div class="insider-holdings">direct: 585.2K sh · $135.24M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$209.39M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-13</span>
+          <span class="ib-qty">500,000 sh @ $203.24</span>
+          <span class="ib-value sell">$101,620,000</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-13</span>
+          <span class="ib-qty">500,000 sh @ $203.24</span>
+          <span class="ib-value sell">$101,620,000</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-06</span>
+          <span class="ib-qty">31,357 sh @ $111.20</span>
+          <span class="ib-value sell">$3,486,905</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 1</span>
+          <span class="ib-date">2026-03-31 → 2026-03-31</span>
+          <span class="ib-qty">27K sh viso</span>
+          <span class="ib-value sell">$2.66M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">NFLX</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">2 sells</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.57% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+817K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Sarandos Theodore A<span class="insider-title">Co-CEO</span></div>
+          <div class="insider-meta">5 sandoriai · paskutinis 2026-05-05</div>
+          
+          <div class="insider-holdings">direct: 284.8K sh (~$24.50M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$204.16M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-05</span>
+          <span class="ib-qty">27,312 sh @ $87.97</span>
+          <span class="ib-value sell">$2,402,627</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-11-04</span>
+          <span class="ib-qty">2,027 sh @ $1,092.08</span>
+          <span class="ib-value sell">$2,213,639</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-08-05</span>
+          <span class="ib-qty">2,026 sh @ $1,160.62</span>
+          <span class="ib-value sell">$2,351,411</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 2</span>
+          <span class="ib-date">2025-01-30 → 2025-05-06</span>
+          <span class="ib-qty">201K sh viso</span>
+          <span class="ib-value sell">$197.19M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Peters Gregory K<span class="insider-title">Co-CEO</span></div>
+          <div class="insider-meta">12 sandoriai · paskutinis 2026-05-07</div>
+          
+          <div class="insider-holdings">direct: 120.9K sh (~$10.40M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$159.11M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-07</span>
+          <span class="ib-qty">27,312 sh @ $88.69</span>
+          <span class="ib-value sell">$2,422,421</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-10</span>
+          <span class="ib-qty">27,312 sh @ $83.24</span>
+          <span class="ib-value sell">$2,273,454</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-01-29</span>
+          <span class="ib-qty">105,781 sh @ $82.94</span>
+          <span class="ib-value sell">$8,773,028</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 9</span>
+          <span class="ib-date">2025-01-30 → 2025-11-04</span>
+          <span class="ib-qty">146K sh viso</span>
+          <span class="ib-value sell">$145.64M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">NVDA</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">3.98% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+58.26M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Huang Jen Hsun<span class="insider-title">Pres, CEO</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">29 sandoriai · paskutinis 2025-10-29</div>
+          
+          <div class="insider-holdings">direct: 851.98M sh · $179.89B · 3.5% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$1.05B</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-10-29</span>
+          <span class="ib-qty">25,000 sh @ $207.91</span>
+          <span class="ib-value sell">$5,197,790</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-10-24</span>
+          <span class="ib-qty">125,000 sh @ $188.47</span>
+          <span class="ib-value sell">$23,558,262</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-10-21</span>
+          <span class="ib-qty">225,000 sh @ $181.04</span>
+          <span class="ib-value sell">$40,734,400</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 26</span>
+          <span class="ib-date">2025-06-20 → 2025-10-16</span>
+          <span class="ib-qty">5.62M sh viso</span>
+          <span class="ib-value sell">$979.10M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">RDDT</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">2 sells</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.71% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+250K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Huffman Steve Ladd<span class="insider-title">CEO, Pres, 10%</span></div>
+          <div class="insider-meta">32 sandoriai · paskutinis 2026-05-15</div>
+          
+          <div class="insider-holdings">direct: 494.0K sh (~$86.94M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$162.58M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-15</span>
+          <span class="ib-qty">18,000 sh @ $157.15</span>
+          <span class="ib-value sell">$2,828,744</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-05</span>
+          <span class="ib-qty">18,000 sh @ $171.80</span>
+          <span class="ib-value sell">$3,092,449</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-15</span>
+          <span class="ib-qty">18,000 sh @ $158.40</span>
+          <span class="ib-value sell">$2,851,237</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 29</span>
+          <span class="ib-date">2025-01-31 → 2026-03-31</span>
+          <span class="ib-qty">1.02M sh viso</span>
+          <span class="ib-value sell">$153.80M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Wong Jennifer L.<span class="insider-title">COO</span></div>
+          <div class="insider-meta">18 sandoriai · paskutinis 2026-05-18</div>
+          
+          <div class="insider-holdings">direct: 1.12M sh · $197.90M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$135.52M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-18</span>
+          <span class="ib-qty">39,167 sh @ $158.52</span>
+          <span class="ib-value sell">$6,208,842</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-16</span>
+          <span class="ib-qty">39,167 sh @ $161.47</span>
+          <span class="ib-value sell">$6,324,169</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-03-18</span>
+          <span class="ib-qty">39,165 sh @ $143.41</span>
+          <span class="ib-value sell">$5,616,679</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 15</span>
+          <span class="ib-date">2025-01-16 → 2026-02-24</span>
+          <span class="ib-qty">638K sh viso</span>
+          <span class="ib-value sell">$117.37M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">RKLB</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">2 sells</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.85% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+1.14M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Beck Peter<span class="insider-title">CEO</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">4 sandoriai · paskutinis 2026-03-02</div>
+          
+          <div class="insider-holdings">direct: 884.1K sh (~$126.85M) <span class="hp-note">+ Class B / RSU / trust neapskaityti</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$270.64M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-03-02</span>
+          <span class="ib-qty">18,857 sh @ $69.59</span>
+          <span class="ib-value sell">$1,312,257</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-12-15</span>
+          <span class="ib-qty">2,500,000 sh @ $56.44</span>
+          <span class="ib-value sell">$141,105,496</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2025-11-24</span>
+          <span class="ib-qty">18,857 sh @ $40.65</span>
+          <span class="ib-value sell">$766,569</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 1</span>
+          <span class="ib-date">2025-09-15 → 2025-09-15</span>
+          <span class="ib-qty">2.50M sh viso</span>
+          <span class="ib-value sell">$127.45M</span>
+        </div>
+        
+      </div>
+      
+      
+      <div class="insider-row recent-week">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Spice Adam C.<span class="insider-title">CFO</span><span class="insider-fresh">šią sav.</span></div>
+          <div class="insider-meta">8 sandoriai · paskutinis 2026-05-26</div>
+          
+          <div class="insider-holdings">direct: 1.23M sh · $176.92M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value sell">+$167.13M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-26</span>
+          <span class="ib-qty">62,744 sh @ $142.57</span>
+          <span class="ib-value sell">$8,945,631</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-03-02</span>
+          <span class="ib-qty">62,744 sh @ $69.59</span>
+          <span class="ib-value sell">$4,366,349</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-01-05</span>
+          <span class="ib-qty">1,365,665 sh @ $75.50</span>
+          <span class="ib-value sell">$103,112,280</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 5</span>
+          <span class="ib-date">2025-03-14 → 2025-11-22</span>
+          <span class="ib-qty">1.13M sh viso</span>
+          <span class="ib-value sell">$50.71M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">SOFI</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">1.48% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+2.53M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Noto Anthony<span class="insider-title">CEO</span></div>
+          <div class="insider-meta">4 sandoriai · paskutinis 2026-05-11</div>
+          
+          <div class="insider-holdings">direct: 11.95M sh · $217.67M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$2.00M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-05-11</span>
+          <span class="ib-qty">+15,545 sh @ $16.00</span>
+          <span class="ib-value buy">+$248,781</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-05-08</span>
+          <span class="ib-qty">+15,878 sh @ $15.73</span>
+          <span class="ib-value buy">+$249,769</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag buy">BUY</span>
+          <span class="ib-date">2026-03-17</span>
+          <span class="ib-qty">+28,900 sh @ $17.32</span>
+          <span class="ib-value buy">+$500,516</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum buy">Σ 1</span>
+          <span class="ib-date">2026-03-02 → 2026-03-02</span>
+          <span class="ib-qty">56K sh viso</span>
+          <span class="ib-value buy">$1.00M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">TSLA</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">1 buy</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">11.11% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+180K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Musk Elon<span class="insider-title">CEO, 10%</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">+2,568,732 sh @ $389.28 · 2025-09-12</div>
+          
+          <div class="insider-holdings">direct: 509.36M sh · $221.98B · 13.6% kompanijos <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$999,959,042</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">UNH</div>
+        <div class="insider-group-summary">
+          <span class="gs-buy">2 buys</span>
+          
+          
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.24% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+102K sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Hemsley Stephen J<span class="insider-title">CEO, UHG</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">+86,700 sh @ $288.57 · 2025-05-16</div>
+          
+          <div class="insider-holdings">direct: 1.11M sh · $423.03M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$25,019,019</div>
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag buy">BUY</span>
+        <div class="insider-info">
+          <div class="insider-name">Rex John F<span class="insider-title">Pres, CFO</span><span class="insider-stale">istor.</span></div>
+          <div class="insider-meta">+17,175 sh @ $291.12 · 2025-05-16</div>
+          
+          <div class="insider-holdings">direct: 210.6K sh · $80.09M <span class="hp-note">(be RSU/opcijų/PSU)</span></div>
+          
+        </div>
+        <div class="insider-value">+$4,999,919</div>
+      </div>
+      
+      
+    </div>
+    
+    
+    
+    
+    
+    <div class="insider-group">
+      <div class="insider-group-header">
+        <div class="insider-group-ticker">ZM</div>
+        <div class="insider-group-summary">
+          
+          
+          <span class="gs-sell">1 sell</span>
+        </div>
+      </div>
+      
+      <div class="insider-alignment">
+        <span class="ia-label">visi insider'iai:</span> <span class="ia-pct">0.22% kompanijos</span>
+        
+        <span class="ia-sep">·</span>
+        <span class="ia-label">6 mėn netto:</span>
+        <span class="ia-net ia-buying">+1.52M sh</span>
+        <span class="ia-badge ia-buying">
+          PERKA
+        </span>
+        
+      </div>
+      
+      
+      <div class="insider-row">
+        <span class="tx-tag sell">SELL</span>
+        <div class="insider-info">
+          <div class="insider-name">Yuan Eric S.<span class="insider-title">CEO</span></div>
+          <div class="insider-meta">16 sandoriai · paskutinis 2026-05-04</div>
+          
+        </div>
+        <div class="insider-value sell">+$132.38M</div>
+      </div>
+      
+      <div class="insider-breakdown">
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-05-04</span>
+          <span class="ib-qty">24,200 sh @ $107.42</span>
+          <span class="ib-value sell">$2,599,495</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-04-13</span>
+          <span class="ib-qty">85,196 sh @ $81.40</span>
+          <span class="ib-value sell">$6,934,723</span>
+        </div>
+        
+        <div class="insider-buy-row">
+          <span class="ib-tag sell">SELL</span>
+          <span class="ib-date">2026-02-02</span>
+          <span class="ib-qty">24,200 sh @ $91.16</span>
+          <span class="ib-value sell">$2,206,077</span>
+        </div>
+        
+        
+        <div class="insider-buy-row insider-older-row">
+          <span class="ib-tag ib-tag-sum sell">Σ 13</span>
+          <span class="ib-date">2025-01-08 → 2026-01-13</span>
+          <span class="ib-qty">1.47M sh viso</span>
+          <span class="ib-value sell">$120.64M</span>
+        </div>
+        
+      </div>
+      
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<footer>
+  <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
+  <span>16:22 (Vilnius)</span>
+</footer>
+
+</body>
+</html>
