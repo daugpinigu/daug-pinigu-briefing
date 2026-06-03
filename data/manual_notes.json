@@ -4,6 +4,28 @@
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
+      "ticker": "GME",
+      "headline": "GME rekordinis Q1: NI $389.6M, op income $143.3M, cash+BTC $20.49/sh vs $20.92 kaina - operacinis verslas vertinamas $0.43/sh",
+      "kind": "earnings",
+      "released_at": "2026-06-02",
+      "metrics": [
+        {"label": "Kaina", "value": "$20.92", "change": "-2.06% (premarket buvo +9.23% iki $22.85)"},
+        {"label": "Q1 net income", "value": "$389.6M", "change": "didžiausias istorijoje per Q"},
+        {"label": "Q1 operating income", "value": "$143.3M", "change": "didžiausias Q1 istorijoje"},
+        {"label": "Q1 revenue", "value": "$835.3M", "change": "+14% YoY, collectibles segmentas driver"},
+        {"label": "Non-GAAP EPS", "value": "$0.30", "change": "vs $0.12 consensus (+150% beat)"},
+        {"label": "Cash + securities", "value": "$8.4B", "change": "= $18.74/sh"},
+        {"label": "Bitcoin (4,710 BTC)", "value": "$384.2M", "change": "= $0.86/sh"},
+        {"label": "Digital assets + recvbl", "value": "~$0.4B", "change": "= ~$0.89/sh"},
+        {"label": "VISO likvidūs + crypto", "value": "~$9.18B", "change": "= $20.49/sh"},
+        {"label": "Post-Q1 TTM EPS", "value": "~$0.90/sh", "change": "P/E ~23x (finviz 28x stale)"},
+        {"label": "Forward P/E reali", "value": "~14-17x", "change": "post analyst revisions, finviz 17.29 dar stale"},
+        {"label": "$2B buyback", "value": "autorizuotas", "change": "iki 2029-06-02"}
+      ],
+      "analysis": "GameStop pristatė rekordinį Q1 FY26 - net income $389.6M (didžiausias istorijoje per ketvirtį), operating income $143.3M (didžiausias Q1 istorijoje), revenue $835.3M (+14% YoY) varomas collectibles segmento, non-GAAP EPS $0.30 (vs $0.12 consensus, +150% beat). Plius $2B buyback autorizuotas iki 2029.\n\nKapitalo struktūros math'as prie $20.92 kainos: cash + securities $18.74/sh, BTC (4,710 coins) $0.86/sh, digital assets/receivables $0.89/sh, viso ~$20.49/sh likvidūs + crypto. Tai reiškia, kad rinka operacinį verslą vertina maždaug $0.43/sh. Q1 operacinis pelnas $143.3M = ~$0.32/sh per Q arba ~$1.28/sh anualizuotai. Operating-only P/E čia maždaug 0.3x. Jei operacinis pelningumas išlieka šiame lygyje, kainos asimetrija yra ekstremaliai vienpusiškai į viršų.\n\nDėl dilution autorizacijos - tai capacity, ne commitment. Esminiai faktai, kurie keičia analizę: (1) jei akcijos parduodamos prie market price ($22), cash balansas didėja proporcingai - $1B raise reiškia $1B daugiau cash; per-share šiek tiek skiedžia, bet TOTAL likvidumas auga, asimetrija nepradingsta, tik perskirstoma. (2) Cohen 2021 m. meme peak jau įrodė, kad geba laiku raise'inti - pakėlė ~$1.7B prie $200+ kainos; toji intervencija leido GME išlikti per visus following lows. (3) Jei dilution naudojama strateginiam įsigijimui (Cohen viešai svarstė eBay) - vertė priklauso nuo deal kainos ir integration sėkmės, ne nuo dilution fakto.\n\nCohen track record yra patikrintas: Chewy founder/CEO (parduota Petsmart už $3.35B), GME pavertė iš bleeding fizinio retailerio į pelningą struktūrą su rekordiniu balansu ir BTC treasury. Tai capital allocator'ius su patikrintu skill set'u - tezės pagrindas ne 'tikimės gerai', o 'ankstesni veiksmai validuoja patikimumą'. Jis pats turi ~13% GME, tad incentive aligned.\n\nReali rizika čia ne dilution autorizacijos faktas, o specific capital allocation decisions: kokios kainos sumokama už įsigijimą, kokia integration sėkmė, kaip cash deployment metas susiderina su market cycle. Standartiniai akcininko klausimai. Antra rizika - Q1 net income $389.6M iš kurio tik $143.3M yra operating; ~$246M yra interest income iš $8.4B cash (~5% yield ~$100M+/Q) + BTC mark-to-market gainai. Interest income struktūrinis, BTC gali svyruoti.",
+      "long_term": "GME yra retas atvejis, kur balance sheet asimetrija + pripažintas operator + buvęs bearish sentimentas sutampa. Tezė nėra 'meme stock revival', o 'cash-rich shell su skilled capital allocator + crypto exposure'. Jei Cohen sėkmingai panaudoja $9B+ likvidumą strateginiame deal'e - GME gali pereiti į diversified holding company kryptį. Jei ne - cash drag tęsis, bet downside ribotas dėl per-share floor'o (rinka negali ilgai vertinti įmonės žemiau jos likvidžio turto). Asimetrija į viršų reali, su sąlyga, kad netiki, jog fizinė mažmena yra absoliuti terminalinė problema (kurią collectibles segmentas iš dalies sprendžia - dabar didžiausias revenue source)."
+    },
+    {
       "ticker": "MRVL",
       "headline": "Jensen Huang: MRVL bus 'kitas trilijoninis' - akcija +32.52% iki $290.79, Stifel target $321",
       "kind": "analyst_upgrade",
