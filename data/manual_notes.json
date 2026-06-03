@@ -1,83 +1,84 @@
 {
-  "generated_at": "2026-06-01T07:00:00+00:00",
-  "expires_at": "2026-06-03T00:00:00+00:00",
+  "generated_at": "2026-06-03T07:00:00+00:00",
+  "expires_at": "2026-06-05T00:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "DELL",
-      "headline": "Dell +32.76% iki $420.91 - geriausia diena: Q1 revenue $43.8B (vs $35.77B), AI server +757% YoY, FY27 guide pakelta",
+      "ticker": "MRVL",
+      "headline": "Jensen Huang: MRVL bus 'kitas trilijoninis' - akcija +32.52% iki $290.79, Stifel target $321",
+      "kind": "analyst_upgrade",
+      "released_at": "2026-06-02",
+      "metrics": [
+        {"label": "Huang prediction", "value": "'Next trillion-dollar' MRVL", "change": "Computex keynote viešas pareiškimas"},
+        {"label": "Akcija", "value": "$290.79", "change": "+32.52% (vienos dienos)"},
+        {"label": "Stifel target", "value": "$230 -> $321", "change": "+40% pakelta po Huang call"},
+        {"label": "Q1 FY27 revenue", "value": "$2.418B", "change": "+28% YoY"},
+        {"label": "Q2 guide", "value": "$2.7B", "change": "+35% YoY"},
+        {"label": "Teralynx T100", "value": "102.4 Tbps switch", "change": "hyperscale AI klasteriams"},
+        {"label": "P/E", "value": "99x", "change": "YTD +146%, prie 52sav. high'o"},
+        {"label": "Volume", "value": "102M sh", "change": "257% virš 3mo average"}
+      ],
+      "analysis": "MRVL +32.52% iki $290.79 - katalizatorius dvigubas. Pagrindinis: Computex keynote'e Jensen Huang viešai pareiškė, kad Marvell bus 'kitas trilijoninis' (next trillion-dollar company). Kai NVDA CEO tokį pareiškimą daro viešai - tai stipriausias galimas endorsement'as AI infrastruktūros tiekėjui. Antras: Stifel iškart pakėlė price target nuo $230 iki $321 (+40%), prisijungė kiti Wall Street firms. Q1 FY27 revenue $2.418B (+28% YoY), Q2 guide $2.7B (+35%), naujas Teralynx T100 102.4 Tbps switch hyperscale AI klasteriams. Volume 102M sh - 257% virš 3 mėn vidurkio.\n\nKą tai reiškia investuotojui: rinka pripažįsta, kad connectivity (optical interconnects, networking) yra naujas AI bottleneck - NVDA gauna headline'us, bet GPU be tinklo neveikia. MRVL ir AVGO struktūriškai laimi šitame contexte. Huang $1T call yra 4x didesnis nei dabar - implikuoja kelis metus 30%+ revenue growth. Bet atsargiai - P/E dabar 99x, akcija +146% YTD ir jau virš ankstesnių 52sav. high'ų. Reikia execution per 4-6 ketvirčius, kad ši valuation būtų pateisinta. Po +32% per dieną - lengvi pinigai paimti, entry kaina prasta; pridėti pozicijas verta tik pullback'e.",
+      "long_term": "Huang $1T prediction'as nėra tipinis CEO komplimentas - jis tiksliai supranta AI infrastruktūros grandinės struktūrą ir kas tampa bottleneck'u. Optical interconnects + custom ASIC + networking - tai sluoksniai, kur MRVL ir AVGO turi pranašumą prieš tradicinius networking vendor'us (Cisco). Jei $1T scenarijus išsipildo per 3-5 metus - dabartinė $254B market cap rodo dar ~4x upside, bet kelias bus volatilus su periodiniais 30%+ drawdown'ais."
+    },
+    {
+      "ticker": "HPE",
+      "headline": "HPE blowout - re-rating iš boring server vendor: +29.21% antradienį, +19.47% trečiadienį iki $56",
       "kind": "earnings",
-      "released_at": "2026-05-29",
+      "released_at": "2026-06-02",
       "metrics": [
-        {"label": "Kaina", "value": "$420.91", "change": "+32.76% (best day ever)"},
-        {"label": "Q1 revenue", "value": "$43.8B", "change": "vs $35.77B consensus (+88% YoY)"},
-        {"label": "Adjusted EPS", "value": "$4.86", "change": "vs $2.96 consensus (+214% YoY)"},
-        {"label": "AI orders Q1", "value": "$24.4B", "change": "per ketvirtį"},
-        {"label": "AI server revenue", "value": "$16.1B", "change": "+757% YoY"},
-        {"label": "FY27 EPS guide", "value": "$17.90", "change": "buvo $12.90 (didelis kėlimas)"},
-        {"label": "FY27 revenue guide", "value": "$165B - $169B", "change": "AI server iki $60B"},
-        {"label": "AI backlog", "value": "$51.3B", "change": "rekordas"}
+        {"label": "Kaina", "value": "$56.15", "change": "+19.47% (dar virš antradienio +29.21%)"},
+        {"label": "Q2 revenue", "value": "$10.7B", "change": "+40% YoY vs $9.8B consensus"},
+        {"label": "EPS", "value": "$0.79", "change": "vs $0.53 consensus"},
+        {"label": "AI systems orders", "value": "$1.8B", "change": "+ record backlog"},
+        {"label": "FY26 guide", "value": "EPS $3.35-3.45", "change": "revenue +29-33%"},
+        {"label": "52sav. range", "value": "$17-$48", "change": "$56 = breakout virš 52sav. high"},
+        {"label": "Management quote", "value": "2 metai į priekį", "change": "nuo FY28 long-term plano"}
       ],
-      "analysis": "Dell pristatė vienus stipriausių earnings'ų šiame cikle. Q1 revenue $43.8B (vs $35.77B consensus), adjusted EPS $4.86 (vs $2.96), AI orders $24.4B per ketvirtį, AI server revenue $16.1B (+757% YoY). FY27 guidance pakelta nuo $12.90 iki $17.90 EPS, AI server expectations iki $60B, total revenue $165-169B, AI-related backlog $51.3B. Akcija +32.76% iki $420.91 - geriausia diena istorijoje.\n\nKą tai reiškia investuotojui: tai TIKRA AI capex validacija, ne naratyvas - realios pajamos, ne tik guidance hype'as. Dell yra Tier 1 server OEM, ir kai jie booking $24B AI per ketvirtį, tai signalas visai infrastruktūros grandinei: MU (HBM, DRAM), AVGO (networking + custom ASIC), NVDA (GPU), TSM (silicon) gauna iš tos pačios capex bangos. Bet atsargiai - +33% per dieną reiškia, kad lengvi pinigai paimti; nuo čia DELL turi vykdyti $60B AI server prognozę. Įėjimo kaina prasta po tokio šuolio - geriau laukti pullback'o nei chase'inti.",
-      "long_term": "Jei DELL realizuoja $60B FY27 AI server numerį, tai struktūrinis pokytis - DELL pereina iš tradicinio PC/laptop vendor'o į AI infrastructure leader'į, panašiai kaip Cisco 2000-aisiais. Bet skirtumas - Cisco pateko į oversupply ciklą. AI server margin'ai vis dar žemesni nei NVDA, ir 'commodity hardware' rizika realiai egzistuoja, jei capex augimas sulėtės."
+      "analysis": "HPE pristatė tikrą re-rating quarter'į, ne tik beat'ą. Q2 revenue $10.7B (+40% YoY vs $9.8B consensus), EPS $0.79 (vs $0.53), AI systems orders $1.8B + record backlog, FY26 guidance EPS $3.35-3.45 ir revenue +29-33%. Management pareiškė esantys 'dvejus metus į priekį nuo fiscal 2028 long-term plano' - tai stiprus signalas, kad AI capex banga pranoksta jų pačių planus. Akcija +29.21% antradienį, dabar dar +19.47% trečiadienį iki $56, kas yra virš ankstesnių 52sav. high'o ($47.97). Tai techninis breakout iš range'o ant earnings.\n\nKą tai reiškia investuotojui: HPE perėjo iš boring server vendor į pripažintą AI infrastructure leader'į - tai struktūrinis re-rating, ne short-term squeeze. Bet P/E 54x irgi nepigus, ir HPE neturi tokios konkurencinės pozicijos kaip NVDA ar AVGO - jis labiau 'AI tide lifts all infrastructure boats' istorija. Du dienų eilėse +50%+ - statistinis ekstremumas, kuris istoriškai eskaluoja iki konsolidacijos. Pridėti pozicijas šitoje kainoje rizikinga; laukti 5-10% pullback'o."
     },
     {
-      "ticker": "NVDA",
-      "headline": "NVDA Computex'e: Vera CPU AI agentams (Anthropic/OpenAI/SpaceX) + RTX Spark PC procesorius prieš Intel/AMD",
-      "kind": "product_launch",
-      "released_at": "2026-06-01",
+      "ticker": "AVGO",
+      "headline": "AVGO co-rally su MRVL/HPE - +4.70% iki $481.57, +14.11% per savaitę, AI networking proxy",
+      "kind": "market_move",
+      "released_at": "2026-06-02",
       "metrics": [
-        {"label": "Kaina", "value": "$211.14", "change": "-1.45% (premarket buvo +2%)"},
-        {"label": "Market cap", "value": "$5,109.59B", "change": "P/E 32.33"},
-        {"label": "Vera CPU", "value": "AI agentams", "change": "Anthropic, OpenAI, SpaceX įsipareigojo"},
-        {"label": "Vera production", "value": "Q3 2026", "change": "full ramp"},
-        {"label": "RTX Spark PC chip", "value": "vs Intel/AMD", "change": "8 PC brendai įsipareigojo rudens launch'ui"}
+        {"label": "Kaina", "value": "$481.57", "change": "+4.70% šiandien"},
+        {"label": "Savaitės performance", "value": "+14.11%", "change": "AI networking sektoriaus ralis"},
+        {"label": "Strateginė pozicija", "value": "custom ASIC", "change": "Google, Meta klientai"},
+        {"label": "VMware", "value": "komercinis turnaround", "change": "papildomas growth driver"}
       ],
-      "analysis": "NVDA padarė kitą strateginį judesį Computex'e - pristatė Vera CPU AI agentams (Anthropic, OpenAI, SpaceX jau įsipareigojo, full production Q3) ir RTX Spark PC procesorių, taikomą tiesiogiai į Intel/AMD Windows laptop rinką (8 PC brendai įsipareigojo rudens launch'ui). Esmė: NVDA plečiasi iš pure GPU į CPU teritoriją (AI agentų ekonomikai) ir į vartotojų PC.\n\nKą tai reiškia investuotojui: rinka reakcija santūri - premarket +2%, dabar -1.45%. Jau price'inta, nes NVDA kiekvienais ketvirtais paskelbia naują tier'į produktų ir kiekvienas ekspansijos žingsnis tampa baseline lūkesčiu. Geriausia istorija čia ne short-term akcijos move, o tai, kad NVDA įžengia į Intel/AMD core teritoriją - jei RTX Spark pavyks, tai potencialiai 20%+ adresuojamos rinkos plėtra per kelis metus. Bet Intel/AMD nesiruošia stoviai - bus konkurencinė kova, ne lengvas užkariavimas."
+      "analysis": "AVGO neturėjo earnings'ų vakar, bet kyla kartu su MRVL/HPE - +4.70% šiandien, +14.11% per savaitę. Tai rodo, kad rinka kategoriškai re-rating'ina AI networking sektorių, ne tik atskirus vardus.\n\nKą tai reiškia investuotojui: AVGO yra mano watchlist'e tikriausiai struktūriškai stipriausia AI networking pozicija - turi custom ASIC verslą su Google ir Meta (kelis bilijonus dolerių revenue), plius VMware komercinis turnaround, plius dividend (geriau cash flow vs MRVL). Skirtingai nuo MRVL/HPE single-day spikes, AVGO juda nuolatiniu tempu, kas rodo institucinį akumuliavimą, ne retail FOMO. Jei AI infrastructure trade'as tęsiasi - AVGO 1-2 metų horizonte tikriausiai geresnis risk/reward nei MRVL (mažesnis P/E, didesnis moat)."
     },
     {
-      "ticker": "SOFI",
-      "headline": "SoFi tęsia ralį +7% penktadienį po SoFiUSD launch'o; Trump šeima Q1 2026 pirko SOFI/HOOD/MSTR/MARA/COIN/SQ",
-      "kind": "product_launch",
-      "released_at": "2026-05-29",
+      "ticker": "MACRO",
+      "headline": "S&P virš 7,600 pirmą kartą (+0.13%), visi 3 indeksai rekorduose - ADP report šiandien, NFP penktadienį",
+      "kind": "macro_event",
+      "released_at": "2026-06-02",
       "metrics": [
-        {"label": "Friday move", "value": "+7%", "change": "po SoFiUSD launch'o"},
-        {"label": "SoFiUSD", "value": "15M narių", "change": "Ethereum + Solana, first US bank stablecoin"},
-        {"label": "Q1 revenue", "value": "$1.10B", "change": "virš $1.05B consensus"},
-        {"label": "EPS YoY", "value": "padvigubėjo", "change": "diluted $0.12"},
-        {"label": "Trump family Q1 2026", "value": "pirko SOFI", "change": "+ MARA, COIN, MSTR, HOOD, SQ"}
+        {"label": "S&P 500", "value": "7,609.78", "change": "+0.13%, virš 7,600 pirmą kartą"},
+        {"label": "Nasdaq Composite", "value": "naujas rekordas", "change": "+0.03%"},
+        {"label": "Dow Jones", "value": "naujas rekordas", "change": "+0.45% iki 51,307.79"},
+        {"label": "S&P 500 (live)", "value": "{{sp500}}", "change": "{{sp500_pct}}"},
+        {"label": "ADP report", "value": "šiandien 15:15 LT", "change": "balandis buvo +109k (vs +99k tikėtasi)"},
+        {"label": "NFP", "value": "penktadienį", "change": "savaitės pagrindinis įvykis"}
       ],
-      "analysis": "Fintech tezė tęsiasi. SoFi +7% penktadienį po SoFiUSD launch'o (pirmas U.S. national bank stablecoin, 15M narių ant ETH + SOL), plius stipri Q1 revenue $1.10B (virš $1.05B consensus) ir EPS padvigubėjimas. Tai validuoja produkto-driven tezę - ne naratyvas, o konkretus produktas su user baze.\n\nAtskirai įdomus signalas: Trump šeimos Q1 2026 disclosure rodo, kad jų trustai pirko MARA, COIN, MSTR, HOOD, SOFI ir SQ - politinis alignment su watchlist'u. Tai dvigubas peilis: validacija (panaši tezė kaip mano) plius politinė rizika (administracijos pokytis ar conflict-of-interest skandalas - šios pozicijos jautrios). Po stiprios savaitės entry kainos prastesnės nei prieš savaitę - geriau pridėti pozicijas pullback'e nei chase'inti pirmadienio pre-market."
-    },
-    {
-      "ticker": "HOOD",
-      "headline": "Robinhood +10% penktadienį (+20%+ per 2 sesijas) po Trump Accounts launch'o - oficialiai 530A, Robinhood paskirtas initial trustee",
-      "kind": "product_launch",
-      "released_at": "2026-05-29",
-      "metrics": [
-        {"label": "Friday move", "value": "+10%", "change": "kumuliatyviai +20%+ per 2 sesijas"},
-        {"label": "Trump Accounts", "value": "oficialiai 530A", "change": "Robinhood paskirtas initial trustee"},
-        {"label": "Eligibility", "value": "2025-2028 gimę", "change": "$1,000 Treasury seed, iki $5K/m. įnašų"},
-        {"label": "Official start", "value": "liepos 4, 2026", "change": "app jau Apple/Google Store"},
-        {"label": "Trump family Q1 2026", "value": "pirko HOOD", "change": "+ kt. crypto/fintech pozicijos"}
-      ],
-      "analysis": "HOOD tęsia ralį - +10% penktadienį, +20%+ per dvi sesijas, po Trump Accounts launch'o. Detalės jau pasirašytos: oficialus pavadinimas 530A accounts, Robinhood paskirtas initial trustee, eligibility 2025-2028 gimusiems vaikams, $1,000 Treasury seed, iki $5K per metus įnašų, oficialus startas liepos 4. Tai valstybės subsidijuojamas klientų pritraukimo kanalas.\n\nKą tai reiškia investuotojui: trustee statusas yra svarbus - tai ne tik 'app sukurtas su BNY Mellon', tai vaidmuo, kuris generuoja recurring fee streams ir suteikia HOOD struktūrinį ilgalaikį pranašumą prieš konkurentus (SCHW, IBKR). Bet +20% per 2 sesijas reiškia short-term overextended, ir near-term revenue iš Trump Accounts vis dar nulis (įnašai prasideda liepos 4). Plius politinė rizika - Trump šeimos Q1 2026 disclosure rodo HOOD tarp jų pozicijų, kas validuoja tezę bet ir prideda conflict-of-interest riziką."
+      "analysis": "Visi trys pagrindiniai JAV indeksai vakar uždarė rekorduose - S&P 500 7,609.78 (+0.13%) pirmą kartą virš 7,600, Nasdaq Composite +0.03%, Dow +0.45% iki 51,307.79. Tai 10-osios savaitės kilimo iš eilės pradžia. Šiandien 15:15 LT - ADP private payrolls report (gegužės), penktadienį - NFP. Balandžio ADP buvo +109k (virš +99k consensus) - tvirtas, ne perkaitintas.\n\nKą tai reiškia investuotojui: disconnect'as tarp record akcijų ir PCE 3.8% infliacijos lieka pagrindinis dėmesio taškas. Jei gegužės ADP irgi tvirtas (kas tikėtina po balandžio +109k) - Fed karpymų lūkesčiai dar labiau spaudžiami, ir mažiau tikėtina, kad gauname tradinciniai 'bad-news-good' susikertą. Stipri darbo rinka + sticky 3.8% infliacija = Fed lieka ant pauzės arba net swing'ina hawkiškiau. Penktadienio NFP yra šios savaitės pagrindinis test'as - tvirti skaičiai gali paspausti yield'us aukštyn ir suspausti growth multiples. 10 savaičių gain'ų streak'as statistiškai retas - rinka istoriškai gauna paus'ę po tokio."
     },
     {
       "ticker": "IRAN-US",
-      "headline": "Iran-US savaitgalis eskalavo - JAV smogė po Irano US drone pašovimo, Trump siunčia pakeitimus į draft deal'ą",
+      "headline": "Iran nutraukė pokalbius birželio 1, 'reviewing' deal'ą - nafta atšoko, WTI {{wti}} / Brent {{brent}}",
       "kind": "geopolitics_event",
-      "released_at": "2026-05-31",
+      "released_at": "2026-06-02",
       "metrics": [
         {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
         {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Friday close", "value": "WTI ~$88", "change": "6-savaičių žemuma"},
-        {"label": "Iran veiksmas", "value": "numušė US droną", "change": "savaitgalį"},
-        {"label": "JAV atsakas", "value": "smūgis radarams/drone sites", "change": "'self-defense' strikes"},
-        {"label": "Trump deal pakeitimai", "value": "tougher nuclear + Hormuz", "change": "draft grąžintas su pataisymais"},
-        {"label": "Monday futures", "value": "Dow/S&P/NDX +0.2-0.3%", "change": "nepaisant Iran eskalacijos"}
+        {"label": "Antradienio close", "value": "WTI $93.76", "change": "Brent $96, atšoko nuo $88 lows"},
+        {"label": "Iran statusas", "value": "nutraukė talks 06-01", "change": "vakar 'reviewing' deal"},
+        {"label": "JAV komunikacija", "value": "nebuvo kelias dienas", "change": "Trump siunčia draft pakeitimus"},
+        {"label": "Hormuz", "value": "vis dar uždarytas", "change": "10-11M bpd shut-in tęsiasi"}
       ],
-      "analysis": "Iran fronte savaitgalis pakeitė toną. Penktadienį uždarėme prie 6-savaičių naftos žemumų (~$88 WTI), bet per savaitgalį JAV smogė Irano radarų ir dronų aikštelėms ('self-defense' po to, kai Iran numušė amerikiečių droną). Trump siuntė pakeitimus į draft deal'ą - reikalauja griežtesnės kalbos dėl branduolinių klausimų ir Hormuz. Nafta atšoko +3-4% off lows.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Praeitos savaitės 'peace narrative' buvo per stiprus - deal'as dar nepasirašytas, ir kai Trump reikalauja griežtinti, eskalacijos rizika grįžta į stalą. Jei nafta laikosi $90+ ir grįžta į $100+ zoną - PCE 3.8% problema tampa dar didesnė, ir Fed karpymų lūkesčiai dar labiau spaudžiami. Pirmadienio futures vis tiek šiek tiek aukščiau, kas rodo, kad rinka kainoja 'eskalacija kaip negotiation tactic', ne kaip realų deal kollapsą - bet šitas perskaitymas brangsta su kiekviena papildoma eskalacijos diena."
+      "analysis": "Iran fronte signalas tampa miglotas. Pirmadienį Iran nutraukė pokalbius su JAV per savo media, vakar 'reviewing' deal'ą, bet komunikacijos su Vašingtonu nebuvo kelias dienas. Trump siunčia pakeitimus draft deal'ui (griežtesnė nuclear + Hormuz kalba), Iran kontra-keičia. Hormuz vis dar uždarytas, 10-11M bpd crude shut-in.\n\nKą tai reiškia investuotojui: nafta atspindi mixed signals - WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Antradienį WTI iki $93.76, Brent $96; tai atšokimas nuo prieš savaitę buvusių $88 6-savaičių žemumų. Praeitos savaitės 'deal greitai' jau nebe tas pats naratyvas. Pamoka - geopolitiniai trade'ai daugiau šurmulio nei signalo, ir position'us reikia statyti dėl ilgalaikės tendencijos (oil structural under-investment, sanctioning regime), ne dėl konkretaus deal headline'o. Jei nafta laikosi $90+ ir grįžta į $100+ zoną, PCE 3.8% problema tampa dar didesnė."
     }
   ]
 }
