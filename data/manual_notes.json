@@ -25,20 +25,21 @@
     },
     {
       "ticker": "MARKETS",
-      "headline": "9-d. S&P streak'as nutrūko - S&P -0.74%, Dow -1.21%, ADP +122k tvirtesnis = 10yr yield 4.499%",
+      "headline": "Mišrūs labor signalai: ADP +122k tvirtesnis, BET šiandien jobless claims 225k vs 214k MISS - 9-d. S&P streak'as baigėsi",
       "kind": "macro_event",
-      "released_at": "2026-06-03",
+      "released_at": "2026-06-04",
       "metrics": [
         {"label": "S&P 500 (live)", "value": "{{sp500}}", "change": "{{sp500_pct}}"},
         {"label": "S&P 500 Wed close", "value": "7,553.68", "change": "-0.74%, 9-d. streak'as baigėsi"},
         {"label": "Dow Wed close", "value": "-1.21%", "change": "-620.72 pts"},
         {"label": "Nasdaq Composite Wed", "value": "-0.89%", "change": "AI vardai vedė smukimą"},
-        {"label": "ADP gegužės data", "value": "+122k", "change": "vs +110k tikėtasi, +105k balandį"},
+        {"label": "Initial claims (šiandien)", "value": "225k", "change": "vs 214k tikėtasi, prior 212k (+13k WoW)"},
+        {"label": "ADP gegužės (vakar)", "value": "+122k", "change": "vs +110k tikėtasi, +105k balandį"},
         {"label": "10-yr Treasury yield", "value": "4.499%", "change": "kilo po ADP, pre-NFP"},
         {"label": "2-yr Treasury yield", "value": "4.093%", "change": "Fed hold kainojamas"},
         {"label": "NFP penktadienį", "value": "consensus tikrinama", "change": "šios savaitės pagrindinis test'as"}
       ],
-      "analysis": "Vakar pirma reali pauzė po 9 savaitės iš eilės kilimo streak'o. S&P 500 -0.74% iki 7,553.68, Dow -1.21% (-621 pts), Nasdaq Composite -0.89%. Du driver'iai: (1) ADP gegužės data atėjo +122k vs +110k tikėtasi, +105k balandį - stiprokai darbo rinka, pakeleja sektorių dauguma; tai paspaudė Fed karpymų lūkesčius dar žemiau, 10-yr yield pakilo iki 4.499%, 2-yr į 4.093%. (2) Iran tensions grįžo, oil atšoko (WTI virš $95), kas papildė infliacijos pressure į yields.\n\nKą tai reiškia investuotojui: makro setup'as - tvirta darbo rinka + augantis oil + Fed disconnect - yra blogiausias scenarijus growth/AI multiples'ams. Aukštesni yield'ai spaudžia high-P/E technology vardus. Bet 9 dienų streak po-faktiškai buvo perkaitęs - tipinė konsoliduacija dabar yra healthy, ne kapituliacija. Šiandienos AVGO selloff'as paryškina šitas dinamikas, bet būtina atskirti: visada single-name reakcija ant earnings ir broad rinkos defensive rotation. Šiandien matome single-name (AVGO, CRWD) + sector rotation (MRVL +3.73%, MU +1.45%). Penktadienio NFP yra savaitės pagrindinis įvykis - tvirtas (>150k) gali paspausti yield'us aukščiau ir suspausti growth multiples; silpnas (<100k) atstatys cut hopes."
+      "analysis": "Vakar pirma reali pauzė po 9 savaičių iš eilės kilimo streak'o. S&P 500 -0.74% iki 7,553.68, Dow -1.21% (-621 pts), Nasdaq Composite -0.89%.\n\nDarbo rinkos signalai šią savaitę MIŠRŪS: (1) Vakar ADP gegužės data atėjo +122k vs +110k tikėtasi, +105k balandį - stipriausias mėnuo nuo 2025 m. sausio, gains per 8 iš 10 sektorių, geografiškai broad-based; rodo tvirtą hiring'ą. (2) Bet ŠIANDIEN initial jobless claims atėjo 225k vs 214k tikėtasi (prior 212k) - 11k miss virš consensus, +13k WoW; rodo, kad layoff'ų rate kyla. Tai galimai pirmas 'cracka' tight labor market tezėje, ar tik vienos savaitės triukšmas. Plius Iran tensions grįžo, oil atšoko (WTI virš $95), kas papildė infliacijos pressure į yields - 10-yr 4.499%, 2-yr 4.093%.\n\nKą tai reiškia investuotojui: makro setup'as komplikavosi. Iki šiandienos claims, tezė buvo aiški - 'tvirta labor + sticky infliacija = Fed hold/hawkish = yields up = growth multiples spaudžiami'. Dabar claims miss meta abejonę: jei layoff'ai pradeda kilti, ADP gali būti lagging indicator'ius, ir mes esame anksčiau ciklo posūkio nei galvojome. Penktadienio NFP tampa lemiamas - jei NFP <100k ir unemployment rate pakyla, tai pradeda 'bad-news-good' scenarijus growth'ui (cuts grįžta į stalą). Jei NFP >150k - claims atrodys kaip triukšmas, ir tezė lieka 'tvirta labor'. Aš šitą savaitę nepirkčiau growth high-multiple aktyviai - laukčiau NFP signalo, nes asimetrija pasikeitė."
     },
     {
       "ticker": "CRWD",
