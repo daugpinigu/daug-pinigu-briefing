@@ -272,6 +272,65 @@ def _verdict(trend: str, rsi: float, distance_to_r1_pct: float, distance_to_s1_p
     return f"Mixed setup (RSI {rsi:.0f}) - laukti aiškesnio range break before commit."
 
 
+def _chart_payload(df: pd.DataFrame, fib_ret: dict, fib_ext: dict,
+                   resistance: list, support: list,
+                   ma50_series: pd.Series, ma200_series: pd.Series,
+                   visible_bars: int = 130) -> dict:
+    """Build Lightweight-Charts ready JSON payload.
+
+    Outputs candles, MA series, and horizontal price lines for fib + S/R.
+    visible_bars: how many recent daily bars to embed (default ~6mo).
+    """
+    recent = df.tail(visible_bars).copy()
+    candles = []
+    for idx, row in recent.iterrows():
+        # Index is timezone-aware datetime; serialize as YYYY-MM-DD
+        date_str = idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx)[:10]
+        candles.append({
+            'time': date_str,
+            'open': float(row['Open']),
+            'high': float(row['High']),
+            'low': float(row['Low']),
+            'close': float(row['Close']),
+        })
+
+    ma50_pts = []
+    ma200_pts = []
+    for idx, val in ma50_series.tail(visible_bars).items():
+        if pd.notna(val):
+            ma50_pts.append({'time': idx.strftime('%Y-%m-%d'), 'value': float(val)})
+    for idx, val in ma200_series.tail(visible_bars).items():
+        if pd.notna(val):
+            ma200_pts.append({'time': idx.strftime('%Y-%m-%d'), 'value': float(val)})
+
+    fib_ret_lines = [
+        {'label': f'fib {k}', 'value': float(v), 'color': '#b794f4', 'style': 2}
+        for k, v in fib_ret.items()
+    ]
+    fib_ext_lines = [
+        {'label': f'{k} ext', 'value': float(v), 'color': '#9d7be0', 'style': 2}
+        for k, v in fib_ext.items()
+    ]
+    res_lines = [
+        {'label': f"R{i+1}", 'value': float(r['price']), 'color': '#ff7373', 'style': 0}
+        for i, r in enumerate(resistance[:2])
+    ]
+    sup_lines = [
+        {'label': f"S{i+1}", 'value': float(s['price']), 'color': '#7ed87e', 'style': 0}
+        for i, s in enumerate(support[:2])
+    ]
+
+    return {
+        'candles': candles,
+        'ma50': ma50_pts,
+        'ma200': ma200_pts,
+        'fib_ret': fib_ret_lines,
+        'fib_ext': fib_ext_lines,
+        'resistance': res_lines,
+        'support': sup_lines,
+    }
+
+
 def _compute_one(df: pd.DataFrame, lookback_bars: int, label: str) -> dict:
     """Compute full TA for one timeframe (daily or weekly)."""
     if df is None or len(df) < 30:
@@ -354,6 +413,26 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
     daily_ta = _compute_one(daily, lookback_daily_bars, 'Daily')
     weekly_ta = _compute_one(weekly, lookback_weekly_bars, 'Weekly')
 
+    # Chart payload for Lightweight Charts (daily timeframe, last ~6mo)
+    chart = None
+    if daily_ta.get('available'):
+        recent = daily.tail(lookback_daily_bars)
+        low_p, _, high_p, _, _ = _detect_swing(recent, lookback_daily_bars)
+        if low_p and high_p:
+            fib_ret_raw = _fib_retracement(low_p, high_p)
+            fib_ext_raw = _fib_extension(low_p, high_p)
+            pivots_hi_raw, pivots_lo_raw = _pivots(recent, window=5)
+            ma50_series = daily['Close'].rolling(50).mean()
+            ma200_series = daily['Close'].rolling(200).mean()
+            levels = _key_levels(cur, pivots_hi_raw, pivots_lo_raw,
+                                 fib_ret_raw, fib_ext_raw,
+                                 float(ma50_series.iloc[-1]) if pd.notna(ma50_series.iloc[-1]) else 0,
+                                 float(ma200_series.iloc[-1]) if pd.notna(ma200_series.iloc[-1]) else 0)
+            chart = _chart_payload(daily, fib_ret_raw, fib_ext_raw,
+                                   levels['resistance'], levels['support'],
+                                   ma50_series, ma200_series,
+                                   visible_bars=130)
+
     return {
         'ticker': ticker,
         'name': name or ticker,
@@ -362,6 +441,7 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
         'change_dir': 'up' if change_pct >= 0 else 'down',
         'daily': daily_ta,
         'weekly': weekly_ta,
+        'chart': chart,
     }
 
 

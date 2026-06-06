@@ -656,19 +656,44 @@
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 6px;
     overflow: hidden;
-    min-height: 380px;
+    position: relative;
   }
-  .ta-chart-wrap iframe { display: block; width: 100%; border: 0; }
-  .ta-chart-fallback {
+  .ta-chart-container {
+    width: 100%;
+    height: 400px;
+    background: #131722;
+  }
+  .ta-chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 6px 10px;
+    background: rgba(13,17,23,0.95);
+    font-size: 10px;
+    color: #8892a6;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .ta-chart-legend .legend-item { display: flex; align-items: center; gap: 4px; }
+  .ta-chart-legend .legend-swatch {
+    display: inline-block;
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+  }
+  .ta-chart-legend .swatch-ma50 { background: #f4cc6b; }
+  .ta-chart-legend .swatch-ma200 { background: #1d9bf0; }
+  .ta-chart-legend .swatch-fib { background: #b794f4; height: 0; border-top: 2px dashed #b794f4; }
+  .ta-chart-legend .swatch-r { background: #ff7373; }
+  .ta-chart-legend .swatch-s { background: #7ed87e; }
+  .ta-chart-loading {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 380px;
+    height: 400px;
     color: #6c7588;
     font-size: 12px;
     font-style: italic;
   }
-  .ta-chart-fallback a { color: #b794f4; text-decoration: none; margin-left: 6px; }
   .ta-card {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
@@ -1872,18 +1897,22 @@
         </div>
       </div>
 
+      {% if t.chart %}
       <div class="ta-chart-wrap">
-        <iframe
-          src="https://s.tradingview.com/widgetembed/?symbol={{ t.ticker }}&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
-          height="380"
-          allowtransparency="true"
-          scrolling="no"
-          allowfullscreen="true"
-          loading="lazy"></iframe>
-        <noscript>
-          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/{{ t.ticker }}/" target="_blank">atidaryti TradingView</a></div>
-        </noscript>
+        <div class="ta-chart-container" data-ticker="{{ t.ticker }}">
+          <div class="ta-chart-loading">Kraunamas grafikas…</div>
+        </div>
+        <div class="ta-chart-legend">
+          <div class="legend-item"><span class="legend-swatch swatch-ma50"></span>MA50</div>
+          <div class="legend-item"><span class="legend-swatch swatch-ma200"></span>MA200</div>
+          <div class="legend-item"><span class="legend-swatch swatch-fib"></span>Fib (0.236/0.382/0.5/0.618/0.786 + ext)</div>
+          <div class="legend-item"><span class="legend-swatch swatch-r"></span>Resistance (R1/R2)</div>
+          <div class="legend-item"><span class="legend-swatch swatch-s"></span>Support (S1/S2)</div>
+          <div class="legend-item" style="margin-left:auto;color:#6c7588">~6mo daily · embedded data</div>
+        </div>
+        <script type="application/json" id="chart-data-{{ t.ticker }}">{{ t.chart | tojson }}</script>
       </div>
+      {% endif %}
 
       <div class="ta-grid">
         {% for tf in [t.daily, t.weekly] %}
@@ -1967,9 +1996,107 @@
     {% endfor %}
   </div>
   <div class="ta-disclaimer">
-    TA generuojama algoritmu (yfinance OHLCV → fib + pivot + RSI/MA indikatoriai) Mark Newton stiliuje. Tai NĖRA Mark Newton tikra analizė. Naudoti kaip framework'ą, ne kaip savarankišką sprendimą.
+    TA generuojama algoritmu (yfinance OHLCV → fib + pivot + RSI/MA indikatoriai) Mark Newton stiliuje. Tai NĖRA Mark Newton tikra analizė. Grafikai - Lightweight Charts su embedded ~6mo daily data (atnaujinama kiekvieną brief'ą). Naudoti kaip framework'ą, ne kaip savarankišką sprendimą.
   </div>
 </section>
+
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+<script>
+(function() {
+  function renderChart(container) {
+    var ticker = container.dataset.ticker;
+    var dataEl = document.getElementById('chart-data-' + ticker);
+    if (!dataEl || !window.LightweightCharts) return;
+    var data;
+    try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+    container.innerHTML = '';
+    var chart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: 400,
+      layout: {
+        background: { type: 'solid', color: '#131722' },
+        textColor: '#d1d4dc',
+        fontSize: 11,
+      },
+      grid: {
+        vertLines: { color: 'rgba(42, 46, 57, 0.4)' },
+        horzLines: { color: 'rgba(42, 46, 57, 0.4)' },
+      },
+      timeScale: {
+        timeVisible: false,
+        borderColor: 'rgba(42, 46, 57, 0.7)',
+        rightOffset: 8,
+      },
+      rightPriceScale: {
+        borderColor: 'rgba(42, 46, 57, 0.7)',
+        scaleMargins: { top: 0.08, bottom: 0.08 },
+      },
+      crosshair: {
+        mode: LightweightCharts.CrosshairMode.Normal,
+      },
+    });
+
+    var candleSeries = chart.addCandlestickSeries({
+      upColor: '#7ed87e',
+      downColor: '#ff7373',
+      borderUpColor: '#7ed87e',
+      borderDownColor: '#ff7373',
+      wickUpColor: '#7ed87e',
+      wickDownColor: '#ff7373',
+    });
+    candleSeries.setData(data.candles);
+
+    if (data.ma50 && data.ma50.length) {
+      var ma50 = chart.addLineSeries({ color: '#f4cc6b', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      ma50.setData(data.ma50);
+    }
+    if (data.ma200 && data.ma200.length) {
+      var ma200 = chart.addLineSeries({ color: '#1d9bf0', lineWidth: 1, priceLineVisible: false, lastValueVisible: false });
+      ma200.setData(data.ma200);
+    }
+
+    function addLines(arr, lineWidth) {
+      (arr || []).forEach(function(item) {
+        candleSeries.createPriceLine({
+          price: item.value,
+          color: item.color,
+          lineWidth: lineWidth,
+          lineStyle: item.style,
+          axisLabelVisible: true,
+          title: item.label,
+        });
+      });
+    }
+    addLines(data.fib_ret, 1);
+    addLines(data.fib_ext, 1);
+    addLines(data.resistance, 2);
+    addLines(data.support, 2);
+
+    chart.timeScale().fitContent();
+
+    // Resize on window resize
+    window.addEventListener('resize', function() {
+      chart.applyOptions({ width: container.clientWidth });
+    });
+  }
+
+  function initAll() {
+    if (!window.LightweightCharts) {
+      setTimeout(initAll, 100);
+      return;
+    }
+    document.querySelectorAll('.ta-chart-container[data-ticker]').forEach(renderChart);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+})();
+</script>
+
 {% endif %}
 
 <footer>

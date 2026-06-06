@@ -28,6 +28,21 @@ async def html_to_png_async(html: str, output_path: Path, width: int = 1080) -> 
         )
         page = await context.new_page()
         await page.set_content(html, wait_until='networkidle')
+        # Extra wait for Lightweight Charts (canvas) to fully render
+        try:
+            await page.wait_for_function(
+                """() => {
+                    const containers = document.querySelectorAll('.ta-chart-container[data-ticker]');
+                    if (containers.length === 0) return true;
+                    return Array.from(containers).every(c =>
+                        c.querySelector('canvas') !== null
+                    );
+                }""",
+                timeout=15000,
+            )
+            await page.wait_for_timeout(800)  # final paint settle
+        except Exception:
+            pass
         await page.screenshot(path=str(output_path), full_page=True, type='png')
         await browser.close()
     return output_path
