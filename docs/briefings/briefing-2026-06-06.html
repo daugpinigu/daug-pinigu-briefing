@@ -649,7 +649,26 @@
   }
 
   /* Technical Analysis (Mark Newton style) */
-  .ta-list { display: flex; flex-direction: column; gap: 16px; }
+  .ta-list { display: flex; flex-direction: column; gap: 20px; }
+  .ta-chart-wrap {
+    margin: 12px 0;
+    background: #131722;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 380px;
+  }
+  .ta-chart-wrap iframe { display: block; width: 100%; border: 0; }
+  .ta-chart-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 380px;
+    color: #6c7588;
+    font-size: 12px;
+    font-style: italic;
+  }
+  .ta-chart-fallback a { color: #b794f4; text-decoration: none; margin-left: 6px; }
   .ta-card {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
@@ -1356,7 +1375,7 @@
   <div class="verification-bar">
     <span class="vb-date">📅 2026-06-06</span>
     <span class="vb-sep">·</span>
-    <span class="vb-fetched">Live data 23:04 Vilnius</span>
+    <span class="vb-fetched">Live data 23:19 Vilnius</span>
     
     
     <span class="vb-sep">·</span>
@@ -1617,36 +1636,36 @@
     <div class="crypto-card">
       <div class="crypto-symbol">BTC</div>
       <div class="crypto-name">Bitcoin</div>
-      <div class="crypto-price">$60,549</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.77%</div>
+      <div class="crypto-price">$60,580</div>
+      <div class="crypto-change" style="color: #ff7373">-0.48%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">ETH</div>
       <div class="crypto-name">Ethereum</div>
       <div class="crypto-price">$1,553</div>
-      <div class="crypto-change" style="color: #ff7373">-0.56%</div>
+      <div class="crypto-change" style="color: #ff7373">-2.16%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">SOL</div>
       <div class="crypto-name">Solana</div>
-      <div class="crypto-price">$61.60</div>
-      <div class="crypto-change" style="color: #ff7373">-2.49%</div>
+      <div class="crypto-price">$61.61</div>
+      <div class="crypto-change" style="color: #ff7373">-3.65%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">LINK</div>
       <div class="crypto-name">Chainlink</div>
-      <div class="crypto-price">$7.30</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.46%</div>
+      <div class="crypto-price">$7.31</div>
+      <div class="crypto-change" style="color: #ff7373">-0.47%</div>
     </div>
     
     <div class="crypto-card">
       <div class="crypto-symbol">TAO</div>
       <div class="crypto-name">Bittensor</div>
-      <div class="crypto-price">$194.05</div>
-      <div class="crypto-change" style="color: #7ed87e">+0.74%</div>
+      <div class="crypto-price">$193.74</div>
+      <div class="crypto-change" style="color: #ff7373">-0.58%</div>
     </div>
     
   </div>
@@ -1704,9 +1723,9 @@
     </div>
     
     <div class="iv-row">
-      <div class="iv-symbol">OSS</div>
-      <div class="iv-meta">$16.89 · 41d</div>
-      <div class="iv-value">106.4%</div>
+      <div class="iv-symbol">MU</div>
+      <div class="iv-meta">$864.01 · 26d</div>
+      <div class="iv-value">107.5%</div>
     </div>
     
   </div>
@@ -1727,7 +1746,7 @@
         <div class="news-title"><a href="https://pulse2.com/hims-hers-completes-eucalyptus-acquisition-and-expands-weight-management-care-in-germany/" target="_blank">Hims &amp;amp; Hers Completes Eucalyptus Acquisition And Expands Weight Management Care In Germany</a></div>
         
         
-        <div class="news-analysis">Eucalyptus įsigijimas užbaigtas - HIMS dabar valdo Juniper operacijas Vokietijoje, kur telesveikata veikia nuo 2023 kovo. Sandoris strategiškai logiškas: Vokietija pripažįsta nutukimą lėtine liga, o beveik kas penktas suaugusysis šalyje susiduria su šia problema - tai didelė potenciali rinka. Tačiau šioje naujienoje nėra nei sandorio vertės, nei pajamų prognozių, nei Juniper augimo skaičių, todėl sunku vertinti, kiek tai prideda prie HIMS FY guidance $3B revenue tikslo. Manau šis žingsnis svarbesnis ilgalaikei tezei - HIMS bando įrodyti, kad GLP-1 modelis veikia ne tik JAV rinkoje, bet Europos reguliacinė aplinka ir kainų spaudimas gali sulėtinti maržų atsigavimą. Investuotojui šiandien tai daugiau strateginis signalas nei catalyst - verta sekti, ar 2025 pabaigoje pasirodys konkretūs Vokietijos revenue duomenys.</div>
+        <div class="news-analysis">Eucalyptus įsigijimas užbaigtas - HIMS dabar kontroliuoja Juniper operacijas Vokietijoje, kur platforma veikia nuo 2023 metų kovo. Vokietija strategiškai įdomi: beveik penktadalis suaugusiųjų šalyje serga nutukimu, o prieiga prie gydymo lieka ribota. Konkretūs sandorio finansiniai parametrai - vertė, revenue, maržos - nepaskelbti, todėl tiesioginio poveikio HIMS finansiniams rodikliams įvertinti šiuo metu negalima. Investuotojui svarbu sekti, ar tarptautinis segmentas atsiras atskirai atskleistas FY guidance atnaujinime - kol kas HIMS augimo istorija remiasi JAV GLP-1 segmentu, o Vokietija yra papildomas catalyst tik tuo atveju, jei įmonė pateiks konkrečius tarptautinio revenue lūkesčius.</div>
         
         <div class="news-meta">Pulse 2.0 · 06-06 14:42 · <a href="https://pulse2.com/hims-hers-completes-eucalyptus-acquisition-and-expands-weight-management-care-in-germany/" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1746,7 +1765,7 @@
         <div class="news-title"><a href="https://www.msn.com/en-us/money/topstocks/gme-stock-has-been-consolidating-between-20-2-and-26-9-this-year-here-s-what-retail-expects-after-q1-earnings-beat-buyback/ar-AA24JxhY?ocid=finance-verthp-feeds" target="_blank">GME stock has been consolidating between $20.2 and $26.9 this year – here’s what retail expects after Q1 earnings beat, buyback</a></div>
         
         
-        <div class="news-analysis">Straipsnio turinys nepasiekiamas - užblokuotas privatumo sutikimo langas, todėl konkretūs Q1 earnings duomenys, EPS ar revenue skaičiai nematomi. Iš antraštės žinoma tiek: GME šiais metais konsoliduojasi $20.2-$26.9 intervale, užfiksuotas Q1 earnings beat ir akcijų supirkimo programa. Intervalo plotis apie $6.7 rodo gana siaurą judėjimą - rinka laukia katalizatoriaus krypčiai nustatyti. Manau be faktinių skaičių - EPS, revenue, supirkimo apimties - bet kokia pozicijos logika yra spekuliatyvi. Verta palaukti oficialių GME rezultatų ir tada vertinti, ar beat buvo esminis ar tik techninis.</div>
+        <div class="news-analysis">Straipsnio turinys nepasiekiamas - užblokuotas privatumo sutikimo ekrano. Turimi duomenys: GME konsoliduojasi $20.2-$26.9 intervale šiais metais, Q1 earnings beat ir akcijų supirkimo programa jau žinomi faktai. Be konkrečių skaičių - EPS, revenue, supirkimo apimties - analizė būtų tik spekuliacija. Rekomenduoju palaukti oficialaus GME ataskaitos teksto su tiksliais duomenimis.</div>
         
         <div class="news-meta">MSN · 06-06 14:14 · <a href="https://www.msn.com/en-us/money/topstocks/gme-stock-has-been-consolidating-between-20-2-and-26-9-this-year-here-s-what-retail-expects-after-q1-earnings-beat-buyback/ar-AA24JxhY?ocid=finance-verthp-feeds" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1760,9 +1779,22 @@
     </div>
     
     <div class="news-row has-summary">
+      <div class="news-ticker">ZM</div>
+      <div class="news-content">
+        <div class="news-title"><a href="https://www.msn.com/en-us/money/topstocks/zm-stock-rips-to-near-4-year-highs-after-anthropic-ipo-filing-retail-expects-a-breakout/ar-AA24AamU?apiversion=v2&amp;domshim=1&amp;noservercache=1&amp;noservertelemetry=1&amp;batchservertelemetry=1&amp;renderwebcomponents=1&amp;wcseo=1" target="_blank">ZM stock rips to near 4-year highs after Anthropic IPO filing – retail expects a breakout</a></div>
+        
+        
+        <div class="news-analysis">Straipsnyje nėra jokių finansinių duomenų - tik cookie sutikimo puslapis, ne faktinis turinys. Tiek apie ZM akcijos judėjimą link 4 metų aukštumų, tiek apie ryšį su Anthropic IPO pateikimu - visa tai lieka antraštės lygyje be skaičių patvirtinimo. Manau, kad ZM ir Anthropic sąsaja yra spekuliatyvi: Zoom turi AI partnerystę su Anthropic, todėl investuotojai tikisi, kad IPO aktyvumas pakels Zoom vertinimą kaip AI catalyst. Tačiau be konkretaus revenue ar guidance konteksto - tai grynai sentiment judėjimas, ne fundamentalus. Ką stebėti: ar ZM kaina išlaikys lygius po Anthropic IPO entuziastmo, nes be earnings patvirtinimo tokie šuoliai dažnai grįžta atgal.</div>
+        
+        <div class="news-meta">MSN · 06-06 16:28 · <a href="https://www.msn.com/en-us/money/topstocks/zm-stock-rips-to-near-4-year-highs-after-anthropic-ipo-filing-retail-expects-a-breakout/ar-AA24AamU?apiversion=v2&amp;domshim=1&amp;noservercache=1&amp;noservertelemetry=1&amp;batchservertelemetry=1&amp;renderwebcomponents=1&amp;wcseo=1" target="_blank" class="news-link">visas straipsnis</a></div>
+        
+      </div>
+    </div>
+    
+    <div class="news-row has-summary">
       <div class="news-ticker">AMZN</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://consent.yahoo.com/v2/collectConsent?sessionId=3_cc-session_e0f66bbd-e0ec-4d5a-af4e-d76d976cce3a" target="_blank">Amazon Confronts AI Spending Strains And US$2.5b Prime Settlement Risks</a></div>
+        <div class="news-title"><a href="https://consent.yahoo.com/v2/collectConsent?sessionId=3_cc-session_7f83b013-5378-4d6e-92b5-2ed4e1dfd745" target="_blank">Amazon Confronts AI Spending Strains And US$2.5b Prime Settlement Risks</a></div>
         
         <div class="news-metrics">
           
@@ -1775,9 +1807,9 @@
         </div>
         
         
-        <div class="news-analysis">Straipsnio pilnas tekstas nepateiktas, todėl konkrečių skaičių - revenue, EPS, guidance - nėra. Iš antraštės matyti du rizikos kampai: augančios dirbtinio intelekto investicijų išlaidos, kurios gali spausti laisvų pinigų srautų maržą, ir $2.5B Prime susitarimo rizika, kuri vienkartiškai pasirodžius ataskaitoje sumažintų grynąjį pelną. Manau, kad AI išlaidų klausimas yra svarbesnis ilgalaikiam investuotojui - AWS augimo tempas ir jo ryšys su capex lemia, ar išlaidos grįžta kaip pajamos, ar tik mažina maržas. $2.5B suma, palyginti su AMZN metine revenue virš $600B, yra maža, tačiau precedentas vartotojų apsaugos bylose gali kelti papildomų reguliacinių lūkesčių. Konkreti analizė įmanoma tik gavus pilną straipsnį arba oficialius earnings duomenis.</div>
+        <div class="news-analysis">Straipsnio pilnas tekstas neprieinamas, tačiau antraštė nurodo du pagrindinius rizikos veiksnius: dirbtinio intelekto investicijų naštą ir $2.5B Prime susitarimo grėsmę. $2.5B suma, palyginti su AMZN metine EBITDA (2024 m. apie $109B), nėra egzistencinė rizika, tačiau signalizuoja reguliacinius spaudimus vartotojų srityje. Didesnis klausimas - AWS ir DI infrastruktūros išlaidų augimas: jei capital expenditure auga greičiau nei AWS revenue, pelningumo maržos gali spausti analitikų lūkesčius ateinantiems ketvirčiams. Manau, kol AWS augimo tempas išlieka dviženkliu procentu YoY, akcija išlaiko tvirto pagrindo argumentą - tačiau $2.5B ieškinio baigtis ir DI išlaidų guidance Q2 earnings metu bus pagrindiniai catalyst taškai.</div>
         
-        <div class="news-meta">Yahoo Finance · 06-06 13:19 · <a href="https://consent.yahoo.com/v2/collectConsent?sessionId=3_cc-session_e0f66bbd-e0ec-4d5a-af4e-d76d976cce3a" target="_blank" class="news-link">visas straipsnis</a></div>
+        <div class="news-meta">Yahoo Finance · 06-06 13:19 · <a href="https://consent.yahoo.com/v2/collectConsent?sessionId=3_cc-session_7f83b013-5378-4d6e-92b5-2ed4e1dfd745" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
@@ -1792,43 +1824,43 @@
           <div class="nm-cell">
             <div class="nm-label">Akcijos kaina</div>
             <div class="nm-value">$5.19</div>
-            <div class="nm-note">-9.3% nuo ataskaitinio laikotarpio</div>
+            <div class="nm-note">-9.3% šiandien</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Highbridge įsigyta</div>
+            <div class="nm-value">512,764 akcijų</div>
+            <div class="nm-note">+5,947.5% Q4</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Highbridge pozicija</div>
-            <div class="nm-value">512,764 akcijų</div>
-            <div class="nm-note">+5,947.5% Q4, ~$4.58M vertė</div>
+            <div class="nm-value">$4.58M</div>
+            <div class="nm-note">0.26% įmonės akcijų</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Institucinė nuosavybė</div>
             <div class="nm-value">13.75%</div>
-            <div class="nm-note">fondų dalis bendrojoje struktūroje</div>
+            <div class="nm-note">hedge funds + inst.</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Direktoriaus pardavimas</div>
-            <div class="nm-value">12,892 akcijų</div>
-            <div class="nm-note">po $7.41, -34% nuosavybės</div>
+            <div class="nm-value">$95,530</div>
+            <div class="nm-note">12,892 akcijų po $7.41</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">CloudAlpha pozicija</div>
-            <div class="nm-value">$30.8M</div>
+            <div class="nm-value">$30.81M</div>
             <div class="nm-note">nauja Q3 pozicija</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">BIT Capital augimas</div>
-            <div class="nm-value">+103.5%</div>
-            <div class="nm-note">1.21M akcijų po Q3</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Highbridge įėjimas atrodo įspūdingas skaičiumi, tačiau 0.26% bendrovės akcijų už $4.58M - tai mažesnė pozicija, nei CloudAlpha ($30.8M) ar BIT Capital ($20.7M) suformavo dar Q3. Institucinė koncentracija 13.75% yra kukli, o tai reiškia, kad didelė akcijų dalis lieka mažmeninių investuotojų rankose - tai padidina nepastovumo riziką. Du direktoriai tuo pačiu metu - gegužės 12 d. - pardavė po 12,892 akcijų vidutine $7.41 kaina, kai šiandien akcija kainuoja $5.19: tai reiškia, kad vidinis kapitalas išėjo beveik 43% brangiau nei dabartinė rinkos kaina - signalas, kurį ignoruoti sunku. Be to, paskutinis ketvirčio pranešimas parodė nuostolį, pralenkusį analitikų lūkesčius žemyn, ir silpnesnį revenue - fundamentalai kol kas nepalaiko atsigavimo tezės. Manau, institucinių pirkimų srautas Q3-Q4 galėjo būti susijęs su konkrečia strategija (pvz., konvertuojamosios obligacijos ar kiti instrumentai), o ne tikėjimu augimo istorija - reikėtų patikrinti 13F kontekstą prieš interpretuojant kaip teigiamą catalyst.</div>
+        <div class="news-analysis">Highbridge pozicijos augimas beveik 6,000% skamba įspūdingai, tačiau absoliuti suma - $4.58M - yra maža, todėl tai greičiau taktinis žingsnis nei stiprus įsitikinimas. Reikšmingesnė CloudAlpha $30.81M pozicija Q3, kuri rodo, kad bent dalis institucinių pirkėjų įėjo gerokai aukščiau nei dabartinė kaina. Du direktoriai gegužės 12 d. pardavė akcijas po $7.41 - dabar kaina $5.19, tai yra 30% žemiau jų pardavimo lygio, kas signalizuoja, kad vidiniai asmenys nebuvo įsitikinę tęstiniu augimu. Ketvirčio nuostolis ir revenue miss kartu su insider pardavimais kelia klausimą, ar institucinis susidomėjimas yra pagrįstas fundamentais ar spekuliaciniu impulsu. Manau, kol nepasirodys konkretūs earnings duomenys su aiškiu keliu į pelningumą, $5.19 lygis neatrodo kaip patikima atramos zona.</div>
         
         <div class="news-meta">MarketBeat · 06-06 10:14 · <a href="https://www.marketbeat.com/instant-alerts/filing-sharplink-gaming-inc-sbet-shares-acquired-by-highbridge-capital-management-llc-2026-06-06/" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1842,55 +1874,30 @@
     </div>
     
     <div class="news-row has-summary">
-      <div class="news-ticker">MSFT</div>
+      <div class="news-ticker">BMNR</div>
       <div class="news-content">
-        <div class="news-title"><a href="https://stocktwits.com/news-articles/markets/equity/microsoft-build-msft-partners-with-nvda-on-ai-hardware-push-launches-new-models-and-quantum-chip/cZ009qGReD0" target="_blank">Microsoft Build: MSFT Partners With NVDA On AI Hardware Push, Launches New Models And Quantum Chip</a></div>
-        
-        
-        <div class="news-analysis">Straipsnyje konkrečių finansinių skaičių nėra - tik partnerystės ir produktų anonsai iš Microsoft Build konferencijos. NVDA ir MSFT bendradarbiavimas dirbtinio intelekto aparatinės įrangos srityje stiprina MSFT poziciją debesų ir AI infrastruktūros rinkoje, tačiau tiesioginio poveikio artimiausio ketvirčio revenue sunku įvertinti be detalesnių sąlygų. Naujų modelių ir kvantinio lusto pristatymas - ilgalaikis catalyst, bet komercinė branda gali užtrukti kelerius metus. Investuotojui šis žingsnis svarbus kaip Azure AI ekosistemos plėtros signalas - jei NVDA aparatinė įranga giliau integruojama į Azure, tai gali palaikyti aukštesnį capital expenditure lygį artimiausiuose ketvirčiuose, ką verta stebėti Q4 earnings metu.</div>
-        
-        <div class="news-meta">Stocktwits · 06-06 03:49 · <a href="https://stocktwits.com/news-articles/markets/equity/microsoft-build-msft-partners-with-nvda-on-ai-hardware-push-launches-new-models-and-quantum-chip/cZ009qGReD0" target="_blank" class="news-link">visas straipsnis</a></div>
-        
-      </div>
-    </div>
-    
-    <div class="news-row has-summary">
-      <div class="news-ticker">ZM</div>
-      <div class="news-content">
-        <div class="news-title"><a href="https://stocktwits.com/news-articles/markets/equity/zm-stock-rips-to-near-4-year-highs-after-anthropic-ipo-filing-retail-expects-a-breakout/cZ0gzhBRev5" target="_blank">ZM Stock Rips To Near 4-Year Highs After Anthropic IPO Filing – Retail Expects A Breakout</a></div>
+        <div class="news-title"><a href="https://stocktwits.com/news-articles/markets/equity/bmnr-stock-jumps-acquires-nearly-fifty-thousand-eth-last-week/cZd3QpCRI2I" target="_blank">BMNR Stock Jumps 11% After Bitmine Immersion Acquires Nearly 51,000 ETH Last Week</a></div>
         
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">ZM akcijų augimas</div>
-            <div class="nm-value">+12%</div>
-            <div class="nm-note">iki aukščiausio lygio nuo 2022 rugpjūčio</div>
+            <div class="nm-label">Akcijos augimas</div>
+            <div class="nm-value">+11%</div>
+            <div class="nm-note">po ETH pirkimo žinios</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Anthropic vertė (ZM dalis)</div>
-            <div class="nm-value">~$1.3B</div>
-            <div class="nm-note">pagal pernai mėnesio dokumentus</div>
-          </div>
-          
-          <div class="nm-cell">
-            <div class="nm-label">ZoomMate kaina</div>
-            <div class="nm-value">$20/vart./mėn.</div>
-            <div class="nm-note">nauja AI darbo erdvė, Šiaurės Amerika</div>
+            <div class="nm-label">Įsigytas ETH kiekis</div>
+            <div class="nm-value">~51 000 ETH</div>
+            <div class="nm-note">per vieną savaitę</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">ZM šuolis +12% grindžiamas dviem atskirais katalizatoriais - Anthropic IPO pateikimu ir naujo ZoomMate produkto paleidimu, bet abu reikalauja atsargaus vertinimo. Zoom turima Anthropic dalis, vertinama apie $1.3 mlrd., teoriškai gali padidėti sėkmingo IPO atveju, tačiau tai yra nelikvidus turtas be garantuoto realizavimo laiko. ZoomMate $20 per vartotoją per mėnesį yra realus revenue catalyst, jei konversija iš esamų klientų bus didelė - tačiau rinka šiandien vertina potencialą, o ne faktinę pajamų atribuciją. Manau šis judėjimas yra daugiau sentiment ir IPO karštligės varomas nei fundamentaliai pagrįstas - ZM core revenue augimas pastaraisiais ketvirčiais išliko vienkartinis, o AI monetizacija pradiniame etape. Investuotojui: jei neturi position - verta palaukti ZoomMate pirmojo ketvirčio duomenų ir Anthropic IPO kainodaros prieš einant paskui retailo entuziazmą.</div>
+        <div class="news-analysis">Bitmine Immersion per savaitę įsigijo apie 51 000 ETH - tai reikšmingas žingsnis, kuris rodo aiškią strateginę kryptį kaupti Ethereum atsargas, panašiai kaip MicroStrategy darė su Bitcoin. Akcija šoko 11%, tačiau be žinomos įsigijimo kainos sunku įvertinti, ar premium už šį catalyst yra pagrįstas. Investuotojui svarbu sekti du dalykus: kokia ETH/akcija santykio dinamika ir ar bendrovė turi pakankamą likvidumą tolesniam kaupimui - didelės crypto pozicijos be pajamų pagrindo reiškia aukštą ETH kainos exposure abiem kryptimis. Manau, kad šiame etape tai labiau spekuliacinis catalyst nei fundamentalus vertės pokytis.</div>
         
-        <div class="news-meta">Stocktwits · 06-05 17:52 · <a href="https://stocktwits.com/news-articles/markets/equity/zm-stock-rips-to-near-4-year-highs-after-anthropic-ipo-filing-retail-expects-a-breakout/cZ0gzhBRev5" target="_blank" class="news-link">visas straipsnis</a></div>
-        
-        <div class="news-extra-links">
-          
-          <a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPZm1JWkxULV9vS2E5YTA3eDdFTzlRVEs5cjNwZGxmQ1pBRG9tVk5jWWkzeGZoY2VKTnRiVlFpajJzMDVEVDRZU1dPckhJVjA4RHpBRzZJN2FCMk9pWGNYbWYtUEtCR2RfQkE4UG1tZzZoU3JoOV8tNUVqQi1jMU5PYXVScGlOZm9FeGZHMnRfcEJEMUF4T3J5dGl0bUdXaFlyM3dfUDlHTUhraE0?oc=5" target="_blank" class="news-extra-link">+ iHeart: Bree&#39;s mad at her pregnant partner... is this a good reason? - ZM&#39;s Bree &amp;amp; C</a>
-          
-        </div>
+        <div class="news-meta">Stocktwits · 06-05 21:47 · <a href="https://stocktwits.com/news-articles/markets/equity/bmnr-stock-jumps-acquires-nearly-fifty-thousand-eth-last-week/cZd3QpCRI2I" target="_blank" class="news-link">visas straipsnis</a></div>
         
       </div>
     </div>
@@ -1901,7 +1908,7 @@
         <div class="news-title"><a href="https://qz.com/paypal-partners-with-seattle-seahawks-will-it-boost-its-platform" target="_blank">PayPal Partners With Seattle Seahawks: Will it Boost Its Platform?</a></div>
         
         
-        <div class="news-analysis">Šis susitarimas su Seattle Seahawks yra rinkodaros žingsnis, o ne finansinis katalizatorius - konkrečių skaičių apie tikėtiną revenue augimą ar naujų vartotojų įtraukimą neatskleidžiama. Ticketmaster integracija ir Venmo ryšys su 100 milijonų naudotojų yra logiškai pagrįsta platforma gilinti įsitraukimą, tačiau NFL partnerystės paprastai generuoja prekės ženklo matomumą, o ne tiesiogiai matuojamą konversiją. PYPL jau turi šimtus milijonų aktyvių paskyrų 200 rinkų - klausimas ne pasiekiamumas, o aktyvaus naudojimo dažnis. Manau, šios partnerystės reikšmę geriau įvertinti per Q3 earnings, sekant aktyvių paskyrų augimą ir transaction margin dinamiką, kuri pastaraisiais ketvirčiais buvo svarbiausias analitikų stebimas rodiklis.</div>
+        <div class="news-analysis">Partnerystė su Seattle Seahawks yra rinkodaros žingsnis, ne finansinis katalizatorius - konkretūs revenue ar engagement skaičiai neatskleisti. Integracija su Ticketmaster ir Venmo ryšys su 100 mln. vartotojų bazė skamba įspūdingai, tačiau NFL klubo apimtis yra nedidelė PYPL mastu - šimtai milijonų aktyvių paskyrų 200 rinkų reiškia, kad vieno stadiono srautas pajamų adatos nejudins. Manau, šios partnerystės vertė - ilgalaikė: jei modelis veiks su Seahawks, analogiška integracija su kitais NFL klubais gali tapti realiu Venmo ir PayPal Checkout augimo varikliu. Investuotojui šiuo metu tai - ne kainų judėjimo priežastis, o žingsnis platformos gilinimo link; reikia sekti, ar ateinančių ketvirčių earnings atskleis apčiuopiamą poveikį aktyvių vartotojų skaičiui ar transakcijų apimčiai.</div>
         
         <div class="news-meta">qz.com · 06-05 18:33 · <a href="https://qz.com/paypal-partners-with-seattle-seahawks-will-it-boost-its-platform" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1916,9 +1923,9 @@
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">Akcijos kaina</div>
+            <div class="nm-label">Uždarymo kaina</div>
             <div class="nm-value">$263.61</div>
-            <div class="nm-note">uždarymo kaina</div>
+            <div class="nm-note">sesijos pabaigoje</div>
           </div>
           
           <div class="nm-cell">
@@ -1930,17 +1937,17 @@
           <div class="nm-cell">
             <div class="nm-label">S&amp;P 500 diena</div>
             <div class="nm-value">-2.65%</div>
-            <div class="nm-note">rinkos kontekstas</div>
+            <div class="nm-note">plačiosios rinkos kritimas</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Nasdaq diena</div>
             <div class="nm-value">-4.18%</div>
-            <div class="nm-note">technologijų sektorius</div>
+            <div class="nm-note">technologijų indeksas</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Mėnesio pokytis</div>
+            <div class="nm-label">BE per mėnesį</div>
             <div class="nm-value">+12.65%</div>
             <div class="nm-note">vs S&amp;P 500 +5.47%</div>
           </div>
@@ -1948,13 +1955,13 @@
           <div class="nm-cell">
             <div class="nm-label">Energetikos sekt.</div>
             <div class="nm-value">-3.06%</div>
-            <div class="nm-note">BE viršijo per mėnesį</div>
+            <div class="nm-note">BE sektoriaus rezultatas</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">BE krito beveik 9.5% per vieną dieną - tai žymiai daugiau nei plačioji rinka ar net Nasdaq. Tačiau per pastarąjį mėnesį akcija vis dar yra plius 12.65%, kai energetikos sektorius prarado 3.06%, o S&amp;P 500 augo tik 5.47% - tai rodo, kad dalis investuotojų tiesiog fiksuoja pelną po stipraus mėnesio. Straipsnyje nėra konkrečių earnings skaičių, todėl šis kritimas atrodo labiau susijęs su bendra rinkos rizikos aversija, o ne su fundamentaliais pokyčiais. Artėjantis earnings pranešimas bus svarbus - jei guidance bus tvirtas, dabartinis lygis gali būti įdomus tiems, kurie seka kuro elementų sektoriaus augimo tempą. Manau, be naujų duomenų sunku vertinti, ar tai techninis koregavimas ar realesnė rizika.</div>
+        <div class="news-analysis">BE krito beveik 10% per vieną sesiją - tai reikšmingai daugiau nei platesnė rinka, nors straipsnyje nėra konkretaus katalizatoriaus, kuris tai paaiškintų. Galimas paaiškinimas - dalies investuotojų pelno fiksavimas po stipraus mėnesio: +12.65% prieš tai, kai sektorius krito 3%, rodo, kad akcija buvo atsiskyrus nuo fundamentalų. Artėjantis earnings sezonas kelia papildomą riziką - rinka dar neturi aiškaus vaizdo apie pajamų ir pelningumo trajektoriją. Manau, šis kritimas savaime neinformatyvus be earnings duomenų - vertinimui reikia palaukti rezultatų, ypač guidance dėl komercinių dujų elementų pardavimų ir gross margin dinamikos.</div>
         
         <div class="news-meta">Zacks · 06-05 22:00 · <a href="https://finance.yahoo.com/markets/stocks/articles/heres-why-bloom-energy-fell-220002444.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -1969,21 +1976,21 @@
         <div class="news-metrics">
           
           <div class="nm-cell">
-            <div class="nm-label">AI licencijų pajamos</div>
-            <div class="nm-value">$550M</div>
-            <div class="nm-note">Wells Fargo prognozė po renegociacijos</div>
+            <div class="nm-label">Dabartinės licencijų pajamos</div>
+            <div class="nm-value">~$130M</div>
+            <div class="nm-note">metinis lygis (run rate)</div>
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">Dabartinis lygis</div>
-            <div class="nm-value">$130M</div>
-            <div class="nm-note">esamas metinis run rate</div>
+            <div class="nm-label">Wells Fargo prognozė</div>
+            <div class="nm-value">$550M</div>
+            <div class="nm-note">po sutarčių atnaujinimo</div>
           </div>
           
           <div class="nm-cell">
             <div class="nm-label">Augimo potencialas</div>
-            <div class="nm-value">+4x</div>
-            <div class="nm-note">pajamų padidėjimas renegociavus</div>
+            <div class="nm-value">+$420M</div>
+            <div class="nm-note">daugiau nei 4x dabartinio</div>
           </div>
           
           <div class="nm-cell">
@@ -1993,15 +2000,15 @@
           </div>
           
           <div class="nm-cell">
-            <div class="nm-label">AHs kritimas</div>
+            <div class="nm-label">Kritimas po rinkų</div>
             <div class="nm-value">-3%</div>
-            <div class="nm-note">po S&amp;P 500 neįtraukimo</div>
+            <div class="nm-note">AHs, S&amp;P 500 neįtraukus</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Akcijos kritimas yra techninis - S&amp;P 500 neįtraukimas pašalina trumpalaikį indeksinio pirkimo katalizatorių, tačiau tai nekeičia verslo trajektorijos. Wells Fargo $550M AI licencijų prognozė reiškia, kad šis segmentas vienas galėtų tapti dominuojančiu revenue šaltiniu, jei pagrindinės RDDT pajamos iš reklamų šiuo metu siekia apie $1B per metus. Esminis klausimas - kada tiksliai vyksta Google ir OpenAI sutarčių atnaujinimas ir ar RDDT turi pakankamai derybinių svertų keturis kartus padidinti kainą. Manau, kad -9% bendra korekcija per vieną dieną dėl indekso neįtraukimo - perdėta reakcija, jei AI licencijų renegociacija artėja ir Wells Fargo skaičiai yra bent iš dalies pagrįsti. Stebėti verta oficialų pranešimą apie sutarčių terminus - tai tikrasis catalyst.</div>
+        <div class="news-analysis">Kainų judesys buvo visiškai struktūrinis - rinka tikėjosi S&amp;P 500 įtraukimo, kuris pritrauktų priverstinę paklausą iš indekso fondų, bet to neįvyko. Wells Fargo scenarijus su $550M licencijų revenue atrodo drąsus, tačiau logiškas: Google ir OpenAI sutartys buvo sudarytos ankstyvoje AI raidos fazėje, kai RDDT derybinė pozicija buvo silpnesnė - atnaujinant sąlygas kontekstas keičiasi. Jei $550M prognozė pasitvirtintų, tai reikštų, kad tik šis pajamų srautas artėja prie dabartinio bendro revenue lygio - reikšmingas pelno maržos katalizatorius. Manau šiuo metu akcija baudžiama dėl vienkartinio sentimento šoko, ne fundamentų, tad kas stebi RDDT - verta sekti, kada tiksliai baigiasi Google ir OpenAI sutarčių terminai, nes tai bus svarbiausias artimiausio laikotarpio catalyst.</div>
         
         <div class="news-meta">Stocktwits · 06-05 22:29 · <a href="https://stocktwits.com/news-articles/markets/equity/rddt-stock-plunges-after-hours-on-sandp-500-exclusion-but-wells-fargo-forecasts-550-million-ai-deal-jackpot/cZ0FzQfReCw" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2014,7 +2021,7 @@
         <div class="news-title"><a href="https://finance.yahoo.com/markets/stocks/articles/buy-sell-hold-planet-labs-145200960.html" target="_blank">Should You Buy, Sell or Hold Planet Labs Stock Post Q1 Earnings?</a></div>
         
         
-        <div class="news-analysis">Straipsnyje nėra konkrečių skaičių - nei revenue, nei EPS, nei guidance reikšmių - todėl gilesnė kiekybinė analizė neįmanoma. Pastebėtina, kad antraštėje minimas RKLB, tačiau tekstas kalba apie Planet Labs (PL) - tai skirtingos bendrovės, tad duomenys šiam ticker&#39;iui netaikomi. Jei reikia RKLB analizės, reikia atskiro earnings pranešimo su faktiniais skaičiais.</div>
+        <div class="news-analysis">Straipsnyje kalbama apie Planet Labs (PL), o ne RKLB - tiesioginių Rocket Lab skaičių nėra. Tačiau kontekstas svarbus: Planet Labs yra vienas iš pagrindinių RKLB klientų erdvėje, nes naudoja mažus palydovus, kuriuos potencialiai gali paleisti Electron raketa. Jei PL backlog auga ir revenue gerėja metų atžvilgiu, tai signalizuoja, kad žemosios orbitos komercinė paklausa išlieka tvirta - tai palankus fonas RKLB. Tačiau RKLB vertinti reikia pagal savus duomenis: Neutron raketos vystymosi tempą, Electron paleidimų skaičių ir Space Systems segmento augimą. Manau šis straipsnis tiesiogiai RKLB investiciniam sprendimui mažai naudingas - reikia laukti RKLB pačių earnings.</div>
         
         <div class="news-meta">Zacks · 06-05 14:52 · <a href="https://finance.yahoo.com/markets/stocks/articles/buy-sell-hold-planet-labs-145200960.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2036,14 +2043,26 @@
           
           <div class="nm-cell">
             <div class="nm-label">Ankstesni duomenys</div>
-            <div class="nm-value">↑ pataisyti</div>
-            <div class="nm-note">reikšmingai aukštyn</div>
+            <div class="nm-value">↑ patikslinta</div>
+            <div class="nm-note">aukštyn revizuoti ankst. mėn.</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Fed palūkanų tikimybė</div>
+            <div class="nm-value">~0%</div>
+            <div class="nm-note">artimiausiam posėdžiui</div>
+          </div>
+          
+          <div class="nm-cell">
+            <div class="nm-label">Infliacijos lygis</div>
+            <div class="nm-value">padidėjęs</div>
+            <div class="nm-note">virš Fed tikslo</div>
           </div>
           
         </div>
         
         
-        <div class="news-analysis">Gegužės darbo rinkos duomenys praktiškai užvėrė duris artimiausiems Fed palūkanų mažinimams - +172,000 naujų darbo vietų kartu su ankstesnių mėnesių revizijomis aukštyn rodo, kad ekonomika išlieka atspari. Naujas Fed pirmininkas Kevinas Warshas perima valdymą sudėtingomis sąlygomis: aukšta infliacija ir karo su Iranu keliamas neapibrėžtumas neleidžia lengvai pasukti politikos švelninimo link. Manau artimiausias palūkanų mažinimo scenarijus - ne anksčiau kaip rugsėjis, tačiau net ir tai priklauso nuo infliacijos duomenų dinamikos ateinančiais mėnesiais. Investuotojams tai reiškia, kad trumpojo galo palūkanos išlieka aukštos ilgiau - spaudimas vertinimams auga, ypač ilgos trukmės augimo akcijoms su aukštu P/E.</div>
+        <div class="news-analysis">Gegužės darbo rinkos duomenys - 172,000 naujų darbo vietų kartu su ankstesnių mėnesių reviziomis aukštyn - praktiškai užveria duris palūkanų mažinimui artimiausiu metu. Naujas Fed pirmininkas Kevinas Warsh iš karto susiduria su sudėtingu pasirinkimu: stabili darbo rinka ir padidėjusi infliacija neleidžia švelninti politikos, tačiau Irano karo sukelta geopolitinė įtampa kelia ekonominės rizikos klausimų. Trumpojo galo palūkanos tikriausiai liks aukštos ilgiau, nei tikėjosi rinka - tai reiškia spaudimą augimo akcijoms su aukštu P/E ir palankesnę aplinką finansų sektoriui. Manau, kad palūkanų trajektorija liks pagrindiniu catalyst veiksniu iki rudens, ypač jei infliacija nesumažės reikšmingai per ateinančius du mėnesius.</div>
         
         <div class="news-meta">CNBC Top · 06-05 19:09 · <a href="https://www.cnbc.com/2026/06/05/hot-jobs-report-puts-fed-cuts-further-out-of-reach-as-chair-warsh-faces-policy-tests.html" target="_blank" class="news-link">visas straipsnis</a></div>
         
@@ -2071,7 +2090,7 @@
   <div class="section-header">
     <div class="section-title" style="color:#f4cc6b">Pamąstymai iš rinkų · 48h</div>
   </div>
-  <div class="yt-synthesis">Šiandien stipriausias signalas, kurį matau, yra ne rinkos kritimas - tai visi mato. Svarbiausia yra tai, kas vyksta AMD viduje: EVP Guido Philip nupirko savo pačios kompanijos akcijų už 1,5 mln. dolerių tą dieną, kai Nasdaq 100 krito beveik 5%. Tai nėra planuotas 10b5-1 pardavimas - tai atviroje rinkoje priimtas sprendimas. Lisa Su tuo pačiu laikotarpiu pardavė už 163 mln. dolerių, tačiau 6 mėnesių bendrasis insider'ių judėjimas AMD yra "buying" zonoje. Kai vienas iš aukščiausių operatyvinių vadovų perka rinkos griūties metu, o consensus yra nerimas dėl AI chip'ų paklausos ir konkurencijos su NVDA, manau tai yra kontrarianas signalas, kurio rinka dabar nevertina. AMD šiuo metu atrodo kaip kompanija, kurios insiderai žino daugiau apie artimiausią ketvirtį nei analitikai. NVDA ir AVGO palyginimas šiandien atskleidžia įdomią prieštarą. Stebiu, kad AVGO CEO Hock Tan per 6 mėnesių laikotarpį nuosekliai pardavinėja - 6 mėnesių insider'ių trendas AVGO yra "selling", ne "buying". Tuo tarpu NVDA insider'ių aktyvumas šiame kontekste mažiau ryškus. Jei rinkoje yra konsensusas, kad AVGO yra geresnė alternatyva MU dėl custom AI chip'ų eksposure, tai insider'ių pardavimai AVGO lygiu verčia manęs klausti - ar Tan mato kažką, ko rinka dar nematys kitame kvartale? Tai nereiškia, kad AVGO yra bloga investicija, tačiau pirkti konsenso "saugią" alternatyvą, kai CEO pardavinėja, nėra toks akivaizdus sprendimas, kaip atrodo. CRWV situacija šiandien yra ypač nepatogu analizuoti. Chief Strategy Officer pardavė akcijų už 738 mln. dolerių - tai yra astronominis kiekis, o insider'iai valdo 18,65% kompanijos. 6 mėnesių trendas CRWV yra aiškiai "selling". Rinkoje CRWV pozicionuojama kaip vienas karščiausių AI infrastruktūros vardų, tačiau kai kompanijos strateginis vadovas realizuoja tokį kiekį, reikia savęs paklausti - ar tai likvidumo poreikis po IPO, ar kažkas rimtesnio? Jei tai yra post-IPO lockup realizacija, tai vienas dalykas. Tačiau 738 mln. dolerių pardavimas iš vieno vykdomojo direktoriaus nėra smulkmena ir manau, kad šiuo metu CRWV premium'as nėra pagrįstas, kol matome tokį insiderių realizavimą. GOOGL earnings ateinančiame ketvirtyje yra bene aiškiausias catalyst, kurį stebiu. Analitikų lūkesčiai koncentruojasi ties Cloud augimo tempu ir AI produktų monetizavimu per YouTube bei Search. Rinkos konsensusas tikisi tvirto revenue beat'o, tačiau manau, kad tikroji įtampa bus guidance tikslas - ar GOOGL pasiūlys ryškesnę 2025 capex trajektoriją, ar susilaikys. Jei Cloud augimas YoY pagreitės ir guidance nebus konservatus, tai bus stiprus catalyst visam large-cap tech sektoriui, kuris šiandien po 5% Nasdaq kritimo atrodo perparduotas, ne pervertintas. Šios dienos makro kontekstas vertas atskiro pastebėjimo. VIX šoktelėjo iki 21,51 - tai yra +39,68% per dieną. Tai nėra įprasta korekcija, tai panikuojanti likvidumo krizė trumpuoju laikotarpiu. Auksas krito 3,1%, sidabras - 6,55%, nafta - beveik 3%. Kai vienu metu krenta akcijos, žaliavos ir kriptovaliutos, tai reiškia, kad fondai realizuoja pelną arba vykdo priverstinį deleveraging'ą - ne fundamentalų požiūrį į riziką. DXY stiprėja 0,66%, kas patvirtina, kad kapitalas grįžta į dolerį. Tokiomis sąlygomis AMD insider'io pirkimas už 1,5 mln. dolerių yra ne tik kompanijos signalas - tai signalas, kad bent vienas žmogus su tikra informacija mano, jog kaina nebeatspindi vertės.</div>
+  <div class="yt-synthesis">Šiandien rinkos smuko stipriai - Nasdaq 100 beveik 5%, VIX šoktelėjo 40% - bet mane labiau domina tai, kas vyksta po paviršiumi, nei pats kritimas. Tiksliausias signalas šiandien: AMD EVP Guido Philip nusipirko savo kompanijos akcijų už 1,5 milijono dolerių savo pinigais. Tuo pat metu Lisa Su pardavinėja pagal planą. Tai nėra prieštara - Su pardavimas tikriausiai yra iš anksto suplanuotas 10b5-1 planas, bet EVP pirkimas SAVO pinigais kritimo dieną yra kitas signalas. Insider'iai dažniausiai perka tada, kai mano, kad akcija per daug nusmugo, o ne tada, kai nori pagerinti nuotaiką rinkoje. AMD šiuo metu prekiaujama su maždaug 140% tikėtino EPS augimo per dvejus metus - tai aukščiausias augimas tarp NVDA, AVGO ir AMD trejeto. Jei šis augimas realizuosis, dabartinis kainų lygis po korekcijos gali atrodyti kaip gera įėjimo zona. AVGO ir NVDA santykis šiandien man atrodo įdomiau nei pats kritimas. Žmogus, kuris pardavė MU poziciją su 40% pelnu per 23 dienas ir perkėlė kapitalą į AVGO, turi argumentą: AVGO Q2 buvo stiprus - revenue augimas 48% YoY, gross margin 67%, operacinis pelnas 49%, laisvų pinigų srautų marža 98%. Tai ne atsitiktinis rezultatas. Tačiau AVGO dabar prekiaujama 33,9 kartų šių metų uždarbiu - brangesnis nei NVDA, kuris yra 23,1 karto. Paradoksas yra tas, kad AVGO CEO Hock Tan per 6 mėnesius buvo grynasis pardavėjas - tai reiškia, kad pats kompanijos vadovas esant tokioms kainoms pardavinėjo, o ne pirko. Tai ne automatinis "sell" signalas, bet prieš investuojant didelę sumą į AVGO šiandien, verta paklausti: jei CEO nesiperka, kodėl turėčiau aš? NVDA argumentas šiandien yra paprastesnis ir man atrodo pagrįstestas. 23 kartų šių metų uždarbiu už kompaniją, kuri didina pajamas kiekvienam gigavatui - nuo 20-30 milijardų dolerių prieš kelerius metus iki 50-60 milijardų dabar, su perspektyva siekti 80-100 milijardų. CFO paaiškino mechanizmą: daugiau lustų vienam gigavatui, daugiau turinio sistemoje (CPU, tinklų įranga, adapteriai), ir tai reiškia, kad net jei fizinio pajėgumo augimas sulėtėtų, revenue gali toliau kilti. Hyperscaler'iai - Amazon 200 milijardų capex, Microsoft 190 milijardų, Alphabet 180-190 milijardų, META 125-145 milijardų - iš viso 725 milijardų šiais metais prieš 376 milijardus 2025-aisiais - šio lygio capex intensyvumas teikia struktūrinį palaikymą NVDA revenue per ateinančius 12-18 mėnesių. CRWV signalas man yra aiškiausias iš visų šiandien: Chief Strategy Officer pardavė 738 milijonų dolerių vertės akcijų, o insider'iai valdo 18,65% kompanijos. Tai nėra mažas pardavimas. 6 mėnesių tendencija - grynasis pardavimas. Kai kompanijos strategijos vadovas tokiu mastu parduoda, o rinka tuo pat metu smunka, tai nėra signalas pirkti. CRWV nėra mano watchlist'e kaip "pirkti dabar" - tai signalas stovėti nuošalyje, kol insider'ių dinamika nepasikeičia. META diliavinimas - akcijų emisija kapitalui pritraukti - šiandien papildomai spaudė technologijų sektorių. Tai įdomus kontekstas: META, kuri anksčiau agresyviai vykdė supirkimą, dabar praskiedžia akcininkus. Kai viena iš stipriausių balanso pozicijų turinčių kompanijų rinkoje pasirenka emisijos kelią, tai rodo, kad capex apetitas yra toks, jog net stiprus vidinis pinigų srautas nebeužtenka. Investuotojui tai reiškia, kad augimo pažadas turi realizuotis - jei capex neduos grąžos per 2-3 metus, praskiedimas bus skausmingas. META Q3-Q4 earnings bus pirmas tikras testas, ar šis kapitalas buvo panaudotas teisingai.</div>
 </section>
 
 
@@ -3940,6 +3959,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=MU&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/MU/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -4115,6 +4147,19 @@
           <span class="ta-price">$263.61</span>
           <span class="ta-change down">-9.53%</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=BE&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/BE/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
@@ -4294,6 +4339,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=NBIS&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/NBIS/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -4469,6 +4527,19 @@
           <span class="ta-price">$593.00</span>
           <span class="ta-change down">-5.51%</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=META&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/META/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
@@ -4648,6 +4719,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=AMZN&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/AMZN/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -4825,6 +4909,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=PYPL&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/PYPL/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -4988,6 +5085,19 @@
           <span class="ta-price">$16.03</span>
           <span class="ta-change down">-6.53%</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=SOFI&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/SOFI/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
@@ -5167,6 +5277,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=TSLA&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/TSLA/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -5344,6 +5467,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=HOOD&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/HOOD/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -5517,6 +5653,19 @@
           <span class="ta-price">$2.11</span>
           <span class="ta-change down">-34.67%</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=VLN&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/VLN/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
@@ -5696,6 +5845,19 @@
         </div>
       </div>
 
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=SBET&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/SBET/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
+      </div>
+
       <div class="ta-grid">
         
         
@@ -5855,6 +6017,19 @@
           <span class="ta-price">$16.89</span>
           <span class="ta-change down">-10.63%</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol=OSS&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/OSS/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
@@ -6031,7 +6206,7 @@
 
 <footer>
   <span>Šaltiniai: Yahoo Finance · CoinGecko · Finviz</span>
-  <span>23:04 (Vilnius)</span>
+  <span>23:19 (Vilnius)</span>
 </footer>
 
 </body>

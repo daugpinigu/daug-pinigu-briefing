@@ -649,7 +649,26 @@
   }
 
   /* Technical Analysis (Mark Newton style) */
-  .ta-list { display: flex; flex-direction: column; gap: 16px; }
+  .ta-list { display: flex; flex-direction: column; gap: 20px; }
+  .ta-chart-wrap {
+    margin: 12px 0;
+    background: #131722;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 380px;
+  }
+  .ta-chart-wrap iframe { display: block; width: 100%; border: 0; }
+  .ta-chart-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 380px;
+    color: #6c7588;
+    font-size: 12px;
+    font-style: italic;
+  }
+  .ta-chart-fallback a { color: #b794f4; text-decoration: none; margin-left: 6px; }
   .ta-card {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06);
@@ -1851,6 +1870,19 @@
           <span class="ta-price">{{ t.price_str }}</span>
           <span class="ta-change {{ t.change_dir }}">{{ t.change_pct_str }}</span>
         </div>
+      </div>
+
+      <div class="ta-chart-wrap">
+        <iframe
+          src="https://s.tradingview.com/widgetembed/?symbol={{ t.ticker }}&interval=D&hidesidetoolbar=1&hidetoptoolbar=0&symboledit=0&saveimage=0&toolbarbg=1d2330&studies=%5B%22MASimple%40tv-basicstudies%22%2C%22RSI%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=Europe%2FVilnius&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%22header_compare%22%2C%22header_symbol_search%22%5D&locale=en"
+          height="380"
+          allowtransparency="true"
+          scrolling="no"
+          allowfullscreen="true"
+          loading="lazy"></iframe>
+        <noscript>
+          <div class="ta-chart-fallback">Gyvas grafikas reikalauja JS · <a href="https://www.tradingview.com/symbols/{{ t.ticker }}/" target="_blank">atidaryti TradingView</a></div>
+        </noscript>
       </div>
 
       <div class="ta-grid">
