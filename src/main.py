@@ -432,6 +432,64 @@ def _dedup_news_by_ticker(news_items: list, watchlist: list) -> list:
     return out
 
 
+def _aggregate_news_sentiment(news_items: list) -> dict:
+    """Roll up per-news LLM sentiment into a day-overall view.
+
+    Returns: {bullish, neutral, bearish, total, score, overall_label, overall_color}
+    score: weighted by confidence, -1 (max bear) to +1 (max bull).
+    """
+    if not news_items:
+        return {}
+    counts = {'bullish': 0, 'neutral': 0, 'bearish': 0}
+    weighted_sum = 0.0
+    weight_total = 0.0
+    examples = {'bullish': [], 'bearish': []}
+    for n in news_items:
+        s = n.get('sentiment')
+        if not s:
+            continue
+        conf = max(0, min(100, n.get('sentiment_confidence', 50)))
+        counts[s] = counts.get(s, 0) + 1
+        sign = {'bullish': 1, 'neutral': 0, 'bearish': -1}.get(s, 0)
+        weighted_sum += sign * conf
+        weight_total += conf
+        if s in ('bullish', 'bearish') and len(examples[s]) < 3:
+            examples[s].append({
+                'ticker': n.get('ticker', ''),
+                'title': (n.get('title') or '')[:90],
+                'reason': n.get('sentiment_reason', ''),
+                'confidence': conf,
+            })
+
+    total = sum(counts.values())
+    if total == 0:
+        return {}
+    score = (weighted_sum / weight_total) if weight_total else 0
+    # Map score → overall label
+    if score >= 0.35:
+        label, color = 'Stipriai bullish', '#22cc44'
+    elif score >= 0.12:
+        label, color = 'Bullish', '#7ed87e'
+    elif score >= -0.12:
+        label, color = 'Neutralus / mišrus', '#f4cc6b'
+    elif score >= -0.35:
+        label, color = 'Bearish', '#ff9b3a'
+    else:
+        label, color = 'Stipriai bearish', '#ff4444'
+
+    return {
+        'bullish': counts.get('bullish', 0),
+        'neutral': counts.get('neutral', 0),
+        'bearish': counts.get('bearish', 0),
+        'total': total,
+        'score': round(score, 3),
+        'score_pct': round(score * 100, 1),
+        'overall_label': label,
+        'overall_color': color,
+        'examples': examples,
+    }
+
+
 def main():
     now = datetime.now(VILNIUS)
 
@@ -895,6 +953,71 @@ def main():
         print(f"  warn: TA computation failed: {e}")
         ta_cards = []
 
+    # Crypto Fear & Greed Index
+    print("  Fetching Crypto Fear & Greed Index...")
+    try:
+        from sentiment_indicators import fetch_crypto_fear_greed, fetch_cme_fedwatch_simple
+        fear_greed = fetch_crypto_fear_greed()
+        if fear_greed:
+            print(f"    -> {fear_greed['value']} ({fear_greed['classification_lt']}), week {fear_greed['delta_week']:+d}")
+    except Exception as e:
+        print(f"  warn: Fear & Greed failed: {e}")
+        fear_greed = None
+
+    # Fed funds futures (CME FedWatch proxy)
+    print("  Fetching Fed funds futures (FedWatch implied)...")
+    try:
+        fedwatch = fetch_cme_fedwatch_simple()
+        if fedwatch:
+            print(f"    -> implied action: {fedwatch['implied_action']} ({fedwatch['bias_bps']:+.0f}bp bias)")
+    except Exception as e:
+        print(f"  warn: FedWatch failed: {e}")
+        fedwatch = None
+
+    # Sector rotation heatmap (11 SPDR sector ETFs)
+    print("  Computing sector rotation heatmap...")
+    try:
+        from market_scanners import fetch_sector_rotation, scan_watchlist_alerts, fetch_options_flow
+        sector_rotation = fetch_sector_rotation()
+        print(f"    -> {len(sector_rotation)} sectors")
+    except Exception as e:
+        print(f"  warn: Sector rotation failed: {e}")
+        sector_rotation = []
+
+    # Watchlist alerts: 52w high/low + golden/death crosses
+    print("  Scanning watchlist for 52w highs/lows + MA crosses...")
+    try:
+        alert_tickers = list(set(STOCKS[:60]))
+        watchlist_alerts = scan_watchlist_alerts(alert_tickers)
+        ah = watchlist_alerts
+        print(f"    -> 52w high: {len(ah['near_52w_high'])}, 52w low: {len(ah['near_52w_low'])},"
+              f" golden: {len(ah['golden_crosses'])}, death: {len(ah['death_crosses'])}")
+    except Exception as e:
+        print(f"  warn: Watchlist alerts failed: {e}")
+        watchlist_alerts = {'near_52w_high': [], 'near_52w_low': [],
+                            'golden_crosses': [], 'death_crosses': []}
+
+    # Options flow (basic put/call ratio + IV signals from yfinance options)
+    print("  Computing options flow (P/C ratio + IV) for watchlist...")
+    try:
+        ta_watchlist_path = Path(__file__).resolve().parent.parent / 'data' / 'ta_watchlist.json'
+        import json as _json
+        ta_cfg = _json.loads(ta_watchlist_path.read_text()) if ta_watchlist_path.exists() else {}
+        options_tickers = ta_cfg.get('core', [])[:9]
+        options_flow = fetch_options_flow(options_tickers, max_tickers=10)
+        print(f"    -> {len(options_flow)} options flow entries")
+    except Exception as e:
+        print(f"  warn: Options flow failed: {e}")
+        options_flow = []
+
+    # Aggregate news sentiment from LLM-scored news items
+    news_sentiment_summary = _aggregate_news_sentiment(news or [])
+    if news_sentiment_summary:
+        print(f"  News sentiment: {news_sentiment_summary['bullish']}B / "
+              f"{news_sentiment_summary['neutral']}N / "
+              f"{news_sentiment_summary['bearish']}b "
+              f"=> {news_sentiment_summary['overall_label']}")
+
     context = {
         'date_long': format_date_lt(now),
         'today_iso': now.strftime('%Y-%m-%d'),
@@ -919,6 +1042,12 @@ def main():
         'yt_synthesis': yt_synthesis,
         'wl_earnings': wl_earnings,
         'ta_cards': ta_cards,
+        'fear_greed': fear_greed,
+        'fedwatch': fedwatch,
+        'sector_rotation': sector_rotation,
+        'watchlist_alerts': watchlist_alerts,
+        'options_flow': options_flow,
+        'news_sentiment': news_sentiment_summary,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }

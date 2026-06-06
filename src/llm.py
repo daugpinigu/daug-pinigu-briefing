@@ -234,7 +234,7 @@ def analyze_news(title: str, body: str, ticker: str = '',
 
     prompt = f"""{STYLE_GUIDE}
 
-UŽDUOTIS: Iš naujienos ištrauk svarbiausius SKAIČIUS į struktūrinę formą, tada parašyk gilią analizę.
+UŽDUOTIS: Iš naujienos ištrauk svarbiausius SKAIČIUS, parašyk gilią analizę, ir klasifikuok rinkos sentimentą.
 
 Grąžink TIK JSON, jokio paaiškinimo aplink:
 {{
@@ -242,8 +242,17 @@ Grąžink TIK JSON, jokio paaiškinimo aplink:
     {{"label": "trumpas Lietuviškas pavadinimas (max 20 simbolių)", "value": "skaičius su vienetu, pvz. -$0.40", "note": "konteksto eilutė, max 30 simbolių, pvz. vs +$0.03 est arba +3.8% YoY"}},
     ... iki 6 svarbiausių metrikų ...
   ],
-  "analysis": "3-5 sakinių GILI investicinė analizė lietuvių kalba. NEPAKARTOTI skaičių iš metrics - tik kontekstas, ką tai reiškia, ką daryti. Naudoti tik leidžiamus anglicizmus iš style guide."
+  "analysis": "3-5 sakinių GILI investicinė analizė lietuvių kalba. NEPAKARTOTI skaičių iš metrics - tik kontekstas, ką tai reiškia, ką daryti. Naudoti tik leidžiamus anglicizmus iš style guide.",
+  "sentiment": "bullish | bearish | neutral",
+  "sentiment_confidence": 50,
+  "sentiment_reason": "viena trumpa frazė lietuviškai kodėl (max 40 simbolių)"
 }}
+
+Sentiment'o gairės:
+- "bullish" - naujiena teigiama akcijos/sektoriaus/rinkos kainai
+- "bearish" - neigiama akcijos/sektoriaus/rinkos kainai
+- "neutral" - mišri arba neturi aiškios krypties
+- confidence: 30-50 = silpnas signal, 50-70 = vidutinis, 70-95 = stiprus
 
 JEI naujienoje NĖRA konkrečių skaičių (pvz., makro komentaras, ne earnings) - "metrics" gali būti tuščias [].
 {ticker_ctx}{move_ctx}
@@ -269,9 +278,20 @@ STRAIPSNIO TEKSTAS:
             return {'metrics': [], 'analysis': _cleanup_text(text)}
         try:
             data = _json.loads(json_str)
+            sentiment_raw = (data.get('sentiment') or 'neutral').strip().lower()
+            if sentiment_raw not in ('bullish', 'bearish', 'neutral'):
+                sentiment_raw = 'neutral'
+            confidence = data.get('sentiment_confidence') or 50
+            try:
+                confidence = max(0, min(100, int(confidence)))
+            except (TypeError, ValueError):
+                confidence = 50
             return {
                 'metrics': data.get('metrics', []) or [],
                 'analysis': _cleanup_text(data.get('analysis', '')),
+                'sentiment': sentiment_raw,
+                'sentiment_confidence': confidence,
+                'sentiment_reason': _cleanup_text(data.get('sentiment_reason', ''))[:60],
             }
         except _json.JSONDecodeError:
             # JSON malformed — extract "analysis" field via regex as a last resort
@@ -797,6 +817,9 @@ def batch_analyze_news(news_items: list, max_workers: int = 4) -> list:
                 if result and result.get('analysis'):
                     n['llm_analysis'] = result['analysis']
                     n['llm_metrics'] = result.get('metrics', [])
+                    n['sentiment'] = result.get('sentiment', 'neutral')
+                    n['sentiment_confidence'] = result.get('sentiment_confidence', 50)
+                    n['sentiment_reason'] = result.get('sentiment_reason', '')
             except Exception:
                 pass
     return news_items

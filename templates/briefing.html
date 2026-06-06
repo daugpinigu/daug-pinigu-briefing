@@ -648,6 +648,244 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Crypto Fear & Greed Index */
+  .fg-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .fg-gauge {
+    text-align: center;
+  }
+  .fg-value {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .fg-class {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+  }
+  .fg-meta { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #b8bcc8; }
+  .fg-delta-row { display: flex; gap: 14px; }
+  .fg-delta-cell {
+    background: rgba(255,255,255,0.03);
+    border-radius: 5px;
+    padding: 6px 10px;
+    min-width: 80px;
+  }
+  .fg-delta-label { font-size: 10px; color: #6c7588; text-transform: uppercase; }
+  .fg-delta-val { font-size: 14px; font-weight: 700; color: #e6e8ee; font-variant-numeric: tabular-nums; }
+  .fg-trend { font-size: 12px; color: #d8dce5; font-style: italic; }
+  .fg-spark {
+    display: flex;
+    align-items: flex-end;
+    gap: 1px;
+    height: 28px;
+    margin-top: 6px;
+  }
+  .fg-spark-bar { flex: 1; min-width: 2px; opacity: 0.7; }
+
+  /* Fed funds futures / FedWatch */
+  .fedwatch-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .fedwatch-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .fedwatch-action {
+    font-size: 16px;
+    font-weight: 800;
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .fedwatch-action.cut { background: rgba(126,216,126,0.2); color: #7ed87e; }
+  .fedwatch-action.hold { background: rgba(244,204,107,0.2); color: #f4cc6b; }
+  .fedwatch-action.hike { background: rgba(255,115,115,0.2); color: #ff7373; }
+  .fedwatch-rates { display: flex; gap: 16px; font-size: 12px; color: #b8bcc8; margin-bottom: 12px; }
+  .fedwatch-rates strong { color: #e6e8ee; font-variant-numeric: tabular-nums; }
+  .fedwatch-probs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .fedwatch-prob-cell {
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .fedwatch-prob-value { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .fedwatch-prob-label { font-size: 10px; color: #8892a6; text-transform: uppercase; margin-top: 4px; letter-spacing: 0.5px; }
+  .fedwatch-interp { font-size: 12px; color: #d8dce5; font-style: italic; margin-top: 10px; }
+
+  /* Sector rotation heatmap */
+  .sector-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .sector-table th {
+    text-align: right;
+    padding: 6px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #8892a6;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sector-table th.sym { text-align: left; }
+  .sector-table td {
+    padding: 8px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: #e6e8ee;
+  }
+  .sector-table td.sym { text-align: left; font-weight: 700; }
+  .sector-table td.sym .sym-tag {
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 10px;
+    margin-right: 6px;
+  }
+  .sector-table td.sym .sym-name { color: #8892a6; font-weight: 500; font-size: 11px; }
+  .sector-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Watchlist alerts */
+  .alerts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .alert-block {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .alert-block-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #b794f4;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .alert-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  .alert-row .alert-ticker { font-weight: 700; color: #e6e8ee; min-width: 50px; }
+  .alert-row .alert-price { color: #d8dce5; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .alert-row .alert-detail { color: #8892a6; font-size: 11px; margin-left: auto; }
+  .alert-empty { color: #6c7588; font-size: 11px; font-style: italic; padding: 6px 0; }
+
+  /* Options flow */
+  .options-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .options-table th {
+    text-align: right;
+    padding: 6px 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #8892a6;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .options-table th.sym { text-align: left; }
+  .options-table td {
+    padding: 8px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: #e6e8ee;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .options-table td.sym { text-align: left; font-weight: 700; }
+  .opt-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  /* News sentiment aggregate */
+  .news-sent-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .news-sent-overall {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .news-sent-score {
+    font-size: 30px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .news-sent-label {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .news-sent-counts {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .news-sent-count-cell {
+    background: rgba(255,255,255,0.03);
+    border-radius: 5px;
+    padding: 8px 12px;
+    text-align: center;
+    min-width: 70px;
+  }
+  .news-sent-count-cell .nsc-val { font-size: 18px; font-weight: 800; }
+  .news-sent-count-cell .nsc-lab { font-size: 10px; color: #8892a6; text-transform: uppercase; }
+  .news-sent-count-cell.bull .nsc-val { color: #7ed87e; }
+  .news-sent-count-cell.bear .nsc-val { color: #ff7373; }
+  .news-sent-count-cell.neut .nsc-val { color: #f4cc6b; }
+  .news-sent-examples { display: flex; flex-direction: column; gap: 6px; }
+  .news-sent-example {
+    font-size: 11px;
+    color: #b8bcc8;
+    padding: 6px 8px;
+    border-left: 2px solid #8892a6;
+    background: rgba(255,255,255,0.02);
+  }
+  .news-sent-example.bull { border-left-color: #7ed87e; }
+  .news-sent-example.bear { border-left-color: #ff7373; }
+  .news-sent-example .nse-ticker { font-weight: 700; color: #e6e8ee; }
+  .news-sent-example .nse-reason { color: #8892a6; font-style: italic; margin-left: 6px; font-size: 10px; }
+
   /* Technical Analysis (Mark Newton style) */
   .ta-list { display: flex; flex-direction: column; gap: 20px; }
   .ta-chart-wrap {
@@ -1877,11 +2115,265 @@
 </section>
 {% endif %}
 
+{% if news_sentiment and news_sentiment.total %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#22cc44">Naujienų Sentimentas · LLM-scored</div>
+    <span class="section-count" style="background:rgba(34,204,68,0.15);color:#22cc44">{{ news_sentiment.total }}</span>
+  </div>
+  <div class="news-sent-card">
+    <div class="news-sent-overall">
+      <div class="news-sent-score" style="color:{{ news_sentiment.overall_color }}">{{ news_sentiment.score_pct }}</div>
+      <div class="news-sent-label" style="color:{{ news_sentiment.overall_color }}">{{ news_sentiment.overall_label }}</div>
+    </div>
+    <div class="news-sent-counts">
+      <div class="news-sent-count-cell bull"><div class="nsc-val">{{ news_sentiment.bullish }}</div><div class="nsc-lab">Bullish</div></div>
+      <div class="news-sent-count-cell neut"><div class="nsc-val">{{ news_sentiment.neutral }}</div><div class="nsc-lab">Neutralus</div></div>
+      <div class="news-sent-count-cell bear"><div class="nsc-val">{{ news_sentiment.bearish }}</div><div class="nsc-lab">Bearish</div></div>
+    </div>
+    {% if news_sentiment.examples.bullish or news_sentiment.examples.bearish %}
+    <div class="news-sent-examples">
+      {% for ex in news_sentiment.examples.bullish %}
+      <div class="news-sent-example bull">
+        <span class="nse-ticker">{{ ex.ticker or '?' }}</span> · {{ ex.title }}
+        {% if ex.reason %}<span class="nse-reason">({{ ex.reason }} · {{ ex.confidence }}%)</span>{% endif %}
+      </div>
+      {% endfor %}
+      {% for ex in news_sentiment.examples.bearish %}
+      <div class="news-sent-example bear">
+        <span class="nse-ticker">{{ ex.ticker or '?' }}</span> · {{ ex.title }}
+        {% if ex.reason %}<span class="nse-reason">({{ ex.reason }} · {{ ex.confidence }}%)</span>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% if fear_greed or fedwatch %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f4cc6b">Sentimentas + Fed</div>
+    <span class="section-count" style="background:rgba(244,204,107,0.15);color:#f4cc6b">2</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    {% if fear_greed %}
+    <div class="fg-card" style="grid-template-columns: 110px 1fr;">
+      <div class="fg-gauge">
+        <div class="fg-value" style="color:{{ fear_greed.color }}">{{ fear_greed.value }}</div>
+        <div class="fg-class" style="color:{{ fear_greed.color }}">{{ fear_greed.classification_lt }}</div>
+      </div>
+      <div class="fg-meta">
+        <div class="fg-delta-row">
+          <div class="fg-delta-cell">
+            <div class="fg-delta-label">Diena</div>
+            <div class="fg-delta-val">{{ '+' if fear_greed.delta_day >= 0 else '' }}{{ fear_greed.delta_day }}</div>
+          </div>
+          <div class="fg-delta-cell">
+            <div class="fg-delta-label">Savaitė</div>
+            <div class="fg-delta-val">{{ '+' if fear_greed.delta_week >= 0 else '' }}{{ fear_greed.delta_week }}</div>
+          </div>
+          <div class="fg-delta-cell">
+            <div class="fg-delta-label">Mėnuo</div>
+            <div class="fg-delta-val">{{ fear_greed.prev_month }}</div>
+          </div>
+        </div>
+        <div class="fg-trend">{{ fear_greed.trend_text }} · Crypto F&amp;G</div>
+        <div class="fg-spark">
+          {% for v in fear_greed.history_30d %}
+          <div class="fg-spark-bar" style="height:{{ v }}%;background:{% if v < 25 %}#ff4444{% elif v < 45 %}#ff9b3a{% elif v < 55 %}#f4cc6b{% elif v < 75 %}#7ed87e{% else %}#22cc44{% endif %}"></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% if fedwatch %}
+    <div class="fedwatch-card">
+      <div class="fedwatch-header">
+        <div>
+          <div style="font-size:11px;color:#8892a6;text-transform:uppercase;">FedWatch implied (next FOMC)</div>
+          <div style="font-size:11px;color:#6c7588;margin-top:2px;">{{ fedwatch.source }}</div>
+        </div>
+        <div class="fedwatch-action {% if 'CUT' in fedwatch.implied_action.upper() %}cut{% elif 'HIKE' in fedwatch.implied_action.upper() %}hike{% else %}hold{% endif %}">{{ fedwatch.implied_action }}</div>
+      </div>
+      <div class="fedwatch-rates">
+        <div>Dabartinis target: <strong>{{ fedwatch.current_target_range }}</strong></div>
+        <div>Implied: <strong>{{ fedwatch.implied_rate }}%</strong></div>
+        <div>Bias: <strong>{{ '+' if fedwatch.bias_bps >= 0 else '' }}{{ fedwatch.bias_bps }}bp</strong></div>
+      </div>
+      <div class="fedwatch-probs">
+        <div class="fedwatch-prob-cell">
+          <div class="fedwatch-prob-value" style="color:#7ed87e">{{ fedwatch.next_meeting_probs.cut_25bp }}%</div>
+          <div class="fedwatch-prob-label">Cut 25bp</div>
+        </div>
+        <div class="fedwatch-prob-cell">
+          <div class="fedwatch-prob-value" style="color:#f4cc6b">{{ fedwatch.next_meeting_probs.hold }}%</div>
+          <div class="fedwatch-prob-label">Hold</div>
+        </div>
+        <div class="fedwatch-prob-cell">
+          <div class="fedwatch-prob-value" style="color:#ff7373">{{ fedwatch.next_meeting_probs.hike_25bp }}%</div>
+          <div class="fedwatch-prob-label">Hike 25bp</div>
+        </div>
+      </div>
+      <div class="fedwatch-interp">{{ fedwatch.interpretation_lt }}</div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{% if sector_rotation %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#1d9bf0">Sektorių Rotacija · SPDR ETFs</div>
+    <span class="section-count" style="background:rgba(29,155,240,0.15);color:#1d9bf0">{{ sector_rotation|length }}</span>
+  </div>
+  <table class="sector-table">
+    <thead>
+      <tr>
+        <th class="sym">Sektorius</th>
+        <th>Diena</th>
+        <th>Savaitė</th>
+        <th>Mėnuo</th>
+        <th>3 mėn</th>
+        <th>YTD</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sector_rotation %}
+      <tr>
+        <td class="sym"><span class="sym-tag">{{ s.symbol }}</span><span class="sym-name">{{ s.name }}</span></td>
+        <td style="background:{{ s.day_color }}">{{ s.day_str }}</td>
+        <td style="background:{{ s.week_color }}">{{ s.week_str }}</td>
+        <td style="background:{{ s.month_color }}">{{ s.month_str }}</td>
+        <td style="background:{{ s.three_mo_color }}">{{ s.three_mo_str }}</td>
+        <td style="background:{{ s.ytd_color }}">{{ s.ytd_str }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endif %}
+
+{% if watchlist_alerts and (watchlist_alerts.near_52w_high or watchlist_alerts.near_52w_low or watchlist_alerts.golden_crosses or watchlist_alerts.death_crosses) %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#b794f4">Watchlist Alerts · 52w + MA Cross</div>
+  </div>
+  <div class="alerts-grid">
+    <div class="alert-block">
+      <div class="alert-block-title" style="color:#7ed87e">52w High (≤3% nuo aukšumos)</div>
+      {% for a in watchlist_alerts.near_52w_high %}
+      <div class="alert-row">
+        <span class="alert-ticker">{{ a.ticker }}</span>
+        <span class="alert-price">{{ a.price_str }}</span>
+        <span class="alert-detail">52w: {{ a.high_52w_str }} ({{ a.pct_str }})</span>
+      </div>
+      {% else %}
+      <div class="alert-empty">- nėra -</div>
+      {% endfor %}
+    </div>
+    <div class="alert-block">
+      <div class="alert-block-title" style="color:#ff7373">52w Low (≤3% nuo dugno)</div>
+      {% for a in watchlist_alerts.near_52w_low %}
+      <div class="alert-row">
+        <span class="alert-ticker">{{ a.ticker }}</span>
+        <span class="alert-price">{{ a.price_str }}</span>
+        <span class="alert-detail">52w: {{ a.low_52w_str }} ({{ a.pct_str }})</span>
+      </div>
+      {% else %}
+      <div class="alert-empty">- nėra -</div>
+      {% endfor %}
+    </div>
+    <div class="alert-block">
+      <div class="alert-block-title" style="color:#7ed87e">Golden Cross (50DMA ↗ 200DMA)</div>
+      {% for a in watchlist_alerts.golden_crosses %}
+      <div class="alert-row">
+        <span class="alert-ticker">{{ a.ticker }}</span>
+        <span class="alert-price">{{ a.price_str }}</span>
+        <span class="alert-detail">{% if a.days_ago == 0 %}šiandien{% else %}prieš {{ a.days_ago }} d.{% endif %} · MA50 {{ a.ma50_str }} / MA200 {{ a.ma200_str }}</span>
+      </div>
+      {% else %}
+      <div class="alert-empty">- nėra -</div>
+      {% endfor %}
+    </div>
+    <div class="alert-block">
+      <div class="alert-block-title" style="color:#ff7373">Death Cross (50DMA ↘ 200DMA)</div>
+      {% for a in watchlist_alerts.death_crosses %}
+      <div class="alert-row">
+        <span class="alert-ticker">{{ a.ticker }}</span>
+        <span class="alert-price">{{ a.price_str }}</span>
+        <span class="alert-detail">{% if a.days_ago == 0 %}šiandien{% else %}prieš {{ a.days_ago }} d.{% endif %} · MA50 {{ a.ma50_str }} / MA200 {{ a.ma200_str }}</span>
+      </div>
+      {% else %}
+      <div class="alert-empty">- nėra -</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if options_flow %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#f48fb1">Options Flow · P/C + IV (front-month)</div>
+    <span class="section-count" style="background:rgba(244,143,177,0.15);color:#f48fb1">{{ options_flow|length }}</span>
+  </div>
+  <table class="options-table">
+    <thead>
+      <tr>
+        <th class="sym">Ticker</th>
+        <th>Expiry</th>
+        <th>Kaina</th>
+        <th>P/C OI</th>
+        <th>P/C Vol</th>
+        <th>ATM IV</th>
+        <th>Top Call</th>
+        <th>Top Put</th>
+        <th>Sentiment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for o in options_flow %}
+      <tr>
+        <td class="sym">{{ o.ticker }}</td>
+        <td style="color:#8892a6;font-size:11px">{{ o.expiry }}</td>
+        <td>{{ o.price_str }}</td>
+        <td>{{ o.pc_oi_str }}</td>
+        <td>{{ o.pc_vol_str }}</td>
+        <td>{{ o.atm_iv_str }}</td>
+        <td>{{ o.top_call_strike }} ({{ '{:,}'.format(o.top_call_vol) }})</td>
+        <td>{{ o.top_put_strike }} ({{ '{:,}'.format(o.top_put_vol) }})</td>
+        <td><span class="opt-badge" style="background:rgba(255,255,255,0.06);color:{{ o.sentiment.color }}">{{ o.sentiment.badge }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div style="font-size:10px;color:#6c7588;margin-top:8px;font-style:italic;">
+    P/C > 1.4 = bearish positioning · P/C < 0.6 = bullish · ATM IV iš front-month ar pirmo expiry &gt;5d · Free yfinance data; ne real-time unusual activity.
+  </div>
+</section>
+{% endif %}
+
 {% if ta_cards %}
 <section class="section">
   <div class="section-header">
-    <div class="section-title" style="color:#b794f4">Techninė Analizė · Mark Newton style</div>
+    <div class="section-title" style="color:#b794f4">Techninė Analizė · Levels Framework</div>
     <span class="section-count" style="background:rgba(183,148,244,0.15);color:#b794f4">{{ ta_cards|length }}</span>
+  </div>
+  <div style="background:rgba(183,148,244,0.06);border-left:3px solid #b794f4;border-radius:6px;padding:12px 16px;margin-bottom:14px;font-size:12px;line-height:1.6;color:#d8dce5;">
+    <div style="font-weight:700;color:#b794f4;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;font-size:11px;">Kaip skaityti šią sekciją</div>
+    Multi-timeframe (daily + weekly) algoritminis framework'as: trend (MA struktūra), momentum (RSI), pivot support/resistance, fib retracement/extension. Tai <strong>NĖRA šventas grajus</strong> - tai viena perspektyva, kuri veikia tik su volume confirmation ir bendru market context'u.
+    <div style="margin-top:10px;color:#b794f4;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;">Naudojimas opcionų pardavėjams</div>
+    <ul style="margin:6px 0 0 0;padding-left:18px;color:#d8dce5;">
+      <li><strong>Sell puts</strong>: strike zonoje 0.5-0.786 fib retracement arba S1/S2 lygyje. Aukšta ATM IV + aiškus support = ideal setup'as. Vengti, jei trend'as bearish arba RSI oversold (whipsaw rizika).</li>
+      <li><strong>Sell calls</strong>: strike R1/R2 zonoje arba prie fib extension (1.272, 1.618). Aukšta IV + aiškus resistance = solid setup'as. Vengti, jei parabolic trend.</li>
+      <li><strong>Cash-secured puts / covered calls</strong>: pasirinkti strike'us prie key levels, ne random 30-delta - reaguos į matomas zonas.</li>
+      <li><strong>Iron condors / strangles</strong>: strike'us tarp R1 ir S1 (high prob), arba R2-S2 (lower premium, geresnis R/R).</li>
+    </ul>
+    <div style="margin-top:10px;color:#b794f4;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.4px;">Swing / position trade'eriams</div>
+    <div style="margin-top:4px;">Pullback entries link MA50/MA200, fib reverse zones; stop žemiau S2; target R1/R2 arba fib extension. Setup blokuose žemiau - jau apskaičiuoti entry/stop/target iš šių levels. Tai <em>pradinis taškas</em>, ne galutinis sprendimas.</div>
   </div>
   <div class="ta-list">
     {% for t in ta_cards %}
@@ -1996,7 +2488,7 @@
     {% endfor %}
   </div>
   <div class="ta-disclaimer">
-    TA generuojama algoritmu (yfinance OHLCV → fib + pivot + RSI/MA indikatoriai) Mark Newton stiliuje. Tai NĖRA Mark Newton tikra analizė. Grafikai - Lightweight Charts su embedded ~6mo daily data (atnaujinama kiekvieną brief'ą). Naudoti kaip framework'ą, ne kaip savarankišką sprendimą.
+    Algoritminis TA framework'as (yfinance OHLCV → fib retracement/extension + pivot S/R + RSI/MA indikatoriai). Grafikai - Lightweight Charts su embedded ~6mo daily data (atnaujinama kiekvieną brief'ą). Naudoti kaip framework'ą kombinuotai su fundamentaliais skaičiais, ne kaip savarankišką sprendimą.
   </div>
 </section>
 
