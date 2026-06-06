@@ -648,6 +648,136 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Technical Analysis (Mark Newton style) */
+  .ta-list { display: flex; flex-direction: column; gap: 16px; }
+  .ta-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-left: 3px solid #b794f4;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .ta-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 8px;
+  }
+  .ta-ticker {
+    font-size: 18px;
+    font-weight: 800;
+    color: #b794f4;
+    letter-spacing: 0.5px;
+  }
+  .ta-name { color: #8892a6; font-size: 12px; margin-left: 8px; font-weight: 500; }
+  .ta-price-block { text-align: right; }
+  .ta-price { font-size: 16px; font-weight: 700; color: #e6e8ee; font-variant-numeric: tabular-nums; }
+  .ta-change { font-size: 13px; font-weight: 600; margin-left: 8px; font-variant-numeric: tabular-nums; }
+  .ta-change.up { color: #7ed87e; }
+  .ta-change.down { color: #ff7373; }
+  .ta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .ta-col {
+    background: rgba(255,255,255,0.015);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .ta-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #b794f4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .ta-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .ta-row-label { color: #8892a6; }
+  .ta-row-value { color: #e6e8ee; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ta-trend { font-size: 13px; margin-bottom: 6px; color: #e6e8ee; }
+  .ta-section-mini {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(255,255,255,0.05);
+  }
+  .ta-section-mini-label {
+    font-size: 10px;
+    color: #b794f4;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+  .ta-fib-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #b8bcc8;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 2px;
+  }
+  .ta-fib-row .fib-key { color: #8892a6; min-width: 50px; }
+  .ta-fib-row .fib-val { font-weight: 600; color: #e6e8ee; }
+  .ta-levels { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .ta-level {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ta-level-tag {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+  }
+  .ta-level-tag.r { background: rgba(255,115,115,0.15); color: #ff9b9b; }
+  .ta-level-tag.s { background: rgba(126,216,126,0.15); color: #a7e6a7; }
+  .ta-level-price { font-weight: 700; color: #e6e8ee; }
+  .ta-level-dist { color: #8892a6; }
+  .ta-level-label { color: #8892a6; font-size: 10px; font-style: italic; }
+  .ta-setup {
+    margin-top: 10px;
+    background: rgba(183,148,244,0.05);
+    border: 1px solid rgba(183,148,244,0.15);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .ta-setup-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #b794f4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .ta-setup-row { font-size: 12px; color: #e6e8ee; margin-bottom: 3px; }
+  .ta-setup-row strong { color: #b794f4; }
+  .ta-setup-row .price { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ta-verdict {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #d8dce5;
+    font-style: italic;
+    line-height: 1.5;
+    padding-left: 10px;
+    border-left: 2px solid #b794f4;
+  }
+  .ta-rsi-warn { color: #f4cc6b; font-weight: 600; font-size: 11px; margin-top: 4px; }
+  .ta-disclaimer {
+    font-size: 10px;
+    color: #6c7588;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
   .insider-list { display: flex; flex-direction: column; gap: 4px; }
   .insider-group {
     background: rgba(255,255,255,0.02);
@@ -1699,6 +1829,113 @@
       {% endfor %}
     </div>
     {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if ta_cards %}
+<section class="section">
+  <div class="section-header">
+    <div class="section-title" style="color:#b794f4">Techninė Analizė · Mark Newton style</div>
+    <span class="section-count" style="background:rgba(183,148,244,0.15);color:#b794f4">{{ ta_cards|length }}</span>
+  </div>
+  <div class="ta-list">
+    {% for t in ta_cards %}
+    <div class="ta-card">
+      <div class="ta-header">
+        <div>
+          <span class="ta-ticker">{{ t.ticker }}</span>
+          <span class="ta-name">{{ t.name }}</span>
+        </div>
+        <div class="ta-price-block">
+          <span class="ta-price">{{ t.price_str }}</span>
+          <span class="ta-change {{ t.change_dir }}">{{ t.change_pct_str }}</span>
+        </div>
+      </div>
+
+      <div class="ta-grid">
+        {% for tf in [t.daily, t.weekly] %}
+        {% if tf.available %}
+        <div class="ta-col">
+          <div class="ta-col-label">{{ tf.label }} · {{ tf.trend_emoji }} {{ tf.trend_text }}</div>
+          <div class="ta-row"><span class="ta-row-label">RSI(14)</span><span class="ta-row-value">{{ tf.rsi_label }}</span></div>
+          <div class="ta-row"><span class="ta-row-label">20DMA</span><span class="ta-row-value">{{ tf.ma20_str }}</span></div>
+          <div class="ta-row"><span class="ta-row-label">50DMA</span><span class="ta-row-value">{{ tf.ma50_str }}</span></div>
+          <div class="ta-row"><span class="ta-row-label">200DMA</span><span class="ta-row-value">{{ tf.ma200_str }}</span></div>
+
+          <div class="ta-section-mini">
+            <div class="ta-section-mini-label">Fib retracement ({{ tf.swing_low_str }} → {{ tf.swing_high_str }})</div>
+            {% for k, v in tf.fib_ret.items() %}
+            <div class="ta-fib-row"><span class="fib-key">{{ k }}</span><span class="fib-val">{{ v }}</span></div>
+            {% endfor %}
+          </div>
+
+          <div class="ta-section-mini">
+            <div class="ta-section-mini-label">Fib extension targets</div>
+            {% for k, v in tf.fib_ext.items() %}
+            <div class="ta-fib-row"><span class="fib-key">{{ k }}</span><span class="fib-val">{{ v }}</span></div>
+            {% endfor %}
+          </div>
+
+          <div class="ta-section-mini">
+            <div class="ta-section-mini-label">Key zones</div>
+            <div class="ta-levels">
+              {% for r in tf.resistance %}
+              <div class="ta-level">
+                <span class="ta-level-tag r">R{{ loop.index }}</span>
+                <span class="ta-level-price">{{ r.price_str }}</span>
+                <span class="ta-level-dist">({{ r.dist_pct }})</span>
+                <span class="ta-level-label">{{ r.label }}</span>
+              </div>
+              {% endfor %}
+              {% for s in tf.support %}
+              <div class="ta-level">
+                <span class="ta-level-tag s">S{{ loop.index }}</span>
+                <span class="ta-level-price">{{ s.price_str }}</span>
+                <span class="ta-level-dist">({{ s.dist_pct }})</span>
+                <span class="ta-level-label">{{ s.label }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="ta-col">
+          <div class="ta-col-label">{{ tf.label }}</div>
+          <div class="ta-row"><span class="ta-row-label">Nepakanka duomenų</span></div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if t.daily.available and t.daily.setup %}
+      <div class="ta-setup">
+        <div class="ta-setup-label">Setup (Daily)</div>
+        {% if t.daily.setup.bullish == true %}
+        <div class="ta-setup-row"><strong>Bullish entry:</strong> pullback į <span class="price">{{ t.daily.setup.entry_zone }}</span>, stop <span class="price">{{ t.daily.setup.stop }}</span>, target <span class="price">{{ t.daily.setup.target }}</span></div>
+        <div class="ta-setup-row"><strong>Aggressive add:</strong> break virš <span class="price">{{ t.daily.setup.aggressive_break }}</span> ant volume, target <span class="price">{{ t.daily.setup.aggressive_target }}</span></div>
+        <div class="ta-setup-row"><strong>Risk-off:</strong> close žemiau <span class="price">{{ t.daily.setup.risk_off }}</span> = trend integrity rizikoje</div>
+        {% elif t.daily.setup.bullish == false %}
+        <div class="ta-setup-row"><strong>Bearish entry:</strong> bounce į <span class="price">{{ t.daily.setup.entry_zone }}</span>, stop <span class="price">{{ t.daily.setup.stop }}</span>, target <span class="price">{{ t.daily.setup.target }}</span></div>
+        <div class="ta-setup-row"><strong>Aggressive short:</strong> break žemiau <span class="price">{{ t.daily.setup.aggressive_break }}</span>, target <span class="price">{{ t.daily.setup.aggressive_target }}</span></div>
+        <div class="ta-setup-row"><strong>Risk-off:</strong> close virš <span class="price">{{ t.daily.setup.risk_off }}</span> = bear thesis broken</div>
+        {% else %}
+        <div class="ta-setup-row">Mixed setup - lauk aiškesnio range break before commit</div>
+        {% endif %}
+        {% if t.daily.setup.rsi_warning %}
+        <div class="ta-rsi-warn">⚠ RSI extreme - padidinta whipsaw rizika</div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {% if t.daily.verdict %}
+      <div class="ta-verdict">"{{ t.daily.verdict }}"</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="ta-disclaimer">
+    TA generuojama algoritmu (yfinance OHLCV → fib + pivot + RSI/MA indikatoriai) Mark Newton stiliuje. Tai NĖRA Mark Newton tikra analizė. Naudoti kaip framework'ą, ne kaip savarankišką sprendimą.
   </div>
 </section>
 {% endif %}

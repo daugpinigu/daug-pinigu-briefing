@@ -1,0 +1,7 @@
+{
+  "_comment": "Technical Analysis watchlist. 'core' = always rendered. 'dynamic' = up to N tickers added from movers/news (deduped vs core).",
+  "core": ["MU", "BE", "NBIS", "META", "AMZN", "PYPL", "SOFI", "TSLA", "HOOD"],
+  "max_dynamic": 3,
+  "lookback_daily_weeks": 26,
+  "lookback_weekly_years": 2
+}

@@ -879,6 +879,22 @@ def main():
         for d in critique_result.get('date_issues', []):
             print(f"       DATE:  '{d.get('claim','?')}' vs actual '{d.get('actual','?')}' ({d.get('severity','?')})")
 
+    # Technical Analysis (Mark Newton style) - daily + weekly per ticker
+    # Core list from data/ta_watchlist.json; dynamic from top movers (max 3).
+    print("  Computing technical analysis (daily + weekly per ticker)...")
+    try:
+        from technical_analysis import fetch_ta_watchlist
+        wl_movers = watchlist if isinstance(watchlist, dict) else {}
+        dynamic_pool = []
+        for k in ('gainers', 'losers'):
+            for m in (wl_movers.get(k) or []):
+                if isinstance(m, dict) and m.get('symbol'):
+                    dynamic_pool.append(m['symbol'])
+        ta_cards = fetch_ta_watchlist(dynamic_tickers=dynamic_pool[:6])
+    except Exception as e:
+        print(f"  warn: TA computation failed: {e}")
+        ta_cards = []
+
     context = {
         'date_long': format_date_lt(now),
         'today_iso': now.strftime('%Y-%m-%d'),
@@ -902,6 +918,7 @@ def main():
         'manual_notes': manual_notes,
         'yt_synthesis': yt_synthesis,
         'wl_earnings': wl_earnings,
+        'ta_cards': ta_cards,
         'takeaway': build_takeaway(macro_sorted, earnings_top),
         'generated_at': now.strftime('%H:%M'),
     }
