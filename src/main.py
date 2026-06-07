@@ -626,9 +626,9 @@ def main():
         tx_count = sum(1 for v in yt_videos if v.get('transcript'))
         print(f"    -> {len(yt_videos)} kept ({tx_count} with transcript)")
 
-    print("  Fetching insider activity (watchlist, since 2025-01-01, aggregated by insider)...")
+    print("  Fetching insider activity (watchlist, last 90d, aggregated by insider)...")
     insider = _safe('insider',
-                    lambda: fetch_insider_purchases(STOCKS, days=730, min_value=10_000, max_results=30),
+                    lambda: fetch_insider_purchases(STOCKS, days=90, min_value=10_000, max_results=30),
                     [])
     print(f"    -> {len(insider)} watchlist insider entries")
     if insider:
