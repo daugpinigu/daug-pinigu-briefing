@@ -1,88 +1,56 @@
 {
-  "generated_at": "2026-06-04T07:00:00+00:00",
-  "expires_at": "2026-06-06T00:00:00+00:00",
+  "generated_at": "2026-06-07T07:00:00+00:00",
+  "expires_at": "2026-06-09T00:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "AVGO",
-      "headline": "AVGO 'buy rumor sell news' -15% premarket nepaisant +143% YoY AI revenue - whisper buvo aukščiau nei consensus",
-      "kind": "earnings",
-      "released_at": "2026-06-03",
-      "metrics": [
-        {"label": "Premarket Thu", "value": "-15%", "change": "iki ~$410-420 zonos"},
-        {"label": "After-hours Wed", "value": "-8%", "change": "iškart po release'o"},
-        {"label": "Q2 FY26 revenue", "value": "$22.187B", "change": "+48% YoY, šiek tiek miss vs $22.27B consensus"},
-        {"label": "AI semi revenue Q2", "value": "$10.8B", "change": "+143% YoY = 49% viso revenue"},
-        {"label": "Non-GAAP EPS", "value": "$2.44", "change": "vs $2.32 consensus"},
-        {"label": "Q3 FY26 guide", "value": "$29.4B", "change": "+84% YoY"},
-        {"label": "AI semi Q3 guide", "value": "$16B", "change": "+200% YoY"},
-        {"label": "FY26 AI guide", "value": "$56B", "change": "+180%"},
-        {"label": "FY27 AI guide", "value": "$100B+", "change": "multi-year hyperscaler kontraktai"},
-        {"label": "Setup'as prieš print", "value": "+13.6% per 5d", "change": "+$270B market cap pridėjo - whisper aukštas"}
-      ],
-      "analysis": "AVGO klasikinis 'buy the rumor sell the news' epizodas. Q2 FY26 (ended May 3, 2026) skaičiai išskirtinai stiprūs: total revenue $22.187B (+48% YoY), AI semi $10.8B (+143% YoY = 49% revenue), non-GAAP EPS $2.44 (vs $2.32 consensus), Q3 guide $29.4B (+84% YoY), FY26 AI guide $56B (+180%), FY27 AI $100B+. Bet akcija -8% after-hours, -15% premarket šiandien, kris žemiau $420 zonos.\n\nKą tai reiškia investuotojui: trys priežastys nubaudimui. (1) AVGO į earnings priėjo +13.6% per 5 dienas (+$270B market cap) - whisper number buvo daug aukštesnis nei oficialus consensus, ir 'tik' beat'as nebuvo pakankamas. (2) Alphabet 2026 capex guide ($180-190B po Q1 atnaujinimo balandį, originaliai $175-185B vasarį) - 50% virš Wall Street modeliavusio $120B; rinka re-evaluavo: net su tokiu Google capex'u, AVGO (jo custom ASIC tiekėjas) nubaudžiamas - signalizuoja, kad bottleneck'as iš 'ar capex bus' persikelia į 'ar bus ROI iš tokio capex'. (3) Bendras AI software/security selloff'as kontekste - CRWD -11%, SMCI -7.2%, NVDA -3.62%.\n\nMano vertinimas: -15% iki ~$410-420 yra recent breakout testas, ne tezės sumušimas. Q3 guide $29.4B ir FY27 $100B+ AI guide nesikeičia. Aš nepirkiau ant trijų +30% dienų praeitą savaitę (entry kainos buvo prastos), bet jei AVGO realiai uždaro -15% combo - tai pirmas geras risk/reward entry per kelis mėnesius. Forward P/E iš ~25x kris į ~21x, kas nepigu, bet pateisinama, jei FY27 $100B AI guide realizuojasi.",
-      "long_term": "AVGO yra struktūriškai stipriausia AI networking pozicija - custom ASIC su Google/Meta (multi-year kontraktai), plius VMware komercinis turnaround. Vakar dienos -15% reakcija yra reakcija į whisper, ne į skaičius. Per 3-5 metus, jei FY27 AI revenue $100B realizuojasi (jau guided), AVGO market cap turėtų pasiekti $3-4T. Trumpalaikis volatility'is tęsis, bet entry'is post-selloff'o teikia geresnį risk/reward nei chase'inant post-rally'į."
-    },
-    {
-      "ticker": "MARKETS",
-      "headline": "Mišrūs labor signalai: ADP +122k tvirtesnis, BET šiandien jobless claims 225k vs 214k MISS - 9-d. S&P streak'as baigėsi",
+      "ticker": "NFP",
+      "headline": "NFP gegužės šokas: +172k vs +85k tikėtasi (2x aukščiau) - 10y yield į 4.54%, AI gauna 'good news is bad' smūgį",
       "kind": "macro_event",
-      "released_at": "2026-06-04",
+      "released_at": "2026-06-06",
       "metrics": [
-        {"label": "S&P 500 (live)", "value": "{{sp500}}", "change": "{{sp500_pct}}"},
-        {"label": "S&P 500 Wed close", "value": "7,553.68", "change": "-0.74%, 9-d. streak'as baigėsi"},
-        {"label": "Dow Wed close", "value": "-1.21%", "change": "-620.72 pts"},
-        {"label": "Nasdaq Composite Wed", "value": "-0.89%", "change": "AI vardai vedė smukimą"},
-        {"label": "Initial claims (šiandien)", "value": "225k", "change": "vs 214k tikėtasi, prior 212k (+13k WoW)"},
-        {"label": "ADP gegužės (vakar)", "value": "+122k", "change": "vs +110k tikėtasi, +105k balandį"},
-        {"label": "10-yr Treasury yield", "value": "4.499%", "change": "kilo po ADP, pre-NFP"},
-        {"label": "2-yr Treasury yield", "value": "4.093%", "change": "Fed hold kainojamas"},
-        {"label": "NFP penktadienį", "value": "consensus tikrinama", "change": "šios savaitės pagrindinis test'as"}
+        {"label": "NFP gegužė", "value": "+172k", "change": "vs +85k tikėtasi (2x aukščiau)"},
+        {"label": "Unemployment rate", "value": "4.3%", "change": "laikosi, nepasikeitė"},
+        {"label": "Balandis revised", "value": "+179k", "change": "downward revision į +179k"},
+        {"label": "10-yr Treasury yield", "value": "4.54%", "change": "+6bp po NFP, naujas šių metų aukštis"},
+        {"label": "Fed cut hopes 2026", "value": "praktiškai 0", "change": "futures kainoja hold Q3, small hike rizika iki year-end"},
+        {"label": "NVDA reakcija", "value": "-2%", "change": "AI infra spaudimas tęsiasi po AVGO selloff"},
+        {"label": "MU + MRVL reakcija", "value": "po -5%", "change": "rate-sensitive growth labiausiai paveikti"}
       ],
-      "analysis": "Vakar pirma reali pauzė po 9 savaičių iš eilės kilimo streak'o. S&P 500 -0.74% iki 7,553.68, Dow -1.21% (-621 pts), Nasdaq Composite -0.89%.\n\nDarbo rinkos signalai šią savaitę MIŠRŪS: (1) Vakar ADP gegužės data atėjo +122k vs +110k tikėtasi, +105k balandį - stipriausias mėnuo nuo 2025 m. sausio, gains per 8 iš 10 sektorių, geografiškai broad-based; rodo tvirtą hiring'ą. (2) Bet ŠIANDIEN initial jobless claims atėjo 225k vs 214k tikėtasi (prior 212k) - 11k miss virš consensus, +13k WoW; rodo, kad layoff'ų rate kyla. Tai galimai pirmas 'cracka' tight labor market tezėje, ar tik vienos savaitės triukšmas. Plius Iran tensions grįžo, oil atšoko (WTI virš $95), kas papildė infliacijos pressure į yields - 10-yr 4.499%, 2-yr 4.093%.\n\nKą tai reiškia investuotojui: makro setup'as komplikavosi. Iki šiandienos claims, tezė buvo aiški - 'tvirta labor + sticky infliacija = Fed hold/hawkish = yields up = growth multiples spaudžiami'. Dabar claims miss meta abejonę: jei layoff'ai pradeda kilti, ADP gali būti lagging indicator'ius, ir mes esame anksčiau ciklo posūkio nei galvojome. Penktadienio NFP tampa lemiamas - jei NFP <100k ir unemployment rate pakyla, tai pradeda 'bad-news-good' scenarijus growth'ui (cuts grįžta į stalą). Jei NFP >150k - claims atrodys kaip triukšmas, ir tezė lieka 'tvirta labor'. Aš šitą savaitę nepirkčiau growth high-multiple aktyviai - laukčiau NFP signalo, nes asimetrija pasikeitė."
-    },
-    {
-      "ticker": "CRWD",
-      "headline": "CrowdStrike -11% premarket - in-line guidance + augantys expenses; AI/security selloff context'e",
-      "kind": "earnings",
-      "released_at": "2026-06-03",
-      "metrics": [
-        {"label": "Premarket Thu", "value": "-11%", "change": "po Q1 FY27 release'o"},
-        {"label": "Guidance", "value": "in-line", "change": "ne beat - investorai tikėjosi raise"},
-        {"label": "Expenses", "value": "augantys", "change": "spaudžia margin trajektoriją"},
-        {"label": "Sector context", "value": "AI software selloff", "change": "Software ETF -3% Wed"}
-      ],
-      "analysis": "CrowdStrike pristatė Q1 FY27 rezultatus su in-line guidance ir auginančiais expenses - dvigubas signalas, kuris pribloškė akcijas -11% premarket. Skirtingai nei AVGO ('beat bet whisper aukštesnis'), CRWD problema gilesnė: guidance ne pakelta, kas reiškia, kad management nemato accelerating momentum'o, plius cost'ai auga, kas spaudžia operating margin trajektoriją.\n\nKą tai reiškia investuotojui: CRWD ir kitos cybersecurity SaaS vardai šio metu vertinami premium multiples'ais (P/E 80-100x), kas reikalauja ne tik beat'o, bet pakeltos guidance. Kai abi nepasiteisina - re-rating'as žemyn. Šios ataskaitos signalas plačiau AI software sektoriui: net 'AI-defending' tezė (security needs AI to combat AI threats) nėra automatinis upgrade - investorai dabar reikalauja konkrečios revenue acceleration. Tai dera su iShares Software ETF -3% antradienio judėjimu - sektoriaus re-rating prasidėjo prieš earnings, dabar gauna fundamental cover."
-    },
-    {
-      "ticker": "MU",
-      "headline": "MU +1.45% atsigauna po premarket -5.6%; struktūrinis 2-3 metų tight memory supply story laiko",
-      "kind": "market_move",
-      "released_at": "2026-06-04",
-      "metrics": [
-        {"label": "Kaina", "value": "$1,079.57", "change": "+1.45% (premarket buvo -5.6%, recover)"},
-        {"label": "Savaitė", "value": "+16.28%", "change": "AVGO selloff'as nepaveikė struktūrinės tezės"},
-        {"label": "Market cap", "value": "$1.22T", "change": "trilijoninio club narys"},
-        {"label": "1-metų gain", "value": "+955.81%", "change": "memory cikliškumo break'as ant AI"},
-        {"label": "Susquehanna target", "value": "$1,750", "change": "+62% upside"},
-        {"label": "Memory supply", "value": "2-3 metų tight", "change": "HBM + DRAM struktūrinis shortage"}
-      ],
-      "analysis": "MU šiandien atspindi rotacijos prigimtį - premarket nukrito -5.6% kontagija iš AVGO selloff'o, bet greitai recover'ino į +1.45% intraday. Tai struktūrinė pamoka: kai vienas AI vardas baudžiamas dėl 'whisper aukščiau', kiti gauna trumpą sympathy hit, bet jei jų tezė nepriklauso nuo to konkretaus catalyst'o - greitai atsigauna.\n\nKą tai reiškia investuotojui: MU tezė neturėjo nieko bendro su AVGO Q2 print'u. Memory shortage (HBM + DRAM) yra 2-3 metų struktūrinis fenomenas, kurį patvirtina Samsung, SK Hynix, MU - visi guided tight supply iki 2027-2028. Susquehanna $1,750 target reiškia +62% upside nuo dabar. P/E 50.97x atrodo aukštas, bet su memory pricing power trajektorija ir HBM mix shift'u į premium - forward earnings dramatiškai aukštesni. Jei MU tęsia premium pricing per ateinančius 4-6 ketvirčius, P/E natūraliai kris žemyn į 25-30x range, kas pateisina dabartinę kainą.\n\nRizika: jei Samsung ar SK Hynix announce'ina greitesnį capacity ramp'ą nei tikėtasi - memory pricing power gali sutrūkti per 12-18 mėn. Tai pagrindinis risk faktorius, kurį stebėti."
+      "analysis": "NFP gegužės data atėjo +172k vs +85k tikėtasi - dvigubai aukščiau consensus. Unemployment laikosi 4.3%. Tai patvirtina ADP +122k iš trečiadienio ir niveliuoja jobless claims 225k 'labor crack' signalą - layoff'ai gali kilti, bet hiring'as perlenkia. Klasikinis 'good news is bad' reakcija: 10-yr Treasury yield šokteljo iki 4.54% (naujas YTD aukštis), AI infrastructure vardai gavo dvigubą smūgį - NVDA -2%, MU ir MRVL po -5%, papildomai prie AVGO -15% trečiadienį.\n\nKą tai reiškia investuotojui: Fed cut hopes praktiškai išnyko - futures dabar kainoja hold per visą Q3 su small hike tikimybe iki year-end. Pagrindinis efektas - growth multiples kompresija. Akcijos, kurių valuation grindžiama future cash flows discounted prie aukštesnių rates, tampa mažiau patrauklios. AI capex story (Dell $43.8B, AVGO $56B AI guide) ilgalaikiai nesikeičia, bet entry kainos dabar prastesnės. Šitose lygiose pirkti aktyviai - nepatariu; laukti yields stabilizacijos (jei 10y nubrolaus virš 4.6% - tai signalas, kad spaudimas tik prasideda)."
     },
     {
       "ticker": "IRAN-US",
-      "headline": "Iran tensions tęsiasi - oil atšoko nuo $93 iki $96+, WTI {{wti}} / Brent {{brent}}, deal'as stagnuoja",
+      "headline": "Iran weekend eskalacija: drones į Hormuz, JAV smūgiai Goruko + Qeshm radarams, ceasefire 'pažeistas'",
       "kind": "geopolitics_event",
-      "released_at": "2026-06-03",
+      "released_at": "2026-06-07",
       "metrics": [
         {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
         {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Wed move", "value": "+2-3%", "change": "WTI nuo $93.76 iki $96+, Brent į $97+"},
-        {"label": "Iran statusas", "value": "talks nutrūkę", "change": "06-01 per Iranian media; vakar 'reviewing'"},
-        {"label": "Trump deal'o pakeitimai", "value": "tougher nuclear + Hormuz", "change": "draft grąžintas su pataisymais"},
-        {"label": "Hormuz", "value": "vis dar uždarytas", "change": "10-11M bpd shut-in tęsiasi"}
+        {"label": "06-06 anksti", "value": "Iran paleido dronus", "change": "į Hormuz, taikinys - laivai/US pajėgos"},
+        {"label": "CENTCOM atsakas", "value": "numušti 4 dronai", "change": "JAV smogė Goruko + Qeshm radarams"},
+        {"label": "06-07", "value": "dar 2 dronai numušti", "change": "JAV paskelbė planą perskirstyti Irano turtą"},
+        {"label": "Iran reakcija", "value": "ceasefire 'pažeistas'", "change": "ceasefire'as nuo balandžio formaliai dar galioja"},
+        {"label": "Mediatorius", "value": "Pakistan Tehrane", "change": "bando išlaikyti derybas, deadlock'as"},
+        {"label": "Hormuz statusas", "value": "vis dar uždarytas", "change": "10-11M bpd shut-in"}
       ],
-      "analysis": "Iran fronte signalas tampa miglotas, ir tai paveikia makro setup'ą. Vakar oil atšoko - WTI nuo $93.76 antradienio close į $96+, Brent į $97+. Iran nutraukė pokalbius su JAV (per Iranian media 06-01), 'reviewing' deal'ą, Trump siunčia pakeitimus draft'ui (griežtesnė nuclear + Hormuz kalba), Iran kontra-keičia. Hormuz vis dar uždarytas, 10-11M bpd crude shut-in.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Augantis oil tiesiogiai veikia makro setup'ą - papildo PCE infliacijos pressure, paspauda yields aukščiau, sukuria headwind growth multiples'ams. Tai yra netiesioginis driver'is vakarykštės korekcijos: ne tik AVGO whisper miss, bet ir bendras macro headwind. Jei nafta laikosi $95+ ar grįžta į $100+ zoną - Fed karpymų lūkesčiai dar labiau spaudžiami, ir AI multiples'as gaus ilgesnį pressure'ą."
+      "analysis": "Iran fronte savaitgalis eskalavo. Anksti birželio 6 Iran paleido dronus į Strait of Hormuz - taikinys įtariama komerciniai laivai arba US pajėgos regione. CENTCOM numušė 4 vienkrypčius attack dronus, JAV smogė atsakomajame puolime Irano pakrantės radarų stotims Goruke ir Qeshm saloje. Birželio 7 dar 2 numušti dronai. JAV taip pat paskelbė planą perskirstyti Irano turtą Arabų sąjungininkų rekonstrukcijai - tai provokatyvi pozicija, kuri padidina derybų kliūtis. Iran apkaltino JAV nuo balandžio galiojančio ceasefire pažeidimu. Pakistano mediator'iai Tehrane bando išlaikyti derybas, bet jos vis dar deadlock'e.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Hormuz situacija dar uždaryta, 10-11M bpd crude shut-in. Eskalacijos rizika padidėjo per savaitgalį - jei pirmadienio open atneš naują headline'ą, nafta gali skristi atgal į $100+ zoną greitai. Tai būtų papildomas presure'as makro setup'ui: ne tik strong NFP + 10y yield 4.54%, bet ir oil-driven inflation pressure - PCE 3.8% problema tampa dar didesnė, Fed dovish pivot - dar tolimesnis. Energy sektorius (XLE) yra struktūrinis laimėtojas tokiame scenarijuje."
+    },
+    {
+      "ticker": "AI-ROTATION",
+      "headline": "AI infrastructure 5-os dienos selloff: AVGO -15% / MU -5% / MRVL -5% / NVDA -2% Friday - rotacija į defensives + energy",
+      "kind": "market_move",
+      "released_at": "2026-06-06",
+      "metrics": [
+        {"label": "AVGO 5d move", "value": "-15%+", "change": "po Q2 'beat bet whisper aukščiau'"},
+        {"label": "MU 5d move", "value": "-13.25% Friday alone", "change": "anksčiau savaitę dar -8%"},
+        {"label": "MRVL 5d move", "value": "-5% Friday", "change": "tačiau savaitė vis dar +51% po Huang $1T call"},
+        {"label": "NVDA Friday", "value": "-2%", "change": "santūresnis nei smaller-cap AI peers"},
+        {"label": "XLK (Tech sector)", "value": "savaitės darkness", "change": "tarp blogausių 11 sektorių"},
+        {"label": "XLE (Energy)", "value": "savaitės leader", "change": "+2.45% už savaitę, geopolitical premium"},
+        {"label": "Defensives", "value": "XLU/XLP/XLV", "change": "nukrenta mažiau nei tech, rotacijos kryptis"}
+      ],
+      "analysis": "AI infrastructure trade'as patyrė 5-os dienos selloff'ą savaitės pabaigoje. Pradžia - AVGO -15% trečiadienį po 'beat bet whisper aukščiau' Q2, eskalacija - NFP penktadienį (+172k, 10y yield į 4.54%) papildo rate pressure'ą. Friday close: NVDA -2%, MU -5% (Friday alone -13.25%), MRVL -5%. Bet svarbu kontekstas - MRVL savaitė vis dar +51% po Huang trillion-dollar call'o; selloff'as yra korekcija po extreme greed, ne tezės kollapsas.\n\nKą tai reiškia investuotojui: tai nėra AI thesis'o pabaiga - Dell $43.8B revenue, AVGO $56B FY26 AI guide, MRVL $1T potential aplinkybės nepasikeitė. Bet rotacijos pattern'as iš tech į energy + defensives yra realus ir gali tęstis kelias savaites: (1) yields kyla = growth multiples spaudžiami, (2) Iran tensions = energy + defensives premium, (3) extreme positioning (MRVL +51% savaitė) reikalauja konsolidacijos. Mano view: aš nepirkčiau AI infra agresyviai šią savaitę. Jei pozicija jau yra - laikau, bet stop'us tikrinu (MU prie $850 areas yra key, žemiau - struktūrinis posūkis). Pridėjimo zonos: tik jei MU palaiko virš $850 + AVGO virš $400, su yields pakelta į <4.5%."
     }
   ]
 }
