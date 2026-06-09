@@ -1,56 +1,88 @@
 {
-  "generated_at": "2026-06-07T07:00:00+00:00",
-  "expires_at": "2026-06-09T00:00:00+00:00",
+  "generated_at": "2026-06-09T07:00:00+00:00",
+  "expires_at": "2026-06-11T00:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "NFP",
-      "headline": "NFP gegužės šokas: +172k vs +85k tikėtasi (2x aukščiau) - 10y yield į 4.54%, AI gauna 'good news is bad' smūgį",
-      "kind": "macro_event",
-      "released_at": "2026-06-06",
+      "ticker": "AAPL",
+      "headline": "Tim Cook palieka CEO postą rugsėjį, taps Executive Chairman - 15 metų eros pabaiga, WWDC paskutinė keynote",
+      "kind": "leadership_change",
+      "released_at": "2026-06-08",
       "metrics": [
-        {"label": "NFP gegužė", "value": "+172k", "change": "vs +85k tikėtasi (2x aukščiau)"},
-        {"label": "Unemployment rate", "value": "4.3%", "change": "laikosi, nepasikeitė"},
-        {"label": "Balandis revised", "value": "+179k", "change": "downward revision į +179k"},
-        {"label": "10-yr Treasury yield", "value": "4.54%", "change": "+6bp po NFP, naujas šių metų aukštis"},
-        {"label": "Fed cut hopes 2026", "value": "praktiškai 0", "change": "futures kainoja hold Q3, small hike rizika iki year-end"},
-        {"label": "NVDA reakcija", "value": "-2%", "change": "AI infra spaudimas tęsiasi po AVGO selloff"},
-        {"label": "MU + MRVL reakcija", "value": "po -5%", "change": "rate-sensitive growth labiausiai paveikti"}
+        {"label": "CEO transition", "value": "Tim Cook → Exec Chairman", "change": "efektyvu rugsėjo 2026"},
+        {"label": "Eros trukmė", "value": "15 metų", "change": "CEO nuo 2011 m. (Steve Jobs perdavė)"},
+        {"label": "WWDC 2026 keynote", "value": "06-08", "change": "paskutinė Cook'o kaip CEO"},
+        {"label": "Pristatyta naujovė", "value": "Siri AI", "change": "Apple's didžiausias AI upgrade per kelis metus"},
+        {"label": "Successor kandidatai", "value": "Williams ar Federighi", "change": "Jeff Williams (COO) ar Craig Federighi (Software SVP)"},
+        {"label": "Tarpinė valdymo struktūra", "value": "Exec Chairman vaidmuo", "change": "Cook lieka strategic, daily ops perduoda"}
       ],
-      "analysis": "NFP gegužės data atėjo +172k vs +85k tikėtasi - dvigubai aukščiau consensus. Unemployment laikosi 4.3%. Tai patvirtina ADP +122k iš trečiadienio ir niveliuoja jobless claims 225k 'labor crack' signalą - layoff'ai gali kilti, bet hiring'as perlenkia. Klasikinis 'good news is bad' reakcija: 10-yr Treasury yield šokteljo iki 4.54% (naujas YTD aukštis), AI infrastructure vardai gavo dvigubą smūgį - NVDA -2%, MU ir MRVL po -5%, papildomai prie AVGO -15% trečiadienį.\n\nKą tai reiškia investuotojui: Fed cut hopes praktiškai išnyko - futures dabar kainoja hold per visą Q3 su small hike tikimybe iki year-end. Pagrindinis efektas - growth multiples kompresija. Akcijos, kurių valuation grindžiama future cash flows discounted prie aukštesnių rates, tampa mažiau patrauklios. AI capex story (Dell $43.8B, AVGO $56B AI guide) ilgalaikiai nesikeičia, bet entry kainos dabar prastesnės. Šitose lygiose pirkti aktyviai - nepatariu; laukti yields stabilizacijos (jei 10y nubrolaus virš 4.6% - tai signalas, kad spaudimas tik prasideda)."
+      "analysis": "Tim Cook paskelbė, kad pasitraukia iš Apple CEO pareigų rugsėjo mėnesį, perimdamas Executive Chairman vaidmenį. Vakar (06-08) buvo jo paskutinė WWDC keynote, kurioje pristatė Siri AI - Apple's didžiausią AI upgrade per kelerius metus. Cook valdo Apple nuo 2011 m., kai perėmė iš Steve Jobs - 15 metų stabilumo, market cap nuo ~$350B į ~$3.5T (10x).\n\nKą tai reiškia investuotojui: ne short-term grėsmė - succession buvo planuojama keletą metų, Cook lieka kaip Executive Chairman strategic level'yje. Tarpinis daily ops klausimas: tikėtini kandidatai Jeff Williams (COO, infrastructure ir operations expertize, supply chain mastery) ARBA Craig Federighi (Software SVP, AI roadmap face, public face per WWDC). Williams = stability path, Federighi = AI/software-first path. Long-term reali klausimas: ar new CEO gali pagreitinti Apple AI strategy execution, kuri po Siri AI atrodo lyg vejosi konkurentus (Google Gemini, Microsoft Copilot). Pozicijos pavojus: jei rinkos reagavo neigiamai į succession klausimą + AI strategy doubts - AAPL gali nutaikti į $200 zoną pre-September. Tokia kaina būtų istoriškai patrauklus entry'is dėl Cook'o palikimo, ne neigiamas signalas.",
+      "long_term": "Apple yra pas du dideli klausimai ateinančiais 2-3 metais: (1) ar AI strategy execution Federighi/Williams kelyje gali konkuruoti su Google/Microsoft AI integration depth, (2) ar hardware-software vertical integration vis dar yra dominant moat AI ekonomikoje (kur generative AI verčia software modular). Cook palieka company su $200B+ cash, dominant App Store ekonomika, premium brand. New CEO gauna geresnį baseline nei dauguma Fortune 100 transitions. Pozicijos: AAPL kaip core long, ne aggressive trade - svorio padidinimas tik pullback'uose."
+    },
+    {
+      "ticker": "INTC",
+      "headline": "INTC +8.55% antradienį - Foxconn AI infrastructure deal + Wells Fargo PT $110 + Barclays $100 upgrades",
+      "kind": "market_move",
+      "released_at": "2026-06-09",
+      "metrics": [
+        {"label": "Intraday move", "value": "+8.55%", "change": "premarket buvo +4.4%"},
+        {"label": "Catalyst #1", "value": "Foxconn collaboration", "change": "next-gen AI infrastructure + edge platforms"},
+        {"label": "Wells Fargo PT", "value": "$110", "change": "pakelta su Buy rating"},
+        {"label": "Barclays PT", "value": "$100", "change": "AI data center + agentic workloads"},
+        {"label": "Use case", "value": "AI data center scaling", "change": "Foxconn manufacturing reach + Intel silicon/software"},
+        {"label": "Konkurentas position", "value": "vs NVDA/AVGO/AMD", "change": "Intel buvo AI capex laggard - tai turn signal candidate"}
+      ],
+      "analysis": "Intel +8.55% antradienį ant tripičio catalyst combo. Foxconn paskelbė strateginį bendradarbiavimą AI infrastruktūros ir edge platformų kūrimui - pirmas didelis konkretus deal'as, kuris Intel'ui suteikia manufacturing reach plius scale į AI data center deployments. Wells Fargo pakėlė PT iki $110, Barclays iki $100. Cited drivers: AI data center demand acceleration + agentic workloads (AI agents kaip Anthropic, OpenAI customers - panašiai kaip MRVL Vera CPU story).\n\nKą tai reiškia investuotojui: INTC istoriškai buvo AI capex laggard - NVDA dominavo training, AVGO custom ASIC, MRVL networking, AMD pridėjo MI series GPU. Intel turėjo foundry challenges ir AI roadmap gaps. Šis Foxconn deal'as yra pirmas konkretus path į institutional AI server share. Klausimas: ar tai struktūrinis turn'as (Intel grįžta į AI infrastructure ekosistemą), ar trumpalaikis sentiment shift ant headline'o. Mano view: po +8.55% intraday entry kainos jau prastesnės; pridėti aktyviai šitose lygiose nepatariu, bet pozicija šiame chase ralis veijasi. INTC P/E forward dabar žemiau nei AMD ir NVDA, asimetrija risk/reward gerėja, jei execution sėkmingas. Pullback'as į $25-30 area būtų geras risk-reward, jei thesis vystosi."
+    },
+    {
+      "ticker": "MRVL",
+      "headline": "MRVL S&P 500 inclusion effective 06-22 - struktūrinis forced ETF buying catalyst, YTD +210%",
+      "kind": "structural_event",
+      "released_at": "2026-06-05",
+      "metrics": [
+        {"label": "S&P 500 įtraukimas", "value": "2026-06-22 prieš open", "change": "paskelbta 06-05 po close"},
+        {"label": "Pakeičia", "value": "Campbell's (CPB)", "change": "CPB krenta į S&P SmallCap 600"},
+        {"label": "Kompanionas", "value": "Flex (FLEX)", "change": "irgi įtraukta, pakeičia Pool Corp (POOL)"},
+        {"label": "Reakcija į news", "value": "+10.4% intraday", "change": "po Friday after-hours announcement"},
+        {"label": "YTD performance", "value": "+210%", "change": "vienas iš metų geriausių S&P 500 vardų"},
+        {"label": "Forced ETF buying", "value": "~$30-50B passive AUM", "change": "SPY, IVV, VOO + visi S&P trackers privalo pirkti"},
+        {"label": "Istorinis pattern", "value": "3-5% rebalance pop", "change": "papildomai prie announcement reakcijos"}
+      ],
+      "analysis": "MRVL paskelbta S&P 500 indekso įtraukimas, efektyvus 2026-06-22 prieš market open. MRVL plius Flex pakeičia Campbell's (CPB) ir Pool Corp (POOL). Tai struktūrinis catalyst - visi S&P 500 trackeriai (~$30-50B passive AUM) privalo pirkti MRVL pozicijos svorį pre-22 d. rebalance. Istoriškai S&P 500 inclusions atneša 3-5% lift'ą papildomai prie announcement reakcijos.\n\nKą tai reiškia investuotojui: MRVL situation labai unique - kombinuojasi du dideli catalysts: (1) Jensen Huang Computex 'next trillion-dollar' call ir Stifel PT $321 (fundamentinis), (2) S&P 500 inclusion forced buying (mechaninis). YTD +210%, +210% ratuose dažnai reiškia perkaitimą, bet S&P inclusion mechaninis flow protects pozicijas. Mano view: MRVL yra mano TOP keep/add kandidatas iki birželio 22, nepriklausomai nuo CPI ar Iran headline'ų - index funds bus forced buyers. Po 06-22 rebalance, technical setup'as keičiasi - tuomet vertinama tik fundamental + flow tail. Stop'us tikrinu prie $80 area kaip safety net (mažai tikėtina, bet defensive plan)."
     },
     {
       "ticker": "IRAN-US",
-      "headline": "Iran weekend eskalacija: drones į Hormuz, JAV smūgiai Goruko + Qeshm radarams, ceasefire 'pažeistas'",
+      "headline": "Iran-Israel ceasefire holding antradienį - airspace re-opening, Trump skelbia 'total victory in 2 weeks'",
       "kind": "geopolitics_event",
-      "released_at": "2026-06-07",
+      "released_at": "2026-06-09",
       "metrics": [
         {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
         {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "06-06 anksti", "value": "Iran paleido dronus", "change": "į Hormuz, taikinys - laivai/US pajėgos"},
-        {"label": "CENTCOM atsakas", "value": "numušti 4 dronai", "change": "JAV smogė Goruko + Qeshm radarams"},
-        {"label": "06-07", "value": "dar 2 dronai numušti", "change": "JAV paskelbė planą perskirstyti Irano turtą"},
-        {"label": "Iran reakcija", "value": "ceasefire 'pažeistas'", "change": "ceasefire'as nuo balandžio formaliai dar galioja"},
-        {"label": "Mediatorius", "value": "Pakistan Tehrane", "change": "bando išlaikyti derybas, deadlock'as"},
-        {"label": "Hormuz statusas", "value": "vis dar uždarytas", "change": "10-11M bpd shut-in"}
+        {"label": "Antradienis statusas", "value": "abu sustabdė strikes", "change": "po pirmadienio worst-since-April crossfire"},
+        {"label": "Iran airspace", "value": "atsidaro - 'normal'", "change": "flights resuming"},
+        {"label": "Izraelio restrictions", "value": "keliami Tue 6am LT", "change": "schools + workplaces"},
+        {"label": "Iran sąlyga", "value": "jeigu Izraelis tęsia Lebanon strikes", "change": "Iran warned will resume operations"},
+        {"label": "Trump rhetoric", "value": "'total victory in 2 weeks'", "change": "'oil prices will come tumbling down'"},
+        {"label": "Hormuz fizinis statusas", "value": "vis dar uždarytas", "change": "physical re-opening dar nepatvirtintas"}
       ],
-      "analysis": "Iran fronte savaitgalis eskalavo. Anksti birželio 6 Iran paleido dronus į Strait of Hormuz - taikinys įtariama komerciniai laivai arba US pajėgos regione. CENTCOM numušė 4 vienkrypčius attack dronus, JAV smogė atsakomajame puolime Irano pakrantės radarų stotims Goruke ir Qeshm saloje. Birželio 7 dar 2 numušti dronai. JAV taip pat paskelbė planą perskirstyti Irano turtą Arabų sąjungininkų rekonstrukcijai - tai provokatyvi pozicija, kuri padidina derybų kliūtis. Iran apkaltino JAV nuo balandžio galiojančio ceasefire pažeidimu. Pakistano mediator'iai Tehrane bando išlaikyti derybas, bet jos vis dar deadlock'e.\n\nKą tai reiškia investuotojui: WTI {{wti}} ({{wti_pct}}), Brent {{brent}} ({{brent_pct}}). Hormuz situacija dar uždaryta, 10-11M bpd crude shut-in. Eskalacijos rizika padidėjo per savaitgalį - jei pirmadienio open atneš naują headline'ą, nafta gali skristi atgal į $100+ zoną greitai. Tai būtų papildomas presure'as makro setup'ui: ne tik strong NFP + 10y yield 4.54%, bet ir oil-driven inflation pressure - PCE 3.8% problema tampa dar didesnė, Fed dovish pivot - dar tolimesnis. Energy sektorius (XLE) yra struktūrinis laimėtojas tokiame scenarijuje."
+      "analysis": "Iran fronte antradienį stiprus de-eskalacijos signalas. Izraelis ir Iran abu sustabdė strikes po pirmadienio worst-since-April crossfire (Iran paleido ~30 ballistic missiles į Izraelį, Izraelis grįžo missile fire'u). Iran airspace grįžta į 'normal', flights resuming. Izraelis kelia school/workplace apribojimus antradienį 6am LT. Trump skelbia 'agreement within 1-2 days', 'total victory in 2 weeks', 'oil prices will come tumbling down'. Bet Iran conditional: warned operations resume if Israel continues Lebanon strikes.\n\nKą tai reiškia investuotojui: tai ne final ceasefire, o de-eskalacijos langas su sąlygomis. Nafta capping aukštesnėse zonose (sentiment shift), bet pilnas reversal į $80s priklauso nuo Hormuz fizinio re-opening, ne tik attacks halt. Mano scenarijai: (a) jei Trump'o '2 weeks total victory' realizuojasi - WTI link $80 iki birželio pabaigos, energy sektorius (XLE) puola, defensives outperform; (b) jei conditional Iran threat realizuojasi (Israel hits Lebanon) - $100+ vėl on the table per kelias dienas. Šitos savaitės baseline: WTI $85-90 zona, su volatility ant kiekvieno headline'o. Praktiškai: nedarisčiau new energy long pozicijų - ralis priklauso nuo headline rizikos, ne struktūrinis. Esamas long energy hedge'as - galima palaikyti, bet trim'inti prie nauja peak."
     },
     {
-      "ticker": "AI-ROTATION",
-      "headline": "AI infrastructure 5-os dienos selloff: AVGO -15% / MU -5% / MRVL -5% / NVDA -2% Friday - rotacija į defensives + energy",
-      "kind": "market_move",
-      "released_at": "2026-06-06",
+      "ticker": "CPI",
+      "headline": "CPI gegužės data rytoj (06-10, 15:30 LT) - binary catalyst po PCE 3.8% + NFP +172k setup",
+      "kind": "macro_event",
+      "released_at": "2026-06-09",
       "metrics": [
-        {"label": "AVGO 5d move", "value": "-15%+", "change": "po Q2 'beat bet whisper aukščiau'"},
-        {"label": "MU 5d move", "value": "-13.25% Friday alone", "change": "anksčiau savaitę dar -8%"},
-        {"label": "MRVL 5d move", "value": "-5% Friday", "change": "tačiau savaitė vis dar +51% po Huang $1T call"},
-        {"label": "NVDA Friday", "value": "-2%", "change": "santūresnis nei smaller-cap AI peers"},
-        {"label": "XLK (Tech sector)", "value": "savaitės darkness", "change": "tarp blogausių 11 sektorių"},
-        {"label": "XLE (Energy)", "value": "savaitės leader", "change": "+2.45% už savaitę, geopolitical premium"},
-        {"label": "Defensives", "value": "XLU/XLP/XLV", "change": "nukrenta mažiau nei tech, rotacijos kryptis"}
+        {"label": "Release", "value": "rytoj 15:30 LT", "change": "BLS, 8:30 AM ET"},
+        {"label": "Balandžio baseline", "value": "3.8% YoY headline", "change": "core 2.8% YoY"},
+        {"label": "Mėnesinis (Apr)", "value": "+0.6% headline", "change": "+0.4% core"},
+        {"label": "Kontekstas: PCE", "value": "3.8% YoY (Apr release'as 05-28)", "change": "aukščiausia per ~3 metus"},
+        {"label": "Kontekstas: NFP", "value": "+172k vs +85k (2x miss)", "change": "Fri 06-06 release"},
+        {"label": "10y Treasury yield", "value": "~4.54%", "change": "po NFP YTD high'as"},
+        {"label": "Hot reading (>3.9%/>2.9%)", "value": "yields dar aukščiau", "change": "AI multiples spaudžiama agresyviau"},
+        {"label": "Cool reading (<3.6%/<2.7%)", "value": "Fed pivot grįžta", "change": "growth multiples relief"}
       ],
-      "analysis": "AI infrastructure trade'as patyrė 5-os dienos selloff'ą savaitės pabaigoje. Pradžia - AVGO -15% trečiadienį po 'beat bet whisper aukščiau' Q2, eskalacija - NFP penktadienį (+172k, 10y yield į 4.54%) papildo rate pressure'ą. Friday close: NVDA -2%, MU -5% (Friday alone -13.25%), MRVL -5%. Bet svarbu kontekstas - MRVL savaitė vis dar +51% po Huang trillion-dollar call'o; selloff'as yra korekcija po extreme greed, ne tezės kollapsas.\n\nKą tai reiškia investuotojui: tai nėra AI thesis'o pabaiga - Dell $43.8B revenue, AVGO $56B FY26 AI guide, MRVL $1T potential aplinkybės nepasikeitė. Bet rotacijos pattern'as iš tech į energy + defensives yra realus ir gali tęstis kelias savaites: (1) yields kyla = growth multiples spaudžiami, (2) Iran tensions = energy + defensives premium, (3) extreme positioning (MRVL +51% savaitė) reikalauja konsolidacijos. Mano view: aš nepirkčiau AI infra agresyviai šią savaitę. Jei pozicija jau yra - laikau, bet stop'us tikrinu (MU prie $850 areas yra key, žemiau - struktūrinis posūkis). Pridėjimo zonos: tik jei MU palaiko virš $850 + AVGO virš $400, su yields pakelta į <4.5%."
+      "analysis": "Rytoj (06-10, 15:30 LT) gegužės CPI - pagrindinis šios savaitės event'as. Kontekstas labai krautas: balandžio CPI YoY 3.8% headline, 2.8% core; PCE 3.8% paskutinis (aukščiausia per ~3 metus); NFP +172k double consensus (Fri); 10y yield prie 4.54% YTD aukšto. CPI yra binary catalyst, su trim galimomis kryptimis:\n\n(1) Hot surprise (headline >3.9% arba core >2.9%): yields kyla dar aukščiau (10y test 4.6%+), AI multiples spaudžiami papildomai, growth namų puola. Defensives + energy laimi.\n(2) In-line (3.7-3.9% headline, 2.7-2.9% core): rinka palieka status quo, ranges holds, individual stock stories dominate.\n(3) Cool surprise (headline <3.6% arba core <2.7%): pirmas signalas, kad infliacija peak'ino. Fed pivot grįžta į stalą, growth multiples relief, AI infrastructure rally extension. Tai bullish scenarijus.\n\nKą tai reiškia investuotojui: pre-CPI 'wait and see' lieka mano default'as. Aktyvūs add'inimo veiksmai netinka per binary risk. Praktiškai - pasižiūrėk kaip MRVL prekiauja po CPI (jis turi structural protection per S&P inclusion), AVGO ir MU yra rate-sensitive proxies. Jei CPI cools ir 10y kerta žemyn 4.5% - tai stiprus signalas, kad AI infra trade'as turi extension legs."
     }
   ]
 }
