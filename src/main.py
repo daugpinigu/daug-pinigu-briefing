@@ -149,7 +149,11 @@ FORBIDDEN_META_PATTERNS = [
     r'\bankstesn[eė] klaid',
     r'\bmano klaid',
     r'\bAI klaid',
-    r'\b(?:asistent|modelis)\b',
+    # 'modelis' alone is normal Lithuanian (verslo/merchant modelis) - only
+    # block AI-meta variants. 2026-06-10: bare \bmodelis\b false-positived on
+    # 'merchant modelis' and silently dropped a legit MRVL note.
+    r'\basistent',
+    r'\b(?:AI|LLM|kalbos|language)[- ]model(?:is|iu|io|į)\b',
     r'\bpataisym',
     r'\bpatikslin',
     r'\bperdarom?u?\b',

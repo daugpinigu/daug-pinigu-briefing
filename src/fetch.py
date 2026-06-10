@@ -640,7 +640,11 @@ def fetch_watchlist_movers(stocks: list, top_n: int = 5, include_extended: bool 
     falling back to regular change_pct.
     """
     quotes = fetch_quotes(stocks, include_extended=include_extended)
-    sort_key = (lambda x: x.get('extended_change_pct', x['change_pct'])) if include_extended \
+    # Rank by extended change ONLY in pre/post session - template displays change_pct
+    # during regular hours, so ranking by stale extended values puts red names in
+    # Gainers and green names in Losers.
+    sort_key = (lambda x: x.get('extended_change_pct', x['change_pct'])
+                if x.get('session') in ('pre', 'post') else x['change_pct']) if include_extended \
                else (lambda x: x['change_pct'])
     sorted_q = sorted(quotes, key=sort_key, reverse=True)
     return {
