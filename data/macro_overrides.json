@@ -1,0 +1,6 @@
+{
+  "_help": "date -> [{match: event name substring (case-insensitive), actual: '229K', beat_miss: 'beat'|'miss'|'inline' (explicit, nes _classify_beat_miss yra direction-naive - aukstesni claims = miss)}]. Naudoti kai TradingEconomics scraper grazina released event su tusciu Actual.",
+  "2026-06-11": [
+    {"match": "Unemployment Claims", "actual": "229K", "beat_miss": "miss"}
+  ]
+}

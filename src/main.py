@@ -61,6 +61,43 @@ def build_takeaway(macro: list, earnings: list) -> str:
     return "Tyli diena makro fronte - geras laikas peržiūrėti pozicijas ir planuoti."
 
 
+def _apply_macro_overrides(macro: list, date_str: str) -> list:
+    """Merge manually-verified actuals into auto-fetched macro events.
+
+    TradingEconomics scraper repeatedly ships released events with an empty
+    Actual (2026-06-04 claims, 2026-06-11 claims) - the LLM/manual layer knows
+    the real number but the calendar card contradicted it. Per the
+    'Sisteminės klaidos - kode, ne atminty' rule this is the code backstop:
+    data/macro_overrides.json maps date -> [{match, actual, beat_miss?}] and
+    wins over the scraper. beat_miss is explicit because _classify_beat_miss
+    is direction-naive (higher jobless claims = miss, not beat).
+    """
+    import json as _json
+    path = Path(__file__).resolve().parent.parent / 'data' / 'macro_overrides.json'
+    if not path.exists():
+        return macro
+    try:
+        overrides = _json.loads(path.read_text()).get(date_str, [])
+    except Exception as e:
+        print(f"  warn: macro_overrides.json unreadable: {e}")
+        return macro
+    for ov in overrides:
+        needle = ov.get('match', '').lower()
+        if not needle:
+            continue
+        hit = False
+        for ev in macro:
+            if needle in ev.get('name', '').lower():
+                ev['actual'] = ov.get('actual', ev.get('actual'))
+                if ov.get('beat_miss'):
+                    ev['beat_miss'] = ov['beat_miss']
+                print(f"  Macro override: '{ev['name']}' Actual -> {ev['actual']} ({ev.get('beat_miss')})")
+                hit = True
+        if not hit:
+            print(f"  warn: macro override '{ov.get('match')}' matched no event")
+    return macro
+
+
 def _load_manual_notes() -> list:
     """Load manual notes injected by Radoslav (or me) into data/manual_notes.json.
 
@@ -509,6 +546,7 @@ def main():
     print("  Fetching macro events...")
     macro = _safe('macro', lambda: fetch_macro_events(date_str), [])
     print(f"    -> {len(macro)} events")
+    macro = _apply_macro_overrides(macro, date_str)
 
     print("  Fetching earnings (>=$500B mcap OR in watchlist)...")
     earnings = _safe('earnings',
