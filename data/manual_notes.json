@@ -1,127 +1,91 @@
 {
-  "generated_at": "2026-06-11T13:30:00+00:00",
-  "expires_at": "2026-06-13T00:00:00+00:00",
+  "generated_at": "2026-06-12T11:00:00+00:00",
+  "expires_at": "2026-06-14T00:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "ORCL",
-      "headline": "Oracle Q4 FY26: EPS $2.11 beat, RPO $638B (+$85B), OCI +93% - bet akcija -9% ant $95B capex ir $40B raise plano",
-      "kind": "earnings_results",
-      "released_at": "2026-06-10",
-      "metrics": [
-        {"label": "EPS non-GAAP", "value": "$2.11 (+24%)", "change": "vs $1.96 konsensusas - beat ~8%"},
-        {"label": "Pajamos", "value": "$19.18B (+21%)", "change": "vs $19.10B konsensusas - beat"},
-        {"label": "RPO backlog", "value": "$638B (+363% YoY)", "change": "+$85B per ketvirtį; didesnis nei Alphabet ($627B) ar Microsoft ($460B)"},
-        {"label": "OCI augimas", "value": "+93% YoY ($5.8B)", "change": "pagreitėjo nuo +84% Q3; GPU utilizacija 97.5%"},
-        {"label": "Q4 nauji AI kontraktai", "value": "$67B", "change": "4 klientai virš $8B kiekvienas"},
-        {"label": "FY27 guidance", "value": "$90B pajamų (nepakelta)", "change": "EPS $8.05; Q1 cloud +58-64%"},
-        {"label": "FY27 capex", "value": "~$70B net (~$95B apskaitoje)", "change": "vs ~$68B konsensusas; FY26 faktas $55.7B vs $50B guide"},
-        {"label": "Finansavimas", "value": "~$40B debt+equity FY27", "change": "įskaitant $20B ATM equity programą - skiedimasis"},
-        {"label": "FCF / skola", "value": "-$23.7B FY26 / $129.5B", "change": "buybacks $95M per metus; dividendas $0.50 nekeltas"},
-        {"label": "Reakcija", "value": "-9% pre-market (~$184)", "change": "Scotiabank $241, Wedbush $240 vs Bernstein $325, Guggenheim 'buy aggressively'"}
-      ],
-      "analysis": "Backlog konversijos testas formaliai išlaikytas: RPO +$85B iki $638B, OCI pagreitėjo iki +93%, pajamų augimas nuo 17% link guide'inamų +34% FY27, GPU utilizacija 97.5% rodo, kad parduota viskas, ką pajėgia pastatyti. Bet rinka nubaudė -9% už augimo kainą: FY27 capex iki ~$95B apskaitoje, ~$40B naujo finansavimo su $20B ATM skiedimu, maržos guide'intos žemyn, o $90B pajamų gairės nepakeltos nepaisant backlog'o šuolio. Pastebėtina: Ellison skambutyje nekalbėjo, OpenAI/Stargate nepaminėti nė karto. Artimiausius ketvirčius akcija tikriausiai prekiausis pagal capex/finansavimo naujienas, ne pagal pajamų beat'us - sentiment'as dabar jautrus skolos ir skiedimosi temoms labiau nei augimui.",
-      "long_term": "Kelių metų tezė lieka dvipusė ir gyvybinga: tokio užkontraktuoto pajamų matomumo ($638B, iš kurio ~12% konvertuojasi per 12 mėn., 34% per 13-36 mėn.) neturi joks kitas megacap, o Ellison ~40% insider ownership išlieka geriausias founder alignment. Bet Oracle galutinai virto skolintu data center developer'iu: neigiamas FCF tęsis per FY27, skola $130B+ ir augs, akcijų pasiūla didės per ATM. Jei AI training paklausa tvari 3-5 metus - Oracle kompounduos su unikaliu matomumu; jei didžiausias klientas (OpenAI) suklumpa, koncentruota counterparty rizika realizuojasi su svertu. $75B RPO dalies prepaid/customer-supplied struktūra šiek tiek mažina šią riziką. Prie fwd P/E ~23 rizikos premija jau perkainojama - kantriam investuotojui tai įdomesnė kaina nei prieš mėnesį, bet pozicijos dydis turi atspindėti binarinę klientų koncentracijos rizika."
-    },
-    {
-      "ticker": "MAKRO",
-      "headline": "PPI 6.5% YoY (aukščiausia nuo 2022) bet core žemiau lūkesčių + jobless claims 229K (3 mėn. aukštumos) - švelnėjanti darbo rinka, karo infliacija",
-      "kind": "macro_event",
-      "released_at": "2026-06-11",
-      "metrics": [
-        {"label": "PPI headline", "value": "+1.1% m/m, 6.5% YoY", "change": "vs +0.7% lūkestis; aukščiausia nuo 2022 lapkričio"},
-        {"label": "PPI core", "value": "+0.4% m/m, 4.9% YoY", "change": "ŽEMIAU lūkesčių (+0.5% m/m, 5.4% YoY)"},
-        {"label": "Struktūra", "value": "goods +2.8% m/m", "change": "didžiausias serijos istorijoje; energija +10.7%, didmeninis benzinas +23.4%"},
-        {"label": "Initial claims", "value": "229K", "change": "vs ~220K lūkestis; trijų mėnesių aukštumos"},
-        {"label": "Continuing claims", "value": "1,795K (+24K)", "change": "vs 1,780K lūkestis - kyla"},
-        {"label": "FOMC birželio 16-17", "value": "hold ~99%", "change": "pirmasis Warsh posėdis; gruodžio hike ~60-70%"},
-        {"label": "Kinijos PPI", "value": "+3.9% YoY", "change": "aukščiausia nuo 2022 liepos - Kinija eksportuoja infliaciją"},
-        {"label": "10Y / 30Y auction", "value": "4.53% / šiandien 20:00 LT", "change": "vakar 10Y aukcionas tailed'ino 7bp; Japonijos 30Y silpnas"}
-      ],
-      "analysis": "Abu šiandienos print'ai kartoja vakarykštį CPI šabloną: headline karšta (PPI 6.5% YoY, aukščiausia nuo 2022 lapkričio), bet core žemiau lūkesčių - šuolį varo karo energija (didmeninis benzinas +23.4%), ne paklausa. Naujas elementas - darbo rinka: claims 229K trijų mėnesių aukštumose, continuing claims kyla. Stagfliacinė kombinacija (švelnėjantis darbas + kylanti headline infliacija) Fed'ą įšaldo: kitą savaitę hold ~99%, bet kryptis tarp gruodžio hike (~60-70%) ir 2027 cut'ų liks ginčytina visą vasarą. Šiandienos 30Y aukcionas (20:00 LT) - ilgojo galo paklausos testas po vakarykščio 10Y tail'o.",
-      "long_term": "Investuotojui kelių metų horizonte svarbiausi du struktūriniai poslinkiai. Pirma - Kinijos PPI +3.9% reiškia, kad Kinija pirmą kartą per 4 metus eksportuoja infliaciją, ne defliaciją: globalios goods disinflation era, kuri leido centriniams bankams agresyviai mažinti, tikriausiai baigėsi. Antra - ilgojo galo yields paklausa minkštėja globaliai (JAV 30Y virš 5%, Japonijos 30Y ~3.9% su silpnais aukcionais): term premium kyla struktūriškai, todėl diskonto norma vertinimo modeliuose turi būti 4.5%+ ilgam. Praktinė išvada: kokybės kompounderiai su realiais, augančiais pinigų srautais ir kainodaros galia yra struktūriškai geresnėje pozicijoje nei story-multiple vardai; obligacijos prie 5%+ tampa realiu kapitalo konkurentu akcijoms pirmą kartą per dekadą."
-    },
-    {
-      "ticker": "IRAN-US",
-      "headline": "Eskalacija: Iranas paskelbė paliaubas 'beprasmėmis', Trump grasina perimti Kharg salą - Irano naftos eksporto terminalą",
+      "ticker": "IRAN-DEAL",
+      "headline": "Trump atšaukė smūgius ir skelbia 'great settlement': pasirašymas galimai savaitgalį - nafta prie 8 savaičių žemumų",
       "kind": "geopolitics_event",
       "released_at": "2026-06-11",
       "metrics": [
-        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}}"},
+        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}} - 8 savaičių žemumos, mėnuo -16%"},
         {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Naktis į ketvirtadienį", "value": "antra JAV smūgių banga", "change": "amunicijos sandėliai, valdymo centrai (CENTCOM)"},
-        {"label": "Irano atsakas", "value": "12 balistinių raketų į Jordaniją", "change": "al-Azraq bazė - visos perimtos, aukų nėra"},
-        {"label": "Derybos", "value": "Iranas sustabdė", "change": "balandžio paliaubos paskelbtos 'beprasmėmis'"},
-        {"label": "Hormuzas", "value": "Iranas: 'visiškai uždarytas'", "change": "CENTCOM neigia - laivai tranzituoja"},
-        {"label": "Tanklaiviai", "value": "trečias išjungtas šią savaitę", "change": "žuvo 3 Indijos jūreiviai - pirmos komercinės aukos"},
-        {"label": "Trump", "value": "'perimsim Kharg salą'", "change": "Irano pagrindinis naftos eksporto terminalas + 'VERY HARD TONIGHT'"}
+        {"label": "Posūkis", "value": "ketvirtadienį 21:12 LT", "change": "Trump atšaukė smūgius, skelbia deal'ą 'subject to finalization'"},
+        {"label": "Pasirašymas", "value": "galimai savaitgalį Europoje", "change": "vyksta Vance, Witkoff, Kushner; data NEPATVIRTINTA"},
+        {"label": "Deal'o kontūrai", "value": "60d paliaubos + Hormuzas atsidaro", "change": "Iranas laisvai parduoda naftą; toliau branduolinės derybos"},
+        {"label": "Irano pozicija", "value": "IRGC media: MOU nepatvirtintas", "change": "FM: tekstas 'beveik finalizuotas pagrindinėse dalyse'"},
+        {"label": "Hormuzas", "value": "Iranas deklaravo 'uždarytą'", "change": "derybinis svertas; tranzitas ~95% žemiau prieškarinio"},
+        {"label": "Izraelis", "value": "Netanyahu: 'ne deal'o šalis'", "change": "Izraelio-Irano frontas formaliai lieka atviras"}
       ],
-      "analysis": "Konfliktas pereina į naują fazę: nebe apsikeitimas smūgiais, o JAV planas perimti Irano naftos eksporto infrastruktūrą. Trump pareiškimas apie Kharg salos perėmimą 'netolimoje ateityje' - kokybinis pokytis, nes Kharg = ~90% Irano naftos eksporto. Iranas atsakė nutraukdamas derybas ir deklaruodamas Hormuzą uždarytu, nors CENTCOM rodo laivus tranzituojant. Pirmos komercinės aukos (3 Indijos jūreiviai) kelia draudimo kaštus visam regionui. Nafta reaguoja santūriai - po keturių mėnesių karo rinka diskontuoja grasinimus iki įvykdymo. Artimiausiom savaitėm naftos kaina svyruos ant kiekvieno headline'o apie Kharg operaciją.",
-      "long_term": "Energijos rizikos premija tapo režimu, ne epizodu - nepriklausomai nuo to, kaip baigsis Kharg epizodas. Hormuzas su 'tranzito mokesčiais', karinėmis palydomis ir augančiais draudimo kaštais nebėra laisvas koridorius, ir šis precedentas liks rinkos atmintyje metams. Struktūriniai laimėtojai 3-5 metų horizonte: ne-Persijos įlankos gavyba (JAV shale, Kanada, Brazilija), JAV LNG eksportuotojai (Europos/Azijos pirkėjai diversifikuojasi ilgalaikėmis sutartimis), gynyba (missile defense gavo gyvą demonstraciją), branduolinė energetika kaip energetinio saugumo trade. Pralaimėtojai: aviakompanijos, Europos pramonė, vartotojų discretionary. Sąžiningas caveat: jei JAV realiai perimtų Irano eksportą ir jis grįžtų į rinką per JAV kontrolę, vidutiniu laikotarpiu pasiūla galėtų net augti - scenarijų medis platus, todėl energy beta vytis ant viršūnės neverta."
+      "analysis": "Savaitė apsisuko per parą: nuo grasinimų perimti Kharg salą iki taikos dokumentų. Rinkos reakcija žaibiška - nafta prie 8 savaičių žemumų, vakar S&P +1.75%, VIX žemiau 19, energy sektorius vienintelis raudonas. Bet pasirašymas dar neįvykęs: Irano IRGC žiniasklaida neigia patvirtinusi tekstą, Hormuzas formaliai deklaruotas uždarytu kaip svertas, o Izraelis nėra deal'o šalis. Savaitgalis yra binarinis langas - pasirašymas arba dar vienas posūkis. Jei deal'as įvyksta, headline infliacija (energija = 60%+ CPI prieaugio) mechaniškai apsiverčia per 2-3 mėnesius ir 'hike iki gruodžio' kainodara išgaruoja.",
+      "long_term": "Net ir pasirašius, struktūrinis Hormuzo precedentas lieka rinkos atmintyje: sąsiauris buvo de facto uždarytas 3.5 mėnesio, draudimo ir frachto kaštai nebegrįš į prieškarinį lygį greitai, o kiekviena būsima įtampa kainuos rinkai greičiau. Energijos rizikos premijos deflyacija yra disinfliacinis impulsas long-duration turtui - didžiausi laimėtojai būtų kokybės augimo vardai, kurių multiple'ius spaudė 4.5%+ diskonto norma. Energy beta, kurią rinka vijosi balandį-gegužę, lieka įrodymas, kodėl žaliavų pozicijos ant geopolitinių viršūnių yra struktūriškai blogi entry taškai. Ne-Persijos įlankos gavybos ir JAV LNG tezės silpnėja trumpuoju, bet diversifikacijos logika (pirkėjai nebegrįš prie vieno tiekėjo) išlieka kelerių metų horizonte."
     },
     {
-      "ticker": "MU",
-      "headline": "Wolfe Research PT $550 -> $1,250 (+127%): DRAM kainos +200% CY26, paklausa virš pasiūlos iki 2027-2028",
-      "kind": "analyst_action",
+      "ticker": "SPCX",
+      "headline": "SpaceX debiutuoja šiandien: $135/akcija, $75B raise, $1.77T - didžiausias IPO istorijoje; retail alokacija nukirpta iki ~20-25%",
+      "kind": "structural_event",
+      "released_at": "2026-06-12",
+      "metrics": [
+        {"label": "Kaina", "value": "$135 fiksuota (nepakelta)", "change": "555.6M akcijų; $75B raise; $1.77T vertinimas"},
+        {"label": "Paklausa", "value": "$250B+ (3.5-4x)", "change": "orderiai uždaryti trečiadienį; didžiausi instituciniai po $10B+"},
+        {"label": "Retail", "value": "nukirpta iki ~20-25%", "change": "nuo planuotų ~30%; retail orderių buvo $100B+"},
+        {"label": "Pirmas print'as", "value": "~18:30-20:30 LT", "change": "gray market implikuoja +16-24%; prediction markets: close virš $2T"},
+        {"label": "2025 finansai", "value": "$18.5B pajamų, -$4.9B nuostolis", "change": "~94x pajamų; adj. EBITDA +$6.6B"},
+        {"label": "Starlink viduje", "value": "$11.4B pajamų, 63% EBITDA marža", "change": "10.3M abonentų (Q1) ir auga - tikrasis verslas"},
+        {"label": "xAI viduje", "value": "-$6.4B operacinis nuostolis", "change": "suvalgo 61% viso capex - Starlink subsidijuoja AI"},
+        {"label": "Kontrolė / indeksai", "value": "Musk 82% balsų", "change": "MSCI fast-entry nuo birželio 13: $35-50B indeksinių pirkimų"}
+      ],
+      "analysis": "Šiandien rinkos dėmesio centras: pirmas SPCX print'as laukiamas vidurdienį ET. Gray market premija į pricing'ą susitraukė nuo +60% iki +16-24%, tad debiutas tikriausiai bus tvarkingas, ne parabolinis. HOOD ir SOFI šiandien yra šio event'o beta: sklandus debiutas su dideliais retail fill'ais = retail distribucijos modelio patvirtinimas; chaosas ar flipping bangos = sentiment smūgis. Indeksinė mechanika svarbi visai rinkai: MSCI fast-entry rytoj priverstinai perka $35-50B SPCX, o tam fondai mechaniškai parduoda kitas pozicijas - švelnus headwind likusiems megacap'ams artimiausiom dienom.",
+      "long_term": "Investuotojui SPCX yra Starlink compounder'is (63% EBITDA marža, augantis abonentų skaičius, deflyuojantys paleidimo kaštai per Starship) su pridėtu xAI bet'u, kuris šiandien degina daugiau nei pusę capex - ir Musk 82% balsavimo kontrole, t.y. be minority akcininkų įtakos kapitalo paskirstymui. ~94x pajamų vertinimas underwrite'ina ir Starlink TAM ekspansiją, ir xAI sėkmę vienu metu - klaidos marža plona. Platesnė žinia svarbesnė: SpaceX + OpenAI + Anthropic (~$3.6T pipeline) per 12 mėnesių ateina į viešą rinką - tai struktūrinė akcijų pasiūlos banga, kuri konkuruos dėl tų pačių institucinių dolerių su esamais megacap'ais. Istoriškai rekordiniai IPO langai (1999, 2021) žymėjo vėlyvą ciklo fazę - ne priežastis parduoti kokybę, bet priežastis nekelti rizikos lygio portfelyje šitame taške."
+    },
+    {
+      "ticker": "CB-WEEK",
+      "headline": "ECB pakėlė pirmą kartą nuo 2023 (+25bp), BOJ pirmadienį kelia į 1.00%, trečiadienį pirmasis Warsh FOMC - vanagiška savaitė į galimai deflyuojantį šoką",
+      "kind": "macro_event",
       "released_at": "2026-06-11",
       "metrics": [
-        {"label": "Wolfe PT", "value": "$550 -> $1,250", "change": "+127%; Outperform (Chris Caso)"},
-        {"label": "DRAM kainų prielaida", "value": "+200% CY26", "change": "+17.5% CY27; NAND +216% CY26"},
-        {"label": "HBM ASP", "value": "+20% QoQ Q1'27", "change": "cleanroom-limited bit growth"},
-        {"label": "Paklausa vs pasiūla", "value": "deficitas iki 2027", "change": "galimai iki 2028"},
-        {"label": "Kaina", "value": "~$892 close, +2% pre", "change": "mcap ~$1.01T; fwd P/E ~8x"},
-        {"label": "Earnings", "value": "birželio 24", "change": "Q3 FY26 rezultatai"}
+        {"label": "ECB", "value": "+25bp, deposit 2.25%", "change": "pirmas kėlimas nuo 2023; HICP 2026 prognozė 3.0%, BVP nukirptas iki 0.8%"},
+        {"label": "BOJ (pirmadienis-antradienis)", "value": "kėlimas į 1.00% ~90% priced", "change": "pirmas 1% nuo 1995; jena ~160, carry-trade rizika"},
+        {"label": "FOMC (antradienis-trečiadienis)", "value": "hold ~97%", "change": "pirmasis Warsh posėdis; dot plot tikriausiai ištrins likusius cut'us"},
+        {"label": "Gruodžio Fed kainodara", "value": "~54% bent vienas hike", "change": "40% vienas 25bp, 13% du; cut ~1%"},
+        {"label": "30Y aukcionas (vakar)", "value": "5.020%, tail 1.2bp", "change": "trečias tail iš eilės, didžiausias nuo 2025 rugpjūčio; b/c 2.33"},
+        {"label": "Yields dabar", "value": "10Y ~4.46%, 30Y ~4.95%", "change": "krito ant taikos vilčių; 2Y 4.06%"},
+        {"label": "UoM sentimentas", "value": "šiandien 17:00 LT", "change": "gegužę 44.8 - žemiausias istorijoje; svarbu infliacijos lūkesčiai"}
       ],
-      "analysis": "Wolfe padvigubino su kaupu target'ą iki $1,250 - agresyviausias PT visame Street'e, paremtas DRAM kainų +200% CY26 ir struktūriniu deficitu iki 2027-2028. Po Goldman PT padvigubinimo (bet Neutral) užvakar, tai jau antras bankas per savaitę, perrašantis memory ciklo matematiką aukštyn. Trumpuoju laikotarpiu svarbiausias testas - birželio 24 earnings: prie tokių lūkesčių net stiprus print'as gali būti 'sell the news', o guidance tonas apie HBM kontraktus 2027 metams nulems, ar Street'o supercycle modeliai išlaiko. Kai analitikai pradeda underwrite'inti 2027 kainas, tai vienu metu ir patvirtinimas, ir sentiment viršūnės požymis.",
-      "long_term": "MU prie ~8x forward P/E lieka pigiausias didelis AI hardware žaidėjas, ir long-term supply sutartys su fixed volumes keičia istorinį ciklo profilį - bet memory 25+ metų buvo ciklinis verslas, ir $1,250 target implikuoja, kad šis deficitas iš esmės permanentinis. Tuo neskubu tikėti: Samsung ir SK Hynix capacity atsakas ateis 2027-2028, klausimas tik masto. Kelių metų tezė laikosi ant dviejų kojų: HBM kaip struktūriškai aukštesnės maržos produktas (Cloud Memory 66% gross margin) ir NY/Idaho megafab'ai kaip ilgalaikis capacity moat su CHIPS parama. Jei turi poziciją - ciklas dirba tavo naudai dar bent metus; jei statai naują, sizing'as turi atspindėti, kad perki cikliniame piko kvartilyje, kad ir koks ilgas šis ciklas būtų."
+      "analysis": "Trys centriniai bankai per penkias dienas, ir visi sukasi vanagiškai dėl energijos šoko - tuo metu, kai pats šokas galimai deflyuojasi ant Irano deal'o. ECB kėlimas yra stagfliacinis (infliacijos prognozė aukštyn, augimo žemyn), BOJ 1.00% su jena prie 160 atidaro carry-trade unwind klausimą tą pačią savaitę kaip FOMC, o Warsh debiutas su dot plot'u parodys, ar Fed formaliai ištrina easing bias. Vakarykštis 30Y tail (trečias iš eilės) primena, kad ilgojo galo paklausa minkšta net risk-on dienomis. Jei savaitgalį Iranas pasirašo, pirmadienio rinka atsidarys su krintančia nafta ir vanagiškais centriniais bankais vienu metu - policy error rizika abiem kryptim.",
+      "long_term": "Kelių metų horizonte svarbiausia ne pavieniai sprendimai, o režimo pokytis: globalus 'cuts are coming' naratyvas, nešęs rinkas nuo 2024, per vieną savaitę virsta 'hikes are possible'. G3 bankai vienu metu vanagiški + ilgojo galo term premium kylantis (trys 30Y tails iš eilės, Japonijos 30Y ~3.9%) = struktūriškai aukštesnė diskonto norma, net jei Iranas pasirašo. Investuotojui tai filtruoja portfelį pagal vieną kriterijų: ar verslo modelis generuoja realų FCF prie 5% ilgojo galo, ar jo vertė gyvena terminal value zonoje. Kokybės balansai (net cash, pricing power) yra vienintelė pozicija, kuri laimi abiejuose scenarijuose - ir taikos disinfliacijoje, ir karo stagfliacijoje."
     },
     {
-      "ticker": "INTC",
-      "headline": "BofA double-upgrade Underperform -> Buy, PT $96 -> $135: server CPU >$40B iki 2030, Apple ir MediaTek foundry pipeline",
-      "kind": "analyst_action",
-      "released_at": "2026-06-11",
-      "metrics": [
-        {"label": "BofA reitingas", "value": "Underperform -> Buy", "change": "double-upgrade (Vivek Arya); PT $96 -> $135"},
-        {"label": "EPS potencialas", "value": ">$6 iki 2030", "change": "ankstesnė prielaida $3-4"},
-        {"label": "Server CPU", "value": ">$40B pardavimų 2030", "change": "~25% iš $170B agentic-AI server CPU TAM"},
-        {"label": "Foundry pipeline", "value": "Apple M-series + MediaTek", "change": "TPU waferiai - išorinio foundry patvirtinimas"},
-        {"label": "Institucinė pozicija", "value": "tik 16% S&P 500 fondų turi", "change": "under-owned vs istorija"},
-        {"label": "Kaina", "value": "$107 close, +4.6% pre (~$112)", "change": "po +8.55% antradienį ant Foxconn deal"}
-      ],
-      "analysis": "Kai garsiausias semis bear'as (Arya buvo Underperform nuo 2023) šoka per du laiptelius tiesiai į Buy, naratyvas keičiasi struktūriškai - ypač kai argumentas ne 'turnaround hope', o konkretus: server CPU paklausa iš agentic AI workloads (kiekvienas AI agentas sėdi ant CPU orchestration sluoksnio) ir foundry pipeline su Apple/MediaTek vardais. Pridėjus antradienio Foxconn partnerystę, INTC per savaitę gavo du nepriklausomus institucinius patvirtinimus. Bet po +190% YTD ir +4.6% pre-market entry taškas nebėra asimetriškas - momentum vejasi fundamentus, ne atvirkščiai.",
-      "long_term": "Ilgalaikė tezė pirmą kartą per dekadą turi konkrečius, patikrinamus mile stones: ar Apple M-series waferiai realiai gamina 18A/14A procesuose 2027-2028, ar server CPU dalis stabilizuojasi prieš AMD, ar foundry verslas pasiekia gross margin breakeven iki 2028. Jei visi trys - $6 EPS kelias realus ir prie 20x tai $120+ akcija fundamentaliai, ne ant sentiment'o. Bet execution risk lieka didžiausias tarp didelių semis vardų: foundry yield'ai, klientų megijimas patikėti gamybą konkurentui, ir kapitalo poreikiai (Intel capex irgi dešimtys milijardų). Pozicijai tai 'prove-it' istorija su aiškiu checkpoint'ų sąrašu - ne core holding kaip TSMC, o asimetrijos bet'as, kurio svoris portfelyje turi likti toks, kokį gali sau leisti prarasti pusę."
-    },
-    {
-      "ticker": "BE",
-      "headline": "Crusoe pristabdė 1.8 GW Wyoming data centrą su 900 MW Bloom fuel cells - pirmas matomas įtrūkimas AI-power order book'e",
+      "ticker": "MRVL",
+      "headline": "MRVL +11.1%: naujas CFO Dan Durn (iš Adobe) + Google TPU užsakymai skaidomi MediaTek/Marvell/Broadcom - multi-vendor era oficiali",
       "kind": "market_move",
-      "released_at": "2026-06-10",
+      "released_at": "2026-06-11",
       "metrics": [
-        {"label": "Projektas", "value": "Crusoe + Tallgrass Cheyenne", "change": "1.8 GW campus, 900 MW Bloom dalis - pristabdyta"},
-        {"label": "Priežastis", "value": "neįvardinto kliento prašymas", "change": "kliento tapatybė - key unknown"},
-        {"label": "Pajamų potencialas", "value": "~$2.65B (MS vertinimu)", "change": "telpa po esama 1 GW AEP MSA sutartimi"},
-        {"label": "Reakcija", "value": "-9.78% trečiadienį ($234)", "change": "+2.5% pre-market atšokimas"},
-        {"label": "Street", "value": "MS Overweight $310", "change": "BMO Outperform reiterate - abu laiko"},
-        {"label": "Kontekstas", "value": "+169% YTD, ~54x fwd P/E", "change": "kaina nepalieka vietos siurprizams"}
+        {"label": "Kaina", "value": "$280.71 (+11.13% vakar)", "change": "+57% per mėnesį; pre-market -2.1%"},
+        {"label": "Naujas CFO", "value": "Dan Durn (Adobe CFO)", "change": "efektyvus birželio 15; Q2 FY27 guidance patvirtintas"},
+        {"label": "Google TPU", "value": "užsakymai skaidomi 3 partneriams", "change": "MediaTek + Marvell + Broadcom (DigiTimes) - MRVL gauna share"},
+        {"label": "S&P 500 įtraukimas", "value": "birželio 22", "change": "kartu NBIS į Nasdaq-100 tą pačią dieną"},
+        {"label": "AVGO kampas", "value": "TPU išskirtinumas eroduoja", "change": "negatyvu AVGO custom-silicon maržoms ilgam"},
+        {"label": "Valuation", "value": "fwd P/E ~42-45", "change": "kaina virš analitikų target vidurkio"}
       ],
-      "analysis": "Pirmas konkretus 'pause' didelio masto AI-power užsakyme: Crusoe sustabdė 1.8 GW Wyoming kampusą kliento prašymu, ir 900 MW Bloom dalis kartu. Morgan Stanley ir BMO laiko reitingus (užsakymas formaliai telpa po esama AEP sutartimi, fundamentai nepasikeitė), bet žinia svarbi ne dėl šio projekto - ji parodo, kad AI data center backlog'ai yra pause'inami ir koncentruoti pas pavienius klientus. Janus Henderson šiandien paskaičiavo, kad iš 157 GW paskelbtų projektų iki 2030 pastatyta bus ~84 GW. Artimiausiu metu BE prekiausis su order-momentum rizikos priedu, ir kiekvienas naujas 'pause' headline'as kainuos daugiau nei šis.",
-      "long_term": "Struktūrinė tezė nepasikeitė: fuel cells yra greičiausias kelias prijungti AI data centrą ten, kur tinklas neturi capacity (laukimo eilės interconnection'ui - 4-7 metai), ir Bloom turi technologinį lead'ą bei AEP/Oracle klase klientus. Bet ši savaitė primena esminį skirtumą tarp 'paklausa reali' ir 'kiekvienas paskelbtas GW virsta pajamomis' - apie pusė paskelbtų projektų gali likti popieriuje, ir Bloom pajamos priklauso nuo to, KURIE projektai statomi. Prie ~54x fwd P/E vertinimas underwrite'ina beveik tobulą backlog konversiją. Kelių metų investuotojui BE lieka stipri augimo istorija su realiu moat'u, bet pozicijos dydis turi atspindėti, kad tai high-multiple vardas su koncentruota klientų baze - tokių pozicijų neperkraunama, ir tokios dienos kaip vakar yra priminimas kodėl."
+      "analysis": "Vakarykštis +11% turėjo fundamentų, ne tik index-flow beta: Dan Durn iš Adobe yra rimtas CFO pasamdymas augimo fazei (capital allocation disciplinos signalas), o DigiTimes duomenys apie Google TPU užsakymų skaidymą tarp MediaTek, Marvell ir Broadcom yra pirmas konkretus patvirtinimas, kad MRVL realiai gauna TPU share - ne tik 'derybose'. Trumpuoju laikotarpiu birželio 22 S&P įtraukimas yra žinomas flow event'as, ir pre-market -2.1% rodo, kad dalis rinkos jau žaidžia 'sell the news'. Po +57% mėnesio lūkesčiai aukšti.",
+      "long_term": "Multi-vendor era custom silicon rinkoje dabar oficiali, ir ji turi du veidus. MRVL pusėje: antras Tier-1 anchor klientas (Google šalia AWS) būtų tezės lūžio taškas aukštyn - TPU share su CFO, kuris moka skalinti maržas, daro $100B+ data center TAM kelią įtikimesnį. AVGO pusėje: TPU išskirtinumo erozija patvirtina, kad hyperscaler'iai sąmoningai mažina priklausomybę nuo vieno partnerio - 3-5 metų horizonte tai spaudžia visos custom-ASIC industrijos kainodarą, net augant apimtims. Investuotojui MRVL prie fwd P/E ~42-45 lieka 'prove-it' kaina: TPU share turi virsti kontraktais ir pajamomis per 2-3 ketvirčius, kitaip multiple'is susitrauks pats. Stipri story, stiprėjantis management, bet sizing'as turi gerbti, kad beveik tobulas execution jau įkainotas."
     },
     {
-      "ticker": "HOOD",
-      "headline": "SpaceX IPO kainuojamas šįvakar, prekyba rytoj (SPCX) - orderiai $250B+ prie $75B raise; HOOD gegužės metrikos rekordinės",
+      "ticker": "NBIS",
+      "headline": "Nebius įtraukiamas į Nasdaq-100 nuo birželio 22 (kartu su ALAB, CRWV, RKLB) - pre-market +5% prie $233",
       "kind": "structural_event",
       "released_at": "2026-06-11",
       "metrics": [
-        {"label": "Pricing", "value": "šįvakar po close", "change": "prekyba rytoj 06-12, Nasdaq: SPCX"},
-        {"label": "Paklausa", "value": "$250B+ orderių", "change": "3.5-4x oversubscribed prie fiksuotos $135/akciją"},
-        {"label": "Raise / vertinimas", "value": "$75B / ~$1.77T", "change": "didžiausias IPO istorijoje (Aramco $29.4B); greenshoe +$11.2B"},
-        {"label": "Retail alokacija", "value": "iki ~30%", "change": "per Robinhood, SoFi, Fidelity, Schwab, E-Trade"},
-        {"label": "HOOD gegužės metrikos", "value": "$315B equity volume (+75%)", "change": "rekordiniai $377B platform assets (+48% YoY)"},
-        {"label": "HOOD kaina", "value": "$86.36 (+3.1% trečiadienį)", "change": "žalia raudoną dieną; +1.7% pre"}
+        {"label": "Įtraukimas", "value": "Nasdaq-100, birželio 22", "change": "paskelbta vakar po close; kartu ALAB, CRWV, RKLB, TER"},
+        {"label": "Iškrenta", "value": "CHTR, CTSH, INSM, VRSK, ZS", "change": "ketvirtinis perbalansavimas"},
+        {"label": "Reakcija", "value": "+7% overnight, +5% pre ($233.60)", "change": "vakar close $222.24 (+4.98%)"},
+        {"label": "YTD", "value": "+165%", "change": "neocloud kategorijos lyderis watchlist'e"},
+        {"label": "Tą pačią dieną", "value": "MRVL į S&P 500", "change": "birželio 22 - dviguba indeksacijos diena watchlist'ui"}
       ],
-      "analysis": "SpaceX IPO knyga užsidarė su $250B+ orderių - 3.5-4x oversubscription, nors gray-market premija į pricing'ą traukėsi, tad day-one pop'as gali būti kuklesnis nei hype'as implikuoja. HOOD trumpuoju laikotarpiu prekiausis kartu su debiuto sėkme: sklandus SPCX startas = patvirtinimas, kad retail distribucijos kanalas veikia mega-IPO mastu; nuviliantis debiutas ar flipping bangos = sentiment smūgis. Brokeriai jau perspėja, kad SPCX pardavimas per 30 dienų kainuos prieigą prie būsimų IPO - tai retail lock-up eksperimentas realiu laiku.",
-      "long_term": "Nepriklausomai nuo rytojaus dienos rezultato, HOOD struktūrinė pozicija pasikeitė per šį ciklą: underwriter statusas + įrodyta retail distribucija (iki ~$20B+ alokacijos viename IPO) + rekordiniai $377B platform assets reiškia, kad Robinhood iš brokerage app virsta full-stack capital markets franšize tai kartai, kuri IPO'se dalyvaus per telefoną. Jei OpenAI (confidential filing jau paduotas) ir Anthropic IPO ateina 2026-2027, HOOD yra default retail kanalas visam ciklui. Rizikos ilgam horizontui: pajamos vis dar jautrios trading aktyvumui (ciklinės), reguliatorius gali apriboti IPO gamification, ir vertinimas jau įkainoja dalį šios opcijos. Bet adjacent ekspansijų track record (prediction markets, underwriting, crypto) rodo management'ą, kuris nuosekliai paverčia platformos mastą naujomis verslo kojomis - tai kokybės požymis, kurio neturi dauguma fintech'ų."
+      "analysis": "Nasdaq-100 įtraukimas Nebius'ui duoda dvi naudas vienu metu: QQQ pasyvūs srautai (mechaninis pirkimas iki birželio 22) ir institucinis legitimumas - neocloud kategorija oficialiai pereina iš 'spekuliatyvių small-cap' į indeksinį mainstream'ą kartu su CoreWeave ir Astera Labs. Trumpuoju laikotarpiu index-inclusion pop'ai istoriškai dalinai atsileidžia po efektyvios datos, tad +5% pre-market vytis neverta - flow event'as žinomas ir įkainojamas dabar.",
+      "long_term": "Kelių metų tezei indeksacija svarbi netiesiogiai: ji mažina kapitalo kaštą (likvidumas, opcionų rinka, įtraukimas į institucinius mandatus), o tai neocloud verslui su milžiniškais capex poreikiais yra realus konkurencinis pranašumas - pigesnė akcijų valiuta plėtrai. Rizikos nesikeičia: NBIS tezė laikosi ant GPU paklausos persvaros prieš pasiūlą ir gebėjimo konkuruoti su hyperscaler'iais kaina - abu kintamieji už įmonės kontrolės ribų. Po +165% YTD pozicijos dydis svarbiau nei entry taškas: tai aukšto beta vardas, kurio svoris portfelyje turi būti toks, kad -50% drawdown (normalus šiai kategorijai) nekeistų bendro paveikslo."
     }
   ]
 }
