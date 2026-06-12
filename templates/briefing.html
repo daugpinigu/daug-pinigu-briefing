@@ -1043,6 +1043,15 @@
   .ta-setup-row { font-size: 12px; color: #e6e8ee; margin-bottom: 3px; }
   .ta-setup-row strong { color: #b794f4; }
   .ta-setup-row .price { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ta-playbook {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: rgba(126,216,126,0.05);
+    border-left: 2px solid rgba(126,216,126,0.45);
+    border-radius: 4px;
+  }
+  .ta-playbook .ta-setup-row { margin-bottom: 5px; line-height: 1.5; }
+  .ta-playbook .ta-setup-row strong { color: #7ed87e; }
   .ta-verdict {
     margin-top: 10px;
     font-size: 13px;
@@ -2478,6 +2487,17 @@
         {% if t.daily.setup.rsi_warning %}
         <div class="ta-rsi-warn">⚠ RSI extreme - padidinta whipsaw rizika</div>
         {% endif %}
+      </div>
+      {% endif %}
+
+      {% if t.playbook %}
+      <div class="ta-playbook">
+        <div class="ta-setup-label">Zonos · opcionų playbook</div>
+        <div class="ta-setup-row"><strong>Weekly:</strong> {{ t.playbook.weekly_insight }}</div>
+        <div class="ta-setup-row"><strong>📥 Buy / CSP:</strong> {{ t.playbook.buy }}</div>
+        <div class="ta-setup-row"><strong>📤 Sell / CC:</strong> {{ t.playbook.sell }}</div>
+        <div class="ta-setup-row"><strong>🎯 LEAPS:</strong> {{ t.playbook.leaps }}</div>
+        <div class="ta-setup-row"><strong>⏳ Laukti:</strong> {{ t.playbook.wait }}</div>
       </div>
       {% endif %}
 

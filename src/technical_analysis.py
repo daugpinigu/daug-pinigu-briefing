@@ -272,6 +272,185 @@ def _verdict(trend: str, rsi: float, distance_to_r1_pct: float, distance_to_s1_p
     return f"Mixed setup (RSI {rsi:.0f}) - laukti aiškesnio range break before commit."
 
 
+def _liquid_strike(p: float, direction: str) -> float:
+    """Round to a liquid option strike. direction: 'down' (CSP) or 'up' (CC)."""
+    if p < 25:
+        step = 0.5
+    elif p < 50:
+        step = 1.0
+    elif p < 100:
+        step = 2.5
+    elif p < 250:
+        step = 5.0
+    elif p < 500:
+        step = 10.0
+    elif p < 1000:
+        step = 25.0
+    else:
+        step = 50.0
+    import math
+    return (math.floor(p / step) if direction == 'down' else math.ceil(p / step)) * step
+
+
+def _fmt_strike(p: float) -> str:
+    return f"${p:,.0f}" if p == int(p) else f"${p:,.2f}".rstrip('0').rstrip('.')
+
+
+def _cluster_levels(cands: list[dict], tol: float = 0.025) -> list[dict]:
+    """Group nearby levels into confluence zones. cands: [{'price','src'}].
+
+    Returns zones sorted by price desc: {'lo','hi','mid','srcs',score}.
+    Score = source count (confluence beats proximity).
+    """
+    zones = []
+    for c in sorted(cands, key=lambda x: -x['price']):
+        placed = False
+        for z in zones:
+            if abs(c['price'] - z['mid']) / z['mid'] <= tol:
+                z['lo'] = min(z['lo'], c['price'])
+                z['hi'] = max(z['hi'], c['price'])
+                z['srcs'].append(c['src'])
+                z['mid'] = (z['lo'] + z['hi']) / 2
+                placed = True
+                break
+        if not placed:
+            zones.append({'lo': c['price'], 'hi': c['price'],
+                          'mid': c['price'], 'srcs': [c['src']]})
+    for z in zones:
+        z['score'] = len(z['srcs'])
+    return zones
+
+
+def _zone_str(z: dict) -> str:
+    if abs(z['hi'] - z['lo']) / z['mid'] < 0.005:
+        return _fmt_price(z['mid'])
+    return f"{_fmt_price(z['lo'])}-{_fmt_price(z['hi'])}"
+
+
+def _zone_srcs(z: dict, limit: int = 3) -> str:
+    seen, out = set(), []
+    for s in z['srcs']:
+        if s not in seen:
+            seen.add(s)
+            out.append(s)
+        if len(out) >= limit:
+            break
+    return ' + '.join(out)
+
+
+def _options_playbook(d: dict, w: dict) -> Optional[dict]:
+    """Concrete zones for the options seller / LEAPS buyer.
+
+    Radoslav 2026-06-12: TA must say WHAT TO DO at WHICH levels - buy/CSP
+    zones, CC zones, LEAPS window, what trigger to wait for - not generic
+    'lauk range break'. Built from daily+weekly raw levels with confluence
+    clustering; strikes rounded to liquid increments.
+    """
+    if not d or not w:
+        return None
+    price = d['price']
+
+    sup_cands, res_cands = [], []
+    def _add(cands, val, src):
+        if val and not pd.isna(val) and val > 0:
+            cands.append({'price': float(val), 'src': src})
+
+    for k, v in (d.get('fib_ret') or {}).items():
+        _add(sup_cands if v < price else res_cands, v, f"D {k} fib")
+    for k, v in (w.get('fib_ret') or {}).items():
+        _add(sup_cands if v < price else res_cands, v, f"W {k} fib")
+    for k, v in (d.get('fib_ext') or {}).items():
+        if v > price:
+            _add(res_cands, v, f"D {k} ext")
+    for ma_key, label in (('ma20', '20DMA'), ('ma50', '50DMA'), ('ma200', '200DMA')):
+        _add(sup_cands if (d.get(ma_key) or 0) < price else res_cands, d.get(ma_key), f"D {label}")
+    for ma_key, label in (('ma20', '20WMA'), ('ma50', '50WMA')):
+        _add(sup_cands if (w.get(ma_key) or 0) < price else res_cands, w.get(ma_key), f"W {label}")
+    for v in (d.get('pivots_lo') or []):
+        _add(sup_cands if v < price else res_cands, v, 'D pivot')
+    for v in (d.get('pivots_hi') or []):
+        _add(sup_cands if v < price else res_cands, v, 'D pivot')
+
+    # Keep meaningful distance bands: supports 1.5-40% below, resistance 1-60% above
+    sup_cands = [c for c in sup_cands if 0.015 <= (price - c['price']) / price <= 0.40]
+    res_cands = [c for c in res_cands if 0.01 <= (c['price'] - price) / price <= 0.60]
+    sup_zones = _cluster_levels(sup_cands)            # desc: nearest below first
+    res_zones = _cluster_levels(res_cands)[::-1]      # asc: nearest above first
+
+    if not sup_zones or not res_zones:
+        return None
+
+    # Buy zone 1 = nearest support; buy zone 2 = best confluence deeper down
+    buy1 = sup_zones[0]
+    deeper = sup_zones[1:]
+    buy2 = max(deeper, key=lambda z: (z['score'], z['mid'])) if deeper else None
+    sell1 = res_zones[0]
+    farther = res_zones[1:]
+    sell2 = max(farther, key=lambda z: z['score']) if farther else None
+
+    csp1 = _liquid_strike(buy1['lo'], 'down')
+    csp2 = _liquid_strike(buy2['lo'], 'down') if buy2 else None
+    cc1 = _liquid_strike(sell1['hi'], 'up')
+
+    def _pct(v):
+        return f"{(v - price) / price * 100:+.0f}%"
+
+    buy_txt = (f"{_zone_str(buy1)} ({_pct(buy1['mid'])}; {_zone_srcs(buy1)}) "
+               f"-> CSP {_fmt_strike(csp1)}")
+    if buy2:
+        buy_txt += (f"; gilesnė {_zone_str(buy2)} ({_pct(buy2['mid'])}; {_zone_srcs(buy2)}) "
+                    f"-> CSP {_fmt_strike(csp2)} (didesnė premija, stipresnė konfluencija)")
+    sell_txt = (f"{_zone_str(sell1)} ({_pct(sell1['mid'])}; {_zone_srcs(sell1)}) "
+                f"-> CC {_fmt_strike(cc1)}")
+    if sell2:
+        sell_txt += f"; trim zona {_zone_str(sell2)} ({_pct(sell2['mid'])}; {_zone_srcs(sell2)})"
+
+    wait_txt = (f"Virš {_fmt_price(sell1['lo'])} uždarymo - momentum patvirtintas "
+                f"(kelias į {_zone_str(sell2) if sell2 else 'aukštesnius ext'}); "
+                f"pullback į {_zone_str(buy1)} - akumuliacijos taškas")
+
+    w_trend = (w.get('trend_text') or '').lower()
+    d_rsi = d.get('rsi') or 50
+    w_bull = w_trend.startswith(('stiprus bull', 'bull'))
+    w_bear = w_trend.startswith(('stiprus bear', 'bear'))
+    if w_bull and d_rsi <= 50:
+        leaps = (f"langas ATVIRAS - weekly bull + daily RSI {d_rsi:.0f} atvėsęs; "
+                 f"deep ITM (delta ~0.8) 12-24 mėn.")
+    elif w_bull and d_rsi >= 65:
+        leaps = (f"struktūra bull, bet daily RSI {d_rsi:.0f} ištemptas - "
+                 f"LEAPS pirkti pullback'e į {_zone_str(buy1)}, ne čia")
+    elif w_bull:
+        leaps = (f"dalinė pozicija OK (weekly bull, RSI {d_rsi:.0f}); "
+                 f"pilna - {_zone_str(buy1)} zonoje arba virš {_fmt_price(sell1['hi'])} breakout")
+    elif w_bear:
+        leaps = f"NE - weekly struktūra prieš; peržiūrėti tik virš {_fmt_price(sell1['hi'])}"
+    else:
+        leaps = (f"tik {_zone_str(buy2 or buy1)} zonoje su weekly stabilizacija - "
+                 f"struktūra dar nepatvirtinta")
+
+    # Weekly insight: where price sits in the weekly fib structure
+    w_fibs = sorted(((k, v) for k, v in (w.get('fib_ret') or {}).items()), key=lambda x: x[1])
+    below = [(k, v) for k, v in w_fibs if v < price]
+    above = [(k, v) for k, v in w_fibs if v >= price]
+    pos_bits = []
+    if below:
+        k, v = below[-1]
+        pos_bits.append(f"laikosi virš W {k} fib ({_fmt_price(v)})")
+    if above:
+        k, v = above[0]
+        pos_bits.append(f"kitas weekly lygis viršuje - {k} fib ({_fmt_price(v)}, {_pct(v)})")
+    weekly_insight = (f"{w.get('trend_text', '-')}, RSI {w.get('rsi', 0):.0f}"
+                      + (": " + "; ".join(pos_bits) if pos_bits else ""))
+
+    return {
+        'buy': buy_txt,
+        'sell': sell_txt,
+        'leaps': leaps,
+        'wait': wait_txt,
+        'weekly_insight': weekly_insight,
+    }
+
+
 def _chart_payload(df: pd.DataFrame, fib_ret: dict, fib_ext: dict,
                    resistance: list, support: list,
                    ma50_series: pd.Series, ma200_series: pd.Series,
@@ -382,6 +561,13 @@ def _compute_one(df: pd.DataFrame, lookback_bars: int, label: str) -> dict:
                     for s in levels['support']],
         'setup': setup,
         'verdict': verdict_text,
+        # Raw numerics for the options playbook (not rendered directly)
+        'raw': {
+            'price': price, 'rsi': rsi, 'trend_text': trend_text,
+            'ma20': ma20, 'ma50': ma50, 'ma200': ma200,
+            'fib_ret': fib_ret, 'fib_ext': fib_ext,
+            'pivots_hi': pivots_hi, 'pivots_lo': pivots_lo,
+        },
     }
 
 
@@ -433,6 +619,13 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
                                    ma50_series, ma200_series,
                                    visible_bars=130)
 
+    playbook = None
+    if daily_ta.get('available') and weekly_ta.get('available'):
+        try:
+            playbook = _options_playbook(daily_ta.get('raw'), weekly_ta.get('raw'))
+        except Exception as e:
+            print(f"  warn: playbook failed for {ticker}: {e}")
+
     return {
         'ticker': ticker,
         'name': name or ticker,
@@ -442,6 +635,7 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
         'daily': daily_ta,
         'weekly': weekly_ta,
         'chart': chart,
+        'playbook': playbook,
     }
 
 
