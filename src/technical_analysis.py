@@ -510,12 +510,38 @@ def _chart_payload(df: pd.DataFrame, fib_ret: dict, fib_ext: dict,
     }
 
 
-def _compute_one(df: pd.DataFrame, lookback_bars: int, label: str) -> dict:
-    """Compute full TA for one timeframe (daily or weekly)."""
+def _live_price(t, fallback: float) -> float:
+    """Freshest last price - covers the case where yfinance's last daily bar is
+    a forming/NaN candle (so its Close lags the actual latest close). Tries
+    fast_info then .info, falls back to the last complete close."""
+    try:
+        lp = t.fast_info.last_price
+        if lp and not pd.isna(lp) and lp > 0:
+            return float(lp)
+    except Exception:
+        pass
+    try:
+        rp = t.info.get('regularMarketPrice')
+        if rp and not pd.isna(rp) and rp > 0:
+            return float(rp)
+    except Exception:
+        pass
+    return fallback
+
+
+def _compute_one(df: pd.DataFrame, lookback_bars: int, label: str,
+                 current_price: float = None) -> dict:
+    """Compute full TA for one timeframe (daily or weekly).
+
+    current_price: when set, overrides the last-bar close for the displayed
+    price, trend, level-distances and setup (levels themselves stay computed
+    off completed bars - standard daily-TA practice). Used when the last bar
+    is a forming/NaN candle so the close lags reality.
+    """
     if df is None or len(df) < 30:
         return {'available': False, 'label': label}
     closes = df['Close']
-    price = float(closes.iloc[-1])
+    price = float(current_price) if current_price else float(closes.iloc[-1])
     ma20 = float(closes.rolling(20).mean().iloc[-1]) if len(closes) >= 20 else None
     ma50 = float(closes.rolling(50).mean().iloc[-1]) if len(closes) >= 50 else None
     ma200 = float(closes.rolling(200).mean().iloc[-1]) if len(closes) >= 200 else None
@@ -577,6 +603,15 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
         t = yf.Ticker(ticker)
         daily = t.history(period='2y', interval='1d', auto_adjust=False)
         weekly = t.history(period='5y', interval='1wk', auto_adjust=False)
+        # yfinance appends a forming (today/this-week) candle with NaN OHLC for
+        # some tickers - that makes Close.iloc[-1] NaN and silently kills price,
+        # levels and the options playbook. Drop incomplete rows so every
+        # computation uses the last COMPLETE bar. (2026-06-16: MU/TSLA/NBIS/AMZN
+        # lost their playbook this way.)
+        if daily is not None:
+            daily = daily.dropna(subset=['Close'])
+        if weekly is not None:
+            weekly = weekly.dropna(subset=['Close'])
         if daily is None or len(daily) < 30:
             return None
     except Exception as e:
@@ -587,17 +622,19 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
     lookback_daily_bars = cfg.get('lookback_daily_weeks', 26) * 5  # ~5 trading days/week
     lookback_weekly_bars = cfg.get('lookback_weekly_years', 2) * 52
 
-    # Current price + 1d change
+    # Current price + 1d change. Use the freshest live price (handles the case
+    # where yfinance's latest daily bar is a forming/NaN candle that lags the
+    # real last close - e.g. MU/MRVL on 2026-06-16 showed Friday not Monday).
+    last_close = float(daily['Close'].iloc[-1])
+    cur = _live_price(t, last_close)
     if len(daily) >= 2:
-        cur = float(daily['Close'].iloc[-1])
         prev = float(daily['Close'].iloc[-2])
         change_pct = (cur - prev) / prev * 100
     else:
-        cur = float(daily['Close'].iloc[-1])
         change_pct = 0.0
 
-    daily_ta = _compute_one(daily, lookback_daily_bars, 'Daily')
-    weekly_ta = _compute_one(weekly, lookback_weekly_bars, 'Weekly')
+    daily_ta = _compute_one(daily, lookback_daily_bars, 'Daily', current_price=cur)
+    weekly_ta = _compute_one(weekly, lookback_weekly_bars, 'Weekly', current_price=cur)
 
     # Chart payload for Lightweight Charts (daily timeframe, last ~6mo)
     chart = None
@@ -652,14 +689,21 @@ def fetch_ta_watchlist(dynamic_tickers: list[str] = None) -> list[dict]:
                 if len(dynamic) >= max_dyn:
                     break
     all_tickers = core + dynamic
+    core_set = set(core)
     print(f"  TA: computing for {len(all_tickers)} tickers ({len(core)} core + {len(dynamic)} dynamic)...")
     out = []
     for t in all_tickers:
         result = compute_ta(t)
-        if result:
-            out.append(result)
-        else:
+        if not result:
             print(f"    warn: TA skipped for {t}")
+            continue
+        # Dynamic movers can surface junk (leveraged ETNs, sub-$5 tickers) with
+        # no clean level structure - if the playbook couldn't build zones, the
+        # card is noise. Keep core always; drop playbook-less dynamic cards.
+        if t not in core_set and not result.get('playbook'):
+            print(f"    skip dynamic {t}: no usable level structure")
+            continue
+        out.append(result)
     print(f"  -> {len(out)}/{len(all_tickers)} TA cards generated")
     return out
 
