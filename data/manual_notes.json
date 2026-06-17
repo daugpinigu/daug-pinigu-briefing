@@ -1,104 +1,116 @@
 {
-  "generated_at": "2026-06-16T10:30:00+00:00",
-  "expires_at": "2026-06-18T00:00:00+00:00",
+  "generated_at": "2026-06-17T12:30:00+00:00",
+  "expires_at": "2026-06-19T00:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "IRAN-DEAL",
-      "headline": "JAV-Iranas paskelbė deal'ą (parašas planuojamas 06-19 Šveicarijoje) - nafta nuo penktadienio krito ~10%, laivyno blokada nuimta",
-      "kind": "geopolitics_event",
-      "released_at": "2026-06-14",
-      "metrics": [
-        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}} - nuo penktadienio ~-10%"},
-        {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
-        {"label": "Statusas", "value": "paskelbta sekmadienį, NE pasirašyta", "change": "Trump: 'complete'; tarpininkai Pakistanas + Kataras"},
-        {"label": "Parašas", "value": "planuojamas penktadienį 06-19", "change": "Šveicarijoje; Vance ketina dalyvauti"},
-        {"label": "Blokada", "value": "nuimta iškart (06-14)", "change": "JAV laivyno blokada Irano uostams nuo balandžio"},
-        {"label": "Hormuzas", "value": "atsidaro po parašo", "change": "fizinis srautas vėluoja savaites (minos, draudimas)"},
-        {"label": "Izraelis", "value": "NE deal'o šalis", "change": "savaitgalį smogė Hezbollah Beirute - Levantas lieka gyvas"},
-        {"label": "$ atblokavimas", "value": "~$24-25B Irano įšaldyto turto", "change": "per 60d derybų langą; branduolinis deal'as per 60d"}
-      ],
-      "analysis": "Deal'as apsisuko per savaitgalį, bet būtina tiksli formuluotė: paskelbta ir 'complete' pagal Trump, bet formalus parašas tik penktadienį 06-19, o Hormuzas atsidaro po jo. Rinkai krypties užteko - nafta krito ~10% nuo penktadienio, pirmadienį akcijos sprogo (Nasdaq +3.07%). Trumpuoju yra dvi rizikos: parašas gali slysti (Trump '06-11 savaitgalį' jau praslydo, Irano IRGC ginčijo tekstą), o Izraelio-Hezbollah frontas Libane lieka atviras ir gali vėl uždegti Iran-Israel apsikeitimą.",
-      "long_term": "Ilgalaikiam investuotojui svarbiausia ne taika, o energijos rizikos premijos deflyacija. Visas 2026 vanagiškas centrinių bankų posūkis (BOJ, ECB, Fed gruodžio hike kainodara) buvo pastatytas ant Irano karo energijos šoko. Jei Hormuzas atsidaro ir nafta laikosi $78-80, tas infliacijos impulsas blėsta - struktūriškai disinfliacinė jėga, kuri palengvina diskonto normą ilgo trukmės augimo vardams ir mažina geopolitinę uodegos riziką, slėgusią globalius multiple'ius. Headwind energijos gavybai (E&P, oilfield services), kurių 2026 pelnai buvo pripūsti aukštos kainos. Struktūrinis Hormuzo precedentas lieka: Iranas įrodė galintis uždaryti ~20% jūrų naftos ir iškeisti blokados nuėmimą + sankcijų lengvinimą + $25B į atidarymą - pakartojamas svertas, kuris palieka miegantį optionality premium naftoje ir gynybos/jūrų saugumo varduose."
-    },
-    {
-      "ticker": "BOJ",
-      "headline": "BOJ pakėlė palūkanas iki 1.00% - pirmas toks lygis nuo 1995; balsai 7-1, sprendimas be valdytojo Ueda (ligoninėje)",
-      "kind": "macro_event",
-      "released_at": "2026-06-16",
-      "metrics": [
-        {"label": "Sprendimas", "value": "+25bp iki 1.00%", "change": "nuo 0.75%; aukščiausia nuo 1995 m. rugsėjo"},
-        {"label": "Balsai", "value": "7-1", "change": "vienintelis prieš - Asada (downside rizika gamybai/užimtumui)"},
-        {"label": "Ueda", "value": "ligoninėje, nedalyvavo", "change": "kepenų cistos infekcija; pirmas posėdis istorijoje be valdytojo"},
-        {"label": "Pirmininkavo", "value": "vicevaldytojas Himino", "change": "spaudos konferencija - Uchida"},
-        {"label": "Jena", "value": "~160 USD/JPY", "change": "vangi reakcija - hike seniai įkainotas"},
-        {"label": "Forward", "value": "signalizuoja bond pirkimų mažinimą", "change": "stebės Irano deal'o poveikį infliacijai"}
-      ],
-      "analysis": "BOJ pakėlė kaip ~94% laukta, bet kontekstas ironiškas: bankas kelia būtent tada, kai energijos šokas, kuris pateisino vanagiškumą, savaitgalį pradėjo deflyuotis. Jenos reakcija vangi - hikė įkainota seniai, o Ueda absence prieš tai jau buvo pastūmėjusi jeną link 160. Trumpuoju svarbesnis carry-trade klausimas: BOJ prie 1% su jena ~160 laiko gyvą jenos carry unwind riziką, kuri gali staiga judinti globalų likvidumą - bet pirmadienio risk-on rodo, kad rinka kol kas to nebijo.",
-      "long_term": "Japonijos normalizacija į 1% (ir Reuters apklausa mato 1.25%+ iki metų galo) yra dalis platesnio režimo pokyčio: globalus 'cuts are coming' naratyvas, nešęs rinkas nuo 2024, virsta 'higher for longer' arba net 'hikes'. G3 bankai vienu metu vanagiški + kylantis term premium ilgajame gale = struktūriškai aukštesnė diskonto norma kelerius metus, net jei nafta krenta. Investuotojui tai filtruoja portfelį pagal vieną kriterijų: ar verslas generuoja realų FCF prie 5% ilgojo galo, ar jo vertė gyvena terminal value zonoje. Ueda absence ir 7-1 split rodo, kad normalizacijos kryptis tvirta nepriklausomai nuo asmenybių - tai institucinis, ne ciklinis pokytis."
-    },
-    {
       "ticker": "FOMC",
-      "headline": "Warsh pirmasis FOMC rytoj (06-17) - hold ~98%, bet dot plot ir spaudos konferencija yra savaitės tikrasis binary; rinka jau apvertė iš 'gruodžio hike' į 'hold'",
+      "headline": "Warsh pirmasis FOMC šiandien 21:00 LT - hold ~97%, bet tikrasis event'as dot plot ir tai, kad Warsh nepateiks savo asmeninio dot'o (pirmas pirmininkas per 14 metų)",
       "kind": "macro_event",
+      "released_at": "2026-06-17",
+      "metrics": [
+        {"label": "Sprendimas", "value": "šiandien 21:00 LT (14:00 ET)", "change": "presser 21:30; norma lieka 3.50-3.75%"},
+        {"label": "Hold tikimybė", "value": "~97%", "change": "ketvirtas hold iš eilės"},
+        {"label": "Dot plot", "value": "konsensusas: ištrina likusius 2026 cut'us", "change": "kovo SEP dar turėjo bent vieną; keli nariai gali įrašyti hike"},
+        {"label": "Warsh dot", "value": "nepateiks savo asmeninio", "change": "pirmas pirmininkas per 14 metų; kritikavo dot plot ir 'transitory'"},
+        {"label": "Easing bias", "value": "tikėtina pašalintas", "change": "leaner Fed, mažiau forward guidance"},
+        {"label": "Kryžminis srautas", "value": "nafta krito iki ~$76", "change": "energijos šokas, pateisinęs hawkish dots, kaip tik deflyuojasi"}
+      ],
+      "analysis": "Šiandien yra komunikacijos, ne palūkanų diena. Hold beveik garantuotas, tad dėmesys į dot plot ir Warsh pirmąją spaudos konferenciją. Konsensusas - dots ištrina likusius 2026 cut'us, easing bias dingsta, keli nariai įrašo kėlimus. Svarbiausia - Warsh, pranešama, nepateiks savo asmeninio dot'o (pirmas pirmininkas per 14 metų), aiškiai signalizuodamas leaner, mažiau forward-guidance Fed. Įdomus kryžminis srautas: visas vanagiškas dots pasakojimas statytas ant Irano karo energijos šoko, kuris po deal'o deflyuojasi (nafta ~$76) - galim pamatyti vanagiškus dots ir balandiškesnę Warsh retoriką tą pačią dieną.",
+      "long_term": "Warsh komunikacijos režimas - mažiau dots, mažiau guidance - yra struktūrinis pokytis kelerių metų horizontui. Iš vienos pusės sveika, kad Fed nustoja apsimetinėti žinantis, kur palūkanos bus po dvejų metų; iš kitos, be pirmininko inkaro rinka reaguos volatiliau į kiekvieną duomenų tašką, ir tas volatilumo premium gali likti įkainotas long-duration vertinimuose. Investuotojui tai argumentas turėti įmones, kurių vertė nepriklauso nuo Fed forward guidance tikslumo - realus FCF ir kainodaros galia svarbesni nei makro spėjimas. Esminis kelių metų kintamasis nesikeičia: ar 2026 vanagiškas režimas buvo ciklinė reakcija į karą (atšaukiama, jei nafta laikosi žemai) ar struktūrinis aukštesnės normos pasaulis."
+    },
+    {
+      "ticker": "CHIPS",
+      "headline": "Chip'ų profit-taking antradienį po pirmadienio sprogimo: MU -6.2%, MRVL -9.8%, INTC -8.5%, AVGO -4.4% - pozicijų valymas, ne tezės lūžis",
+      "kind": "market_move",
       "released_at": "2026-06-16",
       "metrics": [
-        {"label": "Sprendimas", "value": "rytoj 21:00 LT (14:00 ET)", "change": "presser 21:30; Warsh pirmasis kaip 17-as pirmininkas"},
-        {"label": "Birželio hold", "value": "~98%", "change": "norma lieka 3.50-3.75%"},
-        {"label": "Kainodaros flip", "value": "iš gruodžio hike ~51% į hold ~70%", "change": "po naftos kolapso; Goldman atšaukė gruodžio cut, nustūmė į 2027"},
-        {"label": "Importo kainos (šįryt)", "value": "+1.9% m/m", "change": "lūkestis +1.3% - karšta, energijos varoma"},
-        {"label": "Retail sales (šįryt)", "value": "+0.5% m/m", "change": "truputį miss; ex-autos +0.7% beat"},
-        {"label": "Treasury", "value": "10Y ~4.47%, 2Y 4.06%", "change": "lengvėja po naftos kolapso"}
+        {"label": "MU", "value": "$1,020.76 (-6.18%)", "change": "atidavė dalį pirmadienio +10.8%; earnings 06-24; nauji PT: Aletheia $1,600"},
+        {"label": "MRVL", "value": "$278.67 (-9.78%)", "change": "momentum unwind, jokios blogos žinios; S&P 500 įtraukimas 06-22"},
+        {"label": "INTC", "value": "$117.05 (-8.45%)", "change": "sektoriaus beta apvertė BofA upgrade momentum"},
+        {"label": "AVGO", "value": "$376.71 (-4.37%)", "change": ">20% nuo viršūnės nuo 06-03 earnings (nepakelta $100B AI target)"},
+        {"label": "NVDA", "value": "$207.41 (-2.37%)", "change": "~$5T; $25B bond užbaigtas (upsized nuo $20B) + $2B Coherent partnerystė"},
+        {"label": "Kontekstas", "value": "Dow rekorde, Nasdaq -1%", "change": "defensive rotacija prieš FOMC"}
       ],
-      "analysis": "Rytojaus FOMC yra realus savaitės binary - ne BOJ, ne Iranas. Hold beveik garantuotas, tad visas dėmesys į dot plot ir Warsh pirmąją spaudos konferenciją. Rinka jau apvertė kainodarą: prieš savaitę buvo ~51% gruodžio kėlimas, dabar ~70% mato hold iki metų galo, nes naftos kolapsas mažina infliacijos impulsą. Klausimas: ar Warsh dot plot'as patvirtins šį minkštesnį posūkį, ar liks vanagiškas dėl sticky core (šįryt importo kainos +1.9% primena, kad backward-looking infliacija dar karšta). Warsh signalizavo leaner, mažiau forward-guidance Fed - tai savaime gali palikti didesnį volatilumo premium.",
-      "long_term": "Warsh kaip pirmininkas yra tikras institucinis pokytis kelerių metų horizontui: leaner, mažiau hand-holding Fed reiškia daugiau policy neapibrėžties ir mažiau forward guidance, kas gali laikyti volatilumo premium įkainotą long-duration vertinimuose net rytams krentant. Bet jei energijos šokas tikrai deflyuojasi ir core seka iš paskos, terminalinė norma, spaudžianti augimo/story multiple'ius, gali atsileisti į 2027 - struktūriškai palanku kokybės kompounderiams, kurie sudaro ilgalaikio portfelio branduolį. Esminis kintamasis ne vienas posėdis, o ar 2026 vanagiškas režimas buvo ciklinė reakcija į karą (atšaukiama) ar struktūrinis aukštesnės normos pasaulis (nuolatinis) - rytdienos dot plot duos pirmą Warsh signalą."
+      "analysis": "Po pirmadienio AI/memory sprogimo chip'ai atidavė dalį - bet tai profit-taking, ne tezės lūžis. Dow tuo metu uždarė rekorde, o Nasdaq krito ~1%: klasikinė defensive rotacija prieš FOMC. MU -6% prieš birželio 24 earnings po +10.8% pirmadienio yra tiesiog pozicijų valymas. NVDA $25B obligacijų emisija (upsized nuo $20B planuotų) ir Coherent optinė partnerystė yra capex/vertikalios integracijos signalas, ne silpnumas. AVGO -20%+ nuo viršūnės yra sentiment reset po to, kai Hock Tan nepakėlė $100B AI chip target birželio 3.",
+      "long_term": "Ilgalaikiam investuotojui vienos dienos +/-10% memory ir chip varduose yra triukšmas - signalas tik tada, kai keičiasi fundamentai, o čia jie nesikeitė. Struktūrinis klausimas lieka HBM/AI capex ciklo trukmė, ir jį atsakys earnings (MU 06-24), ne antradienio tape. AVGO sentiment reset gali būti multi-year dip kandidatas fundamentaliai stipriame AI varde, jei kaina toliau atsileidžia. Esminis principas: kokybės AI infrastruktūros vardus vertinti per kelių metų paklausos matomumą ir maržų tvarumą, o ne per dienos momentum - tokios profit-taking dienos kokybiškuose varduose istoriškai būna akumuliavimo, ne pardavimo taškai, jei tezė nepasikeitė."
+    },
+    {
+      "ticker": "IRAN-DEAL",
+      "headline": "Irano deal'as juda link penktadienio parašo Ženevoje - pirmi tanklaiviai išplaukė pro nuimtą blokadą; Libano sąlyga lieka fracture point",
+      "kind": "geopolitics_event",
+      "released_at": "2026-06-17",
+      "metrics": [
+        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}} - stabilizavosi po deal kolapso"},
+        {"label": "Brent (live)", "value": "{{brent}}", "change": "{{brent_pct}}"},
+        {"label": "Parašas", "value": "planuojamas penktadienį 06-19", "change": "Ženeva; tekstas baigtas, abi pusės pasirašys"},
+        {"label": "Hormuzas", "value": "pirmi tanklaiviai išplaukė", "change": "pirmas Irano eksportas per ~2 mėnesius; shipper'iai dar atsargūs"},
+        {"label": "Fracture point", "value": "Libanas", "change": "Iranas sąlygojo Izraelio pasitraukimu; Izraelis: liekam 'neribotam laikui'"},
+        {"label": "Pasitikėjimas", "value": "grįžta savaitėmis", "change": "fizinis srautas atsistato lėtai, ne dienomis"}
+      ],
+      "analysis": "Deal'as juda link penktadienio parašo Ženevoje - tekstas baigtas, ir trečiadienį pirmi Irano tanklaiviai išplaukė pro nuimtą blokadą (pirmas eksportas per ~2 mėnesius). Bet vienas fracture point lieka gyvas: Iranas sąlygojo deal'ą Izraelio pasitraukimu iš Libano, o Izraelio gynybos ministras pareiškė, kad kariuomenė pietų Libane lieka 'neribotam laikui'. Tai tiksliai ta vieta, kur penktadienio parašas gali užkliūti. Nafta stabilizavosi (~$76 WTI), bet fizinis Hormuzo srautas atsistato savaitėmis, ne dienomis.",
+      "long_term": "Ilgalaikė žinia nesikeičia: energijos rizikos premijos deflyacija yra disinfliacinė jėga, palanki diskonto normai ir kokybės multiple'iams, ir headwind energijos gavybai (E&P, oilfield services), kurių 2026 pelnai buvo pripūsti aukštos kainos. Bet Hormuzo precedentas lieka struktūrinis: Iranas įrodė galintis uždaryti ~20% jūrų naftos ir iškeisti tai į blokados nuėmimą plius sankcijų lengvinimą - pakartojamas svertas, kuris palieka miegantį optionality rizikos premium naftoje ir gynybos/jūrų saugumo varduose kelerių metų horizonte. Levantas (Izraelis-Hezbollah) lieka gyvas flashpoint, galintis vėl uždegti riziką net pasirašius JAV-Irano deal'ą."
+    },
+    {
+      "ticker": "INTC",
+      "headline": "Intel 18A-P procesas įėjo į risk production - foundry klientai įvardyti Tesla, Google, xAI; Bernstein pakėlė target $36 -> $60 (bet paliko Hold)",
+      "kind": "market_move",
+      "released_at": "2026-06-16",
+      "metrics": [
+        {"label": "Kaina", "value": "$117.05 (-8.45% antradienį)", "change": "sektoriaus beta apvertė BofA upgrade pop; pre-market atsigauna"},
+        {"label": "18A-P", "value": "įėjo į risk production", "change": "~9% greičiau / ~18% mažiau galios"},
+        {"label": "Foundry klientai", "value": "Tesla, Google, xAI įvardyti", "change": "pirmas konkretus proof point, kad strategija turi pirkėjų"},
+        {"label": "Bernstein PT", "value": "$36 -> $60", "change": "BET paliko Market Perform / Hold"},
+        {"label": "Street konsensusas", "value": "~$86, Hold", "change": "yield'ai ir įsipareigojimai dar neįrodyti"}
+      ],
+      "analysis": "Intel 18A-P procesas įėjo į risk production, ir kaip foundry klientai įvardyti Tesla, Google, xAI - pirmas konkretus proof point, kad foundry strategija turi realių pirkėjų, ne tik pažadų. Bernstein pakėlė target nuo $36 iki $60, bet paliko Hold - sąžiningas tempering: yield'ai ir įsipareigojimai dar neįrodyti. Akcija -8.5% antradienį (sektoriaus beta) parodo, kokia ji jautri sentiment'ui - po BofA double-upgrade momentum greitai apsivertė.",
+      "long_term": "Intel foundry turnaround yra kelerių metų tezė su binariniu išeities profiliu, ir įvardyti klientai (Tesla, Google, xAI) yra pirmas tikras signalas, kad ji turi traukos. Skirtumas nuo ankstesnių pažadų: konkretūs hyperscaler vardai risk production stadijoje. Bet execution rizika niekur nedingo - 18A yield'ai, capex našta ir gebėjimas konkuruoti su TSMC node-by-node lieka neįrodyti, ir net Bernstein, pakėlęs PT, liko prie Hold. Investuotojui tai 'prove-it' istorija: jei 18A/18A-P pasiekia volume su išoriniais klientais per 1-2 metus, INTC gauna antrą koją (foundry) plius CPU comeback; jei ne, tai capital-deginanti distrakcija. Pozicijos dydis turi gerbti, kad rezultatas tikrai binarinis."
     },
     {
       "ticker": "QCOM",
-      "headline": "Qualcomm derasi įsigyti Tenstorrent (Jim Keller AI akceleratorių startuolį) už $8-10B - antras žingsnis iš handset į data center silicon",
+      "headline": "Qualcomm-Tenstorrent ($8-10B, Jim Keller startuolis) derybos patvirtintos kaip reported - tikėtina, kad pasitvirtins birželio 24 Investor Day",
       "kind": "market_move",
-      "released_at": "2026-06-15",
+      "released_at": "2026-06-16",
       "metrics": [
-        {"label": "Kaina", "value": "$220.81 (+4.29% pirmadienį)", "change": "po Iran deal risk-on + M&A naujienos"},
-        {"label": "Taikinys", "value": "Tenstorrent", "change": "Jim Keller AI akceleratorių startuolis"},
-        {"label": "Vertė", "value": "$8-10B (gandų stadija)", "change": "The Information, patvirtino Reuters 06-15"},
-        {"label": "Kontekstas", "value": "po $2.4B Alphawave pirkimo", "change": "antras aiškus data center / AI silicon žingsnis"},
-        {"label": "Jim Keller", "value": "vienas geriausių chip architektų", "change": "dirbo Apple, AMD, Tesla - ne acqui-hire"}
+        {"label": "Kaina", "value": "$214.07 (-3.05% antradienį)", "change": "intraday nuo $236 iki $214 - 'sell the rumor' + dilution skepticizmas"},
+        {"label": "Taikinys", "value": "Tenstorrent ($8-10B)", "change": "patvirtinta kaip reported (The Information, Tom's Hardware); ne formaliai paskelbta"},
+        {"label": "Tikėtina patvirtinimo vieta", "value": "birželio 24 Investor Day", "change": "Bernstein jau publikavo note 06-16"},
+        {"label": "Jim Keller", "value": "vienas geriausių chip architektų", "change": "Apple, AMD, Tesla; ne acqui-hire"},
+        {"label": "Kontekstas", "value": "po $2.4B Alphawave", "change": "antras data center / AI silicon žingsnis"}
       ],
-      "analysis": "Qualcomm derybos dėl Tenstorrent yra konkretus strateginis žingsnis, ne tik beta judesys. Po $2.4B Alphawave pirkimo tai antras aiškus signalas, kad QCOM bando iš ciklinio handset verslo (kur NVDA RTX Spark dabar tiesiogiai konkuruoja Windows-on-Arm) pereiti į data center / AI silicon. Jim Keller komanda duoda technologinį kredibilumą. Trumpuoju tai gandų stadija - kaina +4.3% atspindi ir M&A spekuliaciją, ir bendrą risk-on; deal'as gali ir neįvykti arba kainuoti brangiau.",
-      "long_term": "Klausimas kelerių metų horizontui ne ar QCOM permoka (tikriausiai permoka), o ar handset gigantas gali tapti kredibiliu data center žaidėju. Istoriškai tokie pivotai sunkūs - Intel desktop->data center, ar pats QCOM ankstesni server bandymai žlugo. Bet skirtumas šįkart: Jim Keller komanda yra top-tier chip architektai (Apple A-series, AMD Zen, Tesla FSD chip), ir custom AI ASIC TAM auga +45% per metus. Jei pivotas pavyksta, QCOM gauna antrą augimo koją, mažinančią priklausomybę nuo brandaus smartphone ciklo; jei ne, tai brangi distrakcija. Stebiu egzekuciją per 1-2 metus, neperku ant gandų - bet kryptis (diversifikacija iš handset) yra teisinga ilgalaikė strategija."
+      "analysis": "Tenstorrent ($8-10B) derybos patvirtintos kaip reported daugelio šaltinių, bet ne formaliai paskelbtos - tikėtina, kad pasitvirtins birželio 24 Investor Day (Bernstein jau publikavo note). QCOM antradienį nukrito nuo $236 iki $214 - 'sell the rumor' plius dilution skepticizmas. Po $2.4B Alphawave pirkimo tai antras aiškus žingsnis iš ciklinio handset verslo į data center / AI silicon, su Jim Keller komanda kaip technologiniu kredibilumu.",
+      "long_term": "Klausimas kelerių metų horizontui ne ar QCOM permoka (tikriausiai permoka), o ar handset gigantas gali tapti kredibiliu data center žaidėju. Istoriškai tokie pivotai sunkūs (Intel ir pats QCOM ankstesni server bandymai žlugo), bet Jim Keller komanda (Apple A-series, AMD Zen, Tesla FSD chip) ir augantis custom AI ASIC TAM duoda realią galimybę. Jei pivotas pavyksta, QCOM gauna antrą augimo koją, mažinančią priklausomybę nuo brandaus smartphone ciklo (kur NVDA RTX Spark dabar tiesiogiai konkuruoja); jei ne, tai brangi distrakcija. Kryptis (diversifikacija iš handset) yra teisinga ilgalaikė strategija, bet egzekuciją vertinti per 1-2 metus, ne per gandų reakciją."
     },
     {
-      "ticker": "AI-CAPEX",
-      "headline": "AI infrastruktūros trade'as grįžo: NVDA $25B obligacijų emisija (pirma nuo 2021) + ~$5T, MU keturženklis su PT eskalacija, MRVL/NBIS indeksų įtraukimai 06-22",
+      "ticker": "PYPL",
+      "headline": "PayPal restruktūrizacija gilėja: PayPal Ventures uždaromas, Venmo savarankiškas, ~20% etatų mažinimas, $1.5B+ taupymas - Burry toliau pridėjo",
       "kind": "structural_event",
-      "released_at": "2026-06-15",
+      "released_at": "2026-06-16",
       "metrics": [
-        {"label": "NVDA", "value": "$212.45 (+3.54%)", "change": "įkainojo $25B IG bond (pirma nuo 2021, 3x oversubscribed); ~$5T cap"},
-        {"label": "MU", "value": "$1,087.99 (+10.84%)", "change": "PT: TD Cowen $1,500, RBC $1,200, Wolfe $1,250; earnings 06-24"},
-        {"label": "MRVL", "value": "$308.88 (+10.43%)", "change": "S&P 500 įtraukimas 06-22; CFO Dan Durn efektyvus 06-15"},
-        {"label": "NBIS", "value": "$260.07 (+11.93%)", "change": "Nasdaq-100 įtraukimas 06-22 (su ALAB, CRWV, RKLB)"},
-        {"label": "META / AMZN", "value": "+4.67% / +3.13%", "change": "Meta 2026 capex $125-145B; AMZN $200B capex (Missouri $10B campus)"}
+        {"label": "Kaina", "value": "$43.65 (+2.73% antradienį)", "change": "didžiausias judesys megacap-adjacent grupėje raudoną chip dieną"},
+        {"label": "PayPal Ventures", "value": "uždaromas", "change": "Lores restruktūrizacijos dalis"},
+        {"label": "Venmo", "value": "tampa savarankišku", "change": "atskira P&L atsakomybė"},
+        {"label": "Etatai", "value": "~20% mažinimas per 2-3 metus", "change": "$1.5B+ metinis taupymas"},
+        {"label": "Burry", "value": "toliau pridėjo poziciją", "change": "deep-value pattern (13F + birželio Substack)"}
       ],
-      "analysis": "Pirmadienio risk-on buvo AI capex grįžimas su jėga, ir verta atskirti realią paklausą nuo spekuliacijos. Reali pusė: NVDA $25B obligacijų emisija (pirma nuo 2021, 3x oversubscribed) yra capex finansavimas, ne silpnumas; MRVL ir NBIS indeksiniai įtraukimai 06-22 atneša mechaninį pasyvų pirkimą plius reali AI-infra paklausa. Bet kai MU turi keturženklį skaičių ($1,088) ir +10.8% per dieną prieš birželio 24 earnings, lūkesčiai aukšti - tai aukštos kartelės event'as, rizika tiek pat kiek proga. Indeksiniai pop'ai (MRVL, NBIS) istoriškai dalinai atsileidžia po efektyvios datos.",
-      "long_term": "AI paklausa lieka struktūriškai tikra - NVDA $25B bond, hyperscaler capex ($1T+ 2026 globaliai), MRVL/NBIS indeksacija ir QCOM pivotas visi rodo, kad picks-and-shovels grandinė (memory, networking, power, compute) turi kelerių metų paklausos matomumą. Bet kaina ją skirsto: laimi tie, kas srautą gauna pelningai ir be skiedimosi (MU prie 8x forward, jei HBM ciklas tęsiasi; NVDA su dominuojančia marža), ne tie, kurie melt-up'ina ant scarcity ar indekso flow. Investuotojui MU birželio 24 yra svarbiausias artimiausias testas - parodys, kiek supercycle naratyvo jau kainoje; o indeksacijos pop'ai MRVL/NBIS yra flow, ne fundamentų pokytis, tad pozicijos dydis svarbiau nei entry taškas šituose +200% YTD varduose."
+      "analysis": "PayPal Lores restruktūrizacija gilėja - PayPal Ventures uždaromas, Venmo tampa savarankišku su atskira atsakomybe, ~20% etatų mažinimas per 2-3 metus, $1.5B+ metinis taupymas. Tai būtent ta capital allocation disciplina, kurios deep-value tezė reikalavo. Burry toliau pridėjo pozicijos. Iš dienos watchlist žingsnių (INTC proof points, QCOM pivotas, PYPL turnaround) PYPL turi mažiausiai hype'o ir daugiausiai realaus operatyvinio pokyčio.",
+      "long_term": "PayPal yra deep-value turnaround, kur tezė remiasi ne augimu, o operatyvinės disciplinos atstatymu prie žemos valuation (akcija toli nuo viršūnių, low forward multiple). Venmo standalone + cost-out + Ventures uždarymas rodo, kad Lores rimtai imasi maržų ir fokuso, ne tik retorikos. Kelerių metų klausimas: ar PayPal gali apginti checkout share nuo Apple Pay / Shop Pay ir monetizuoti Venmo (kur engagement aukštas, bet monetizacija istoriškai silpna), kol cost discipline laiko maržas. Burry pozicija yra ne garantija, o data point - vertės investuotojas mato neatitikimą tarp kainos ir normalizuoto cash flow. Jei turnaround vyksta, re-rating potencialas didelis prie šios valuation; rizika - struktūrinis checkout share praradimas, kurio cost-cutting neišsprendžia."
     },
     {
       "ticker": "SPCX",
-      "headline": "SpaceX day-2: dar +~20% iki ~$192, ~$2.5T kapitalizacija (jau virš Tesla) - melt-up ant 4% float, ne fundamentų; Cboe paleido opcionus",
+      "headline": "SpaceX melt-up trečią dieną: +4.8% iki ~$202, ~$2.65T (pralenkė Amazon, ~5-a didžiausia JAV akcija); opcionai start šiandien, Jim Chanos shortina",
       "kind": "structural_event",
-      "released_at": "2026-06-15",
+      "released_at": "2026-06-16",
       "metrics": [
-        {"label": "Pirmadienis (day-2)", "value": "~$192 (+~20%)", "change": "po penktadienio debiuto +19.2% iki $160.95"},
-        {"label": "Kapitalizacija", "value": "~$2.5T", "change": "jau virš Tesla, TSMC, Broadcom"},
-        {"label": "Valuation", "value": "~130x pajamų", "change": "2025 pajamos ~$18.7B; vertinimas underwrite'ina ir Starlink, ir xAI"},
-        {"label": "Float", "value": "~4%", "change": "scarcity + indekso flow varo kainą, ne fundamentai"},
-        {"label": "Opcionai", "value": "Cboe paleido 06-15", "change": "pridės volatilumo"},
-        {"label": "Indeksai", "value": "FTSE Russell 06-26, MSCI 06-29", "change": "priverstinis pasyvus pirkimas - forward katalizatorius"},
-        {"label": "ARK rotacija", "value": "pirko $444M SPCX, pardavė TSLA", "change": "'SpaceX = naujas Musk vehicle' - TSLA atsiliko (+1.2% vs +3% Nasdaq)"}
+        {"label": "Kaina", "value": "~$202 (+4.83% antradienį)", "change": "trečia kylanti diena po $135 IPO (06-12)"},
+        {"label": "Kapitalizacija", "value": "~$2.65T", "change": "pralenkė Amazon; ~5-a didžiausia JAV akcija"},
+        {"label": "Opcionai", "value": "start šiandien (06-17)", "change": "pridės intraday volatilumo"},
+        {"label": "Jim Chanos", "value": "viešai shortina", "change": "įspėja apie 100x pajamų vertinimą"},
+        {"label": "Float", "value": "~4%", "change": "scarcity + indekso flow varo kainą"},
+        {"label": "Indeksai", "value": "FTSE Russell 06-26, MSCI 06-29", "change": "priverstinis pasyvus pirkimas - forward katalizatorius"}
       ],
-      "analysis": "SPCX po +19.2% debiuto penktadienį dar +~20% pirmadienį iki ~$2.5T - jau didesnis nei Tesla. Tai melt-up ant ~4% float ir scarcity, ne fundamentų: prie ~$2.5T tai ~130x pajamų, ir kaina underwrite'ina ir Starlink monopoliją, ir nuostolingą xAI vienu metu. Cboe opcionai pridės volatilumo. Indeksų įtraukimai (FTSE Russell 06-26, MSCI 06-29) yra forward katalizatorius - priverstinis pasyvus pirkimas tiny float, kas palaiko kainą bet kuria kaina, bet kuria ir trapumą. Šalutinė pasekmė watchlist'ui: ARK pirko $444M SPCX ir pardavinėjo TSLA - rotacija, palikusi TSLA atsiliekantį pirmadienį.",
-      "long_term": "SPCX yra dvi priešingos įmonės viename tickeryje. Starlink yra reta turtinė klasė - $11.4B 2025 pajamų, 63% EBITDA marža, >10M abonentų, guide >$20B 2026, su beveik monopoline paleidimo verslo grandimi. Tai aukštos maržos, pasikartojanti, infrastruktūrinė augimo klasė su struktūriniu moat. Problema - kaina ir struktūra: prie ~$2.5T (~130x pajamų, ~105x net ant >$20B forward Starlink) kaina jau diskontuoja dešimtmetį tobulo execution, o vienintelis pateisinimas yra tas, kad Starlink cash flow finansuoja xAI milžiniškus nuostolius (-$6.4B 2025, dar -$2.5B Q1 2026). Plius ~4% float ir Musk ~82% balsų reiškia, kad minority akcininkai mažai įtakoja kapitalo paskirstymą. Investuotojui su kantrybės edge: durable-growth langelis (Starlink) pažymėtas emfatiškai, bet kainos ir capital-allocation disciplinos langeliai - ne. Watchlist vardas, kuriame norėčiau matyti multiple'io susitraukimą arba xAI ekonomikos aiškumą prieš įsipareigojant, ne chase +20% dienų."
+      "analysis": "SPCX melt-up tęsiasi trečią dieną - antradienį +4.8% iki ~$202, ~$2.65T, jau pralenkė Amazon ir tapo ~5-a didžiausia JAV akcija. Opcionai pradedami šiandien (pridės volatilumo). Pasirodė ir kita pusė: Jim Chanos viešai shortina, įspėdamas apie 100x pajamų vertinimą. Tai melt-up dinamika ant ~4% float ir indekso-forsuojamo srauto (FTSE Russell 06-26, MSCI 06-29), ne fundamentų entry.",
+      "long_term": "SPCX lieka dvi priešingos įmonės viename tickeryje: Starlink yra reta turtinė klasė (63% EBITDA marža, >10M abonentų, guide >$20B 2026), bet prie ~$2.65T kaina (~140x pajamų) underwrite'ina ir Starlink monopoliją, ir nuostolingą xAI vienu metu, su Musk ~82% balsų ir ~4% float. Chanos short'as pabrėžia tą patį, ką sakiau nuo debiuto: durable-growth langelis pažymėtas emfatiškai, bet kainos ir capital-allocation disciplinos langeliai - ne. Indeksų įtraukimai (FTSE 06-26, MSCI 06-29) palaikys kainą priverstiniu pirkimu tiny float, bet tai sukuria ir trapumą. Watchlist vardas, kuriame norėčiau matyti multiple'io susitraukimą arba xAI ekonomikos aiškumą prieš įsipareigojant - ne melt-up chase."
     }
   ]
 }
