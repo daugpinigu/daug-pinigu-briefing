@@ -1,15 +1,9 @@
 name: Daily Briefing
 
 on:
-  schedule:
-    # Run off-the-hour to avoid GH Actions cron contention (top-of-hour
-    # scheduled jobs are frequently skipped on free tier due to high load).
-    # 09:00 Vilnius (morning preview): 06:07 UTC summer, 07:07 UTC winter
-    - cron: '7 6 * * 1-5'
-    - cron: '7 7 * * 1-5'
-    # 22:00 Vilnius (evening recap): 19:07 UTC summer, 20:07 UTC winter
-    - cron: '7 19 * * 1-5'
-    - cron: '7 20 * * 1-5'
+  # Cloud cron isjungtas 2026-06-19 (Radoslav): brief'a trigerina TIK lokalus
+  # launchd 10:00 Vilnius - vienas kartas per diena. workflow_dispatch palikta,
+  # nes per ja launchd `gh workflow run` dispatchina si workflow.
   workflow_dispatch: {}
 
 permissions:
