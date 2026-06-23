@@ -442,12 +442,57 @@ def _options_playbook(d: dict, w: dict) -> Optional[dict]:
     weekly_insight = (f"{w.get('trend_text', '-')}, RSI {w.get('rsi', 0):.0f}"
                       + (": " + "; ".join(pos_bits) if pos_bits else ""))
 
+    # Accumulation zones for the LONG-TERM investor: places to build a multi-year
+    # position, not a trader's shallow dip. We prefer confluence (and weekly
+    # levels) over mere proximity, so a lone -2% daily pivot doesn't get labelled
+    # an accumulation zone when a meatier weekly-confluence zone exists.
+    #   near = strongest-confluence support in a realistic, chart-visible band
+    #   deep = strongest-confluence support clearly deeper ("major correction")
+    def _has_weekly(z):
+        return any(str(s).startswith('W ') for s in z['srcs'])
+
+    def _depth(z):
+        return (price - z['mid']) / price
+
+    def _accum(z, label):
+        lo, hi = float(z['lo']), float(z['hi'])
+        mid = (lo + hi) / 2.0
+        min_half = mid * 0.004  # >= 0.8% total band so it renders as a band
+        if (hi - lo) < 2 * min_half:
+            lo, hi = mid - min_half, mid + min_half
+        return {'lo': round(lo, 2), 'hi': round(hi, 2), 'mid': round(mid, 2),
+                'pct': _pct(z['mid']), 'label': label, 'srcs': _zone_srcs(z)}
+
+    near_pool = [z for z in sup_zones if 0.02 <= _depth(z) <= 0.25]
+    near = (max(near_pool, key=lambda z: (z['score'], _has_weekly(z), _depth(z)))
+            if near_pool else buy1)
+    deep_floor = max(0.10, _depth(near) + 0.03)
+    deep_pool = [z for z in sup_zones if _depth(z) > deep_floor]
+    deep = (max(deep_pool, key=lambda z: (z['score'], _has_weekly(z), _depth(z)))
+            if deep_pool else None)
+
+    accum_zones, _seen_mid = [], []
+    for i, z in enumerate([near, deep]):
+        if not z:
+            continue
+        if any(abs(z['mid'] - m) / z['mid'] < 0.01 for m in _seen_mid):
+            continue
+        _seen_mid.append(z['mid'])
+        accum_zones.append(_accum(z, 'Akumuliacija' if not accum_zones else 'Gilesnė akumuliacija'))
+
+    accum_txt = "; ".join(
+        f"{_fmt_price(z['lo'])}-{_fmt_price(z['hi'])} ({z['pct']}; {z['srcs']})"
+        for z in accum_zones
+    )
+
     return {
         'buy': buy_txt,
         'sell': sell_txt,
         'leaps': leaps,
         'wait': wait_txt,
         'weekly_insight': weekly_insight,
+        'accum_zones': accum_zones,
+        'accum_txt': accum_txt,
     }
 
 
@@ -662,6 +707,10 @@ def compute_ta(ticker: str, name: str = None) -> Optional[dict]:
             playbook = _options_playbook(daily_ta.get('raw'), weekly_ta.get('raw'))
         except Exception as e:
             print(f"  warn: playbook failed for {ticker}: {e}")
+
+    # Hand the accumulation zones to the chart so it can shade them as bands.
+    if chart and playbook and playbook.get('accum_zones'):
+        chart['accum_zones'] = playbook['accum_zones']
 
     return {
         'ticker': ticker,

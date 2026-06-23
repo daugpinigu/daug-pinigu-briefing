@@ -1107,9 +1107,12 @@ def main():
     print(f"    -> {html_path.relative_to(html_path.parent.parent.parent)}")
 
     web_url = f"https://daugpinigu.github.io/daug-pinigu-briefing/briefings/briefing-{date_str}.html"
-    print("  Sending to Telegram...")
-    caption = f"📊 Daily briefing · {now.strftime('%Y-%m-%d')}\n🌐 <a href=\"{web_url}\">Web versija</a>"
-    send_photo(output_path, caption=caption)
+    if os.environ.get('SKIP_SEND'):
+        print("  SKIP_SEND set - HTML/PNG generated, skipping Telegram send.")
+    else:
+        print("  Sending to Telegram...")
+        caption = f"📊 Daily briefing · {now.strftime('%Y-%m-%d')}\n🌐 <a href=\"{web_url}\">Web versija</a>"
+        send_photo(output_path, caption=caption)
 
     print(f"[{datetime.now(VILNIUS).strftime('%H:%M:%S')}] Done.")
 

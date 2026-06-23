@@ -923,6 +923,7 @@
   .ta-chart-legend .swatch-fib { background: #b794f4; height: 0; border-top: 2px dashed #b794f4; }
   .ta-chart-legend .swatch-r { background: #ff7373; }
   .ta-chart-legend .swatch-s { background: #7ed87e; }
+  .ta-chart-legend .swatch-accum { background: rgba(94, 200, 120, 0.30); border: 1px solid rgba(94,200,120,0.7); }
   .ta-chart-loading {
     display: flex;
     align-items: center;
@@ -2409,6 +2410,7 @@
           <div class="legend-item"><span class="legend-swatch swatch-fib"></span>Fib (0.236/0.382/0.5/0.618/0.786 + ext)</div>
           <div class="legend-item"><span class="legend-swatch swatch-r"></span>Resistance (R1/R2)</div>
           <div class="legend-item"><span class="legend-swatch swatch-s"></span>Support (S1/S2)</div>
+          <div class="legend-item"><span class="legend-swatch swatch-accum"></span>Akumuliacijos zona (ilgalaikiam)</div>
           <div class="legend-item" style="margin-left:auto;color:#6c7588">~6mo daily · embedded data</div>
         </div>
         <script type="application/json" id="chart-data-{{ t.ticker }}">{{ t.chart | tojson }}</script>
@@ -2493,6 +2495,9 @@
       {% if t.playbook %}
       <div class="ta-playbook">
         <div class="ta-setup-label">Zonos · opcionų playbook</div>
+        {% if t.playbook.accum_txt %}
+        <div class="ta-setup-row"><strong>🟢 Akumuliacija (ilgalaikiam):</strong> {{ t.playbook.accum_txt }} - žalia zona grafike, kur ilgalaikiam investuotojui gera vieta kaupti poziciją</div>
+        {% endif %}
         <div class="ta-setup-row"><strong>Weekly:</strong> {{ t.playbook.weekly_insight }}</div>
         <div class="ta-setup-row"><strong>📥 Buy / CSP:</strong> {{ t.playbook.buy }}</div>
         <div class="ta-setup-row"><strong>📤 Sell / CC:</strong> {{ t.playbook.sell }}</div>
@@ -2549,6 +2554,29 @@
       },
     });
 
+    // Accumulation zones (long-term build zones), shaded as green bands BEHIND
+    // the candles. Added before the candle series so candles stay crisp on top.
+    // A zone whose top sits far below the visible range is skipped (keeps the
+    // chart readable); the text row still lists it.
+    var _lows = (data.candles || []).map(function(c) { return c.low; });
+    var _visMin = _lows.length ? Math.min.apply(null, _lows) : 0;
+    (data.accum_zones || []).forEach(function(z) {
+      if (z.hi < _visMin * 0.96) return;
+      var band = chart.addBaselineSeries({
+        baseValue: { type: 'price', price: z.lo },
+        topLineColor: 'rgba(0,0,0,0)',
+        topFillColor1: 'rgba(94, 200, 120, 0.22)',
+        topFillColor2: 'rgba(94, 200, 120, 0.22)',
+        bottomLineColor: 'rgba(0,0,0,0)',
+        bottomFillColor1: 'rgba(0,0,0,0)',
+        bottomFillColor2: 'rgba(0,0,0,0)',
+        priceLineVisible: false,
+        lastValueVisible: false,
+        crosshairMarkerVisible: false,
+      });
+      band.setData((data.candles || []).map(function(c) { return { time: c.time, value: z.hi }; }));
+    });
+
     var candleSeries = chart.addCandlestickSeries({
       upColor: '#7ed87e',
       downColor: '#ff7373',
@@ -2584,6 +2612,19 @@
     addLines(data.fib_ext, 1);
     addLines(data.resistance, 2);
     addLines(data.support, 2);
+
+    // Accumulation zone boundary lines + label (on top of the shaded band).
+    (data.accum_zones || []).forEach(function(z) {
+      if (z.hi < _visMin * 0.96) return;
+      candleSeries.createPriceLine({
+        price: z.hi, color: 'rgba(94,200,120,0.65)', lineWidth: 1,
+        lineStyle: 0, axisLabelVisible: true, title: '🎯 ' + z.label,
+      });
+      candleSeries.createPriceLine({
+        price: z.lo, color: 'rgba(94,200,120,0.5)', lineWidth: 1,
+        lineStyle: 2, axisLabelVisible: true, title: '',
+      });
+    });
 
     chart.timeScale().fitContent();
 
