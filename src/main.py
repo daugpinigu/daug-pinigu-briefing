@@ -867,11 +867,39 @@ def main():
         # and is fresh (<48h), use it directly instead of LLM generation.
         custom_path = Path(__file__).resolve().parent.parent / 'data' / 'custom_synthesis.txt'
         if custom_path.exists():
-            from datetime import datetime as _cdt, timezone as _ctz, timedelta as _ctd
-            age_h = (_cdt.now(_ctz.utc) - _cdt.fromtimestamp(
-                custom_path.stat().st_mtime, tz=_ctz.utc)).total_seconds() / 3600
-            if age_h <= 48:
-                raw_synth = custom_path.read_text().strip()
+            # Freshness: the authoritative signal is an explicit stamp line
+            # "[YYYY-MM-DD]" arba "[YYYY-MM-DD HH:MM]" (Europe/Vilnius) pačiame
+            # faile. File mtime is NOT trustworthy in CI: actions/checkout sets
+            # every file's mtime to checkout time, so the old mtime-based guard
+            # always saw ~0.1h and republished the 2026-06-22 jen-carry text as
+            # "48h pamąstymai" for two weeks (caught by Radoslav 2026-07-07).
+            # Rules: stamp -> age from stamp; no stamp locally -> mtime with
+            # warning; no stamp under GitHub Actions -> EXPIRED, fail safe.
+            import re as _cre
+            from datetime import datetime as _cdt, timezone as _ctz
+            from zoneinfo import ZoneInfo as _czi
+            _vilnius = _czi('Europe/Vilnius')
+            raw_synth = custom_path.read_text().strip()
+            _stamp_m = _cre.match(
+                r'^\[(\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2}))?\]\s*\n?', raw_synth)
+            if _stamp_m:
+                _stamp_dt = _cdt.strptime(
+                    f"{_stamp_m.group(1)} {_stamp_m.group(2) or '12:00'}",
+                    '%Y-%m-%d %H:%M').replace(tzinfo=_vilnius)
+                age_h = (_cdt.now(_ctz.utc) - _stamp_dt).total_seconds() / 3600
+                raw_synth = raw_synth[_stamp_m.end():].strip()
+                print(f"  Custom synthesis stamp: {_stamp_m.group(1)} ({age_h:.1f}h old)")
+            elif os.environ.get('GITHUB_ACTIONS'):
+                age_h = 9999.0
+                print("  !! custom_synthesis.txt BE datos stampo CI aplinkoje -"
+                      " laikoma EXPIRED (mtime CI checkout'e visada 'šviežias')."
+                      " Pridėk pirmą eilutę '[YYYY-MM-DD]' ir perpublikuok.")
+            else:
+                age_h = (_cdt.now(_ctz.utc) - _cdt.fromtimestamp(
+                    custom_path.stat().st_mtime, tz=_ctz.utc)).total_seconds() / 3600
+                print(f"  !! custom_synthesis.txt be stampo - naudoju mtime ({age_h:.1f}h)."
+                      " Lokaliai OK, bet CI čia laikytų EXPIRED - pridėk '[YYYY-MM-DD]' stampą.")
+            if age_h <= 48 and raw_synth:
                 # Substitute {{wti}} {{brent}} {{btc}} etc. with live prices so
                 # the approved text never ships stale numbers. Same engine as
                 # manual_notes. Per memory rule: prices must be live, never
