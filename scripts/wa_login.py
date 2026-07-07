@@ -53,11 +53,11 @@ def main():
             try:
                 page.wait_for_selector(
                     'div[aria-label="Chat list"], div[data-testid="chat-list"]',
-                    timeout=120000,
+                    timeout=300000,
                 )
                 print("\nPrisijungta sekmingai!")
             except Exception:
-                print("\nTimeout - nepavyko prisijungti per 2 min.")
+                print("\nTimeout - nepavyko prisijungti per 5 min.")
                 context.close()
                 sys.exit(1)
 
@@ -74,9 +74,10 @@ def main():
             pass
 
         print(f"\nSesija issaugota: {PROFILE_DIR}")
-        print("Galima uzdaryti langą.")
         print("\nKitas zingsnis: python scripts/wa_refresh.py")
-        input("\nSpausk ENTER kad uzdaryti...")
+        # Auto-close: sesija jau profilyje, ENTER nereikia (veikia ir be TTY,
+        # pvz. paleidus foniniu rezimu). Trumpa pauze, kad WA baigtu sync'a.
+        page.wait_for_timeout(8000)
         context.close()
 
 

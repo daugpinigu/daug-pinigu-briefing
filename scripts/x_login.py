@@ -81,14 +81,19 @@ def cookies_to_playwright(cookies):
 
 
 def manual_login():
-    """Fallback: open Playwright, wait for user to sign in manually."""
+    """Fallback: open Playwright, wait for user to sign in manually.
+
+    ENTER nereikia - poll'ina auth_token cookie ir issisaugo automatiskai,
+    todel veikia ir paleistas foniniu rezimu (be TTY). channel='chrome',
+    nes X gali atmesti sena bundled Chromium.
+    """
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        try:
+            browser = p.chromium.launch(headless=False, channel='chrome')
+        except Exception:
+            browser = p.chromium.launch(headless=False)
         context = browser.new_context(
-            user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) '
-                       'AppleWebKit/537.36 (KHTML, like Gecko) '
-                       'Chrome/120.0.0.0 Safari/537.36',
             viewport={'width': 1280, 'height': 900},
             locale='en-US',
         )
@@ -96,12 +101,22 @@ def manual_login():
         page.goto('https://x.com/login', wait_until='domcontentloaded')
         print()
         print("=" * 60)
-        print("Sign in to x.com in the browser, then press ENTER here.")
+        print("Prisijunk prie x.com atsidariusiame lange.")
+        print("Sesija issisaugos AUTOMATISKAI kai prisijungsi (iki 5 min).")
         print("=" * 60)
-        input()
-        context.storage_state(path=str(OUTPUT))
+        saved = False
+        for _ in range(150):  # 150 * 2s = 5 min
+            page.wait_for_timeout(2000)
+            names = {c['name'] for c in context.cookies()}
+            if 'auth_token' in names:
+                context.storage_state(path=str(OUTPUT))
+                saved = True
+                print("auth_token rastas - sesija issaugota.")
+                break
         browser.close()
-        return True
+        if not saved:
+            print("Timeout: neprisijungta per 5 min.")
+        return saved
 
 
 def main():
@@ -117,8 +132,10 @@ def main():
         print("Falling back to manual login via Playwright...")
         print()
         try:
-            manual_login()
-            print(f"\n✓ Saved {OUTPUT}")
+            if manual_login():
+                print(f"\n✓ Saved {OUTPUT}")
+            else:
+                sys.exit(1)
         except Exception as e:
             print(f"\nManual login failed: {e}")
             sys.exit(1)
