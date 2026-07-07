@@ -70,12 +70,15 @@ def fetch_crypto_fear_greed() -> Optional[dict]:
     delta_day = today - prev_day if prev_day is not None else 0
     delta_week = today - prev_week if prev_week is not None else 0
 
+    # Trend label turi atsižvelgti į absoliutų lygį: +12 baimės zonoje yra
+    # baimės atsitraukimas, ne euforija (2026-07-07: 15->27 buvo parodyta
+    # kaip 'staigus euforijos kilimas', nors indeksas tebespausdino Baimė).
     if delta_week >= 10:
-        trend = 'staigus euforijos kilimas'
+        trend = 'staigus euforijos kilimas' if today >= 55 else 'baimė sparčiai atsitraukia'
     elif delta_week >= 5:
         trend = 'sentimentas šiltesnis'
     elif delta_week <= -10:
-        trend = 'staigus baimės kilimas'
+        trend = 'staigus baimės kilimas' if today < 55 else 'godumas sparčiai vėsta'
     elif delta_week <= -5:
         trend = 'sentimentas šaltesnis'
     else:
@@ -91,6 +94,7 @@ def fetch_crypto_fear_greed() -> Optional[dict]:
         'prev_month': prev_month,
         'delta_day': delta_day,
         'delta_week': delta_week,
+        'delta_month': today - prev_month if prev_month is not None else 0,
         'trend_text': trend,
         'history_30d': [_g(i) for i in range(min(30, len(data)))][::-1],
     }
@@ -223,22 +227,28 @@ def fetch_cme_fedwatch_simple() -> Optional[dict]:
         implied_rate = 100 - last_price
         bias_bps = (implied_rate - current_target_mid) * 100  # basis points
 
-        # Simple heuristic mapping to probabilities
-        # Each 25bp = ~50/50 swing; >12.5bp toward a direction = lean
+        # Tikimybės tiesiai iš futures bias: pilnai įkainotas 25bp žingsnis
+        # = 100%. Likutis eina į HOLD, o priešinga kryptis (cut, kai bias
+        # vanagiškas) = 0. Ankstesnis hardcoded 18/65/17 spausdino fantominę
+        # 18% cut tikimybę, kai rinka realiai kainojo hike uodegą
+        # (2026-07-07: brief 65/18/17 vs realus FedWatch ~74 hold/26 hike/0 cut).
+        step_frac = max(-1.0, min(1.0, bias_bps / 25.0))
+        if step_frac >= 0:
+            hike_prob = round(step_frac * 100)
+            cut_prob = 0
+        else:
+            cut_prob = round(-step_frac * 100)
+            hike_prob = 0
+        hold_prob = 100 - hike_prob - cut_prob
         if bias_bps <= -18:
-            cut_prob, hold_prob, hike_prob = 75, 22, 3
             implied_action = 'CUT'
         elif bias_bps <= -10:
-            cut_prob, hold_prob, hike_prob = 55, 40, 5
             implied_action = 'lean CUT'
         elif bias_bps >= 18:
-            cut_prob, hold_prob, hike_prob = 3, 22, 75
             implied_action = 'HIKE'
         elif bias_bps >= 10:
-            cut_prob, hold_prob, hike_prob = 5, 40, 55
             implied_action = 'lean HIKE'
         else:
-            cut_prob, hold_prob, hike_prob = 18, 65, 17
             implied_action = 'HOLD'
 
         return {

@@ -2186,7 +2186,7 @@
           </div>
           <div class="fg-delta-cell">
             <div class="fg-delta-label">Mėnuo</div>
-            <div class="fg-delta-val">{{ fear_greed.prev_month }}</div>
+            <div class="fg-delta-val">{{ '+' if fear_greed.delta_month >= 0 else '' }}{{ fear_greed.delta_month }}</div>
           </div>
         </div>
         <div class="fg-trend">{{ fear_greed.trend_text }} · Crypto F&amp;G</div>
