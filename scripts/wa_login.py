@@ -24,9 +24,12 @@ def main():
     print(f"Opening WhatsApp Web...")
 
     with sync_playwright() as p:
+        # channel='chrome': WhatsApp atmeta bundled Playwright Chromium
+        # ("update Chrome" ekranas, 2026-07-07) - reikia tikro Google Chrome.
         context = p.chromium.launch_persistent_context(
             user_data_dir=str(PROFILE_DIR),
             headless=False,
+            channel='chrome',
             viewport={'width': 1280, 'height': 900},
             locale='en-US',
             timezone_id='Europe/Vilnius',

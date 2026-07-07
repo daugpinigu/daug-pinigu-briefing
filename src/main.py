@@ -399,6 +399,40 @@ def _load_x_posts() -> list:
     return posts
 
 
+def _load_reddit_posts() -> list:
+    """Load Reddit posts from data/reddit_posts.json (refreshed locally).
+
+    Reddit 403'ina datacenter IP be OAuth, tad scripts/reddit_refresh.py
+    traukia namų IP ir commit'ina bridge failą su posts + top comments.
+    Empty jei failo nėra arba generated_at senesnis nei 24h.
+    """
+    import json as _json
+    from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+    path = Path(__file__).resolve().parent.parent / 'data' / 'reddit_posts.json'
+    if not path.exists():
+        return []
+    try:
+        data = _json.loads(path.read_text())
+    except Exception:
+        return []
+    try:
+        gen = _dt.fromisoformat(data.get('generated_at', '').replace('Z', '+00:00'))
+        age = _dt.now(_tz.utc) - gen
+        if age > _td(hours=24):
+            print(f"  warn: reddit_posts.json is {age.total_seconds()/3600:.1f}h old (stale)")
+            return []
+    except Exception:
+        pass
+    posts = data.get('posts', [])
+    for p in posts:
+        if 'pub_dt' in p and isinstance(p['pub_dt'], str):
+            try:
+                p['pub_dt'] = _dt.fromisoformat(p['pub_dt'].replace('Z', '+00:00'))
+            except Exception:
+                p['pub_dt'] = None
+    return posts
+
+
 def _safe(label, fn, fallback):
     """Run a fetcher with fallback on exception. Don't let one source kill the briefing."""
     try:
@@ -604,6 +638,10 @@ def main():
     print("  Fetching Reddit discussions (r/stocks, r/options, r/StockMarket)...")
     reddit_posts = _safe('Reddit', lambda: fetch_reddit_discussions(max_total=6, min_score=100), [])
     print(f"    -> {len(reddit_posts)} posts")
+    if not reddit_posts:
+        # CI (datacenter IP) gauna 403 - krentam į lokalų bridge failą
+        reddit_posts = _load_reddit_posts()
+        print(f"    -> fallback: {len(reddit_posts)} posts iš data/reddit_posts.json")
 
     # X posts come from data/x_posts.json — refreshed locally by scripts/x_refresh.py
     # since X binds sessions to IP and rejects GH Actions datacenter requests.
@@ -960,7 +998,8 @@ def main():
         if reddit_posts:
             print("  LLM analyzing Reddit threads (top comments → sentiment summary)...")
             for p in reddit_posts:
-                comments = _safe(f"reddit comments {p['sub']}",
+                # Bridge failas atsiveža comments kartu - CI nebeliečia reddit.com
+                comments = p.get('comments') or _safe(f"reddit comments {p['sub']}",
                                   lambda url=p.get('link', ''): fetch_reddit_comments(url, top_n=8),
                                   [])
                 if comments:
