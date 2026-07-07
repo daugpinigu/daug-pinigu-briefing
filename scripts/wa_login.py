@@ -38,26 +38,49 @@ def main():
         page = context.pages[0] if context.pages else context.new_page()
         page.goto(WA_URL, wait_until='domcontentloaded', timeout=30000)
 
-        # Check if already logged in (chat list visible) or need QR scan
-        try:
-            page.wait_for_selector(
-                'div[aria-label="Chat list"], div[data-testid="chat-list"]',
-                timeout=8000,
-            )
+        # Success = chat pane atsirado. Keli selektoriai, nes WhatsApp UI
+        # keiciasi: #pane-side stabiliausias per metus.
+        LOGGED_IN = ('#pane-side, div[aria-label="Chat list"], '
+                     'div[data-testid="chat-list"]')
+
+        page.bring_to_front()
+        if page.query_selector(LOGGED_IN):
             print("\nJau prisijungta - sesija aktyvi, QR nereikia.")
-        except Exception:
+        else:
             print("\n" + "=" * 50)
-            print("Nuskenuok QR koda su telefonu:")
+            print("Nuskenuok QR koda su telefonu (langas atsidares):")
             print("WhatsApp > Settings > Linked Devices > Link a Device")
+            print("QR atsinaujina automatiskai. Laukiu iki 10 min.")
             print("=" * 50)
-            try:
-                page.wait_for_selector(
-                    'div[aria-label="Chat list"], div[data-testid="chat-list"]',
-                    timeout=300000,
-                )
+            ok = False
+            last_state = ''
+            for i in range(200):  # 200 * 3s = 10 min
+                page.wait_for_timeout(3000)
+                if page.query_selector(LOGGED_IN):
+                    ok = True
+                    break
+                # QR pasensta ~1 min - jei atsirado reload overlay, spausk
+                try:
+                    reload_btn = page.query_selector(
+                        'button[aria-label*="eload"], div[data-testid="refresh-large"], '
+                        'span[data-icon="refresh-large"], button:has-text("reload")')
+                    if reload_btn:
+                        reload_btn.click()
+                        print("  (QR atnaujintas)")
+                except Exception:
+                    pass
+                # Login progreso logas - matosi, ar skenas ivyko
+                try:
+                    txt = page.evaluate("document.body.innerText")[:80].replace('\n', ' ')
+                    if txt != last_state:
+                        last_state = txt
+                        print(f"  [{i*3}s] {txt}")
+                except Exception:
+                    pass
+            if ok:
                 print("\nPrisijungta sekmingai!")
-            except Exception:
-                print("\nTimeout - nepavyko prisijungti per 5 min.")
+            else:
+                print("\nTimeout - nepavyko prisijungti per 10 min.")
                 context.close()
                 sys.exit(1)
 
