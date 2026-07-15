@@ -9,6 +9,40 @@ STOCKS = [
     'SOFI', 'TSLL', 'OSS', 'CLSK', 'PATH', 'CONL', 'SBET', 'GRAB', 'VLN', 'BMNU',
 ]
 
+# Crypto treasury companies - GAAP EPS is dominated by non-cash
+# mark-to-market of coin holdings (FASB fair value through income), so
+# EPS vs analyst estimate is noise, not signal. Earnings cards for these
+# tickers drop the BEAT/MISS verdict and the analysis is steered to
+# treasury metrics instead (Radoslav 2026-07-15 after the BMNR card
+# framed a -171% "EPS miss" as the story).
+# label = neutral chip shown instead of BEAT/MISS; context = LLM framing.
+CRYPTO_TREASURY = {
+    'BMNR': {
+        'label': 'ETH TREASURY',
+        'context': ('BitMine Immersion - ETH treasury kompanija (Tom Lee chairman). '
+                    'Visa tezė = ETH kaina ir ETH-per-share augimas, ne GAAP EPS: '
+                    'nuostoliai/pelnai beveik vien non-cash ETH mark-to-market. '
+                    'Analizuok: ETH holdings dydį ir pokytį, staking pajamas, '
+                    'mNAV (market cap vs crypto+cash NAV) premiją ar discount, '
+                    'dilution tempą (ATM emisijos), preferred (BMNP) kaštus.'),
+    },
+    'MSTR': {
+        'label': 'BTC TREASURY',
+        'context': ('Strategy (MicroStrategy) - BTC treasury. GAAP EPS dominuoja '
+                    'BTC fair-value mark-to-market, ne signalas. Analizuok: BTC '
+                    'holdings, BTC-per-share (BTC Yield), mNAV premiją/discount, '
+                    'convertible/preferred (STRK/STRF/STRC) kaštus ir dividendų '
+                    'padengimą, ATM dilution tempą.'),
+    },
+    'SBET': {
+        'label': 'ETH TREASURY',
+        'context': ('SharpLink Gaming - ETH treasury kompanija. GAAP EPS = ETH '
+                    'mark-to-market triukšmas. Analizuok: ETH holdings ir '
+                    'ETH-per-share, staking pajamas, mNAV premiją/discount, '
+                    'dilution tempą.'),
+    },
+}
+
 # Crypto (CoinGecko IDs)
 CRYPTO = [
     ('bitcoin', 'BTC', 'Bitcoin'),

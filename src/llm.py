@@ -388,7 +388,8 @@ def extract_earnings_details(ticker: str, news_body: str,
 
 
 def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
-                           extracted: dict, model: str = DEFAULT_MODEL) -> dict:
+                           extracted: dict, model: str = DEFAULT_MODEL,
+                           company_context: str = '') -> dict:
     """Generate structured Lithuanian earnings analysis with two distinct horizons.
 
     Returns dict with two fields:
@@ -400,21 +401,40 @@ def analyze_earnings_card(ticker: str, eps_actual, eps_estimate,
     Both labeled "[Trumpalaikis 3-12 mėn]" / "[Ilgalaikis 3-5+ m]" tags are
     added in the template, not the prose itself. EXPERIMENTAL: time-horizon
     labels visible to user, will check after first brief if they stay.
+
+    company_context: business-model framing that overrides default EPS-centric
+    analysis. Critical for crypto treasury companies (BMNR, MSTR, SBET) where
+    GAAP EPS is dominated by non-cash mark-to-market of coin holdings - the
+    2026-07-15 BMNR card analyzed a -171% "EPS miss" as if it were an
+    operating business, which Radoslav flagged as nonsense.
     """
     client = _get_client()
     if not client:
         return {'short_term': '', 'long_term': ''}
     eps_line = ''
     if eps_actual is not None and eps_estimate is not None:
-        delta = eps_actual - eps_estimate
-        verdict = 'BEAT' if delta > 0 else ('MISS' if delta < 0 else 'INLINE')
-        eps_line = f"EPS actual ${eps_actual:.2f} vs estimate ${eps_estimate:.2f} = {verdict}\n"
+        if company_context:
+            # No BEAT/MISS verdict for treasury-type companies - the number is
+            # reported for completeness, not as the story.
+            eps_line = (f"GAAP EPS ${eps_actual:.2f} (analitikų estimate ${eps_estimate:.2f}; "
+                        f"šiai kompanijai EPS = mark-to-market triukšmas, ne signalas)\n")
+        else:
+            delta = eps_actual - eps_estimate
+            verdict = 'BEAT' if delta > 0 else ('MISS' if delta < 0 else 'INLINE')
+            eps_line = f"EPS actual ${eps_actual:.2f} vs estimate ${eps_estimate:.2f} = {verdict}\n"
+
+    context_block = ''
+    if company_context:
+        context_block = f"""
+KOMPANIJOS KONTEKSTAS (PRIVALOMA laikytis analizėje):
+{company_context}
+"""
 
     extracted_str = '\n'.join(f"{k}: {v}" for k, v in extracted.items() if v)
     prompt = f"""{STYLE_GUIDE}
 
 UŽDUOTIS: Pateik {ticker} earnings izvalgą su DVIEM ATSKIROMIS sekcijomis. Tikslas - aiškiai atskirti tactical (3-12 mėn) nuo strategic (3-5+ metai) perspektyvos, kad investuotojas su skirtingu horizonu suprastų skirtingus prioritetus.
-
+{context_block}
 PRIVALOMAS atsakymo formatas (TIKSLIAI šis pavidalas, BE jokio kito teksto):
 SHORT_TERM: <3-4 sakiniai apie 3-12 mėn perspektyvą. Liesti: guidance, šio ketvirčio momentum, valuation, artimi katalizatoriai/rizikos, ką stebėti kitą ketvirtį. NEpakartoti EPS skaičių - jie jau lentelėje.>
 LONG_TERM: <2-3 sakiniai apie 3-5+ metų struktūrinį paveikslą. Liesti: TAM ekspansija, durable competitive moat, sekularūs varikliai (pvz. AI capex ciklas, demografijos trendai, reguliacinis pranašumas), struktūrinis risk. NE tactical info - kažkas tinkamo ilgalaikiui pozicijai.>
@@ -530,16 +550,21 @@ def research_past_event_with_web(event: dict, model: str = DEFAULT_MODEL) -> dic
     name = event.get('name', '')
     country = event.get('country', '')
     time_local = event.get('time_local', '')
-    estimate = event.get('estimate', '')
+    estimate = event.get('estimate', '') or event.get('expected', '')
     if not name:
         return {}
 
     from datetime import datetime as _dt
     today = _dt.now().strftime('%Y-%m-%d')
+    # Yesterday's releases carry their own date - without it the prompt
+    # claimed a 07-14 CPI print happened "today" and the web search drifted.
+    event_date = event.get('event_date') or today
+    when_line = (f"Šiandien yra {today}. Įvykis įvyko {event_date}"
+                 if event_date != today else f"Šiandien ({today}) įvyko šis makro įvykis")
 
     prompt = f"""{STYLE_GUIDE}
 
-Šiandien ({today}) įvyko šis makro įvykis:
+{when_line}:
 - Pavadinimas: {name}
 - Šalis: {country}
 - Planuotas laikas: {time_local}
@@ -576,6 +601,65 @@ JOKIO ICONS, jokių brūkšnių (em-dash), tik trumpi "-"."""
         return {'actual': actual, 'llm_analysis': analysis}
     except Exception as e:
         print(f"  warn: research_past_event_with_web {name}: {e}")
+        return {}
+
+
+def research_earnings_with_web(ticker: str, report_date: str,
+                               company_context: str = '',
+                               model: str = DEFAULT_MODEL) -> dict:
+    """Web-research an earnings report when no transcript/article is available.
+
+    Without this, analyze_earnings_card wrote prose from the bare EPS pair
+    alone - that produced the 2026-07-15 BMNR card that discussed "guidance
+    accuracy" for an ETH treasury company. Returns the same shape as
+    extract_earnings_details (plus optional extra_metrics [{label, value}])
+    so the metrics grid and the card LLM can consume it unchanged.
+    """
+    client = _get_client()
+    if not client:
+        return {}
+    import json as _json
+
+    context_line = f"\nKOMPANIJOS TIPAS: {company_context}" if company_context else ''
+    prompt = f"""Kompanija {ticker} paskelbė ketvirčio rezultatus {report_date}.{context_line}
+
+UŽDUOTIS: Atlik web paiešką ir surask FAKTINIUS šio earnings report'o duomenis (press release, 8-K, naujienos). Grąžink TIK JSON, jokio kito teksto:
+
+{{
+  "revenue_actual": "$X.XM/B arba null",
+  "revenue_estimate": "$X.XM/B arba null",
+  "revenue_yoy_change": "+X% arba null",
+  "guidance_next_q_rev": "... arba null",
+  "guidance_fy_rev": "... arba null",
+  "stock_reaction": "-X% AH arba +X% pre-market arba null",
+  "key_quote": "svarbiausia management citata (verbatim, anglų k.) arba null",
+  "extra_metrics": [{{"label": "trumpas rodiklis (iki 35 simbolių)", "value": "reikšmė (iki 60 simbolių, užbaigta fraze)"}}] (2-4 patys svarbiausi šios kompanijos verslo modeliui rodikliai, pvz. treasury kompanijai: holdings kiekis, staking pajamos, mNAV; operacinei: marža, users; arba [])
+}}"""
+
+    try:
+        resp = client.messages.create(
+            model=model,
+            max_tokens=1200,
+            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 4}],
+            messages=[{"role": "user", "content": prompt}]
+        )
+        text = ''
+        for block in (resp.content or []):
+            if hasattr(block, 'text') and block.text:
+                text += block.text
+        m = re.search(r'\{.*\}', text, re.DOTALL)
+        if not m:
+            return {}
+        data = _json.loads(m.group(0))
+        result = {}
+        for k, v in data.items():
+            if v in (None, 'null', '', 'N/A', []):
+                result[k] = None if k != 'extra_metrics' else []
+            else:
+                result[k] = v
+        return result
+    except Exception as e:
+        print(f"  warn: research_earnings_with_web {ticker}: {e}")
         return {}
 
 

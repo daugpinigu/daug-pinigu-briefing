@@ -1,5 +1,6 @@
 """Daily briefing orchestrator. Run once per day."""
 import os
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -21,12 +22,13 @@ from llm import (
     extract_earnings_details, analyze_earnings_card,
     analyze_reddit_thread, analyze_macro_event,
     synthesize_youtube_insights, research_past_event_with_web,
-    critique_manual_notes,
+    research_earnings_with_web, critique_manual_notes,
 )
 from render import render_html, html_to_png
 from send import send_photo
 from publish_web import save_briefing_html, regenerate_index
-from watchlist import STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS, YOUTUBE_CHANNELS
+from watchlist import (STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS,
+                       YOUTUBE_CHANNELS, CRYPTO_TREASURY)
 
 VILNIUS = pytz.timezone('Europe/Vilnius')
 
@@ -46,7 +48,10 @@ def format_date_lt(dt: datetime) -> str:
 
 
 def build_takeaway(macro: list, earnings: list) -> str:
-    high_impact_us = [e for e in macro if e['high_impact'] and e['country'] == 'US']
+    # Yesterday's releases (is_yesterday) are context, not "today's biggest
+    # event" - the takeaway must point at today's calendar.
+    high_impact_us = [e for e in macro if e['high_impact'] and e['country'] == 'US'
+                      and not e.get('is_yesterday')]
     if high_impact_us:
         top = high_impact_us[0]
         return f"{top['name']} ({top['time_local']}) - didžiausias šios dienos event'as."
@@ -479,6 +484,12 @@ def _earnings_extracted_to_metrics(extracted: dict) -> list:
         metrics.append({'label': 'FY EBITDA', 'value': extracted['guidance_ebitda_fy']})
     if extracted.get('stock_reaction'):
         metrics.append({'label': 'Reakcija', 'value': extracted['stock_reaction']})
+    # Business-model-specific metrics from web research (e.g. ETH holdings,
+    # staking revenue, mNAV for treasury companies). Caps are generous -
+    # a 40-char cut left "= 4" / "proj. annu" mid-word stumps (2026-07-15).
+    for m in (extracted.get('extra_metrics') or [])[:4]:
+        if isinstance(m, dict) and m.get('label') and m.get('value'):
+            metrics.append({'label': str(m['label'])[:40], 'value': str(m['value'])[:90]})
     return metrics
 
 
@@ -581,6 +592,32 @@ def main():
     macro = _safe('macro', lambda: fetch_macro_events(date_str), [])
     print(f"    -> {len(macro)} events")
     macro = _apply_macro_overrides(macro, date_str)
+
+    # Praėjusios prekybos dienos paskelbti duomenys. Brief'as generuojamas
+    # ryte, o JAV releases krenta 15:30+ LT - tai vakarykščiame brief'e
+    # eventai ėjo su tuščiu Actual, o kitą rytą iš viso dingdavo (Radoslav
+    # 2026-07-15: CPI rezultatai "turėjo jau atkeliauti su skaičiais").
+    # Rodom juos šiandienos brief'e su VAKAR žyme; actuals užpildo
+    # web-research žingsnis žemiau. Pirmadienį lookback apima Pn-Sk.
+    print("  Fetching previous trading day releases...")
+    yday_macro = []
+    lookback = 3 if now.weekday() == 0 else 1
+    for delta in range(lookback, 0, -1):
+        d = (now - timedelta(days=delta)).strftime('%Y-%m-%d')
+        evs = _safe(f'macro yday {d}', lambda dd=d: fetch_macro_events(dd), [])
+        if not evs:
+            # FF 'thisweek' JSON nebeturi datų iš praėjusios savaitės
+            # (pirmadienio brief'as žiūri į penktadienį) - bandom lastweek.
+            evs = _safe(f'macro yday lastweek {d}',
+                        lambda dd=d: fetch_macro_events(dd, ff_week='lastweek'), [])
+        evs = _apply_macro_overrides(evs, d)
+        for e in evs:
+            if e.get('high_impact') and e.get('country') in ('US', 'EZ'):
+                e['is_yesterday'] = True
+                e['event_date'] = d
+                yday_macro.append(e)
+    print(f"    -> {len(yday_macro)} high-impact releases from previous trading day(s)")
+    macro = yday_macro + macro
 
     print("  Fetching earnings (>=$500B mcap OR in watchlist)...")
     earnings = _safe('earnings',
@@ -815,6 +852,11 @@ def main():
         if wl_earnings['recent']:
             print("  LLM enriching recent earnings (transcript + guidance + analysis)...")
             for e in wl_earnings['recent']:
+                # Crypto treasury kompanijos: EPS beat/miss framingas išjungiamas,
+                # analizė nukreipiama į treasury metrikas (BMNR 2026-07-15 pamoka).
+                treasury = CRYPTO_TREASURY.get(e['symbol'].upper())
+                if treasury:
+                    e['treasury_label'] = treasury['label']
                 # Prefer Motley Fool transcript (rich management quotes + TAKEAWAYS).
                 # Fall back to related news article body if transcript not available.
                 transcript = _safe(f"transcript {e['symbol']}",
@@ -836,11 +878,20 @@ def main():
                                             lambda body=article_body: extract_earnings_details(e['symbol'], body),
                                             {})
                 else:
-                    e['extracted'] = {}
+                    # Be šaltinio LLM rašė analizę vien iš EPS poros - taip gimė
+                    # BMNR "guidance tikslumo" nesąmonė. Web-research užpildo
+                    # faktus iš press release/8-K/naujienų.
+                    e['extracted'] = _safe(f"web research earnings {e['symbol']}",
+                                            lambda sym=e['symbol'], dt_=e['date']:
+                                                research_earnings_with_web(
+                                                    sym, dt_.strftime('%Y-%m-%d'),
+                                                    (treasury or {}).get('context', '')),
+                                            {})
                 analysis_result = _safe(f"analyze {e['symbol']}",
                                          lambda: analyze_earnings_card(
                                              e['symbol'], e['eps_actual'], e['eps_estimate'],
-                                             e.get('extracted', {})
+                                             e.get('extracted', {}),
+                                             company_context=(treasury or {}).get('context', '')
                                          ), {'short_term': '', 'long_term': ''})
                 # Backward compat: if old-style string returned, wrap it
                 if isinstance(analysis_result, str):
@@ -856,19 +907,33 @@ def main():
         # gets filled via Anthropic web_search tool. Critical guarantee:
         # pipeline NEVER leaves a past-time high-impact event with "actual=-".
         # (This is what made Fed Chair vote show empty actual on 2026-05-13.)
+        # Yesterday's releases (is_yesterday) are past by definition - the
+        # time_local gate only applies to today's calendar.
         now_hhmm = now.strftime('%H:%M')
         past_missing = [e for e in macro
                         if e.get('high_impact')
                         and not e.get('actual')
                         and e.get('country') in ('US', 'EZ')
-                        and e.get('time_local', '99:99') <= now_hhmm]
+                        and (e.get('is_yesterday')
+                             or e.get('time_local', '99:99') <= now_hhmm)]
+        # Yesterday first - those are the releases Radoslav reads the brief for.
+        past_missing.sort(key=lambda e: 0 if e.get('is_yesterday') else 1)
         if past_missing:
+            from fetch import _classify_beat_miss
             print(f"  Auto-researching {len(past_missing)} past-time events missing actual data...")
-            for e in past_missing[:4]:
+            for e in past_missing[:8]:
                 researched = _safe(f"web research {e.get('name','')}",
                                     lambda ev=e: research_past_event_with_web(ev), {})
                 if researched.get('actual'):
-                    e['actual'] = researched['actual']
+                    raw_actual = researched['actual'].strip()
+                    # Research LLM linkęs prikimšti komentarų į ACTUAL
+                    # ("0.0% (lūkestis 0.2%)") - celei paliekam tik skaičių,
+                    # kitaip lūžta ir išvaizda, ir beat/miss klasifikacija.
+                    # Statement eventams (ne-skaitinis actual) paliekam tekstą.
+                    m_num = re.match(r'[-+]?\d[\d.,]*\s*[%KMBTk]?', raw_actual)
+                    e['actual'] = m_num.group(0).strip() if m_num else raw_actual
+                    e['beat_miss'] = _classify_beat_miss(
+                        e['actual'], e.get('expected'), e.get('name', ''))
                 if researched.get('llm_analysis'):
                     e['llm_analysis'] = researched['llm_analysis']
                 if researched.get('actual') or researched.get('llm_analysis'):
@@ -1015,14 +1080,17 @@ def main():
         yt_synthesis = ''
 
     country_priority = {'US': 0, 'EZ': 1, 'DE': 2, 'GB': 3, 'CN': 4, 'JP': 5, 'LT': 6}
+    # Yesterday's releases render first - they carry the actual numbers the
+    # reader opens the brief for; today's calendar (mostly upcoming) follows.
     macro_sorted = sorted(
         macro,
         key=lambda e: (
             not e['high_impact'],
+            0 if e.get('is_yesterday') else 1,
             country_priority.get(e['country'], 99),
             e['time_local'],
         ),
-    )[:8]
+    )[:12]
     earnings_top = earnings[:10]
 
     # Layer 2 of anti-stale-data: LLM critic compares manual_notes claims

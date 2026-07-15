@@ -1,68 +1,21 @@
 {
-  "generated_at": "2026-07-07T13:10:00+00:00",
-  "expires_at": "2026-07-09T00:00:00+00:00",
+  "generated_at": "2026-07-15T09:30:00+00:00",
+  "expires_at": "2026-07-17T06:00:00+00:00",
   "_placeholder_help": "Use {{wti}} {{brent}} {{gold}} {{silver}} {{vix}} {{dxy}} {{sp500}} {{btc}} {{eth}} {{sol}} for LIVE prices. NEhardcodink Nasdaq Composite (Composite vs NQ=F futures clash).",
   "notes": [
     {
-      "ticker": "RINKA",
-      "headline": "Kodėl šiandien raudona: Samsung earnings šokas (-11% Seule) smogė visam chip kompleksui + Iranas apšaudė laivus Hormuze - tech futures minusuose nuo nakties",
-      "kind": "market_move",
-      "released_at": "2026-07-07",
-      "metrics": [
-        {"label": "Samsung (Seulas)", "value": "iki -11%", "change": "nors pelnas +19x YoY - lūkesčių kartelė dar aukščiau"},
-        {"label": "Nasdaq 100 futures", "value": "apie -2% ir gilėja", "change": "ryte buvo -0.9%; selloff koncentruotas tech/AI, Dow laikosi geriau"},
-        {"label": "Hormuzas", "value": "2 komerciniai laivai pataikyti", "change": "Kataro LNG tankeryje gaisras (UKMTO); JAV svarsto atsaką"},
-        {"label": "WTI (live)", "value": "{{wti}}", "change": "{{wti_pct}} - geopolitinis bid po atakos"},
-        {"label": "VIX (live)", "value": "{{vix}}", "change": "kyla nuo 15.57 vakar uždarymo"},
-        {"label": "Read-across watchlist", "value": "MU, SNDK po rinkos minusuose", "change": "be jokių savų naujienų - Samsung efektas"}
-      ],
-      "analysis": "Du sluoksniai. Pirmas - Samsung, didžiausias pasaulio memory gamintojas, atsiskaitė su 19 kartų išaugusiu pelnu, bet akcija Seule krito iki -11%, nes rinka jau buvo įkainojusi dar daugiau. Tai tiesioginis read-across memory/AI kompleksui: MU ir SNDK po rinkos krito be jokių savo naujienų, ASML/TSM/AMD futures spaudžiami. Antras sluoksnis - Iranas paleido bent dvi raketas į komercinius laivus Hormuze (pataikyta į Kataro LNG tankerį, gaisras mašinų skyriuje), JAV svarsto atsakomuosius veiksmus - nafta ir VIX aukštyn. Dow tuo pat metu laikosi apie nulį: tai ne panika, o rotacija iš ištemptų tech lūkesčių. Klasikinis 'geros naujienos jau įkainotos' testas AI trade'ui prieš Q2 earnings sezoną.",
-      "long_term": "Vienas Samsung print'as nekeičia memory shortage tezės - struktūrinis AI paklausos ciklas lieka, o -11% ant +19x pelno yra sentimento, ne fundamentų žinia. Bet tai priminimas, kokia aukšta kartelė visam AI kompleksui prieš liepos earnings (ASML 07-15, TSM 07-16, MU rugpjūtį): kai lūkesčiai tokie, net rekordiniai skaičiai gali 'nuvilti'. Ilgalaikiam investuotojui tai argumentas ne parduoti, o turėti sausų miltelių akumuliacijos zonoms - jei Samsung tipo reakcijos pasikartos ant MU/TSM, tai bus lūkesčių reset'as, ne ciklo pabaiga. Hormuzo eskalacija atskirai primena, kad energijos šoko optionality premium naftoje neišnyko su birželio MOU."
-    },
-    {
-      "ticker": "MSTR",
-      "headline": "Strategy 8-K: pardavė 3,588 BTC už $216M - didžiausias BTC pardavimas įmonės istorijoje - dividendams dengti, įskaitant STRC mėnesinį",
+      "ticker": "ASML",
+      "headline": "ASML Q2: beat visose eilutėse + pakeltas 2026 guidance - pirmas rimtas counter-signalas po Samsung šoko",
       "kind": "company_event",
-      "released_at": "2026-07-06",
+      "released_at": "2026-07-15",
       "metrics": [
-        {"label": "Parduota", "value": "3,588 BTC (~$216M)", "change": "birželio 29 - liepos 5, vid. ~$60K"},
-        {"label": "Paskirtis", "value": "STRF/STRK/STRD/STRE ketvirtiniai + STRC mėnesinis", "change": "dividendai dengiami BTC pardavimu"},
-        {"label": "Holdings po", "value": "843,775 BTC", "change": "vid. įsigijimo ~$66.4K - parduoda žemiau jos"},
-        {"label": "Cash", "value": "$2.55B", "change": "likvidumo pagalvė dividendams"},
-        {"label": "BTC (live)", "value": "{{btc}}", "change": "{{btc_pct}}"}
+        {"label": "Revenue", "value": "€9.33B", "change": "+21.3% YoY, ~€400M virš lūkesčio"},
+        {"label": "EPS (GAAP)", "value": "€7.59", "change": "€0.60 virš konsensuso"},
+        {"label": "FY2026 guide", "value": "€43-45B", "change": "pakeltas, gross margin 54-56%"},
+        {"label": "Q3 guide", "value": "€11-12B", "change": "vs €10.4B konsensusas"}
       ],
-      "analysis": "Strategy atskleidė pardavusi 3,588 BTC už ~$216M - didžiausią pardavimą įmonės istorijoje - preferred dividendams dengti, įskaitant STRC mėnesinį. Dvi pusės: viena vertus, dividendas mokamas realiai ir už jo stovi 843,775 BTC plius $2.55B cash. Kita vertus, mechanizmas dabar atviras: kai BTC ~$63K, žemiau vidutinės įsigijimo kainos, dividendai finansuojami valgant treasury - tai veikia, kol pardavimų tempas mažas santykinai su balansu, bet kryptis svarbi.",
-      "long_term": "STRC tezei tai dar ne raudona vėliava, bet nauja mėnesinė metrika, kurią nuo šiol seku: kiek BTC parduota vs kiek dividendų išmokėta. Žalia zona - pardavimai epizodiniai ir mažėjantys, cash pagalvė stabili. Raudona - augantis pardavimų tempas krintant BTC (refleksyvi spiralė: žemesnė BTC kaina reiškia daugiau BTC parduodama tam pačiam dividendui). 3,588 BTC iš 843,775 yra 0.4% balanso - masto prasme nereikšminga, precedento prasme reikšminga. Pozicijos nekeičiu, monitoringo dažnį keliu."
-    },
-    {
-      "ticker": "NFP",
-      "headline": "Birželio NFP +57K vs 110K lūkestis - didelis miss su -74K revizijomis; darbo rinka aiškiai lėtėja, kai Fed dots vis dar rodo kėlimą",
-      "kind": "macro_event",
-      "released_at": "2026-07-02",
-      "metrics": [
-        {"label": "NFP birželis", "value": "+57K", "change": "vs 110K lūkestis; balandis/gegužė revizuota -74K"},
-        {"label": "Nedarbas", "value": "4.2%", "change": "participation krito iki 61.5% (nuo 61.8%)"},
-        {"label": "AHE", "value": "+3.5% y/y", "change": "algų spaudimas vėsta"},
-        {"label": "Initial claims (07-02)", "value": "215K", "change": "krito, -1K w/w, geriau nei 219K lūkestis"},
-        {"label": "Liepos hike tikimybė", "value": "29% -> 22%", "change": "07-29 FOMC: ~74% hold / ~26% hike / 0% cut"},
-        {"label": "FOMC minutes", "value": "rytoj 07-08", "change": "pirmieji su Warsh - be forward guidance eros"}
-      ],
-      "analysis": "Ataskaita išėjo ketvirtadienį 07-02 (anksčiau dėl liepos 4) ir buvo aiškus miss: +57K vs 110K, dar ir -74K revizijos atgal, participation krito iki 61.5%. Rinka numušė liepos kėlimo tikimybę nuo 29% iki 22% ir šventė dovish interpretaciją - Dow pirmadienį uždarė rekordą virš 53K. Bet vaizdas mišrus: claims tuo pačiu metu 215K ir krenta, algos +3.5%. Fed dots iš birželio vis dar rodo kėlimą (median 3.8%) - komitetas, kalbantis apie hike į lėtėjančią darbo rinką, yra policy error setup'as su duomenimis vietoj hipotezės.",
-      "long_term": "Viena NFP ataskaita tezės neverčia, bet kryptis kaupiasi: birželio claims 229K epizodas, dabar +57K su neigiamomis revizijomis ir krintančiu participation. Jei darbo rinka lūžta, o Fed laikosi vanagiškų dots, volatilumas ateinančiais mėnesiais bus didelis abiem kryptim. Mano išvada nesikeičia nuo birželio: ne spėju Fed, o renku įmones, kurių vertė priklauso nuo realaus pinigų srauto ir kainodaros galios. Rytojaus minutes (pirmieji Warsh eros, be forward guidance) parodys, kiek komitetas pats tiki savo dot plot'u."
-    },
-    {
-      "ticker": "TSLA",
-      "headline": "TSLA +6.7% pirmadienį: robotaxi paleistas Miami (trečia valstija) + Moravy žada 'cool news' apie Giga Texas šiandien - rinka laukia Cybercab anonso",
-      "kind": "company_event",
-      "released_at": "2026-07-06",
-      "metrics": [
-        {"label": "Pirmadienio judesys", "value": "+6.70% iki ~$420", "change": "atsigavimas po 07-02 -7.5%"},
-        {"label": "Robotaxi Miami", "value": "paleistas 07-03 (driverless)", "change": "trečia valstija po TX ir CA"},
-        {"label": "Šiandien laukiama", "value": "Giga Texas anonsas", "change": "VP Lars Moravy podcast'e žadėjo 'cool news' 07-07"},
-        {"label": "Q2 deliveries (07-02)", "value": "480,126 (+25% YoY)", "change": "beat ~74K, bet tą dieną akcija -7.5%"}
-      ],
-      "analysis": "Pirmadienio +6.7% buvo ne dėl deliveries (jos išėjo 07-02 ir tą dieną akcija krito -7.5%), o dėl robotaxi plėtros tempo: Miami tapo trečia rinka, plius Moravy užuomina apie šiandienos Giga Texas anonsą - rinka tikisi Cybercab gamybos naujienų. Trumpuoju: jei 'cool news' pasirodys nuobodžios, dalis +6.7% išgaruos - lūkestis jau kainoje.",
-      "long_term": "Story akcijai svarbiausia scenarijų medis, ne ketvirčio multiple: robotaxi trečia valstija per mėnesį yra tempo signalas, kad autonomijos koja iš 'kada nors' virsta 'jau vyksta' - tai kelia bull scenarijaus tikimybę. Deliveries +25% YoY atskirai rodo, kad ir kietasis auto verslas atsigavo. Rizikos nepasikeitė: reguliatoriai, konkurencija Kinijoje, Musk dėmesio išsklaidymas. Pozicijai - laikau, akumuliacijos zonos TA sekcijoje galioja pullback'ams."
+      "analysis": "Litografijos paklausa nesustojo - Q3 guidance vidurys yra ~11% virš konsensuso, o metų planas pakeltas nepaisant makro nervingumo. Po Samsung reakcijos praeitą savaitę (rekordinis pelnas, akcija -11%) tai svarbus testas, kiek rinka jau įkainojusi semis gerų naujienų - ASML atveju kartelė perlipta. Vienas caveat: ASML nuo šio ketvirčio neberaportuoja quarterly bookings (oficialiai - dėl volatilumo mažinimo), tai vienas forward indikatorius dingo ir guidance patikimumas tampa dar svarbesnis. Kitas taškas - TSMC rytoj (07-16): jų capex komentarai parodys, ar įrangos užsakymų stiprumas tęsiasi į 2027.",
+      "long_term": "EUV monopolis nesikeičia - klausimas tik ciklo amplitudė, o €43-45B metų planas reiškia dviženklį augimą su 54-56% marža. Struktūrinės rizikos tos pačios: Kinijos eksporto kontrolė (ir ilguoju - vietinės litografijos bandymai) bei DUV paklausos normalizacija po AI investicijų bangos. Watchlist kontekste ASML lieka core semis holding'as - guidance kėlimas cikliniame įkarštyje yra tai, ką nori matyti iš įrangos tiekėjo."
     }
   ]
 }

@@ -104,7 +104,7 @@ PRIORITY_CCY = {'USD'}
 SECONDARY_CCY_HIGH_ONLY = {'EUR'}
 
 
-def _classify_beat_miss(actual_str, expected_str):
+def _classify_beat_miss(actual_str, expected_str, event_name: str = ''):
     if not actual_str or not expected_str:
         return None
     try:
@@ -112,11 +112,19 @@ def _classify_beat_miss(actual_str, expected_str):
         e = float(re.sub(r'[^\d.\-]', '', expected_str))
     except (ValueError, TypeError):
         return None
-    if a > e:
-        return 'beat'
-    if a < e:
-        return 'miss'
-    return 'inline'
+    if a == e:
+        return 'inline'
+    # Inverse indicators: for inflation/claims/unemployment a LOWER print is
+    # the market-friendly (green) reading. Naive a>e coloring painted the
+    # 2026-07-14 CPI dovish surprise red - same class of bug as the jobless
+    # claims note in _apply_macro_overrides.
+    n = (event_name or '').lower()
+    inverse = any(k in n for k in (
+        'cpi', 'inflation', 'ppi', 'pce', 'jobless', 'unemployment', 'claims'))
+    higher = a > e
+    if inverse:
+        return 'miss' if higher else 'beat'
+    return 'beat' if higher else 'miss'
 
 
 def _fetch_macro_yahoo_fallback(date_str: str) -> list:
@@ -151,19 +159,24 @@ def _fetch_macro_yahoo_fallback(date_str: str) -> list:
                 'high_impact': is_high,
                 'impact': 'High' if is_high else 'Medium',
                 'description': get_event_description(name),
-                'beat_miss': _classify_beat_miss(actual, forecast),
+                'beat_miss': _classify_beat_miss(actual, forecast, name),
             })
         return events
     except Exception:
         return []
 
 
-def _load_ff_json_cached(max_age_hours: int = 6):
-    """Load ForexFactory weekly JSON, cached on disk to avoid rate limits."""
+def _load_ff_json_cached(max_age_hours: int = 6, week: str = 'thisweek'):
+    """Load ForexFactory weekly JSON, cached on disk to avoid rate limits.
+
+    week: 'thisweek' (default) or 'lastweek' - lastweek is needed when the
+    brief looks back at the previous trading day across an FF week boundary
+    (Monday brief covering Friday's releases).
+    """
     import json
     import tempfile
     import time
-    cache_path = Path(tempfile.gettempdir()) / 'ff_calendar_cache.json'
+    cache_path = Path(tempfile.gettempdir()) / f'ff_calendar_cache_{week}.json'
     if cache_path.exists():
         age_h = (time.time() - cache_path.stat().st_mtime) / 3600
         if age_h < max_age_hours:
@@ -171,7 +184,7 @@ def _load_ff_json_cached(max_age_hours: int = 6):
                 return json.loads(cache_path.read_text())
             except Exception:
                 pass
-    url = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+    url = f"https://nfs.faireconomy.media/ff_calendar_{week}.json"
     r = requests.get(url, headers=HEADERS, timeout=20)
     r.raise_for_status()
     data = r.json()
@@ -244,7 +257,7 @@ def fetch_macro_events_tradingeconomics(date_str: str) -> list:
             time_local = time_utc
 
         expected = consensus or forecast
-        beat_miss = _classify_beat_miss(actual, expected)
+        beat_miss = _classify_beat_miss(actual, expected, event_name)
 
         events.append({
             'time_local': time_local,
@@ -264,11 +277,15 @@ def fetch_macro_events_tradingeconomics(date_str: str) -> list:
     return events
 
 
-def fetch_macro_events(date_str: str) -> list:
+def fetch_macro_events(date_str: str, ff_week: str = 'thisweek') -> list:
     """Fetch macro economic events. Primary: TradingEconomics (has actuals).
 
     Fallbacks: ForexFactory JSON (forecasts only), then Yahoo. Merges
     so we get actuals from TE plus any extra events from FF.
+
+    ff_week: pass 'lastweek' when date_str falls in the previous FF week
+    (TE's default calendar view only shows today onwards, so past dates
+    depend entirely on the FF JSON files).
     """
     from datetime import datetime as dt
 
@@ -277,7 +294,7 @@ def fetch_macro_events(date_str: str) -> list:
 
     # Augment with ForexFactory events that TE doesn't have (e.g., Fed speeches)
     try:
-        all_events = _load_ff_json_cached()
+        all_events = _load_ff_json_cached(week=ff_week)
     except Exception as e:
         print(f"  warn: ForexFactory fetch failed: {e}")
         if te_events:
@@ -366,7 +383,7 @@ def fetch_macro_events(date_str: str) -> list:
         if actual == '':
             actual = None
 
-        beat_miss = _classify_beat_miss(actual, forecast)
+        beat_miss = _classify_beat_miss(actual, forecast, title)
         merged.append({
             'time_local': time_local,
             'time_raw': date_iso,
@@ -444,6 +461,11 @@ def fetch_watchlist_earnings_history(watchlist: list, days_back: int = 2,
             if u:
                 all_upcoming.extend(u)
 
+    # yfinance kartais tam pačiam tickeriui turi ir įvykusią (su actual), ir
+    # "būsimą" tos pačios savaitės datą - BMNR 2026-07-15 rodėsi ir recent
+    # kortelėje, ir "upcoming in 0d". Jei jau atsiskaitė, iš upcoming metam.
+    recent_syms = {r['symbol'] for r in all_recent}
+    all_upcoming = [u for u in all_upcoming if u['symbol'] not in recent_syms]
     all_recent.sort(key=lambda x: x['date'], reverse=True)
     all_upcoming.sort(key=lambda x: x['date'])
     return {'recent': all_recent, 'upcoming': all_upcoming[:6]}

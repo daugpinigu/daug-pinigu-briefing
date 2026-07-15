@@ -130,6 +130,17 @@
     align-items: center;
     gap: 14px;
   }
+  .event-yday {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 5px;
+    background: rgba(108,117,136,0.25);
+    color: #aab2c5;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
   .event-time {
     font-size: 15px;
     font-weight: 700;
@@ -213,6 +224,7 @@
     border-left: 4px solid #7ed87e;
   }
   .earnings-card.miss { border-left-color: #ff7373; }
+  .earnings-card.treasury { border-left-color: #8b7ed8; }
   .ec-header {
     display: flex;
     align-items: center;
@@ -234,6 +246,7 @@
   }
   .ec-verdict.beat { background: rgba(126,216,126,0.18); color: #7ed87e; }
   .ec-verdict.miss { background: rgba(255,115,115,0.18); color: #ff7373; }
+  .ec-verdict.treasury { background: rgba(139,126,216,0.18); color: #a99ee8; }
   .ec-date {
     margin-left: auto;
     font-size: 12px;
@@ -1707,7 +1720,7 @@
     {% for e in macro_events %}
     <div class="event-row {% if e.high_impact %}high-impact{% endif %}">
       <div class="event-top">
-        <div class="event-time">{{ e.time_local }}</div>
+        <div class="event-time">{% if e.is_yesterday %}<span class="event-yday">VAKAR</span>{% endif %}{{ e.time_local }}</div>
         <div class="event-country">{{ e.country }}</div>
         <div class="event-name">{{ e.name }}{% if e.period %} <span style="color:#6c7588;font-size:11px">({{ e.period }})</span>{% endif %}</div>
         <div class="event-numbers">
@@ -1745,26 +1758,30 @@
   </div>
   <div class="earnings-cards">
     {% for e in wl_earnings.recent %}
-    <div class="earnings-card {% if e.beat %}beat{% else %}miss{% endif %}">
+    <div class="earnings-card {% if e.treasury_label %}treasury{% elif e.beat %}beat{% else %}miss{% endif %}">
       <div class="ec-header">
         <div class="ec-symbol">{{ e.symbol }}</div>
+        {% if e.treasury_label %}
+        <div class="ec-verdict treasury">{{ e.treasury_label }}</div>
+        {% else %}
         <div class="ec-verdict {% if e.beat %}beat{% else %}miss{% endif %}">
           {% if e.beat %}BEAT{% else %}MISS{% endif %}
         </div>
+        {% endif %}
         {% if e.has_transcript %}<div class="ec-transcript-badge">Transcript</div>{% endif %}
         <div class="ec-date">{{ e.date.strftime('%m-%d %H:%M') }}</div>
       </div>
       <div class="ec-numbers">
         <div class="ec-metric">
           <div class="ec-label">EPS Actual</div>
-          <div class="ec-value {% if e.beat %}beat-val{% else %}miss-val{% endif %}">{% if e.eps_actual is not none %}${{ "%.2f"|format(e.eps_actual) }}{% else %}-{% endif %}</div>
+          <div class="ec-value {% if e.treasury_label %}{% elif e.beat %}beat-val{% else %}miss-val{% endif %}">{% if e.eps_actual is not none %}${{ "%.2f"|format(e.eps_actual) }}{% else %}-{% endif %}</div>
         </div>
         <div class="ec-vs">vs</div>
         <div class="ec-metric">
           <div class="ec-label">EPS Estimate</div>
           <div class="ec-value">{% if e.eps_estimate is not none %}${{ "%.2f"|format(e.eps_estimate) }}{% else %}-{% endif %}</div>
         </div>
-        {% if e.surprise_pct is not none %}
+        {% if e.surprise_pct is not none and not e.treasury_label %}
         <div class="ec-metric">
           <div class="ec-label">Surprise</div>
           <div class="ec-value {% if e.beat %}beat-val{% else %}miss-val{% endif %}">{{ "%+.1f"|format(e.surprise_pct) }}%</div>
