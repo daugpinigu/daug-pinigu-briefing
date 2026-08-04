@@ -1,107 +1,66 @@
 {
-  "generated_at": "2026-08-03T06:21:32.566599+00:00",
+  "generated_at": "2026-08-04T06:20:58.633549+00:00",
   "posts": [
     {
+      "sub": "stocks",
+      "title": "Apple Earns $2.2 Billion in Tariff Refunds",
+      "score": 915,
+      "num_comments": 155,
+      "pub_dt": "2026-08-03T07:00:33+00:00",
+      "link": "https://reddit.com/r/stocks/comments/1ve602j/apple_earns_22_billion_in_tariff_refunds/",
+      "comments": [
+        "It was a heist on the public to pay more profits for dipshits donors.",
+        "This just shows how much leverage Apple has. They absorbed the initial $3.2 billion hit, and now they're getting most of it back while scoring political points by promising to reinvest it domestically. It’s a masterclass in corporate navigation during trade wars.",
+        "Blame Apple? Try Trump, chumps.",
+        "A huge tax on American people that builds nothing for the public",
+        "These tariff refunds headlines should be blaring from media and a real opposition party. \n\nIf other countries paid tariffs, why are American companies getting refunds and why aren’t they giving them back to you?",
+        "The administration did say this was going to be a return to the golden age. \n\nWe thought it included we the people. \n\nNow we realize we paid in gold and the corporations get to keep it.\n\n+1,100 for donors"
+      ]
+    },
+    {
+      "sub": "stocks",
+      "title": "Palantir posts blowout Q2 numbers, with U.S. commercial revenue soaring nearly 150%",
+      "score": 368,
+      "num_comments": 254,
+      "pub_dt": "2026-08-03T20:15:41+00:00",
+      "link": "https://reddit.com/r/stocks/comments/1veomq6/palantir_posts_blowout_q2_numbers_with_us/",
+      "comments": [
+        "Oh 💩, I bought PLNT (Planet Fitness) calls instead of PLTR calls!",
+        "Michael Burry covering his shorts",
+        "AI trade just starting",
+        "I dont get this stock. ~10B in rev with $300B market cap lol.",
+        "The most evil company in existence is making record revenue! Invest now in the surveillance state future! Don't let the dystopian future pass you by without making fat stacks off of it! If you make enough to avoid the permanent underclass, the techno-fascists won't come after you! I read it in a book somewhere!",
+        "Let it rip",
+        "With every company it's the same thing\n\nAnalysts: \"Concerns that the AI trade is running out of steam\"\n\nThen every earnings = blowout earnings with higher forward guidance.",
+        "Ridiculous comments below. \nSame folks who booed / shorted Nividea years ago when it was $400 before the big split."
+      ]
+    },
+    {
       "sub": "StockMarket",
-      "title": "Trump cancels Iran strikes, demanding a deal be made rapidly",
-      "score": 1788,
-      "num_comments": 1209,
-      "pub_dt": "2026-08-02T13:20:33+00:00",
-      "link": "https://reddit.com/r/StockMarket/comments/1vdhy02/trump_cancels_iran_strikes_demanding_a_deal_be/",
+      "title": "Hugging Face CEO says China is winning the AI race and dominating on open models",
+      "score": 325,
+      "num_comments": 93,
+      "pub_dt": "2026-08-03T18:26:11+00:00",
+      "link": "https://reddit.com/r/StockMarket/comments/1velmfb/hugging_face_ceo_says_china_is_winning_the_ai/",
       "comments": [
-        "It's like we're all stuck in a terrible version of groundhog's day.",
-        "How many times.",
-        "“Perimeters of a deal“. Sheesh",
-        "I heard the war was over...several times after hearing it wasnt even a war.",
-        "Iran has announced that they made no such request.",
-        "The USA is being led by an utter and complete moron who has nothing to back up anything he says. He waffles back and forth, he has lost whatever credibility this country had.",
-        "Are the \"perimeters of a deal\" what you have just before you have a framework of a concept of a memorandum of a deal?"
-      ]
-    },
-    {
-      "sub": "stocks",
-      "title": "Amazon says it got $600 million in Trump tariff refunds and will pass return along to some customers",
-      "score": 903,
-      "num_comments": 117,
-      "pub_dt": "2026-08-02T13:09:18+00:00",
-      "link": "https://reddit.com/r/stocks/comments/1vdhp4q/amazon_says_it_got_600_million_in_trump_tariff/",
-      "comments": [
-        "\"Some\"",
-        "But but… I thought other countries were the ones paying for the tariffs? /s",
-        "Donald Trump illegally and unconstitutionally funnelled your money into the pockets of the richest companies in the country.",
-        "So much winning that I'm actually sick of all the winning!",
-        "$600M unexpected cash flow straight into Q2 earnings\n\nWhile returning a fraction of it to customers makes for great PR, the rest is just going straight into boosting bottom line margins and AWS expansion. Win-win for AMZN shareholders!",
-        "This is why they should have added “tarrif” as a separate line item just like tax. Then they can filter out exactly which orders paid tarrifs and its just as simple as refunding those. \n\nIf they built it into the price of goods, it requires more work and math to figure out how much tarrif was charged for that specific item. \n\nAlso adding the tarrif to the cost of goods makes prices sticky and it stays the same even when tarrif is now set to 0%.",
-        "Will those \\*some\\* customers undoubtedly end up being subsidiaries of Amazon owned companies?",
-        "Wait a moment. So Trump made customers pay extra, but at least the money went to the government. \n\nNow the government decides this was illegal, so they give the money back to the companies. Who then give some money (maybe) to some customers?\n\nSo it's basically a nice fat bonus for the corporations to pocket?\n\nAmazing."
+        "People are blaming the easy things here, Chinese companies stealing stuff from others and while there is some truth to that it's a small part. I'm a AI researcher, and when ever we look for papers to reference there's about a 90% chance it came from a Chinese university, the fact is they're investing in education and the west isnt",
+        "That means the AI profit will be captured largely by AI infra and app companies.\n\nA\\\\ and OA are in hot water right now, so they’re probably going to lay low for a few days before their new regulatory capture campaign kicks off. Can’t wait to see who in the administration they bought this time and what excuses they will use to ban open models.",
+        "China gained a substantial lead by leveraging abundant energy production and large-scale chip manufacturing, relying on volume to offset quality differences",
+        "Title is clickbait. He says in the article that Chinese open source models could catch up to frontier lab capabilities by end of 2026 or in 2027. How is that winning the AI race?"
       ]
     },
     {
       "sub": "StockMarket",
-      "title": "Iranian officials deny Trump's claim that Iran asked US to stop strikes",
-      "score": 814,
-      "num_comments": 91,
-      "pub_dt": "2026-08-02T13:45:39+00:00",
-      "link": "https://reddit.com/r/StockMarket/comments/1vdiia2/iranian_officials_deny_trumps_claim_that_iran/",
+      "title": "'The Odyssey' fuels Imax stock to all-time high. CEO calls momentum a 'flywheel'",
+      "score": 127,
+      "num_comments": 13,
+      "pub_dt": "2026-08-04T02:35:12+00:00",
+      "link": "https://reddit.com/r/StockMarket/comments/1vexss1/the_odyssey_fuels_imax_stock_to_alltime_high_ceo/",
       "comments": [
-        "I feel I have read this same headline 8,647 times since the start of the war.",
-        "every human not in a coma knew this was coming. But why release on Saturday, giving Iran time to refute the statement?\n\nTrump’s “announcement” is supposed to come five minutes before futures open on Sunday or five minutes before Mondays opening bell. \n\nMaybe he had an important tee time today??",
-        "If Trump ever says Iran begged or asked for something, it means Trump begged or asked them for it.\n\nIt's part of narcissistic personality disorder and psychological projection.",
-        "Well that's just so hard for me to believe!\n\n... but my RTX position thinks it makes a lot of sense.",
-        "You do have to laugh at how fast Iran completely disputes everything that Trump says minutes later. The Sunday pumps aren’t going to last much longer and the playbook is drying up.",
-        "Is perimeters of a deal a step above or below a concept of a deal?",
-        "If there are any people thst voted for this dude, as I asked in another thread, honestly, can you say he doesnt make you cringe to high heaven? Are you not embarrassed?"
-      ]
-    },
-    {
-      "sub": "stocks",
-      "title": "Disney is down 20% over the past year and has beaten earnings four straight quarters.something doesnt add up",
-      "score": 418,
-      "num_comments": 198,
-      "pub_dt": "2026-08-02T21:34:13+00:00",
-      "link": "https://reddit.com/r/stocks/comments/1vdua2k/disney_is_down_20_over_the_past_year_and_has/",
-      "comments": [
-        "They're not spending trillions on developing anime girlfriend chat bots, so im pretty bearish.",
-        "I *feel* like they will bounce back based on brand alone at some point, but I’m also a bag holder who bought on feels so here we are.",
-        "They have high debt.",
-        "I held the stock for many years and eventually gave up. The stock hardly moves.",
-        "Money is being sucked out of everything for AI",
-        "Disney is a conglomerate litmus test. With all the good stuff and crap it owns, everyone at any point can find the sentiment that fits their narrative.\n\nOh Marvel is doing well ESPN is a dying business, Disneyland is cool, wtf is Fox doing. Omg they own Star Wars and a construction company???",
-        "This post reads like it was written with AI and then littered with careless typos to try to hide it lol",
-        "I hate this stock. I’m bag holder who bought during the COVID run up to near $200. Hotels, cruises, real estate, consumer products and their entertainment arm cannot make their investors money? Maybe Perlmutter was right!"
-      ]
-    },
-    {
-      "sub": "stocks",
-      "title": "How The F*ck is OpenAI Going to Pay 1.4 Trillion??",
-      "score": 341,
-      "num_comments": 175,
-      "pub_dt": "2026-08-02T10:58:42+00:00",
-      "link": "https://reddit.com/r/stocks/comments/1vdf3sz/how_the_fck_is_openai_going_to_pay_14_trillion/",
-      "comments": [
-        "A lot of those numbers sound more like maximum multi-year commitments and capacity plans than cash that needs to leave the bank tomorrow. If revenue keeps compounding and counterparties keep financing around the buildout, they can stretch the burden a long way. The real risk is not one giant bill, it is whether demand and pricing power stay strong enough for the whole stack to keep making economic sense.",
-        "Half cash half stock\n\nIt's on the website",
-        "That's the neat part",
-        "Yes, they just need inflation to go to 1000000%.",
-        "&gt; AMD also has option to get 10% of OpenAI stake..  \n\nYou have this backwards, OpenAI gets 10% in AMD  \n\nhttps://www.reuters.com/business/amd-signs-ai-chip-supply-deal-with-openai-gives-it-option-take-10-stake-2025-10-06/  \n&gt;AMD to supply OpenAI hundreds of thousands of AI chips  \nDeal includes warrant for OpenAI to buy up to 10% AMD stake at 1 cent/shr  \n\n\nThey basically got these chips from AMD at cost based on how much its appreciated since. Actually a great counter point to your thesis",
-        "The company that’s building all their data centers, ORCL, might go bankrupt before they finish their IPO",
-        "They’re actually estimated to be at over 40 billion annual revenue right now. These are all pretty long contracts and they’re really just deals that guaranteed OpenAI the ability to buy at certain prices. They really only need to grow another 200% to be able to afford this all",
-        "The framing is misleading. These are not lump sum debts, they are multi-year spend commitments spread over 4-10 years. At $25B revenue growing 100%+ YoY, run it forward: $50B in 2026, $100B in 2027, even at 60% growth you are at $250B+ annual revenue by 2029. $1.4T over 5-10 years against cumulative revenue potentially north of $1T is not as insane as the headline sounds.\n\nThe real question is margins. Revenue means nothing if unit economics stay negative. Right now they are burning cash on ever"
-      ]
-    },
-    {
-      "sub": "stocks",
-      "title": "Here’s why Korean index (KOSPI) went from 2600 (May, 2025) to 9000 (June, 2026) to 5600 (July, 2026).",
-      "score": 238,
-      "num_comments": 37,
-      "pub_dt": "2026-08-02T15:15:23+00:00",
-      "link": "https://reddit.com/r/stocks/comments/1vdkny1/heres_why_korean_index_kospi_went_from_2600_may/",
-      "comments": [
-        "&gt;A lot of these people started investing this year, but decided to put their entire life saving and margin invest with their house as collateral into leveraged ETF (which was also created May 27, 2026).\n\nthe fuck? i know theres some degens out there but holy shit where is the risk management",
-        "Great information and definitely not well known. Your info on shareholders having 0 legal rights is definitely new information and it shows how policy and politics does matter. I had thought that margin calling was the primary issue but your research shows that is one of several reasons - great info!",
-        "Having your national pension fund pump the stock market, where have I heard that one before.\n\nTerrible idea that only leads to a transfer of wealth from that pension fund to Wall Street who still hold millions of shares of korea index/Samsung/SK\n\nRetail investors pump it and wall street sells off the pumped up price. Wall street takes home the retail investors' money.\n\nPension funds pump it and wall street sells off the pumped up price. Wall street takes home the pension funds' money.\n\nLet's rin",
-        "This is a great post and I genuinely learned something here",
-        "You know it will go back above 10k"
+        "Meaning they hope it’ll provide enough momentum to keep the technology alive until Christopher Nolan makes another movie?",
+        "“Flywheel” is one of the dumbest corporate buzzwords.",
+        "On the Animal Spirits podcast they mentioned that they've basically lost the blueprints for the Imax projectors and at the moment can't manufacture new ones.  So no new Imax theatres.  Need to see if this is true or partly true.\n\nEdit to add:  Seems it's the 70 mm film projectors that can't be manufactured at this time.",
+        "Didn't knew imax was public"
       ]
     }
   ]
