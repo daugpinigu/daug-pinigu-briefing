@@ -1,4 +1,105 @@
 {
-  "generated_at": "2026-08-25T06:15:36.434976+00:00",
-  "posts": []
+  "generated_at": "2026-08-26T06:31:46.422981+00:00",
+  "posts": [
+    {
+      "ticker": "MSFT",
+      "author": "Evan",
+      "handle": "StockMKTNewz",
+      "text": "Nvidia \n$NVDA\n just posted this \n\n“NVIDIA Vera Rubin NVL72 production racks are here”\n\n“Congratulations to Microsoft \n$MSFT\n on the first operational Vera Rubin NVL72 rack”",
+      "likes": 695,
+      "retweets": 53,
+      "link": "https://x.com/StockMKTNewz/status/2092338711962746997",
+      "pub_dt": "2026-08-25T19:49:57+00:00"
+    },
+    {
+      "ticker": "AMD",
+      "author": "Shay Boloor",
+      "handle": "StockSavvyShay",
+      "text": "$AMD\n is projected to earn nearly $120M in profit per day by 2028.\n\nThree years ago, it was earning just ~$1M per day  ",
+      "likes": 636,
+      "retweets": 67,
+      "link": "https://x.com/StockSavvyShay/status/2092364666983035072",
+      "pub_dt": "2026-08-25T21:33:05+00:00"
+    },
+    {
+      "ticker": "MSFT",
+      "author": "Shay Boloor",
+      "handle": "StockSavvyShay",
+      "text": "$NVDA\n Vera Rubin cycle is officially moving from roadmap to reality with the first operational NVL72 rack now live at \n$MSFT\n.\n\nNvidia says production racks are here marking the start of the next major AI infrastructure deployment wave after Blackwell.",
+      "likes": 305,
+      "retweets": 44,
+      "link": "https://x.com/StockSavvyShay/status/2092340845597147240",
+      "pub_dt": "2026-08-25T19:58:26+00:00"
+    },
+    {
+      "ticker": "META",
+      "author": "Shay Boloor",
+      "handle": "StockSavvyShay",
+      "text": "$META\n says states have discussed resolving lawsuits over alleged teen social media harms as pressure around youth safety continues to build.\n\nThe talks could open the door to a broader settlement rather than years of state-by-state litigation.",
+      "likes": 324,
+      "retweets": 20,
+      "link": "https://x.com/StockSavvyShay/status/2092427572974096656",
+      "pub_dt": "2026-08-26T01:43:03+00:00"
+    },
+    {
+      "ticker": "MSFT",
+      "author": "TrendSpider",
+      "handle": "TrendSpider",
+      "text": "Microsoft \n$MSFT\n still has some catching up to do ",
+      "likes": 208,
+      "retweets": 10,
+      "link": "https://x.com/TrendSpider/status/2092409189754630638",
+      "pub_dt": "2026-08-26T00:30:00+00:00"
+    },
+    {
+      "ticker": "BE",
+      "author": "Spy Before You Buy",
+      "handle": "Spybef0rey0ubuy",
+      "text": "$BE\n COULD BE THE NEXT S&P 500 ADDITION \n\nBloom Energy is one of the names being discussed for the next rebalance.\n\nThe interesting part?\n\nThe market may not be pricing it in yet.\n\nCould \n$BE\n be next?",
+      "likes": 203,
+      "retweets": 14,
+      "link": "https://x.com/Spybef0rey0ubuy/status/2092327092452999626",
+      "pub_dt": "2026-08-25T19:03:47+00:00"
+    },
+    {
+      "ticker": "AMD",
+      "author": "Jeremy Lefebvre",
+      "handle": "HolySmokas",
+      "text": "AMD & Celsius Shareholders GET READY\n\n\"HUGE changes\"\n\n\n$AMD\n also A - M - DEEEEEE also \n$CELH\n also also SF90 also...covfefe",
+      "likes": 172,
+      "retweets": 8,
+      "link": "https://x.com/HolySmokas/status/2092410335604957393",
+      "pub_dt": "2026-08-26T00:34:33+00:00"
+    },
+    {
+      "ticker": "BE",
+      "author": "Jake Wujastyk",
+      "handle": "Jake__Wujastyk",
+      "text": "$BE\n #BE Ready for the Pelosi launch?",
+      "likes": 175,
+      "retweets": 5,
+      "link": "https://x.com/Jake__Wujastyk/status/2092384525787844677",
+      "pub_dt": "2026-08-25T22:52:00+00:00"
+    },
+    {
+      "ticker": "META",
+      "author": "Heisenberg",
+      "handle": "Mr_Derivatives",
+      "text": "$META\n Almost $572’s overnight…",
+      "likes": 166,
+      "retweets": 2,
+      "link": "https://x.com/Mr_Derivatives/status/2092441860287668438",
+      "pub_dt": "2026-08-26T02:39:49+00:00"
+    },
+    {
+      "ticker": "BE",
+      "author": "Barchart",
+      "handle": "Barchart",
+      "text": "Nancy Pelosi, the greatest trader of our generation, just invested millions in Bloom Energy \n$BE\n through shares and 100 strike June 2027 call options  If you think Nancy is right and want magnified exposure, consider the Tradr 2X Long BE Daily ETF \n$BEX\n from \n@TradrETFs",
+      "likes": 136,
+      "retweets": 24,
+      "link": "https://x.com/Barchart/status/2092339633971433529",
+      "pub_dt": "2026-08-25T19:53:37+00:00"
+    }
+  ]
 }
