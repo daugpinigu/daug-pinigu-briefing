@@ -1,43 +1,43 @@
 {
-  "generated_at": "2026-09-02T07:07:02.948744+00:00",
+  "generated_at": "2026-09-03T08:16:34.311663+00:00",
   "channels": [
     "CaktusJxck"
   ],
   "messages": [
     {
-      "text": "Crypto asset manager 21Shares said Bitcoin selling pressure has weakened, with its Seller Exhaustion Constant falling to approximately 0.007, placing it in the bottom 0.3% of readings since 2010.\n\nThe Details:\n\n•\tHistorical rarity: The current reading represents only the 11th time the indicator has reached this level in Bitcoin’s history.\n\n•\tPast performance: In all 11 prior episodes, Bitcoin traded higher one year later, recording a median gain of 155%.\n\n•\tShort-term risk: 21Shares noted that past instances experienced additional near-term downside before resolving higher.\n\n•\tBottom caveat: The asset manager cautioned that the low reading does not necessarily mark an immediate price bottom.",
-      "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
-      "channel": "CaktusJxck"
-    },
-    {
       "text": "Nvidia ($NVDA) is in discussions to invest in artificial intelligence startup Perplexity as part of a funding round valuing the company at over $30 billion.\n\nThe Details:\n\n•\tValuation growth: The prospective funding round marks a 50% valuation increase from Perplexity’s previous $20 billion valuation finalized last year.\n\n•\tRevenue expansion: Perplexity’s annualized revenue climbed past $750 million from under $250 million earlier this year, boosted by its Perplexity Computer agent.\n\n•\tInfrastructure agreements: Perplexity previously signed a $750 million Azure cloud computing agreement with Microsoft ($MSFT).\n\n•\tPublic listing: Chief Executive Aravind Srinivas stated the company plans to pursue an initial public offering in 2028.",
       "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
       "channel": "CaktusJxck"
     },
     {
       "text": "The U.S. reportedly offered Iran a deal to halt the siege and lift sanctions in exchange for reopening the Strait of Hormuz and ending proxy attacks, according to Al Arabiya. Axios also reports that Rubio told several foreign counterparts the U.S. does not plan new strikes on Iran for now, with pressure shifting toward the naval blockade and new sanctions campaign instead. Crude Oil fell 4% and the 10-year treasury bond fell from 4.72% to 4.62%.\n\n\nGlobal physical gold-backed ETFs $GLD attracted $6.4B of inflows last week, their largest weekly intake since January and the 3rd-largest weekly inflow on record. North America led with $4.4B, followed by Europe at $1.7B and Asia at $300M. This marked the 7th straight week of inflows, with global gold ETFs pullin\n…",
       "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
       "channel": "CaktusJxck"
     },
     {
       "text": "Alphabet’s ($GOOGL) Google hired Thinking Machines Lab co-founder and former OpenAI executive Barret Zoph as vice president of research to advance Gemini development.\n\nThe Details:\n\n•\tGoogle appointment: Google hired Zoph as vice president of research to bring reinforcement learning and post-training expertise to Gemini.\n\n•\tOpenAI tenure: Zoph previously led commercial AI enterprise product efforts at OpenAI after leaving Thinking Machines earlier this year.\n\n•\tStartup exit: Zoph left Thinking Machines in January alongside Luke Metz and Sam Schoenholz following a dispute with CEO Mira Murati.\n\n•\tStartup focus: Thinking Machines develops AI systems designed to work alongside humans rather than operate fully autonomously.",
       "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
       "channel": "CaktusJxck"
     },
     {
       "text": "Anthropic has reportedly signed a $35 billion cloud-computing agreement with Nvidia-backed Lambda for capacity at a Texas data center developed by Hut 8, according to people familiar with the transaction.\n\nThe Details:\n\n•\tStructure: Nvidia reportedly holds the data-center lease after securing capacity from Hut 8; Lambda would install Nvidia chips at the Nueces County, Texas site.\n\n•\tHut 8 campus: Hut 8 disclosed 15-year leases for the full 700-megawatt campus from an unnamed tenant and described the planned facility as a $20 billion Nvidia-chip project.\n\n•\tSupply expansion: The arrangement follows Anthropic’s reported $45 billion agreement with Nvidia-backed Nscale earlier this month for West Virginia capacity.\n\n•\tCompeting hardware: Hut 8 is also developing sepa…",
       "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
       "channel": "CaktusJxck"
     },
     {
       "text": "$DELL DELL delivered another huge beat and raise, reporting record quarterly revenue of $47.0B versus $44.9B expected, up 58% YoY. Adjusted EPS came in at $7.04 versus $4.91 expected, up 203% YoY from $2.32. AI server revenue reached $16.4B, roughly doubling YoY, while Dell booked a massive $60.9B of AI server orders during the quarter. AI backlog surged to a record $95B, up from $51.3B last quarter, one of the biggest numbers in the report. Infrastructure also remained strong, with traditional servers and networking revenue up 122% YoY to $10.5B and storage revenue up 26% to $4.9B. Dell raised its FY27 revenue outlook sharply to roughly $192B, compared with its prior $165B–$169B range. If Dell's earnings are any insight into the AI trade, demand continues\n…",
       "time": "",
-      "timestamp_utc": "2026-09-02T07:07:01.017988+00:00",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
+      "channel": "CaktusJxck"
+    },
+    {
+      "text": "Broadcom $AVGO said it has a “high degree of confidence” it will ship $350B of AI semiconductors over the next 2 years, even if all 30 GW of demand is not deployed because of land, power, and data center constraints. The company laid out a massive AI growth path, targeting AI semiconductor revenue of roughly $58B in FY26, $115B in FY27, and $230B in FY28 — a 4x increase in just 2 years. Broadcom said every 1 GW deployed by OpenAI or Anthropic could support about $30B in annual AI revenue, while AI networking revenue is expected to grow just as fast as its XPU business. In Q3’26, Broadcom reported revenue of $29.6B, beating estimates of $29.36B and up 86% YoY, with adjusted EPS of $3.32 versus $3.24 expected. AI semiconductor revenue surged 221% YoY to $16.7\n…",
+      "time": "",
+      "timestamp_utc": "2026-09-03T08:16:33.320750+00:00",
       "channel": "CaktusJxck"
     }
   ]
