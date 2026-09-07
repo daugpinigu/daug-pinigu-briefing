@@ -1653,6 +1653,34 @@
 </style>
 </head>
 <body>
+<!-- BRIEF-NAV-START -->
+<style>
+  .brief-nav { position: sticky; top: 0; z-index: 1000; display: flex; align-items: center;
+    justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    margin: -40px -44px 24px; padding: 10px 44px;
+    background: rgba(10,14,26,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(244,204,107,0.25);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif; }
+  .brief-nav .bn-group { display: flex; align-items: center; gap: 6px; }
+  .brief-nav a, .brief-nav span.bn-btn { display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; line-height: 1;
+    text-decoration: none; color: #e6e8ee; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08); white-space: nowrap; transition: background .15s; }
+  .brief-nav a:hover { background: rgba(244,204,107,0.16); border-color: rgba(244,204,107,0.4); }
+  .brief-nav span.bn-btn.bn-disabled { opacity: 0.35; cursor: default; }
+  .brief-nav a.bn-latest { background: rgba(244,204,107,0.14); color: #f4cc6b; border-color: rgba(244,204,107,0.45); }
+  .brief-nav a.bn-latest:hover { background: rgba(244,204,107,0.28); }
+  .brief-nav .bn-current { font-size: 13px; color: #8a92a3; font-variant-numeric: tabular-nums; text-align: center; }
+  .brief-nav .bn-current b { color: #e6e8ee; font-weight: 600; }
+  @media (max-width: 720px) {
+    .brief-nav { margin: -20px -16px 16px; padding: 8px 12px; }
+    .brief-nav a, .brief-nav span.bn-btn { padding: 8px 10px; font-size: 12px; }
+    .brief-nav .bn-current { width: 100%; order: -1; font-size: 12px; }
+    .brief-nav .bn-label { display: none; }
+  }
+</style>
+<nav class="brief-nav" data-date="2026-08-11" data-prev="2026-08-10" data-next="2026-08-12"><div class="bn-group"><a href="briefing-2026-08-10.html" rel="prev" title="2026-08-10">&#8592; <span class="bn-label">Ankstesnis</span></a><a href="briefing-2026-08-12.html" rel="next" title="2026-08-12"><span class="bn-label">Kitas</span> &#8594;</a></div><div class="bn-current"><b>2026 m. rugpjūčio 11 d.</b> · antradienis</div><div class="bn-group"><a class="bn-latest" href="latest.html" title="Naujausias briefing'as">&#9889; Naujausias</a><a href="../index.html" title="Visi briefing'ai">&#9776; Visi</a></div></nav><script>document.addEventListener("keydown",function(e){if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;var n=document.querySelector(".brief-nav");if(!n)return;if(e.key==="ArrowLeft"&&n.dataset.prev)location.href="briefing-"+n.dataset.prev+".html";if(e.key==="ArrowRight"&&n.dataset.next)location.href="briefing-"+n.dataset.next+".html";});</script><!-- BRIEF-NAV-END -->
+
 
 <header>
   <h1>DIENOS BRIEFING</h1>

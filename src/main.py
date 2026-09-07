@@ -26,7 +26,7 @@ from llm import (
 )
 from render import render_html, html_to_png
 from send import send_photo
-from publish_web import save_briefing_html, regenerate_index
+from publish_web import save_briefing_html, finalize_site
 from watchlist import (STOCKS, CRYPTO, FUTURES, AI_TICKERS, NEWS_TICKERS,
                        YOUTUBE_CHANNELS, CRYPTO_TREASURY)
 
@@ -1238,7 +1238,8 @@ def main():
 
     print("  Saving HTML for web...")
     html_path = save_briefing_html(html, date_str)
-    regenerate_index()
+    site = finalize_site()
+    print(f"    -> nav patched in {site['patched']} files, latest={site['latest']}")
     print(f"    -> {html_path.relative_to(html_path.parent.parent.parent)}")
 
     web_url = f"https://daugpinigu.github.io/daug-pinigu-briefing/briefings/briefing-{date_str}.html"

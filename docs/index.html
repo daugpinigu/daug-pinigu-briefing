@@ -44,7 +44,17 @@
   }
   .row:hover { background: rgba(244,204,107,0.08); transform: translateX(4px); }
   .row-date { font-size: 16px; font-weight: 600; }
-  .row-iso { font-size: 12px; color: #8a92a3; font-variant-numeric: tabular-nums; }
+  .row-iso { font-size: 12px; color: #8a92a3; font-variant-numeric: tabular-nums; white-space: nowrap; margin-left: 12px; }
+  .row-wd { font-size: 12px; color: #8a92a3; font-weight: 400; margin-left: 6px; }
+  .latest-btn {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 22px; margin-bottom: 22px; border-radius: 10px;
+    background: rgba(244,204,107,0.12); border: 1px solid rgba(244,204,107,0.45);
+    color: #f4cc6b; font-size: 17px; font-weight: 700; text-decoration: none;
+    transition: background 0.15s;
+  }
+  .latest-btn:hover { background: rgba(244,204,107,0.22); }
+  .latest-btn small { font-size: 12px; font-weight: 500; color: #e6e8ee; opacity: 0.8; }
   .empty { color: #6c7588; padding: 30px 0; text-align: center; }
   footer {
     margin-top: 40px;
@@ -60,320 +70,321 @@
     <div class="sub">Kasdieniniai investiciniai pranešimai · paskutiniai virsuje</div>
   </header>
   <main>
+        <a class="latest-btn" href="latest.html"><span>&#9889; Atidaryti naujausią</span><small>2026 m. rugsėjo 4 d. · penktadienis</small></a>
         <a class="row" href="briefings/briefing-2026-09-04.html">
-          <div class="row-date">2026 m. rugsėjo 4 d.</div>
+          <div class="row-date">2026 m. rugsėjo 4 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-09-04</div>
         </a>
         <a class="row" href="briefings/briefing-2026-09-03.html">
-          <div class="row-date">2026 m. rugsėjo 3 d.</div>
+          <div class="row-date">2026 m. rugsėjo 3 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-09-03</div>
         </a>
         <a class="row" href="briefings/briefing-2026-09-02.html">
-          <div class="row-date">2026 m. rugsėjo 2 d.</div>
+          <div class="row-date">2026 m. rugsėjo 2 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-09-02</div>
         </a>
         <a class="row" href="briefings/briefing-2026-09-01.html">
-          <div class="row-date">2026 m. rugsėjo 1 d.</div>
+          <div class="row-date">2026 m. rugsėjo 1 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-09-01</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-28.html">
-          <div class="row-date">2026 m. rugpjūčio 28 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 28 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-08-28</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-27.html">
-          <div class="row-date">2026 m. rugpjūčio 27 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 27 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-08-27</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-26.html">
-          <div class="row-date">2026 m. rugpjūčio 26 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 26 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-08-26</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-24.html">
-          <div class="row-date">2026 m. rugpjūčio 24 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 24 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-08-24</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-21.html">
-          <div class="row-date">2026 m. rugpjūčio 21 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 21 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-08-21</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-20.html">
-          <div class="row-date">2026 m. rugpjūčio 20 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 20 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-08-20</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-19.html">
-          <div class="row-date">2026 m. rugpjūčio 19 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 19 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-08-19</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-18.html">
-          <div class="row-date">2026 m. rugpjūčio 18 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 18 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-08-18</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-17.html">
-          <div class="row-date">2026 m. rugpjūčio 17 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 17 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-08-17</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-14.html">
-          <div class="row-date">2026 m. rugpjūčio 14 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 14 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-08-14</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-13.html">
-          <div class="row-date">2026 m. rugpjūčio 13 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 13 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-08-13</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-12.html">
-          <div class="row-date">2026 m. rugpjūčio 12 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 12 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-08-12</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-11.html">
-          <div class="row-date">2026 m. rugpjūčio 11 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 11 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-08-11</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-10.html">
-          <div class="row-date">2026 m. rugpjūčio 10 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 10 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-08-10</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-07.html">
-          <div class="row-date">2026 m. rugpjūčio 7 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 7 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-08-07</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-06.html">
-          <div class="row-date">2026 m. rugpjūčio 6 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 6 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-08-06</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-05.html">
-          <div class="row-date">2026 m. rugpjūčio 5 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 5 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-08-05</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-04.html">
-          <div class="row-date">2026 m. rugpjūčio 4 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 4 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-08-04</div>
         </a>
         <a class="row" href="briefings/briefing-2026-08-03.html">
-          <div class="row-date">2026 m. rugpjūčio 3 d.</div>
+          <div class="row-date">2026 m. rugpjūčio 3 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-08-03</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-31.html">
-          <div class="row-date">2026 m. liepos 31 d.</div>
+          <div class="row-date">2026 m. liepos 31 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-07-31</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-30.html">
-          <div class="row-date">2026 m. liepos 30 d.</div>
+          <div class="row-date">2026 m. liepos 30 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-07-30</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-29.html">
-          <div class="row-date">2026 m. liepos 29 d.</div>
+          <div class="row-date">2026 m. liepos 29 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-07-29</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-28.html">
-          <div class="row-date">2026 m. liepos 28 d.</div>
+          <div class="row-date">2026 m. liepos 28 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-07-28</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-27.html">
-          <div class="row-date">2026 m. liepos 27 d.</div>
+          <div class="row-date">2026 m. liepos 27 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-07-27</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-24.html">
-          <div class="row-date">2026 m. liepos 24 d.</div>
+          <div class="row-date">2026 m. liepos 24 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-07-24</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-23.html">
-          <div class="row-date">2026 m. liepos 23 d.</div>
+          <div class="row-date">2026 m. liepos 23 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-07-23</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-22.html">
-          <div class="row-date">2026 m. liepos 22 d.</div>
+          <div class="row-date">2026 m. liepos 22 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-07-22</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-21.html">
-          <div class="row-date">2026 m. liepos 21 d.</div>
+          <div class="row-date">2026 m. liepos 21 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-07-21</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-17.html">
-          <div class="row-date">2026 m. liepos 17 d.</div>
+          <div class="row-date">2026 m. liepos 17 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-07-17</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-16.html">
-          <div class="row-date">2026 m. liepos 16 d.</div>
+          <div class="row-date">2026 m. liepos 16 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-07-16</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-15.html">
-          <div class="row-date">2026 m. liepos 15 d.</div>
+          <div class="row-date">2026 m. liepos 15 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-07-15</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-14.html">
-          <div class="row-date">2026 m. liepos 14 d.</div>
+          <div class="row-date">2026 m. liepos 14 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-07-14</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-13.html">
-          <div class="row-date">2026 m. liepos 13 d.</div>
+          <div class="row-date">2026 m. liepos 13 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-07-13</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-10.html">
-          <div class="row-date">2026 m. liepos 10 d.</div>
+          <div class="row-date">2026 m. liepos 10 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-07-10</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-09.html">
-          <div class="row-date">2026 m. liepos 9 d.</div>
+          <div class="row-date">2026 m. liepos 9 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-07-09</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-08.html">
-          <div class="row-date">2026 m. liepos 8 d.</div>
+          <div class="row-date">2026 m. liepos 8 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-07-08</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-07.html">
-          <div class="row-date">2026 m. liepos 7 d.</div>
+          <div class="row-date">2026 m. liepos 7 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-07-07</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-06.html">
-          <div class="row-date">2026 m. liepos 6 d.</div>
+          <div class="row-date">2026 m. liepos 6 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-07-06</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-03.html">
-          <div class="row-date">2026 m. liepos 3 d.</div>
+          <div class="row-date">2026 m. liepos 3 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-07-03</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-02.html">
-          <div class="row-date">2026 m. liepos 2 d.</div>
+          <div class="row-date">2026 m. liepos 2 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-07-02</div>
         </a>
         <a class="row" href="briefings/briefing-2026-07-01.html">
-          <div class="row-date">2026 m. liepos 1 d.</div>
+          <div class="row-date">2026 m. liepos 1 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-07-01</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-30.html">
-          <div class="row-date">2026 m. birželio 30 d.</div>
+          <div class="row-date">2026 m. birželio 30 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-06-30</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-29.html">
-          <div class="row-date">2026 m. birželio 29 d.</div>
+          <div class="row-date">2026 m. birželio 29 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-06-29</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-26.html">
-          <div class="row-date">2026 m. birželio 26 d.</div>
+          <div class="row-date">2026 m. birželio 26 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-06-26</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-25.html">
-          <div class="row-date">2026 m. birželio 25 d.</div>
+          <div class="row-date">2026 m. birželio 25 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-06-25</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-24.html">
-          <div class="row-date">2026 m. birželio 24 d.</div>
+          <div class="row-date">2026 m. birželio 24 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-06-24</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-23.html">
-          <div class="row-date">2026 m. birželio 23 d.</div>
+          <div class="row-date">2026 m. birželio 23 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-06-23</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-22.html">
-          <div class="row-date">2026 m. birželio 22 d.</div>
+          <div class="row-date">2026 m. birželio 22 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-06-22</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-19.html">
-          <div class="row-date">2026 m. birželio 19 d.</div>
+          <div class="row-date">2026 m. birželio 19 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-06-19</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-18.html">
-          <div class="row-date">2026 m. birželio 18 d.</div>
+          <div class="row-date">2026 m. birželio 18 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-06-18</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-17.html">
-          <div class="row-date">2026 m. birželio 17 d.</div>
+          <div class="row-date">2026 m. birželio 17 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-06-17</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-16.html">
-          <div class="row-date">2026 m. birželio 16 d.</div>
+          <div class="row-date">2026 m. birželio 16 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-06-16</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-12.html">
-          <div class="row-date">2026 m. birželio 12 d.</div>
+          <div class="row-date">2026 m. birželio 12 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-06-12</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-11.html">
-          <div class="row-date">2026 m. birželio 11 d.</div>
+          <div class="row-date">2026 m. birželio 11 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-06-11</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-10.html">
-          <div class="row-date">2026 m. birželio 10 d.</div>
+          <div class="row-date">2026 m. birželio 10 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-06-10</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-09.html">
-          <div class="row-date">2026 m. birželio 9 d.</div>
+          <div class="row-date">2026 m. birželio 9 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-06-09</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-08.html">
-          <div class="row-date">2026 m. birželio 8 d.</div>
+          <div class="row-date">2026 m. birželio 8 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-06-08</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-07.html">
-          <div class="row-date">2026 m. birželio 7 d.</div>
+          <div class="row-date">2026 m. birželio 7 d. <span class="row-wd">sekmadienis</span></div>
           <div class="row-iso">2026-06-07</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-06.html">
-          <div class="row-date">2026 m. birželio 6 d.</div>
+          <div class="row-date">2026 m. birželio 6 d. <span class="row-wd">šeštadienis</span></div>
           <div class="row-iso">2026-06-06</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-04.html">
-          <div class="row-date">2026 m. birželio 4 d.</div>
+          <div class="row-date">2026 m. birželio 4 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-06-04</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-03.html">
-          <div class="row-date">2026 m. birželio 3 d.</div>
+          <div class="row-date">2026 m. birželio 3 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-06-03</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-02.html">
-          <div class="row-date">2026 m. birželio 2 d.</div>
+          <div class="row-date">2026 m. birželio 2 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-06-02</div>
         </a>
         <a class="row" href="briefings/briefing-2026-06-01.html">
-          <div class="row-date">2026 m. birželio 1 d.</div>
+          <div class="row-date">2026 m. birželio 1 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-06-01</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-29.html">
-          <div class="row-date">2026 m. gegužės 29 d.</div>
+          <div class="row-date">2026 m. gegužės 29 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-05-29</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-28.html">
-          <div class="row-date">2026 m. gegužės 28 d.</div>
+          <div class="row-date">2026 m. gegužės 28 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-05-28</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-27.html">
-          <div class="row-date">2026 m. gegužės 27 d.</div>
+          <div class="row-date">2026 m. gegužės 27 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-05-27</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-26.html">
-          <div class="row-date">2026 m. gegužės 26 d.</div>
+          <div class="row-date">2026 m. gegužės 26 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-05-26</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-23.html">
-          <div class="row-date">2026 m. gegužės 23 d.</div>
+          <div class="row-date">2026 m. gegužės 23 d. <span class="row-wd">šeštadienis</span></div>
           <div class="row-iso">2026-05-23</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-20.html">
-          <div class="row-date">2026 m. gegužės 20 d.</div>
+          <div class="row-date">2026 m. gegužės 20 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-05-20</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-19.html">
-          <div class="row-date">2026 m. gegužės 19 d.</div>
+          <div class="row-date">2026 m. gegužės 19 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-05-19</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-18.html">
-          <div class="row-date">2026 m. gegužės 18 d.</div>
+          <div class="row-date">2026 m. gegužės 18 d. <span class="row-wd">pirmadienis</span></div>
           <div class="row-iso">2026-05-18</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-15.html">
-          <div class="row-date">2026 m. gegužės 15 d.</div>
+          <div class="row-date">2026 m. gegužės 15 d. <span class="row-wd">penktadienis</span></div>
           <div class="row-iso">2026-05-15</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-14.html">
-          <div class="row-date">2026 m. gegužės 14 d.</div>
+          <div class="row-date">2026 m. gegužės 14 d. <span class="row-wd">ketvirtadienis</span></div>
           <div class="row-iso">2026-05-14</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-13.html">
-          <div class="row-date">2026 m. gegužės 13 d.</div>
+          <div class="row-date">2026 m. gegužės 13 d. <span class="row-wd">trečiadienis</span></div>
           <div class="row-iso">2026-05-13</div>
         </a>
         <a class="row" href="briefings/briefing-2026-05-12.html">
-          <div class="row-date">2026 m. gegužės 12 d.</div>
+          <div class="row-date">2026 m. gegužės 12 d. <span class="row-wd">antradienis</span></div>
           <div class="row-iso">2026-05-12</div>
         </a>
   </main>
