@@ -45,6 +45,16 @@ Workflow'as `.github/workflows/daily.yml`:
 - Tik darbo dienomis (Pn-Pn)
 - `workflow_dispatch` - rankinis paleidimas iš UI
 
+## Web versija (GitHub Pages)
+
+- Naujausias briefing'as (stabilus URL): https://daugpinigu.github.io/daug-pinigu-briefing/latest.html
+- Archyvas: https://daugpinigu.github.io/daug-pinigu-briefing/
+- Konkreti diena: `briefings/briefing-YYYY-MM-DD.html`
+- Kiekvienas briefing'as turi nav juostą (Ankstesnis / Kitas / Naujausias / Visi, rodyklės ← → klaviatūra).
+  Ją įterpia `publish_web.finalize_site()` PO PNG renderinimo, todėl Telegram paveiksliuke jos nėra.
+  Kas dieną visi seni failai perpatikrinami (`patch_all_briefings`), kad "Kitas" atsirastų ir vakarykščiame.
+- `docs/briefings/manifest.json` - visų datų sąrašas (jei kada reikės JS pusėje).
+
 ## Failai
 
 ```

@@ -21,7 +21,7 @@ if git diff --cached --quiet; then
     exit 0
 fi
 git commit -m "Bridges refresh $(date '+%Y-%m-%d %H:%M') [skip ci]" \
-    && git pull --rebase origin main \
+    && git pull --rebase --autostash origin main \
     && git push origin main \
     && echo "$STAMP pushed" \
     || echo "$STAMP git push FAILED"
