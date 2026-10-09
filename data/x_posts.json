@@ -1,4 +1,105 @@
 {
-  "generated_at": "2026-10-08T06:26:14.587680+00:00",
-  "posts": []
+  "generated_at": "2026-10-09T06:15:26.481206+00:00",
+  "posts": [
+    {
+      "ticker": "SNDK",
+      "author": "TrendSpider",
+      "handle": "TrendSpider",
+      "text": "Uptrend from July? Gone. 🩸 \n$SNDK",
+      "likes": 402,
+      "retweets": 30,
+      "link": "https://x.com/TrendSpider/status/2108360545665716313",
+      "pub_dt": "2026-10-09T00:55:00+00:00"
+    },
+    {
+      "ticker": "SNDK",
+      "author": "Ren",
+      "handle": "ren_stocks",
+      "text": "$NBIS\n \n$SNDK\n \n$AAOI\n \n$BE\n\n\nFunny how fast the story changes.\n\nJust a few hours ago everyone was panicking and dumping AI stocks because OpenAI was \"only\" approaching $50B in annualized revenue instead of the $70B that got reported. \n\nToday Bloomberg says OpenAI expects to be at $70B",
+      "likes": 327,
+      "retweets": 32,
+      "link": "https://x.com/ren_stocks/status/2108381766599762167",
+      "pub_dt": "2026-10-09T02:19:19+00:00"
+    },
+    {
+      "ticker": "META",
+      "author": "Evan",
+      "handle": "StockMKTNewz",
+      "text": "Meta Platforms \n$META\n banned advertisements from ByteDance and TikTok on its platform in the US and other countries - Bloomberg",
+      "likes": 182,
+      "retweets": 19,
+      "link": "https://x.com/StockMKTNewz/status/2108333646205669484",
+      "pub_dt": "2026-10-08T23:08:06+00:00"
+    },
+    {
+      "ticker": "AMD",
+      "author": "TrendSpider",
+      "handle": "TrendSpider",
+      "text": "OpenAI: $20B short. AI stocks: 🩸\n\n$AMD\n still in the flag.",
+      "likes": 185,
+      "retweets": 10,
+      "link": "https://x.com/TrendSpider/status/2108322797097292129",
+      "pub_dt": "2026-10-08T22:25:00+00:00"
+    },
+    {
+      "ticker": "AMD",
+      "author": "P Equity Research 📰",
+      "handle": "pequityresearch",
+      "text": "Citi: we believe the CPU TAM expands from $29B in 2025 to $300B in 2030, or a 60% CAGR.\n\n\n$INTC\n \n$AMD\n \n$NVDA\n \n$QCOM",
+      "likes": 174,
+      "retweets": 20,
+      "link": "https://x.com/pequityresearch/status/2108292094926184503",
+      "pub_dt": "2026-10-08T20:23:00+00:00"
+    },
+    {
+      "ticker": "MU",
+      "author": "MentoviaX",
+      "handle": "MentoviaX",
+      "text": "$MU\n Can people really comprehend what recent UBS comment means for Micron's stock??\n\nLet me walk you through all the reasoning here..... \n\nUBS analyst Timothy Arcuri is looking at Micron buying back 30%+ of shares outstanding through 2028, funded by ~$400B of cumulative free cash",
+      "likes": 147,
+      "retweets": 15,
+      "link": "https://x.com/MentoviaX/status/2108319457382719575",
+      "pub_dt": "2026-10-08T22:11:43+00:00"
+    },
+    {
+      "ticker": "AMD",
+      "author": "Beth Kindig",
+      "handle": "Beth_Kindig",
+      "text": "Nvidia \n$NVDA\n says that for a 100MW data center, its Vera CPU offers more than 2X higher throughput and memory bandwidth versus x86 CPU competitors. \n\n\n$INTC\n \n$AMD",
+      "likes": 147,
+      "retweets": 13,
+      "link": "https://x.com/Beth_Kindig/status/2108329340169777154",
+      "pub_dt": "2026-10-08T22:51:00+00:00"
+    },
+    {
+      "ticker": "META",
+      "author": "Bourbon Capital",
+      "handle": "BourbonCap",
+      "text": "$META\n just banned TikTok in the US  \n\nThis one is going to hurt in the morning, but happy to buy more at the right time",
+      "likes": 133,
+      "retweets": 13,
+      "link": "https://x.com/BourbonCap/status/2108344125389144546",
+      "pub_dt": "2026-10-08T23:49:45+00:00"
+    },
+    {
+      "ticker": "META",
+      "author": "Mia",
+      "handle": "Miaavswpv",
+      "text": "He bought \n$NVDA\n at $236.54, \n$META\n at $796.25 and\n\n$TSLA\n at $498.83😭",
+      "likes": 135,
+      "retweets": 0,
+      "link": "https://x.com/Miaavswpv/status/2108299496627282337",
+      "pub_dt": "2026-10-08T20:52:24+00:00"
+    },
+    {
+      "ticker": "SNDK",
+      "author": "Francesco",
+      "handle": "FranVezz",
+      "text": "Some of the situational awareness signs I did not like from today:\n\n\n$ALAB\n getting crushed\n\n\n$SNDK\n \n$MU\n giving back their nice recoveries from yesterday\n\nCrypto cracking fairly hard\n\n\n$ARM\n free fall below the 21\n\n\n$INTC\n same\n\n\n$MXL\n failure\n\n\n$AMZN\n back under the 50\n\nData centers blowing",
+      "likes": 111,
+      "retweets": 4,
+      "link": "https://x.com/FranVezz/status/2108339652843221040",
+      "pub_dt": "2026-10-08T23:31:58+00:00"
+    }
+  ]
 }
