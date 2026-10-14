@@ -1,35 +1,4 @@
 {
-  "generated_at": "2026-10-12T06:15:15.720595+00:00",
-  "posts": [
-    {
-      "sub": "options",
-      "title": "New paper: an AI options trader made 18.3% in 6 months, until researchers let it read the news",
-      "score": 289,
-      "num_comments": 71,
-      "pub_dt": "2026-10-11T08:26:39+00:00",
-      "link": "https://reddit.com/r/options/comments/1x32u6l/new_paper_an_ai_options_trader_made_183_in_6/",
-      "comments": [
-        "6 months is not enough time for this experiment to be valid. It is very possible that during the time they tested the market consensus was different than how market actually ended up doing.",
-        "I started in 2008 with CNBC constantly on.\n\nA year later I hated them, I stopped listening to financial news with exception to Bloomberg and the improvement was insane.\n\nAny source that has the attention of millions of retail traders is a liability, they know they have your attention and that's the problem.\n\n.",
-        "Sometimes I trade on hype, sometimes I trade purely on charts. I think a balance is important.",
-        "do you know the experience with 1000 trading monkeys? Every months half of them beat the s&amp;p.\n\nIt's the same if you get 1000 ai agents.",
-        "Interesting study! Not surprised about the news part, because it fits the daily experience in the markets: once it's out, the move has usually already happened.  \n  \nHalf of it even seems to be written backwards. Prices move first, then someone attaches a reason and calls it an article. You can see it when the market reverses intraday and the same event gets used to explain both directions: “stocks rise on X” in the morning, “stocks fall on X” by the close. I’ve seen this so often that I’m convi",
-        "18.3% with zero news and a 29% win rate is kinda wild, that 4.7 payoff ratio doing the heavy lifting. The news version got a better win rate but the drawdown is terrifying, -31.7% is how you blow up a account in a month\n\n  \nMakes sense tho, by the time the model reads it the market already moved. I trade mostly on IV skew and flow, never found news helpful except for avoiding earnings day",
-        "This is not a good test because you have forward bias in your LLM. Let me explain; let’s say your LLM was trained on data upto Jan 2026, then you used it to pick your trades in 2025, exit them , analyze them whatever. Even if you explicitly tell it not to peek ahead the core weights are trained with futuristic data.\n\nYou need a clean LLM with no forward bias in the underlying weights.\n\nYou need to do some walk forward testing: train on 3 months then use what you’ve learned on the next 1 month. W"
-      ]
-    },
-    {
-      "sub": "StockMarket",
-      "title": "Samsung flags $80 billion profit on AI boom, highest quarterly for any tech company",
-      "score": 137,
-      "num_comments": 9,
-      "pub_dt": "2026-10-12T01:43:12+00:00",
-      "link": "https://reddit.com/r/StockMarket/comments/1x3pd2j/samsung_flags_80_billion_profit_on_ai_boom/",
-      "comments": [
-        "Always good to be a shovel maker during a gold rush.",
-        "Priced in",
-        "I didn't even know they had an AI?"
-      ]
-    }
-  ]
+  "generated_at": "2026-10-14T06:22:19.552698+00:00",
+  "posts": []
 }
